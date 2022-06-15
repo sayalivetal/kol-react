@@ -1,19 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleButton from "react-google-button";
 // import {signInWithGoogle} from './Firebase'
-
+import { useDispatch, useSelector } from "react-redux";
 import { signInWithPopup } from "firebase/auth";
-import { auth, googleAuthProvider } from "../Firebase";
+import { auth, googleAuthProvider } from "../../Firebase";
 import { Container, Row, Col } from "react-bootstrap";
+import { signupUser } from "../../slices/AuthSlice/AuthSlice";
+import { useNavigate } from "react-router-dom";
 const Register = () => {
   //state for firebase values
   const [firebaseUser, setFirebaseuser] = useState({
     name: "",
     email: "",
     token: "",
-    role:"",
-    password:""
+    role: "",
   });
+  //state for Register Form Data
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    token: "",
+    role: "",
+    password: "",
+  });
+  //state for store data of user register
+  const [data, setData] = useState({});
+  //navigaion
+  const navigate = useNavigate();
+  //useSelector for getting data from store
+  const userDetails = useSelector((state) => state.user.registerUser);
+  // const userRegister = useSelector((state)=>state.user.registerUser)
+  useEffect(() => {
+    if (!userDetails.otp) return;
+     setData(userDetails)
+    
+  }, [userDetails.otp]);
+  useEffect(() => {
+    if (!userDetails?.data?.token) return;
+    setData(userDetails);
+  }, [userDetails.token]);
+ 
+  useEffect(() => {
+    if (data?.data?.token) {
+      navigate("/Home");
+    }
+  }, [data]);
+  console.log(data);
+  useEffect(() => {
+    if (data.otp) {
+      navigate("/EmailVerify");
+    }
+  }, [data]);
+  //Dispatch form react redux
+  const dispatch = useDispatch();
   //function for response from firebase
   const signInWithGoogle = () => {
     signInWithPopup(auth, googleAuthProvider)
@@ -33,13 +72,21 @@ const Register = () => {
   };
   //function for handleChange
   const handleChange = (e) => {
-    setFirebaseuser({...firebaseUser,[e.target.name]:e.target.value})
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   //function for handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
+    dispatch(signupUser(formData));
+    setFormData({});
   };
-  console.log(firebaseUser);
+  //action for signInwithGoogle
+  useEffect(() => {
+    if (!firebaseUser.token) return;
+    console.log(firebaseUser);
+    dispatch(signupUser(firebaseUser));
+  }, [firebaseUser.token]);
   return (
     <Container>
       <Row>
@@ -89,7 +136,7 @@ const Register = () => {
                 name="role"
               >
                 <option>Select Role</option>
-                <option value="1">Customer</option>
+                <option value="3">Customer</option>
                 <option value="2">KOL</option>
               </select>
             </div>
@@ -101,6 +148,24 @@ const Register = () => {
               Already registered <a href="#">log in?</a>
             </p>
           </form>{" "}
+          <div className="form-group">
+            <label>Role</label>
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              onChange={(e) =>
+                setFirebaseuser({
+                  ...firebaseUser,
+                  [e.target.name]: e.target.value,
+                })
+              }
+              name="role"
+            >
+              <option>Select Role</option>
+              <option value="1">Customer</option>
+              <option value="2">KOL</option>
+            </select>
+          </div>
           <GoogleButton onClick={signInWithGoogle} />
         </Col>
         <Col></Col>

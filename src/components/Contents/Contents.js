@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 //routes config
-import routes from "../routes";
+import routes from "../../routes";
 const Contents = () => {
   return (
     <div>
