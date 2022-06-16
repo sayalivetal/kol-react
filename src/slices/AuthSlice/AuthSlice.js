@@ -4,6 +4,7 @@ import { API } from "../../common/apis";
 const initialState = {
   loginuser: {},
   registerUser: {},
+  role:{},
 };
 
 //API Integration with action for registration creation
@@ -237,7 +238,11 @@ const authReducer = createSlice({
   name: "user",
   initialState,
 
-  reducers: {},
+  reducers: {
+       addRole:(action,state)=>{
+        return { role: { ...state,...action.payload } };
+    },
+  },
   extraReducers: {
     [signupUser.fulfilled]: (state, action) => {
       return { registerUser: { ...action.payload } };
@@ -271,5 +276,5 @@ const authReducer = createSlice({
     [ChangePasswordUser.rejected]: (state, action) => {},
   },
 });
-
+export const { addRole} = authReducer.actions;
 export default authReducer.reducer;

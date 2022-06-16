@@ -8,19 +8,20 @@ import { Container, Row, Col } from "react-bootstrap";
 import { signupUser } from "../../slices/AuthSlice/AuthSlice";
 import { useNavigate } from "react-router-dom";
 const Register = () => {
+  const role = useSelector((state)=>state?.user?.role?.payload?.role)
   //state for firebase values
   const [firebaseUser, setFirebaseuser] = useState({
     name: "",
     email: "",
     token: "",
-    role: "",
+    role: role,
   });
   //state for Register Form Data
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     token: "",
-    role: "",
+    role: role,
     password: "",
   });
   //state for store data of user register

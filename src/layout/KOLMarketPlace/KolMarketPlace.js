@@ -6,7 +6,7 @@ import Footer from "../../components/Footer/Footer";
 const KOLMarketPlace = () => {
   return (
     <div>
-      <Header />
+      <Header name="sayali"/>
       <Contents />
       <Footer />
     </div>
