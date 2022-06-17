@@ -19,14 +19,14 @@ const App = () => {
       <Suspense fallback={loading}>
         <Routes>
           <Route path="/" name="Home" element={<DefaultLayout />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Home" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login"  element={<Login />} />
           <Route path="/register"  element={<Register />} />
-          <Route path="/EmailVerify" element={<EmailVerify />} />
-          <Route path="/ForgotPassword"  element={<ForgotPassword />} />
-          <Route path="/ChangePassword"  element={<ChangePassword />} />
-          <Route path="/Role"  element={<Role />} />
+          <Route path="/emailVerify" element={<EmailVerify />} />
+          <Route path="/forgotPassword"  element={<ForgotPassword />} />
+          <Route path="/changePassword"  element={<ChangePassword />} />
+          <Route path="/role"  element={<Role />} />
         </Routes>
       </Suspense>
     </div>

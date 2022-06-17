@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 
-const Header = (props) => {
-  console.log(props.name);
+const Header = () => {
   return (
     <header className="d-flex flex-wrap py-3 mb-4 header">
       <div className="container">
@@ -18,7 +17,7 @@ const Header = (props) => {
           </div>
           <div className="col-md-6 text-end">
             <button type="button" className="btn  me-4 outlined-button">
-              <Link to="/Role"> Sign Up</Link>
+              <Link to="/role"> Sign Up</Link>
             </button>
             <button type="button" className="btn outlined-button">
               <Link to="/login">Sign In</Link>

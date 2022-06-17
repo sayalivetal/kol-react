@@ -32,6 +32,18 @@ body{
   color: #61dafb;
 }
 
+.theme-btn {
+  background-color: #f01f4b;
+  color: #fff;
+}
+.theme-btn:hover {
+  color: #fff;
+}
+.optionText a {
+  color: #f01f4b;
+  text-decoration: none;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
