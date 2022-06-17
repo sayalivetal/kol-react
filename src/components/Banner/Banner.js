@@ -1,5 +1,6 @@
 import React from "react";
 import "./Banner.css";
+
 import { Carousel } from "react-bootstrap";
 const Banner = () => {
   return (
@@ -11,7 +12,33 @@ const Banner = () => {
               <Carousel.Item>
                 <img
                   className="d-block w-100"
-                  src="holder.js/800x400?text=First slide&bg=f5f5f5"
+                  src='Images/Banner1.png'
+                  alt="First slide"
+                />
+                <Carousel.Caption>
+                  <h5>First slide label</h5>
+                  <p>
+                    Nulla vitae elit libero, a pharetra augue mollis interdum.
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src='Images/Banner1.png'
+                  alt="First slide"
+                />
+                <Carousel.Caption>
+                  <h5>First slide label</h5>
+                  <p>
+                    Nulla vitae elit libero, a pharetra augue mollis interdum.
+                  </p>
+                </Carousel.Caption>
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src='Images/Banner1.png'
                   alt="First slide"
                 />
                 <Carousel.Caption>

@@ -18,7 +18,7 @@ const Header = (props) => {
           </div>
           <div className="col-md-6 text-end">
             <button type="button" className="btn  me-4 outlined-button">
-              <Link to="/register"> Sign Up</Link>
+              <Link to="/Role"> Sign Up</Link>
             </button>
             <button type="button" className="btn outlined-button">
               <Link to="/login">Sign In</Link>

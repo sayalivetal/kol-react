@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { addRole } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import "./Role.css";
 const Role = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [renderButton, setRenderButton] = useState("");
   const [userRole, setUserRole] = useState({
@@ -22,6 +24,7 @@ const Role = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addRole(userRole));
+    navigate('/register')
   };
 
   return (
@@ -40,33 +43,33 @@ const Role = () => {
                     <h3>Join as a User or KOL</h3>
                   </div>
                   <form onSubmit={handleSubmit}>
-                  <div className="row justify-content-center">
-                    <div className="col-5">
-                      <div className="card">
-                        <div className="card-body">
-                          <input
-                            type="radio"
-                            value="3"
-                            name="role"
-                            onChange={onChangeValue}
-                          />{" "}
-                          Customer
+                    <div className="row justify-content-center">
+                      <div className="col-5">
+                        <div className="card">
+                          <div className="card-body">
+                            <input
+                              type="radio"
+                              value="3"
+                              name="role"
+                              onChange={onChangeValue}
+                            />{" "}
+                            Customer
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-5">
-                      <div className="card">
-                        <div className="card-body">
-                          <input
-                            type="radio"
-                            value="2"
-                            name="role"
-                            onChange={onChangeValue}
-                          />{" "}
-                          KOL
+                      <div className="col-5">
+                        <div className="card">
+                          <div className="card-body">
+                            <input
+                              type="radio"
+                              value="2"
+                              name="role"
+                              onChange={onChangeValue}
+                            />{" "}
+                            KOL
+                          </div>
                         </div>
                       </div>
-                    </div>
                     </div>
                     <div className="col-12 text-center">
                       <button type="submit">
