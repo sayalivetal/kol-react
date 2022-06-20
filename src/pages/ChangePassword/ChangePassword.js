@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Form, Row, Button, Alert } from "react-bootstrap";
 import { ChangePasswordUser } from "../../slices/AuthSlice/AuthSlice";
 import { useSelector, useDispatch } from "react-redux";
+import "./ChangePassword.css";
 
 const ChangePassword = () => {
   const email = useSelector((state) => state?.user?.loginuser?.email);

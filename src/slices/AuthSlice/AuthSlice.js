@@ -43,13 +43,13 @@ export const signupUser = createAsyncThunk(
 export const emailVerification = createAsyncThunk(
   "users/verifyEmail",
 
-  async ({ otp, emailVerify }, thunkAPI) => {
+  async ({ otp, email }, thunkAPI) => {
     try {
       const response = await fetch(`${API}/verify-OTP`, {
         method: "POST",
         body: JSON.stringify({
           otp,
-          email: emailVerify,
+          email: email,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -77,13 +77,13 @@ export const emailVerification = createAsyncThunk(
 export const resendEmailOtp = createAsyncThunk(
   "users/resendEmailOtp",
 
-  async (emailVerify, thunkAPI) => {
-    console.log(emailVerify);
+  async (email, thunkAPI) => {
+    console.log(email);
     try {
       const response = await fetch(`${API}/resend-OTP`, {
         method: "POST",
         body: JSON.stringify({
-          email: emailVerify,
+          email: email,
         }),
         headers: {
           "Content-Type": "application/json",
