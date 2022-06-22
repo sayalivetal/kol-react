@@ -1,106 +1,143 @@
-import React,{useState} from "react";
-import { Link } from "react-router-dom";
-import { forgotPassword ,LoginUser} from "../../slices/AuthSlice/AuthSlice";
-import { useDispatch,useSelector } from "react-redux";
-
+import React, { useEffect, useState } from "react";
+import GoogleButton from "react-google-button";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleAuthProvider } from "../../Firebase";
+import { Link, useNavigate } from "react-router-dom";
+import { forgotPassword, LoginUser } from "../../slices/AuthSlice/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import "./Login.css";
 const Login = () => {
-  const dispatch = useDispatch()
-
-  const [loginData,setLoginData] = useState({
-    email:"",
-    password:"",
-  })
-  const handleChange = (e) =>{
-    setLoginData({...loginData,[e.target.name]:e.target.value})
-  }
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-    dispatch(LoginUser(loginData))
-  }
-  const handleForgotPassword = () => {
-    dispatch(forgotPassword(loginData.email))
+  const dispatch = useDispatch();
+  const navigate= useNavigate()
+  const loginUserData = useSelector((state)=>state?.user?.loginUser)
+  const [eye, seteye] = useState(true);
+  const [type, settype] = useState(false);
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+  const [password, setpassword] = useState("password");
+  useEffect(()=>{
+    if(loginUserData?.statusCode == 401){
+      navigate('/emailVerify')
+    }
+  },[loginUserData])
+  const handleChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(LoginUser(loginData));
+  };
+  const handleForgotPassword = () => {
+    dispatch(forgotPassword(loginData.email));
+  };
+  const Eye = () => {
+    if (password == "password") {
+      setpassword("text");
+      seteye(false);
+      settype(true);
+    } else {
+      setpassword("password");
+      seteye(true);
+      settype(false);
+    }
+  };
+   //function for response from firebase
+   const signInWithGoogle = () => {
+    signInWithPopup(auth, googleAuthProvider)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
   return (
-    <div>
-      <section className="vh-100">
-        <div className="container py-5 h-100">
-          <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col col-xl-10">
-              <div className="card" style={{ borderRadius: "1rem" }}>
-                <div className="row g-0">
-                  <div className="col-md-6 col-lg-5 d-none d-md-block">
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                      alt="login form"
-                      className="img-fluid"
-                      style={{ borderRadius: "1rem 0 0 1rem" }}
-                    />
+    <div className="main-div">
+      <section>
+        <div className="container">
+          <div className="card login-card">
+            <div className="card-body login-card-body">
+              <div className="row">
+                <div className="col-lg-6 col-sm-12 login-div">
+                  <div className="d-flex  flex-wrap align-items-center">
+                    <div className="rounded-circle roundIcon my-3">&nbsp;</div>
+                    <h2 className="text-white form-heading">
+                      Target More &amp; Influence More Users With KOL
+                    </h2>
+                    <div className="bordered-text col-lg-8 col-md-12">
+                      <p className="text-white mb-0">
+                        To get the maximum attention on your product and
+                        services, invest in KOL.
+                      </p>
+                    </div>
                   </div>
-                  <div className="col-md-6 col-lg-7 d-flex align-items-center">
-                    <div className="card-body p-4 p-lg-5 text-black">
-                      <div className="d-flex align-items-center mb-3 pb-1">
-                        <i
-                          className="fas fa-cubes fa-2x me-3"
-                          style={{ color: "#ff6219" }}
-                        ></i>
-                        <span className="h1 fw-bold mb-0">Logo</span>
+                </div>
+                <div className="col-lg-6  col-sm-12 login-form">
+                  <div className="row align-items-center ">
+                    <form onSubmit={handleSubmit}>
+                      <h2 className="login-heading mb-3">Login</h2>
+                      <div className="form-group mb-3">
+                        <label>Email</label><span className="astric-span">*</span>
+                        <input
+                          type="email"
+                          id="form2Example17"
+                          className="form-control"
+                          placeholder="Enter email"
+                          name="email"
+                          onChange={handleChange}
+                        />
                       </div>
 
-                      <h5
-                        className="fw-normal mb-3 pb-3"
-                        style={{ letterSpacing: "1px" }}
-                      >
-                        Sign into your account
-                      </h5>
-                      <form onSubmit={handleSubmit}>
-                        <div className="form-outline mb-4">
+                      <div className="form-group mb-3">
+                        <label>Password</label><span className="astric-span">*</span>
+                        <div className="position-relative">
                           <input
-                            type="email"
-                            id="form2Example17"
-                            className="form-control form-control-lg"
-                            name="email"
-                            onChange={handleChange}
-                          />
-                          <label className="form-label" >
-                            Email address
-                          </label>
-                        </div>
-
-                        <div className="form-outline mb-4">
-                          <input
-                            type="password"
+                            type={password}
                             id="form2Example27"
-                            className="form-control form-control-lg"
+                            className="form-control"
+                            placeholder="Enter password"
                             name="password"
                             onChange={handleChange}
                           />
-                          <label className="form-label">
-                            Password
-                          </label>
+                          <i
+                            onClick={Eye}
+                            className={`eye-icon fa ${
+                              eye ? "fa-eye-slash" : "fa-eye"
+                            }`}
+                          ></i>
                         </div>
+                      </div>
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <button
+                          type="submit"
+                          className="btn theme-btn btn-lg btn-block"
+                        >
+                          Login
+                        </button>
+                        <span className="optionText1 text-right">
+                          <Link to="/emailCheck">Forgot password ?</Link>
+                        </span>
+                      </div>
+                    </form>
+                    <div className="col-12 justify-content-center align-items-center position-relative my-4">
+                      <hr className="col-12" />{" "}
+                      <span className="orText">or </span>
+                    </div>
 
-                        <div className="pt-1 mb-4">
-                          <button
-                            className="btn btn-dark btn-lg btn-block"
-                            type="submit"
-                          >
-                            Login
-                          </button>
-                        </div>
-                      </form>
-                      <button
-                        className="small text-muted"
-                        onClick={handleForgotPassword}
-                      >
-                        Forgot password?
-                      </button>
-                      <p className="mb-5 pb-lg-2" style={{ color: "#393f81" }}>
+                    <div className="col-12 d-flex justify-content-center align-items-center mb-3">
+                      <GoogleButton
+                        label="Sign in with Google"
+                        style={{ background: "#342951" }}
+                        onClick={signInWithGoogle}
+                      />
+                    </div>
+                    <div className="col-12 d-flex justify-content-center align-items-center mt-3">
+                      <span className="optionText text-center">
                         Don't have an account?{" "}
-                        <Link to="/regitser" style={{ color: "#393f81" }}>
-                          Register here
-                        </Link>
-                      </p>
+                        <Link to="/register">Register here</Link>
+                      </span>
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
-import React, { Suspense } from "react";
+import React, { Suspense  } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
+import { ToastContainer, toast } from 'react-toastify';
 import './App.css';
 const DefaultLayout = React.lazy(() => import("./layout/KOLMarketPlace/KolMarketPlace"));
 const Login = React.lazy(() => import("./pages/Login/Login"));
@@ -11,6 +12,8 @@ const ForgotPassword = React.lazy(()=>import('./pages/ForgotPassword/ForgotPassw
 const ChangePassword = React.lazy(()=>import('./pages/ChangePassword/ChangePassword'))
 const Role = React.lazy(()=>import('./pages/Role/Role'))
 const Home = React.lazy(()=>import('./layout/Home/Home'))
+const EmailCheck = React.lazy(()=>import('./pages/EmailCheck/EmailCheck'))
+const PasswordSuccess = React.lazy(()=>import('./pages/PasswordUpdate/PasswordUpdate'))
 const loading = <Spinner animation="grow" />;
 
 const App = () => {
@@ -19,15 +22,18 @@ const App = () => {
       <Suspense fallback={loading}>
         <Routes>
           <Route path="/" name="Home" element={<DefaultLayout />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Home" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login"  element={<Login />} />
           <Route path="/register"  element={<Register />} />
-          <Route path="/EmailVerify" element={<EmailVerify />} />
-          <Route path="/ForgotPassword"  element={<ForgotPassword />} />
-          <Route path="/ChangePassword"  element={<ChangePassword />} />
-          <Route path="/Role"  element={<Role />} />
+          <Route path="/emailVerify" element={<EmailVerify />} />
+          <Route path="/forgotPassword"  element={<ForgotPassword />} />
+          <Route path="/changePassword"  element={<ChangePassword />} />
+          <Route path="/role"  element={<Role />} />
+          <Route path="/emailCheck" element={<EmailCheck />} />
+          <Route  path="/passwordSuccess" element={<PasswordSuccess/>}/>
         </Routes>
+        <ToastContainer />
       </Suspense>
     </div>
   );

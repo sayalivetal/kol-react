@@ -1,7 +1,120 @@
-.main{/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,ffffff+50,342951+50,342951+100 */
-background: rgb(255,255,255); /* Old browsers */
-background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(52,41,81,1) 50%, rgba(52,41,81,1) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 50%,rgba(52,41,81,1) 50%,rgba(52,41,81,1) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,1) 50%,rgba(52,41,81,1) 50%,rgba(52,41,81,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#342951',GradientType=0 ); /* IE6-9 */
-padding:30px 0; height: 100vh;}
+.main {
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,ffffff+50,342951+50,342951+100 */
+  background: rgb(255, 255, 255); /* Old browsers */
+  background: -moz-linear-gradient(
+    top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(52, 41, 81, 1) 50%,
+    rgba(52, 41, 81, 1) 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(52, 41, 81, 1) 50%,
+    rgba(52, 41, 81, 1) 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(52, 41, 81, 1) 50%,
+    rgba(52, 41, 81, 1) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#342951',GradientType=0 ); /* IE6-9 */
+  padding: 30px 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: fixed;
+  overflow: auto;
+}
+
+.outlined-button {
+  color: #000;
+  width: 140px;
+  height: 48px;
+  border-radius: 4px;
+  border-color: #f01f4b;
+}
+.logo-text {
+  color: #f01f4b;
+  font: bold 50px Montserrat;
+}
+
+.card-kol {
+  border-radius: 40px;
+}
+
+.join-heading {
+  font-size: 30px;
+  color: #342951;
+  font-weight: 600;
+}
+.joiner-card {
+  border-radius: 18px;
+  border: 1px solid #ced4da;
+  margin-bottom: 2rem;
+}
+.joiner-card:hover {
+  border: 1px solid #ffbe3b;
+}
+.joiner-avatar-bg { background-size: cover; background-position: center; background-image: url("../../../public/Images/bg.png"); background-repeat: no-repeat; border-radius: 14px; text-align: center; height: 142px;display: flex; margin-bottom: 58px; }
+.joiner-avatar { width:154px; height: 154px; margin-top:54px; display: inline-block; }
+.full-width { width: 100%;}
+.joiner-option { width: 100%; padding: 1.5rem 0; display: inline-block; height: 100px;}
+.join-option-label { width: 100%; text-align:center; display: inline-block; font: normal normal normal 22px/33px Montserrat;  color: #342951; }
+
+
+
+
+input[type="radio"] {
+    display: none;
+  }
+  
+  .join-option-label {
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .join-option-label::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    border: 2px solid #CED4DA;
+    border-radius: 50%;
+    top: 50%;
+    /* left: -5rem; */
+    right:0;
+    transform: translateY(50%);
+    transition: border-color 400ms ease;
+  }
+  
+  .join-option-label::after {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #FFBE3B;
+    border: 2px solid #FFBE3B;
+    border-radius: 50%;
+    top: 50%;
+    right:0;
+    /* left: -5rem; */
+    transform: translateY(50%) scale(0);
+    transition: transform 400ms ease;
+  }
+  
+  input[type="radio"]:checked + label::before {
+    border-color: #FFBE3B;
+  }
+  
+  input[type="radio"]:checked + label::after {
+    transform: translateY(50%) scale(0.55);
+  }
+
+
+.cp-text { color: #fff; font: normal normal normal 16px/30px Montserrat; margin-top: 2rem;}
