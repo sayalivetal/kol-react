@@ -20,11 +20,11 @@ const EmailVerify = () => {
   const [email, setEmail] = useState("");
 
 
-  useEffect(() => {
-    if (userdata?.data?.message) {
-      toast.success(userdata?.data?.message);
-    }
-  }, [userdata]);
+  // useEffect(() => {
+  //   if (userdata?.data?.message) {
+  //     toast.success(userdata?.data?.message);
+  //   }
+  // }, [userdata]);
   useEffect(() => {
     if (userdata?.data?.data?.token) {
       navigate("/home");
@@ -41,7 +41,7 @@ const EmailVerify = () => {
   }, [emailVerify]);
   useEffect(() => {
     if (userdata?.email) {
-      toast.success(userdata.message);
+      //  toast.success(userdata.message);
       asd = emailVerify ? emailVerify : userdata?.email;
       setEmail(asd);
     }

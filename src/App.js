@@ -35,6 +35,7 @@ const App = () => {
         </Routes>
         <ToastContainer />
       </Suspense>
+     
     </div>
   );
 };

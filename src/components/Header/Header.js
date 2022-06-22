@@ -39,9 +39,9 @@ const Header = () => {
           </div>
           {user.token ? (
             <div className="col-md-6 text-end">
-              <div class="dropdown">
+              <div className="dropdown">
                 <button
-                  class="btn btn-secondary dropdown-toggle"
+                  className="btn btn-secondary dropdown-toggle"
                   type="button"
                   id="dropdownMenuButton1"
                   data-bs-toggle="dropdown"

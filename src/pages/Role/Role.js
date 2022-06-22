@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "./Role.css";
 const Role = () => {
-  const email = useSelector((state)=>state?.user?.loginUser?.data?.email)
-  const token = useSelector((state)=>state?.user?.loginUser?.data?.token)
+  const email = useSelector((state) => state?.user?.loginUser?.data?.email);
+  const token = useSelector((state) => state?.user?.loginUser?.data?.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [renderButton, setRenderButton] = useState("");
@@ -21,23 +21,20 @@ const Role = () => {
       setRenderButton(" as KOL");
     }
   };
-  useEffect(()=>{
-    if(token){
-      navigate('/home')
+  useEffect(() => {
+    if (token) {
+      navigate("/home");
     }
-  },[token])
-console.log(role,email);
+  }, [token]);
+  console.log(role, email);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(role && email){
-      alert("gh")
-      dispatch(updateRole({role,email}));
-    }else{
-      alert("dgdh")
+    if (role && email) {
+      dispatch(updateRole({ role, email }));
+    } else {
       dispatch(addRole(role));
-    navigate("/register");
+      navigate("/register");
     }
-    
   };
 
   return (
@@ -68,8 +65,20 @@ console.log(role,email);
                               </div>
                             </div>
                             <div className="joiner-option form-group">
-                              <input type="radio" value="3" name="role" id="user" onChange={onChangeValue} />
-                              <label htmlFor="user" className="join-option-label" name="role">Join as a User</label>
+                              <input
+                                type="radio"
+                                value="3"
+                                name="role"
+                                id="user"
+                                onChange={onChangeValue}
+                              />
+                              <label
+                                htmlFor="user"
+                                className="join-option-label"
+                                name="role"
+                              >
+                                Join as a User
+                              </label>
                             </div>
                           </div>
                         </div>
@@ -83,8 +92,21 @@ console.log(role,email);
                               </div>
                             </div>
                             <div className="joiner-option form-group">
-                              <input type="radio" value="2" name="role" id="kol" onChange={onChangeValue} />
-                              <label htmlFor="kol" className="join-option-label" name="role"> Join as a Kol</label>
+                              <input
+                                type="radio"
+                                value="2"
+                                name="role"
+                                id="kol"
+                                onChange={onChangeValue}
+                              />
+                              <label
+                                htmlFor="kol"
+                                className="join-option-label"
+                                name="role"
+                              >
+                                {" "}
+                                Join as a Kol
+                              </label>
                             </div>
                           </div>
                         </div>
