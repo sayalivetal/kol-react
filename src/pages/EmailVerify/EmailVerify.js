@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Card, Form } from "react-bootstrap";
 import { Link, Navigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import OtpInput from "react-otp-input";
+import "./EmailVerify.css";
 import {
   emailVerification,
   resendEmailOtp,
@@ -10,46 +12,46 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const EmailVerify = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const emailVerify = useSelector((state) => state?.user?.registerUser?.email);
-  const userData = useSelector((state) => state?.user?.registerUser?.data);
-  const data = useSelector((state)=>state?.user?.loginUser)
-  const[email,setEmail]= useState("")
+  // const userData = useSelector((state) => state?.user?.registerUser?.data);
+  const userdata = useSelector((state) => state?.user?.loginUser);
+ 
+  const [email, setEmail] = useState("");
+
+
+  useEffect(() => {
+    if (userdata?.data?.message) {
+      toast.success(userdata?.data?.message);
+    }
+  }, [userdata]);
+  useEffect(() => {
+    if (userdata?.data?.data?.token) {
+      navigate("/home");
+    }
+  }, [userdata]);
+  let asd;
   useEffect(() => {
     if (emailVerify) {
       toast.success(
-        "You have been successfully registered, We have sent a verification code to your mail,plaese verify it!"
+        "You have been successfully registered, We have sent a verification code to your mail,please verify it!"
       );
+      setEmail(emailVerify)
     }
   }, [emailVerify]);
-
   useEffect(() => {
-    if (userData?.message) {
-      toast.success(userData.message);
+    if (userdata?.email) {
+      toast.success(userdata.message);
+      asd = emailVerify ? emailVerify : userdata?.email;
+      setEmail(asd);
     }
-  }, [userData]);
-  useEffect(() => {
-    if (userData?.data?.token) {
-      navigate('/home')
-    }
-  }, [userData]);
-let asd;
-  useEffect(() => {
-    if (data?.statusCode == 401) {
-      toast.success(data.message);
-      asd = emailVerify?emailVerify:data.email
-      setEmail(asd)
-     
-    }
-  }, [data]);
-console.log(email);
+  }, [userdata]);
+  console.log(email);
   const dispatch = useDispatch();
   //state for otp change
   const [otp, setOtp] = useState("");
   //function for otp change
-  const handleChange = (e) => {
-    setOtp(e.target.value);
-  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(emailVerification({ otp, email }));
@@ -58,55 +60,55 @@ console.log(email);
     dispatch(resendEmailOtp(email));
   };
   return (
-    <Container>
-      <Row>
-        <Col></Col>
-        <Col xs={6}>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <Card.Title style={{ width: "100%", textAlign: "center" }}>
-              KOL
-            </Card.Title>
-            <Card style={{ width: "18rem" }}>
-              <Card.Body>
-                <Card.Title>Verify email address</Card.Title>
+    <section className="otp-bg">
+        <div className="container">
+          <div className="row">
+            <div className="col-xl-6 col-lg-8 col-md-12">
+              <div className="card otp-card">
+                <div className="card-body otp-card-body ">
+                  <div>
+                    <div className="otp-heading mb-3 ">Enter Verification Code</div>
 
-                <Card.Text>
-                  To verify your email, we've sent a One Time Password (OTP) to{" "}
-                  <span>{email}</span>
-                </Card.Text>
-                <Link to="/register">Change</Link>
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Control
-                      type="text"
-                      name="otpVerify"
-                      placeholder="Enter OTP"
-                      onChange={handleChange}
-                    />
-                  </Form.Group>
+                    <p className="">
+                      We have just sent a verification code to<br />
+                      <span className="email-verify-name">{email}</span>
+                    </p>
 
-                  <Button variant="primary" type="submit">
-                    Verify
-                  </Button>
-                </Form>
-              </Card.Body>
-              <div>
-                <button onClick={handleOtp}>resend otp</button>
+                    <form onSubmit={handleSubmit}>
+                      <div className="my-4 form-group otp-div">
+                        <OtpInput
+                          value={otp}
+                          onChange={setOtp}
+                          numInputs={6}
+                          separator={<span>&nbsp;</span>}
+                        />
+                      </div>
+
+                      <button className="btn theme-btn btn-lg btn-block my-3" type="submit">
+                        Verify &amp; Proceed
+                      </button>
+                    </form>
+                  </div>
+                  <div className="col-12 align-items-center mt-3">
+                    <p className="optionText font-weight-bold mb-2 ">
+                      Don't receive the OTP?
+                      <button
+                        type="submit"
+                        className="resend-button"
+                        onClick={handleOtp}
+                      >
+                        RESEND OTP
+                      </button>
+                    </p>
+                    <p className="font-weight-bold">OTP Will be expire in 1 mintue</p>
+                  </div>
+                </div>
               </div>
-              <div></div>
-            </Card>
+            </div>
           </div>
-        </Col>
-        <Col></Col>
-      </Row>
-    </Container>
+        </div>
+
+    </section>
   );
 };
 

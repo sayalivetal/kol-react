@@ -1,7 +1,32 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React,{useEffect, useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { forgotPassword } from "../../slices/AuthSlice/AuthSlice";
+import { useDispatch,useSelector } from "react-redux";
 import './EmailCheck.css'
 const EmailCheck = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const passwordChange = useSelector((state)=>state?.user?.loginUser?.data)
+ 
+  const[email,setEmail] = useState("")
+  const[user,setUser] = useState({})
+  const handleChange = (e) =>{
+    setEmail(e.target.value)
+  }
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    dispatch(forgotPassword(email))
+    console.log(email);
+  }
+  useEffect(()=>{
+    if(!passwordChange?.otp)return
+    setUser({...passwordChange})
+  },[passwordChange?.otp])
+console.log(user);
+useEffect(()=>{
+  if(user.otp)
+  navigate('/forgotPassword')
+},[user])
   return (
     <div className="main-div">
       <section>
@@ -25,7 +50,7 @@ const EmailCheck = () => {
                 </div>
                 <div className="col-lg-6  col-sm-12 login-form">
                   <div className="row align-items-center ">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                       <h2 className="login-heading mb-3">
                         Forgot your password?
                       </h2>
@@ -42,6 +67,7 @@ const EmailCheck = () => {
                           className="form-control"
                           placeholder="Enter email"
                           name="email"
+                          onChange={handleChange}
                         />
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">

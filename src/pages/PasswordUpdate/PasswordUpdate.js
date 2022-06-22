@@ -1,7 +1,12 @@
-import React from "react";
+import React ,{useEffect} from "react";
 import "./PasswordUpdate.css";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 const PasswordUpdate = () => {
+  const token = useSelector((state) => state?.user?.loginUser?.data.token);
+
   return (
     <div className="main-div">
       <section>
@@ -25,18 +30,18 @@ const PasswordUpdate = () => {
                 </div>
                 <div className="col-lg-6  col-sm-12 login-form">
                   <div className="row align-items-center justify-content-center ">
-                    <div className="rounded-circle roundIconUpdate my-3">
-                      <i className="bi bi-check2 check-mark"></i>
+                    <div className= {token?'roundIconUpdate rounded-circle my-3':'roundIconUpdate1 rounded-circle my-3'} >
+                      {token?<i className="bi bi-check2 check-mark"></i>:<i className="bi bi-x check-mark"></i>}
                     </div>
                     <div className="d-flex justify-content-center flex-wrap">
-                      <h3>Password Updated!</h3>
+                      {token ? <h3 className="text-center">Password Updated successfully!</h3>:<h3 className="text-center">Password not Updated successfully!</h3>}
                       <p className="text-center">
                         Your password has been changed successfully Use your new
                         password to log in.
                       </p>
                       <div>
                         <span className="optionText1">
-                          Back to <Link to="/login">Login</Link>
+                          <Link to="/login">Back to Login</Link>
                         </span>
                       </div>
                     </div>

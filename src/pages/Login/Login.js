@@ -3,8 +3,10 @@ import GoogleButton from "react-google-button";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../Firebase";
 import { Link, useNavigate } from "react-router-dom";
-import { forgotPassword, LoginUser } from "../../slices/AuthSlice/AuthSlice";
+import { LoginUser,signupUser,loginWithGoogle } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
 const Login = () => {
   const dispatch = useDispatch();
@@ -16,10 +18,35 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [firebaseUser, setFirebaseuser] = useState({
+    name: "",
+    email: "",
+    token: "",
+  
+  });
+ 
   const [password, setpassword] = useState("password");
   useEffect(()=>{
-    if(loginUserData?.statusCode == 401){
+    if(loginUserData?.message){
+      toast.error(loginUserData?.message);
+    }
+  },[loginUserData])
+  useEffect(()=>{
+    if(loginUserData?.data?.email){
+      navigate('/role')
+    }
+    if(loginUserData?.data?.token){
+      navigate('/home')
+    }
+  },[loginUserData])
+  useEffect(()=>{
+    if(loginUserData?.email){
       navigate('/emailVerify')
+    }
+  },[loginUserData])
+  useEffect(()=>{
+    if(loginUserData?.data?.token){
+      navigate('/home')
     }
   },[loginUserData])
   const handleChange = (e) => {
@@ -29,9 +56,7 @@ const Login = () => {
     e.preventDefault();
     dispatch(LoginUser(loginData));
   };
-  const handleForgotPassword = () => {
-    dispatch(forgotPassword(loginData.email));
-  };
+ 
   const Eye = () => {
     if (password == "password") {
       setpassword("text");
@@ -47,12 +72,24 @@ const Login = () => {
    const signInWithGoogle = () => {
     signInWithPopup(auth, googleAuthProvider)
       .then((res) => {
-        console.log(res);
+     
+        setFirebaseuser((state) => {
+          return {
+            ...state,
+            name: res.user.displayName,
+            email: res.user.email,
+            token: res.user.accessToken,
+          };
+        });
       })
       .catch((err) => {
         console.log(err.message);
       });
   };
+  useEffect(()=>{
+    if (!firebaseUser.token) return;
+    dispatch(loginWithGoogle(firebaseUser))
+  },[firebaseUser.token])
   return (
     <div className="main-div">
       <section>

@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
-  const role = useSelector((state) => state?.user?.role?.payload?.role);
+  const role = useSelector((state) => state?.user?.role?.payload);
   //state for firebase values
   const [firebaseUser, setFirebaseuser] = useState({
     name: "",
@@ -19,6 +19,7 @@ const Register = () => {
     token: "",
     role: role,
   });
+  console.log(role);
   //state for Register Form Data
   const [formData, setFormData] = useState({
     name: "",
@@ -90,6 +91,7 @@ const Register = () => {
     e.preventDefault();
     console.log(formData);
     dispatch(signupUser(formData));
+    
   };
   //action for signInwithGoogle
   useEffect(() => {
@@ -175,7 +177,7 @@ const Register = () => {
                     </div>
                     <div className="col-12 d-flex justify-content-center align-items-center mb-3">
                       <GoogleButton
-                        label="Sign up with Google"
+                        label="Sign in with Google"
                         style={{ background: "#342951" }}
                         onClick={signInWithGoogle}
                       />

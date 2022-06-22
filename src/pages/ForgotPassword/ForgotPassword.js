@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ResetPassword } from "../../slices/AuthSlice/AuthSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
 const ForgotPassword = () => {
-  const email = useSelector((state) => state?.user?.loginuser?.email);
-  const token = useSelector((state) => state?.user?.loginuser?.token);
+  const navigate = useNavigate()
+  const email = useSelector((state) => state?.user?.loginUser?.data?.email);
+  const token = useSelector((state) => state?.user?.loginUser?.data?.token);
   const successMessage = useSelector(
-    (state) => state?.user?.loginuser?.message
+    (state) => state?.user?.loginUser?.message
   );
   console.log(token);
   console.log(email);
@@ -111,6 +112,10 @@ const ForgotPassword = () => {
     console.log(passwordValue);
     dispatch(ResetPassword(passwordValue));
   };
+  useEffect(()=>{
+    if(!token) return;
+    navigate('/passwordSuccess')
+  },[token])
   return (
     <div className="main-div">
       <section>
