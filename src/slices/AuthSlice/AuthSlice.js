@@ -4,13 +4,14 @@ import { API } from "../../common/apis";
 const initialState = {
   loginuser: {},
   registerUser: {},
-  role:{},
+  role: {},
 };
 
 //API Integration with action for registration creation
 export const signupUser = createAsyncThunk(
   "users/signupUser",
   async ({ name, email, token, role, password }, thunkAPI) => {
+    console.log(name, email, token, role, password);
     try {
       const response = await fetch(`${API}/register`, {
         method: "POST",
@@ -19,6 +20,39 @@ export const signupUser = createAsyncThunk(
           email: email,
           password: password,
           role_id: role,
+          firebase_token: token,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      let data = await response.json();
+      console.log(data);
+      if (response.status === 200) {
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (e) {
+      console.log("Error", e.response.data);
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
+//login with google
+//API Integration with action for registration creation
+export const loginWithGoogle = createAsyncThunk(
+  "users/loginWithGoogle",
+  async ({ name, email, token }, thunkAPI) => {
+    console.log(name, email, token);
+    try {
+      const response = await fetch(`${API}/login-with-google`, {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password:'',
           firebase_token: token,
         }),
         headers: {
@@ -99,6 +133,34 @@ export const resendEmailOtp = createAsyncThunk(
     }
   }
 );
+//update role when login with google
+
+export const updateRole = createAsyncThunk(
+  "users/updateRole",
+
+  async ({role,email}, thunkAPI) => {
+    console.log(email,role);
+    try {
+      const response = await fetch(`${API}/update-role`, {
+        method: "PUT",
+        body: JSON.stringify({
+          email: email,
+          role_id:role
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      let data = await response.json();
+      console.log(data);
+      return data;
+    } catch (e) {
+      console.log("Error", e.response.data);
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
 //Forgot Password
 export const forgotPassword = createAsyncThunk(
   "users/forgotPassword",
@@ -164,23 +226,19 @@ export const LoginUser = createAsyncThunk(
 
 export const ResetPassword = createAsyncThunk(
   "users/changePassword",
-  async (
-    { currentPassword, newPassword, confirmNewPassword, email },
-    thunkAPI
-  ) => {
-    console.log(currentPassword, newPassword, confirmNewPassword, email);
+  async ({ otp, newPassword, email }, thunkAPI) => {
+    console.log(otp, newPassword, email);
     try {
-      const response = await fetch(`${API}/reset-password`, {
+      const response = await fetch(`${API}/forgot-password  `, {
         method: "PUT",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          old_password: currentPassword,
-          new_password: newPassword,
-          confirm_password: confirmNewPassword,
+          otp: otp,
           email: email,
+          new_password: newPassword,
         }),
       });
       let data = await response.json();
@@ -200,10 +258,7 @@ export const ResetPassword = createAsyncThunk(
 
 export const ChangePasswordUser = createAsyncThunk(
   "users/changePassword",
-  async (
-    { currentPassword, newPassword, token },
-    thunkAPI
-  ) => {
+  async ({ currentPassword, newPassword, token }, thunkAPI) => {
     console.log(currentPassword, newPassword, token);
     try {
       const response = await fetch(`${API}/reset-password`, {
@@ -239,8 +294,8 @@ const authReducer = createSlice({
   initialState,
 
   reducers: {
-       addRole:(action,state)=>{
-        return { role: { ...state,...action.payload } };
+    addRole: (action, state) => {
+      return { role: { ...state, ...action.payload } };
     },
   },
   extraReducers: {
@@ -250,17 +305,17 @@ const authReducer = createSlice({
     [signupUser.pending]: (state, action) => {},
     [signupUser.rejected]: (state, action) => {},
     [emailVerification.fulfilled]: (state, action) => {
-      return { registerUser: { ...action.payload } };
+      return { loginUser: { ...action.payload } };
     },
     [emailVerification.pending]: (state, action) => {},
     [emailVerification.rejected]: (state, action) => {},
     [forgotPassword.fulfilled]: (state, action) => {
-      return { registerUser: { ...action.payload } };
+      return { loginUser: { ...action.payload } };
     },
     [forgotPassword.pending]: (state, action) => {},
     [forgotPassword.rejected]: (state, action) => {},
     [ResetPassword.fulfilled]: (state, action) => {
-      return { registerUser: { ...action.payload } };
+      return { loginUser: { ...action.payload } };
     },
     [ResetPassword.pending]: (state, action) => {},
     [ResetPassword.rejected]: (state, action) => {},
@@ -274,7 +329,17 @@ const authReducer = createSlice({
     },
     [ChangePasswordUser.pending]: (state, action) => {},
     [ChangePasswordUser.rejected]: (state, action) => {},
+    [loginWithGoogle.fulfilled]: (state, action) => {
+      return { loginUser: { ...action.payload } };
+    },
+    [loginWithGoogle.pending]: (state, action) => {},
+    [loginWithGoogle.rejected]: (state, action) => {},
+    [updateRole.fulfilled]: (state, action) => {
+      return { loginUser: { ...action.payload } };
+    },
+    [updateRole.pending]: (state, action) => {},
+    [updateRole.rejected]: (state, action) => {},
   },
 });
-export const { addRole} = authReducer.actions;
+export const { addRole } = authReducer.actions;
 export default authReducer.reducer;

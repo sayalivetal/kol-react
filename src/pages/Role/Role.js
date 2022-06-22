@@ -1,30 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addRole } from "../../slices/AuthSlice/AuthSlice";
+import { updateRole } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import "./Role.css";
 const Role = () => {
+  const email = useSelector((state)=>state?.user?.loginUser?.data?.email)
+  const token = useSelector((state)=>state?.user?.loginUser?.data?.token)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [renderButton, setRenderButton] = useState("");
-  const [userRole, setUserRole] = useState({
-    role: "",
-  });
+  const [role, setUserRole] = useState("");
 
   const onChangeValue = (e) => {
-    setUserRole({ ...userRole, [e.target.name]: e.target.value });
+    setUserRole(e.target.value);
     if (e.target.value === "3") {
       setRenderButton(" as User");
     } else {
       setRenderButton(" as KOL");
     }
   };
-
+  useEffect(()=>{
+    if(token){
+      navigate('/home')
+    }
+  },[token])
+console.log(role,email);
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addRole(userRole));
+    if(role && email){
+      alert("gh")
+      dispatch(updateRole({role,email}));
+    }else{
+      alert("dgdh")
+      dispatch(addRole(role));
     navigate("/register");
+    }
+    
   };
 
   return (
