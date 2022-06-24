@@ -29,9 +29,9 @@ const Role = () => {
   console.log(role, email);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (role && email) {
-      dispatch(updateRole({ role, email }));
-    } else {
+    if(role && email){
+      dispatch(updateRole({role,email}));
+    }else{
       dispatch(addRole(role));
       navigate("/register");
     }
