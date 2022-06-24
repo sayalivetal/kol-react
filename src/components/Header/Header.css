@@ -5,7 +5,7 @@
   color: #f01f4b !important;
 }
 .header {
-  background: #ffffff;
+  background:  #342951;
   height: 91px;
 }
 .outlined-button {
@@ -13,16 +13,17 @@
   width: 140px;
   height: 48px;
   border-radius: 4px;
-  border-color: #f01f4b;
+  border-color: #fff;
 }
 .outlined-button a{
     text-decoration: none;
-    color: #000 ;
+    color: #fff ;
 }
 
 .outlined-button:hover {
   color: #ffffff;
   background: #f01f4b;
+  border-color: #f01f4b;
 }
 .outlined-button:hover a {
     color: #ffffff;
