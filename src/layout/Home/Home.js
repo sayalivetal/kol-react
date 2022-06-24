@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import Filter from "./components/Filter/Filter";
+import KolListing from "./components/kolListing/KolListing";
 const Home = () => {
   const message = useSelector((state) => state?.user?.registerUser?.data);
   const loginMessage = useSelector(
@@ -28,6 +29,7 @@ const Home = () => {
         <div className="card">
           <div className="card-body">
             <Filter />
+            <KolListing />  
           </div>
         </div>
       </div>

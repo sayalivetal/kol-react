@@ -13,3 +13,6 @@
 .filter-col .btn-check:focus+.btn-outline-danger, .filter-col .btn-outline-danger:focus {
     box-shadow: 0 0 0 0rem rgb(220 53 69 / 50%);
 }
+.sort:focus{
+    box-shadow: 0 0 0 0rem rgb(220 53 69 / 50%); 
+}
