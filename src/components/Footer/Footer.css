@@ -1,0 +1,59 @@
+.footer-clr{
+    background-color: #342951;
+    padding-top: 3rem;
+}
+
+.text-color{
+    color: white;
+    font-family: normal normal normal 44px/126px Montserrat;    
+}
+
+.li-first-cls{
+    color:#FF718F;
+    font: normal normal bold 18px/86px Montserrat;
+}
+
+.li-rest{
+    text-align: left;
+    font: normal normal normal 18px/50px Montserrat;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+}
+
+.input-typ{
+    border: 1px solid #FFFFFF;
+    border-radius: 4px;
+    width: 360px;
+    height: 60px;
+    background-color: transparent;
+    color: #fff;
+}
+.input-typ:placeholder { color: #fff;}
+
+ul {
+    list-style-type: none;
+}
+
+.submt-bttn{
+    background: #F01F4B ;
+    border-radius: 4px;
+    min-width: 120px;
+    height: 60px;
+    color: #fff;
+}
+
+.footer-clr{
+    top: 1717px;
+    left: 0px;
+    width: 1921px;
+    height: 600px;
+}
+
+.head-back-color{
+    top: 1717px;
+    left: 0px;
+    width: 1921px;
+    height: 80px;
+    background: #342951 0% 0% no-repeat padding-box;
+    opacity: 1;
+}

@@ -30,10 +30,8 @@ console.log(role,email);
   const handleSubmit = (e) => {
     e.preventDefault();
     if(role && email){
-      alert("gh")
       dispatch(updateRole({role,email}));
     }else{
-      alert("dgdh")
       dispatch(addRole(role));
     navigate("/register");
     }
