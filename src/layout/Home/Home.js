@@ -6,12 +6,12 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 const Home = () => {
   const message = useSelector((state) => state?.user?.registerUser?.data);
-  const loginMessage = useSelector((state) => state?.user?.loginUser?.data.token);
+  const loginMessage = useSelector((state) => state?.user?.loginUser?.data?.token);
   useEffect(() => {
-    if (message?.token) {
+    if (message?.data?.token) {
       toast.success("Login Successfull!");
     }
-  }, [message?.token]);
+  }, [message?.data?.token]);
   useEffect(() => {
     if (loginMessage) {
       toast.success("Login Successfull!");
