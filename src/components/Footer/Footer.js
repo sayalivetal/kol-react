@@ -20,9 +20,9 @@ const Footer = () => {
                   <p>100% Secure and Trusted Payment</p>
                 </div>
                 <div className="payment-card">
-                  <a className="p-card" href=''><img src="../images/visa.png" alt="" /></a>
-                  <a className="p-card" href=''><img src="../images/mastercard.png" alt="" /></a>
-                  <a className="p-card" href=''><img src="../images/paypal_card.png" alt="" /></a>
+                  <a className="p-card" href=''><img src="../Images/visa.png" alt="" /></a>
+                  <a className="p-card" href=''><img src="../Images/mastercard.png" alt="" /></a>
+                  <a className="p-card" href=''><img src="../Images/paypal_card.png" alt="" /></a>
                 </div>
               </div>
             </div>

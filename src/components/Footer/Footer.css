@@ -1,4 +1,4 @@
-.footer-bg{ background-color: #342951; padding: 2rem 0 1rem 0;}
+.footer-bg{ background-color: #342951; padding: 2rem 0 1rem 0;margin-top: 3rem;}
 .footer-logo{ color: white;font-size: 32px ; font-weight: 400;padding: 1rem 0; }
 
 .news-letter-block { display: flex; width: 94%; padding: 1rem 0; flex-wrap: wrap; color: #fff;}
@@ -24,4 +24,5 @@
     .news-group { display: block;} 
     .newsletter-btn { margin: 15px 0 0 0;}
     .footer-menu li { margin-bottom: 8px;}
+    .footer-bg{ margin-top: 1.5rem;}
 }

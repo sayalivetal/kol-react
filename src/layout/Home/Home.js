@@ -25,7 +25,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="contaiyner">
+      <div className="container">
         <div className="card">
           <div className="card-body">
             <Filter />
