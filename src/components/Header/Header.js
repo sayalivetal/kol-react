@@ -9,7 +9,8 @@ import { Dropdown } from "react-bootstrap";
 const Header = () => {
   const [categoryList, setCategoryList] = useState([]);
   const userDetails = useSelector((state) => state?.user?.loginUser);
-  const userLoginDetails = useEffect((state) => state);
+  const userRegister = useSelector((state) => state?.user?.registerUser);
+  console.log(userRegister);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -26,16 +27,29 @@ const Header = () => {
   console.log("asd", categoryList);
 
   useEffect(() => {
-    setUser((state) => {
-      return {
-        ...state,
-        name: userDetails?.data?.user_name,
-        email: userDetails?.data?.email,
-        role: userDetails?.data?.role_id,
-        token: userDetails?.data?.data?.token,
-      };
-    });
-  }, [userDetails]);
+    if (userDetails) {
+      setUser((state) => {
+        return {
+          ...state,
+          name: userDetails?.data?.user_name,
+          email: userDetails?.data?.email,
+          role: userDetails?.data?.role_id,
+          token: userDetails?.data?.token,
+        };
+      });
+    }
+    if (userRegister) {
+      setUser((state) => {
+        return {
+          ...state,
+          name: userRegister?.data?.user_name,
+          email: userRegister?.data?.email,
+          role: userRegister?.data?.role_id,
+          token: userRegister?.data?.token,
+        };
+      });
+    }
+  }, [userDetails, userRegister]);
   console.log(user);
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
@@ -58,14 +72,13 @@ const Header = () => {
                     <Dropdown>
                       <Dropdown.Toggle
                         className="category-list"
-                        variant="default"
+                        variant=""
                         id="dropdown-basic"
                       >
                         All Categories
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
-                        sajfldkjsaf
                         {categoryList &&
                           categoryList.map((item, i) => {
                             console.log("dropdown", item.name);
@@ -96,52 +109,50 @@ const Header = () => {
               <div className="col-md-4">
                 <div className="d-flex justify-content-end">
                   <div className="header-icon-bar">
-                    <Link to={"/dashboard"}>
-                      <i class="bi bi-grid"></i>
+                    {user.role == 2 ? (
+                      <>
+                        <Link to="/dashboard">
+                          <i className="bi bi-grid"></i>
+                        </Link>
+                      </>
+                    ) : (
+                      ""
+                    )}
+
+                    <Link to={"/chat"}>
+                      <i className="bi bi-chat-dots"></i>
                     </Link>
                     <Link to={"/chat"}>
-                      <i class="bi bi-chat-dots"></i>
-                    </Link>
-                    <Link to={"/chat"}>
-                      <i class="bi bi-bell"></i>{" "}
+                      <i className="bi bi-bell"></i>{" "}
                       <span className="count-badge">99</span>
                     </Link>
                   </div>
 
                   <div className="header-profile">
                     <div className="profile-user-icon">
-                      {" "}
-                      <img
-                        src="./Images/1559154-200.png"
-                        width={25}
-                        height={25}
-                      />
+                      <img src="Images/avatar.png" />
                     </div>
-                    <div className="dropdown">
-                      <button
-                        className="btn btn-default  dropdown-toggle test"
-                        type="button"
-                        id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        variant=""
+                        className=""
+                        id="dropdown-basic"
                       >
-                        {user.name}sadfsafsaf
-                      </button>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton1"
-                      >
-                        <li>
-                          <a className="dropdown-item">Action</a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item">Another action</a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item">Something else here</a>
-                        </li>
-                      </ul>
-                    </div>
+                        {user.name}
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <Dropdown.Item>
+                          <Link to="/account">Your Account</Link>
+                        </Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">
+                          Another action
+                        </Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">
+                          Something else
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </div>
                 </div>
               </div>

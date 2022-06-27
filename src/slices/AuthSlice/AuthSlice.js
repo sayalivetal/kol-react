@@ -18,7 +18,7 @@ export const signupUser = createAsyncThunk(
         body: JSON.stringify({
           name: name,
           email: email,
-          password: password,
+          password:password?password:"",
           role_id: role,
           firebase_token: token,
         }),
