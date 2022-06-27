@@ -2,77 +2,72 @@ import React from "react";
 import './Footer.css'
 const Footer = () => {
   return (
-    <footer className="footer-clr">
+    <footer className="footer-bg">
       <div className="container ">
         <div className="row">
-
+        <div className="col-lg-12">
+          <h3 className="footer-logo"> Logo </h3 >
+          </div>
             <div className="col-lg-5">
-              <div>
-                <h3 className="text-color">
-                  Logo
-                </h3 >
-                <h3 className="text-color">
-                  Newsletter &amp; Get Updates
-                </h3>
-                <span className="text-color">
-                  Sign Up for our newsletter to get up-to-date from us
-                </span>
-                <form class="form-inline">
-                  <div className="form-group text-color">
-                    <input type="text" placeholder="Enter Your mail" className="form-control input-typ"/>
-                    <button className="btn submt-bttn">Submit</button>
-                  </div>
+              <div className="news-letter-block">
+                <h3 className="text-color">Newsletter &amp; Get Updates</h3>
+                <p className="text-color"> Sign Up for our newsletter to get up-to-date from us</p>
+                <form class=" news-group">
+                    <input type="text" placeholder="Enter Your mail" className="form-control newsletter-box"/>
+                    <button className="btn newsletter-btn">Submit</button>
                 </form>
                 <div className="row text-color">
-                  <span>100% Secure and Trusted Payment</span>
+                  <p>100% Secure and Trusted Payment</p>
                 </div>
-                <div>
-                  <a href='' ><i class="fa fa-paypal"></i></a>
-                  <a href='' ><i className="fa fa-cc-visa"></i></a>
-                  <a href=''><i class="fa fa-cc-mastercard"></i></a>
+                <div className="payment-card">
+                  <a className="p-card" href=''><img src="../images/visa.png" alt="" /></a>
+                  <a className="p-card" href=''><img src="../images/mastercard.png" alt="" /></a>
+                  <a className="p-card" href=''><img src="../images/paypal_card.png" alt="" /></a>
                 </div>
               </div>
             </div>
             <div className="col-lg-7">
               <div className="row">
-                <div className="col-3">
-                  <ul>
-                    <li className="li-first-cls">Quick Link</li>
-                    <li className="li-rest">New York</li>
-                    <li className="li-rest">London SF</li>
-                    <li className="li-rest">Cockfoster BP</li>
-                    <li className="li-rest">Los Angles</li>
-                    <li className="li-rest">Chicago</li>
-                    <li className="li-rest">Las Vegas</li>
-                    <li className="li-rest">Albarto</li>
+                <div className="col-lg-3 col-md-6 col-sm-12">
+                  <h5 className="footer-menu-head">Quick Link</h5>
+                  <ul className="footer-menu">
+                    <li>New York</li>
+                    <li>London SF</li>
+                    <li>Cockfoster BP</li>
+                    <li>Los Angles</li>
+                    <li>Chicago</li>
+                    <li>Las Vegas</li>
+                    <li>Albarto</li>
                   </ul>
                 </div>
-                <div className="col-3">
-                  <ul>
-                    <li className="li-first-cls">Quick Link</li>
-                    <li className="li-rest">Quick Link</li>
-                    <li className="li-rest">New York</li>
-                    <li className="li-rest">London SF</li>
-                    <li className="li-rest">Cockfoster BP</li>
-                    <li className="li-rest">Los Angles</li>
-                    <li className="li-rest">Chicago</li>
-                    <li className="li-rest">Las Vegas</li>
-                    <li className="li-rest">Albarto</li>
+                <div className="col-lg-3 col-md-6 col-sm-12">
+                <h5 className="footer-menu-head">Quick Link</h5>
+                  <ul className="footer-menu">
+                    <li>New York</li>
+                    <li>London SF</li>
+                    <li>Cockfoster BP</li>
+                    <li>Los Angles</li>
+                    <li>Chicago</li>
+                    <li>Las Vegas</li>
+                    <li>Albarto</li>
                   </ul>
                 </div>
-                <div className="col-6">
-                  <ul>
-                    <li className="li-first-cls">Contact US</li>
-                    <li className="li-rest">Address : Painted Auto Body parts 2525 Unlimited Lane Elk Grove Village, IL 60007</li>
-                    <li className="li-rest"> Mobnday through Friday : 8am-5pm CST</li>
-                    <li className="li-rest">Email: test@test.com</li>
-                    <li className="li-rest">Phone: (+65) 66653 8060</li>
+                <div className="col-lg-6 col-md-12 col-sm-12">
+                <h5 className="footer-menu-head">CONTACT US</h5>
+                  <ul className="footer-menu">
+                    <li>Address : Painted Auto Body parts 2525 Unlimited Lane Elk Grove Village, IL 60007</li>
+                    <li>Mobnday through Friday :<br /> 8am-5pm CST</li>
+                    <li>Email: test@test.com</li>
+                    <li>Phone: (+65) 66653 8060</li>
                   </ul>
                 </div>
               </div>
             </div>
 
         </div>
+      </div>
+      <div className="footer-cp">
+        <div className="container cp-text">Copyright &copy; 2010-2022 KOL Company S.L. All rights reserved.</div>
       </div>
     </footer>
   );
