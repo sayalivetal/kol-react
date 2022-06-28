@@ -43,6 +43,12 @@ body{
   color: #f01f4b;
   text-decoration: none;
 }
+.text-right{
+  text-align: right;
+}
+.ml-auto{
+  margin-left: auto;
+}
 
 @keyframes App-logo-spin {
   from {

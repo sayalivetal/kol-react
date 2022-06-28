@@ -1,0 +1,65 @@
+.heading-icon{
+   font-size: 18px;
+   color: #1877F2;
+}
+.kol-user-img { 
+    min-width: 280px;
+    min-height: 280px;
+    max-height: 280px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.kol-user-img img { width: 100%;}
+.team-list { width:auto; display: inline-block;}
+.facebook-icon{
+    color: #1877F2;
+}
+.youtube-icon{
+    color: #FF0000;
+}
+.text-normal{
+    color:#8B7DB2
+}
+.social-count-list{
+    display: flex;
+    list-style: none;
+}
+.social-count-list li{
+ border-left: 2px solid #A5A5A5;
+ padding: 0px 15px;
+}
+.team-list{
+    display: flex;
+    list-style: none;
+}
+.team-list li{
+  border: 1px solid #ddd;
+  margin-right: -10px;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+.team-list li img{
+    width: 100%;
+    object-fit: contain;
+}
+.geo-icon{
+    color: #F01F4B;
+}
+.bookmark-icon{
+    color: #F01F4B; 
+    cursor: pointer;
+}
+
+.book-icon:hover .bookmark-icon:before, .book-icon:focus .bookmark-icon:before { 
+    content: "\f195"!important;
+}
+.more-button a{
+    text-decoration: none;
+    color: #F01F4B;
+    font-size: 16px;
+}

@@ -26,11 +26,11 @@ const Login = () => {
   });
  
   const [password, setpassword] = useState("password");
-  useEffect(()=>{
-    if(loginUserData?.message){
-      toast.error(loginUserData?.message);
-    }
-  },[loginUserData])
+  // useEffect(()=>{
+  //   if(loginUserData?.message){
+  //     toast.error(loginUserData?.message);
+  //   }
+  // },[loginUserData])
   useEffect(()=>{
     if(loginUserData?.data?.email){
       navigate('/role')
@@ -173,7 +173,7 @@ const Login = () => {
                     <div className="col-12 d-flex justify-content-center align-items-center mt-3">
                       <span className="optionText text-center">
                         Don't have an account?{" "}
-                        <Link to="/register">Register here</Link>
+                        <Link to="/role">Register here</Link>
                       </span>
                     </div>
                   </div>

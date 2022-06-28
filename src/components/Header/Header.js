@@ -46,6 +46,7 @@ const Header = () => {
             <a href="/" className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none logo" > KOL </a>
           </div>
           {user.token ? (
+
             <>
             
             <div className="col-md-5 text-end">
@@ -110,6 +111,7 @@ const Header = () => {
                     </ul>
                   </div>
                 </div>
+
               </div>
             </div>
             </>
