@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const KolListing = () => {
   return (
     <>
-      <div className="row justify-content-between py-4">
+      <div className="row justify-content-between py-4 list-row">
         <div className="col-lg-3 py-2">
           <div className="kol-user-img">
             <img src="./Images/4.jpg" />
@@ -82,7 +82,7 @@ const KolListing = () => {
 
           <div className="row py-1">
             <div className="col-lg-12 align-items-center d-flex">
-              <h5 className="text-bold">Team Member</h5>
+              {/* <h5 className="text-bold">Team Member</h5>
               <ul className="team-list">
                 <li className="rounded-circle">
                   <img src="./Images/4.jpg" />
@@ -94,15 +94,15 @@ const KolListing = () => {
                   <img src="./Images/6.jpg" />
                 </li>
                 <li className="rounded-circle">+10</li>
-              </ul>
+              </ul> */}
               <div className="ml-auto more-button">
-                <Link to="">Show More Detail</Link>
+                <Link to="/details">Show More Detail</Link>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="row justify-content-between py-4">
+      <div className="row justify-content-between py-4 list-row">
         <div className="col-lg-3 py-2">
           <div className="kol-user-img">
             <img src="./Images/5.jpg" />
@@ -191,13 +191,13 @@ const KolListing = () => {
                 <li className="rounded-circle">+10</li>
               </ul>
               <div className="ml-auto more-button">
-                <Link to="">Show More Detail</Link>
+                <Link to="/details">Show More Detail</Link>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="row justify-content-between py-4">
+      <div className="row justify-content-between py-4 list-row">
         <div className="col-lg-3 py-2">
           <div className="kol-user-img">
             <img src="./Images/6.jpg" />
@@ -286,7 +286,7 @@ const KolListing = () => {
                 <li className="rounded-circle">+10</li>
               </ul>
               <div className="ml-auto more-button">
-                <Link to="">Show More Detail</Link>
+                <Link to="/details">Show More Detail</Link>
               </div>
             </div>
           </div>

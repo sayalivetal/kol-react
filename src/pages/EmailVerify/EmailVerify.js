@@ -26,7 +26,7 @@ const EmailVerify = () => {
   //   }
   // }, [userdata]);
   useEffect(() => {
-    if (userdata?.data?.data?.token) {
+    if (userdata?.data?.token) {
       navigate("/home");
     }
   }, [userdata]);

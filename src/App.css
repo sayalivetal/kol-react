@@ -49,6 +49,9 @@ body{
 .ml-auto{
   margin-left: auto;
 }
+.slick-prev:before, .slick-next:before {
+  color: black;
+}
 
 @keyframes App-logo-spin {
   from {

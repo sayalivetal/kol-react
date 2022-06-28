@@ -2,6 +2,8 @@ import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
 const DefaultLayout = React.lazy(() =>
   import("./layout/KOLMarketPlace/KolMarketPlace")

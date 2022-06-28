@@ -24,7 +24,6 @@ const Header = () => {
     };
     getAllCategory(callback);
   }, []);
-  console.log("asd", categoryList);
 
   useEffect(() => {
     if (userDetails) {
@@ -51,6 +50,9 @@ const Header = () => {
     }
   }, [userDetails, userRegister]);
   console.log(user);
+  const signOut = () => {
+    localStorage.removeItem("persist:root");
+  };
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
@@ -71,7 +73,7 @@ const Header = () => {
                   <form className="search-bar">
                     <Dropdown>
                       <Dropdown.Toggle
-                        className="category-list"
+                        className="custom-btn"
                         variant=""
                         id="dropdown-basic"
                       >
@@ -135,7 +137,7 @@ const Header = () => {
                     <Dropdown>
                       <Dropdown.Toggle
                         variant=""
-                        className=""
+                        className="custom-btn"
                         id="dropdown-basic"
                       >
                         {user.name}
@@ -145,11 +147,8 @@ const Header = () => {
                         <Dropdown.Item>
                           <Link to="/account">Your Account</Link>
                         </Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">
-                          Another action
-                        </Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">
-                          Something else
+                        <Dropdown.Item>
+                          <span onClick={signOut}>Sign out</span>
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
