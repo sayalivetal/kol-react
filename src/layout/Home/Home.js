@@ -8,14 +8,14 @@ import Filter from "./components/Filter/Filter";
 import KolListing from "./components/kolListing/KolListing";
 const Home = () => {
   const message = useSelector((state) => state?.user?.registerUser?.data);
-  const loginMessage = useSelector(
-    (state) => state?.user?.loginUser?.data.token
-  );
+
+  const loginMessage = useSelector((state) => state?.user?.loginUser?.data?.token);
+
   useEffect(() => {
-    if (message?.token) {
+    if (message?.data?.token) {
       toast.success("Login Successfull!");
     }
-  }, [message?.token]);
+  }, [message?.data?.token]);
   useEffect(() => {
     if (loginMessage) {
       toast.success("Login Successfull!");
