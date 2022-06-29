@@ -28,7 +28,9 @@ const KolListing = () => {
               <p className="text-right">
                 <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                 <span>Mohali Punjab,india</span>
-                <span className="book-icon"><i className="bi bi-bookmark mx-1 bookmark-icon"></i></span>
+                <span className="book-icon">
+                  <i className="bi bi-bookmark mx-1 bookmark-icon"></i>
+                </span>
               </p>
             </div>
           </div>
@@ -121,7 +123,9 @@ const KolListing = () => {
               <p className="text-right">
                 <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                 <span>Mohali Punjab,india</span>
-                <i className="bi bi-bookmark mx-1 bookmark-icon"></i>
+                <span className="book-icon">
+                  <i className="bi bi-bookmark mx-1 bookmark-icon"></i>
+                </span>
               </p>
             </div>
           </div>
@@ -214,7 +218,9 @@ const KolListing = () => {
               <p className="text-right">
                 <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                 <span>Mohali Punjab,india</span>
-                <i className="bi bi-bookmark mx-1 bookmark-icon"></i>
+                <span className="book-icon">
+                  <i className="bi bi-bookmark mx-1 bookmark-icon"></i>
+                </span>
               </p>
             </div>
           </div>
