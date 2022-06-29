@@ -1,31 +1,98 @@
-import React,{useState} from 'react'
-import './DetailSlider.css'
+import React, { useState } from "react";
+import "./DetailSlider.css";
 import ReactDOM from "react-dom";
 import Slider from "react-slick";
 const DetailSlider = () => {
-    const [settings,setSettings] = useState({
-        slidesToShow: 3,
-        slidesToScroll: 1
-    })
-  
-      return (
-        <div className='asd'>
-          <Slider {...settings}>
-            <div>
-              <img src="http://placekitten.com/g/400/200" />
-            </div>
-            <div>
-              <img src="http://placekitten.com/g/400/200" />
-            </div>
-            <div>
-              <img src="http://placekitten.com/g/400/200" />
-            </div>
-            <div>
-              <img src="http://placekitten.com/g/400/200" />
-            </div>
-          </Slider>
-        </div>
-      );
-}
+  const [settings, setSettings] = useState({
+    slidesToShow: 4,
+    slidesToScroll: 1,
+  });
 
-export default DetailSlider
+  return (
+    <div className="detail-main">
+      <Slider {...settings} className="row">
+        <div className="card col-lg-3">
+          <div>
+            <img
+              className="card-img-top"
+              src="http://placekitten.com/g/400/200"
+            />
+          </div>
+          <div className="card-body">
+            <h5 className="card-title">Nike shose</h5>
+            <div className="card-text">
+              The Lorem ipsum text is derived from sections and of Cicero's De
+              finibus bonorum et malorum
+            </div>
+          </div>
+        </div>
+
+        <div className="card col-lg-3">
+          <div>
+            <img
+              className="card-img-top"
+              src="http://placekitten.com/g/400/200"
+            />
+          </div>
+          <div className="card-body">
+            <h5 className="card-title">Nike shose</h5>
+            <div className="card-text">
+              The Lorem ipsum text is derived from sections and of Cicero's De
+              finibus bonorum et malorum
+            </div>
+          </div>
+        </div>
+
+        <div className="card col-lg-3">
+          <div>
+            <img
+              className="card-img-top"
+              src="http://placekitten.com/g/400/200"
+            />
+          </div>
+          <div className="card-body">
+            <h5 className="card-title">Nike shose</h5>
+            <div className="card-text">
+              The Lorem ipsum text is derived from sections and of Cicero's De
+              finibus bonorum et malorum
+            </div>
+          </div>
+        </div>
+
+        <div className="card col-lg-3">
+          <div>
+            <img
+              className="card-img-top"
+              src="http://placekitten.com/g/400/200"
+            />
+          </div>
+          <div className="card-body">
+            <h5 className="card-title">Nike shose</h5>
+            <div className="card-text">
+              The Lorem ipsum text is derived from sections and of Cicero's De
+              finibus bonorum et malorum
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div>
+            <img
+              className="card-img-top"
+              src="http://placekitten.com/g/400/200"
+            />
+          </div>
+          <div className="card-body">
+            <h5 className="card-title">Nike shose</h5>
+            <div className="card-text">
+              The Lorem ipsum text is derived from sections and of Cicero's De
+              finibus bonorum et malorum
+            </div>
+          </div>
+        </div>
+      </Slider>
+    </div>
+  );
+};
+
+export default DetailSlider;

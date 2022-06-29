@@ -104,8 +104,33 @@ const ListingDetails = () => {
             <div className="col-lg-12 px-4">
               <div className="row py-1">
                 <div className="col-lg-12">
+                  <h4>KOL are promoting Products</h4>
+                </div>
+                <div className="col-lg-12">
                   <DetailSlider />
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="card mt-3">
+          <div className="card-body">
+            <div className="col-lg-12 px-4">
+              <div className="row py-1">
+                <div className="col-lg-8">
+                  <div className="card"><div className="card-body">hello</div></div>
+                </div>
+                <div className="col-lg-4">hi</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="card mt-3">
+          <div className="card-body">
+            <div className="col-lg-12 px-4">
+              <div className="row py-1">
+                <div className="col-lg-12"></div>
+                <div className="col-lg-12"></div>
               </div>
             </div>
           </div>
