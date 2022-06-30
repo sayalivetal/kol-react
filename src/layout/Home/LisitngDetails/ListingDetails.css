@@ -84,4 +84,17 @@
 }
 .annoucement-card {
   border-radius: 20px;
+  background-color: #d9d0f2;
+}
+.roundIcon {
+  background: #342951;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.annocement-text {
+  color: #fff;
+  overflow: hidden;
 }

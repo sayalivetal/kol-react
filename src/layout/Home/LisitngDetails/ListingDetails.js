@@ -6,6 +6,7 @@ import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import { Link } from 'react-router-dom';
 import './ListingDetails.css';
 import DetailSlider from '../components/DetailSlider/DetailSlider';
+import ReviewSlider from '../components/ReviewSlider/ReviewSlider';
 const ListingDetails = () => {
   return (
     <>
@@ -120,7 +121,17 @@ const ListingDetails = () => {
                 <div className='col-lg-8'>
                   <div className='card annoucement-card'>
                     <div className='card-body'>
-                     hello                      
+                      <h5>Annoucement</h5>
+                      <div className='row'>
+                        <div className='col-lg-2'></div>
+                        <div className='col-lg-5'></div>
+                        <div className='col-lg-5'>
+                          <div className='rounded-circle roundIcon my-3'>
+                            <p className='annocement-text'>Watch me on youtube</p>
+                            <span> <i className="bi bi-youtube youtube-icon"></i></span> 
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -133,8 +144,10 @@ const ListingDetails = () => {
           <div className='card-body'>
             <div className='col-lg-12 px-4'>
               <div className='row py-1'>
-                <div className='col-lg-12'></div>
-                <div className='col-lg-12'></div>
+                <div className='col-lg-12'>
+                  <h3>See What Our Clients Talk About Us</h3>
+                </div>
+                <ReviewSlider />
               </div>
             </div>
           </div>

@@ -22,7 +22,7 @@ const Contents = () => {
             )
           );
         })}
-        {/* <Route path="/" element={<Navigate to="Home" replace />} /> */}
+     
       </Routes>
     </div>
   );

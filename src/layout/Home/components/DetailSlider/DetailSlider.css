@@ -1,17 +1,20 @@
 .detail-main {
   padding: 10px 0;
   position: relative;
-
 }
-.detail-main .card{
+.detail-main .card {
   border-radius: 20px;
   overflow: hidden;
+}
+.slider-div {
+  padding: 0 15px;
 }
 
 .slick-slide img {
   margin: auto;
 }
-.detail-main .slick-prev, .detail-main .slick-next {
+.detail-main .slick-prev,
+.detail-main .slick-next {
   top: -30px !important;
 }
 .detail-main .slick-prev {
@@ -20,7 +23,6 @@
 }
 .detail-main .slick-next {
   right: 0px !important;
-
 }
 .detail-main .slick-next:before {
   content: '\F285';
