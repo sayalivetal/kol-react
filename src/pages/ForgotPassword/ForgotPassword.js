@@ -6,11 +6,11 @@ import "./ForgotPassword.css";
 const ForgotPassword = () => {
   const navigate = useNavigate()
   const email = useSelector((state) => state?.user?.loginUser?.data?.email);
-  const token = useSelector((state) => state?.user?.loginUser?.data?.token);
+  const statusCode = useSelector((state) => state?.user?.loginUser?.statusCode);
   const successMessage = useSelector(
     (state) => state?.user?.loginUser?.message
   );
-  console.log(token);
+  console.log(statusCode);
   console.log(email);
   const dispatch = useDispatch();
   const [passwordValue, setPasswordValue] = useState({
@@ -113,9 +113,11 @@ const ForgotPassword = () => {
     dispatch(ResetPassword(passwordValue));
   };
   useEffect(()=>{
-    if(!token) return;
-    navigate('/passwordSuccess')
-  },[token])
+    if(statusCode == 201){
+      navigate('/passwordSuccess')
+    }
+    
+  },[statusCode])
   return (
     <div className="main-div">
       <section>

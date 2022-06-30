@@ -1,13 +1,20 @@
+.detail-bg {
+  background-image: url('/public/Images/details.png');
+  min-height: 240px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .heading-icon {
   font-size: 18px;
   color: #1877f2;
 }
 .kol-user-img {
   min-width: 100%;
-  min-height: 280px;
-  max-height: 280px;
+  min-height: 182px;
+  max-height: 182px;
   border-radius: 20px;
   overflow: hidden;
+  margin-top: -100px;
 }
 .kol-user-img img {
   width: 100%;
@@ -71,4 +78,23 @@
 }
 .list-row {
   cursor: pointer;
+}
+.banner-container {
+  margin: -16px;
+}
+.annoucement-card {
+  border-radius: 20px;
+  background-color: #d9d0f2;
+}
+.roundIcon {
+  background: #342951;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.annocement-text {
+  color: #fff;
+  overflow: hidden;
 }

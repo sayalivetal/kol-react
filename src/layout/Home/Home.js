@@ -9,7 +9,9 @@ import KolListing from "./components/kolListing/KolListing";
 const Home = () => {
   const message = useSelector((state) => state?.user?.registerUser?.data);
 
-  const loginMessage = useSelector((state) => state?.user?.loginUser?.data?.token);
+  const loginMessage = useSelector(
+    (state) => state?.user?.loginUser?.data?.token
+  );
 
   useEffect(() => {
     if (message?.data?.token) {
@@ -24,16 +26,14 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <div className="container">
         <div className="card">
           <div className="card-body">
             <Filter />
-            <KolListing />  
+            <KolListing />
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
