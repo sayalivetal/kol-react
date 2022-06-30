@@ -148,7 +148,7 @@ const Header = () => {
                           <Link to="/account">Your Account</Link>
                         </Dropdown.Item>
                         <Dropdown.Item>
-                          <span onClick={signOut}>Sign out</span>
+                          <button><span onClick={signOut}>Sign out</span></button>
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>

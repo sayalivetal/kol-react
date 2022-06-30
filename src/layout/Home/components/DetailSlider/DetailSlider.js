@@ -9,15 +9,15 @@ const DetailSlider = () => {
   });
 
   return (
-    <div className="detail-main">
-      <Slider {...settings} className="row">
+    <div className="row detail-main">
+      <Slider {...settings}>
         <div className="card col-lg-3">
-          <div>
+          
             <img
               className="card-img-top"
               src="http://placekitten.com/g/400/200"
             />
-          </div>
+          
           <div className="card-body">
             <h5 className="card-title">Nike shose</h5>
             <div className="card-text">
