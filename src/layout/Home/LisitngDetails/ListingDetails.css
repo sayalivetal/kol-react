@@ -28,7 +28,12 @@
 }
 .youtube-icon {
   color: #ff0000;
+
 }
+.icon-block { height: 48px; position: relative;}
+.youtube-circle-icon {   color: #ff0000; font-size: 60px;  position: relative; z-index: 1; line-height: 48px;}
+.youtube-circle-icon:before { line-height: 48px;}
+.youtube-bg { position: absolute; background-color: #fff; width: 30px; height: 30px; left:50%; top:50%; margin: -15px 0 0 -15px; }
 .text-normal {
   color: #8b7db2;
 }
@@ -88,13 +93,22 @@
 }
 .roundIcon {
   background: #342951;
-  width: 200px;
-  height: 200px;
+  width: 184px;
+  height: 184px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  padding: 36px;
 }
 .annocement-text {
   color: #fff;
   overflow: hidden;
+  text-align: center;
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.3;
 }
+.review-block { padding: 3rem; background-color: #F7EEDD; background-image: url('/public/Images/tp-bg.png'); background-repeat: no-repeat; background-size: cover; background-blend-mode: multiply;}
+
+

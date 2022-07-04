@@ -36,9 +36,12 @@ body{
   background-color: #f01f4b;
   color: #fff;
 }
+.theme-color { color: #f01f4b;}
 .theme-btn:hover {
   color: #fff;
 }
+.weight-normal { font-weight: 400;}
+.weight-600 { font-weight: 600;}
 .optionText a {
   color: #f01f4b;
   text-decoration: none;

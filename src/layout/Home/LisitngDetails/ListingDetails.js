@@ -114,38 +114,56 @@ const ListingDetails = () => {
             </div>
           </div>
         </div>
-        <div className='card mt-3'>
+        <div className='card mt-3 border-0'>
           <div className='card-body'>
             <div className='col-lg-12 px-4'>
               <div className='row py-1'>
-                <div className='col-lg-8'>
+                <div className='col-lg-7'>
                   <div className='card annoucement-card'>
                     <div className='card-body'>
-                      <h5>Annoucement</h5>
+                      
                       <div className='row'>
-                        <div className='col-lg-2'></div>
-                        <div className='col-lg-5'></div>
-                        <div className='col-lg-5'>
+                        <div className='col-lg-8'>
+                          <h5>Announcement</h5>
+                          <div className='live-stream'>Live Stream</div>
+                          <h3>A Product Launch</h3>
+                          <ul>
+                            <li>
+                              <div>Thur</div>
+                              <div>DAY</div>
+                            </li>
+                            <li>
+                              <div>JULY</div>
+                              <div>30</div>
+                            </li>
+                            <li>
+                              <div>10</div>
+                              <div>PM</div>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className='col-lg-4'>
                           <div className='rounded-circle roundIcon my-3'>
                             <p className='annocement-text'>Watch me on youtube</p>
-                            <span> <i className="bi bi-youtube youtube-icon"></i></span> 
+                            <span className='icon-block'> <i className="bi bi-youtube youtube-circle-icon"></i><span className='youtube-bg'></span></span> 
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className='col-lg-4'>hi</div>
+                <div className='col-lg-5'>hi</div>
               </div>
             </div>
           </div>
         </div>
-        <div className='card mt-3'>
-          <div className='card-body'>
+        <div className='card mt-3 border-0'>
+          <div className='card-body review-block'>
             <div className='col-lg-12 px-4'>
               <div className='row py-1'>
                 <div className='col-lg-12'>
-                  <h3>See What Our Clients Talk About Us</h3>
+                  <h3 className='theme-color weight-600'>See What Our Clients Talk About Us</h3>
                 </div>
                 <ReviewSlider />
               </div>

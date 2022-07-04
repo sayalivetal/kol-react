@@ -55,6 +55,7 @@ const EmailVerify = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(emailVerification({ otp, email }));
+    e.target.reset();
   };
   const handleOtp = () => {
     dispatch(resendEmailOtp(email));
