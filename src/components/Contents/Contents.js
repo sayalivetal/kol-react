@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 //routes config
 import routes from "../../routes";
 const Contents = () => {
+  console.log(routes);
   return (
     <div>
       {" "}
@@ -21,7 +22,7 @@ const Contents = () => {
             )
           );
         })}
-        {/* <Route path="/" element={<Navigate to="Home" replace />} /> */}
+     
       </Routes>
     </div>
   );

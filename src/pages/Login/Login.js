@@ -55,6 +55,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(LoginUser(loginData));
+    e.target.reset();
   };
  
   const Eye = () => {

@@ -12,7 +12,7 @@ const Footer = () => {
               <div className="news-letter-block">
                 <h3 className="text-color">Newsletter &amp; Get Updates</h3>
                 <p className="text-color"> Sign Up for our newsletter to get up-to-date from us</p>
-                <form class=" news-group">
+                <form className=" news-group">
                     <input type="text" placeholder="Enter Your mail" className="form-control newsletter-box"/>
                     <button className="btn newsletter-btn">Submit</button>
                 </form>
