@@ -127,16 +127,16 @@ const ListingDetails = () => {
                           <h5>Announcement</h5>
                           <div className='live-stream'>Live Stream</div>
                           <h3>A Product Launch</h3>
-                          <ul>
+                          <ul className='announement-date-list'>
                             <li>
                               <div>Thur</div>
                               <div>DAY</div>
                             </li>
-                            <li>
+                            <li className='first'>
                               <div>JULY</div>
                               <div>30</div>
                             </li>
-                            <li>
+                            <li className='first'>
                               <div>10</div>
                               <div>PM</div>
                             </li>
