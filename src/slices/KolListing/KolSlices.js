@@ -6,12 +6,12 @@ const initialState = {
 };
 
 //API Integration with action for registration creation
-export const kolListing = createAsyncThunk(
-  "kol/listing",
-  async ({token}, thunkAPI) => {
-
+export const  kolDetails= createAsyncThunk(
+  "kol/details",
+  async ({id,token },thunkAPI) => {
+console.log(id,token);
     try {
-      const response = await fetch(`${API}/kol-profile/list`, {
+      const response = await fetch(`${API}/kol-profile/view?id=${id}`, {
         method: "GET",
        
         headers: {
@@ -37,7 +37,7 @@ export const kolListing = createAsyncThunk(
 //create slice for authentication reducers
 
 const kolReducer = createSlice({
-  name: "user",
+  name: "kol",
   initialState,
 
   reducers: {
@@ -46,7 +46,7 @@ const kolReducer = createSlice({
     // },
   },
   extraReducers: {
-    [kolListing.fulfilled]: (state, action) => {
+    [kolDetails.fulfilled]: (state, action) => {
       return { listingDetails: { ...action.payload } };
     },
    

@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import './DetailSlider.css';
 import ReactDOM from 'react-dom';
 import Slider from 'react-slick';
+import { useSelector } from "react-redux";
 const DetailSlider = () => {
+  const [kolProfile, setKolProfile] = useState([]);
   const [settings, setSettings] = useState({
     slidesToShow: 4,
     slidesToScroll: 1,
   });
 
+  const data = useSelector(
+    (state) => state?.kolListing?.listingDetails?.kolProfile
+  )
+useEffect(()=>{
+  setKolProfile([...data]);
+},[data])
+console.log(data);
   return (
+    
     <div className='row detail-main'>
       <Slider {...settings}>
         <div className='slider-div'>
