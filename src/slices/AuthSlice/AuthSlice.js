@@ -5,6 +5,7 @@ const initialState = {
   loginuser: {},
   registerUser: {},
   role: {},
+  loading:''
 };
 
 //API Integration with action for registration creation
@@ -18,7 +19,7 @@ export const signupUser = createAsyncThunk(
         body: JSON.stringify({
           name: name,
           email: email,
-          password: password,
+          password:password?password:"",
           role_id: role,
           firebase_token: token,
         }),
@@ -305,14 +306,17 @@ const authReducer = createSlice({
     [signupUser.pending]: (state, action) => {},
     [signupUser.rejected]: (state, action) => {},
     [emailVerification.fulfilled]: (state, action) => {
-      return { loginUser: { ...action.payload } };
+      console.log(action.payload.data);
+      return { loginUser: { ...action.payload.data} };
     },
     [emailVerification.pending]: (state, action) => {},
     [emailVerification.rejected]: (state, action) => {},
     [forgotPassword.fulfilled]: (state, action) => {
       return { loginUser: { ...action.payload } };
     },
-    [forgotPassword.pending]: (state, action) => {},
+    [forgotPassword.pending]: (state, action) => {
+    
+    },
     [forgotPassword.rejected]: (state, action) => {},
     [ResetPassword.fulfilled]: (state, action) => {
       return { loginUser: { ...action.payload } };
@@ -322,7 +326,9 @@ const authReducer = createSlice({
     [LoginUser.fulfilled]: (state, action) => {
       return { loginUser: { ...action.payload } };
     },
-    [LoginUser.pending]: (state, action) => {},
+    [LoginUser.pending]: (state, action) => {
+
+    },
     [LoginUser.rejected]: (state, action) => {},
     [ChangePasswordUser.fulfilled]: (state, action) => {
       return { loginUser: { ...action.payload } };

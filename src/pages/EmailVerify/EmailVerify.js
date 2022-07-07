@@ -26,7 +26,7 @@ const EmailVerify = () => {
   //   }
   // }, [userdata]);
   useEffect(() => {
-    if (userdata?.data?.data?.token) {
+    if (userdata?.data?.token) {
       navigate("/home");
     }
   }, [userdata]);
@@ -55,6 +55,7 @@ const EmailVerify = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(emailVerification({ otp, email }));
+    e.target.reset();
   };
   const handleOtp = () => {
     dispatch(resendEmailOtp(email));

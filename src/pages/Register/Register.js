@@ -45,11 +45,9 @@ const Register = () => {
     setData(userDetails);
   }, [userDetails?.data?.token]);
 
-
   useEffect(() => {
     if (data?.data?.token) {
-     
-       navigate("/Home");
+      navigate("/Home");
     }
   }, [data]);
   console.log(data);
@@ -59,8 +57,7 @@ const Register = () => {
     }
   }, [data]);
 
-
-  if(userDetails?.statusCode == 301){
+  if (userDetails?.statusCode == 301) {
     toast.error("User already exists");
   }
   //Dispatch form react redux
@@ -91,8 +88,8 @@ const Register = () => {
     e.preventDefault();
     console.log(formData);
     dispatch(signupUser(formData));
-    
-  };
+    e.target.reset();
+   };
   //action for signInwithGoogle
   useEffect(() => {
     if (!firebaseUser.token) return;
@@ -127,7 +124,8 @@ const Register = () => {
                       <h2 className="register-heading mb-3">Register</h2>
 
                       <div className="form-group mb-3">
-                        <label>Name</label><span className="astric-span">*</span>
+                        <label>Name</label>
+                        <span className="astric-span">*</span>
                         <input
                           type="text"
                           name="name"
@@ -138,7 +136,8 @@ const Register = () => {
                       </div>
 
                       <div className="form-group  mb-3">
-                        <label>Email</label><span className="astric-span">*</span>
+                        <label>Email</label>
+                        <span className="astric-span">*</span>
                         <input
                           type="email"
                           name="email"
@@ -149,7 +148,8 @@ const Register = () => {
                       </div>
 
                       <div className="form-group  mb-3">
-                        <label>Password</label><span className="astric-span">*</span>
+                        <label>Password</label>
+                        <span className="astric-span">*</span>
                         <input
                           type="password"
                           name="password"
@@ -170,7 +170,6 @@ const Register = () => {
                         </span>
                       </div>
                     </form>
-                    
                     <div className="col-12 justify-content-center align-items-center position-relative my-4">
                       <hr className="col-12" />{" "}
                       <span className="orText">or </span>

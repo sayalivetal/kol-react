@@ -9,7 +9,8 @@ import { Dropdown } from "react-bootstrap";
 const Header = () => {
   const [categoryList, setCategoryList] = useState([]);
   const userDetails = useSelector((state) => state?.user?.loginUser);
-  const userLoginDetails = useEffect((state) => state);
+  const userRegister = useSelector((state) => state?.user?.registerUser);
+  console.log(userRegister);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -23,27 +24,50 @@ const Header = () => {
     };
     getAllCategory(callback);
   }, []);
-  console.log("asd", categoryList);
 
   useEffect(() => {
-    setUser((state) => {
-      return {
-        ...state,
-        name: userDetails?.data?.user_name,
-        email: userDetails?.data?.email,
-        role: userDetails?.data?.role_id,
-        token: userDetails?.data?.data?.token,
-      };
-    });
-  }, [userDetails]);
+
+    if (userDetails) {
+      setUser((state) => {
+        return {
+          ...state,
+          name: userDetails?.data?.user_name,
+          email: userDetails?.data?.email,
+          role: userDetails?.data?.role_id,
+          token: userDetails?.data?.token,
+        };
+      });
+    }
+    if (userRegister) {
+      setUser((state) => {
+        return {
+          ...state,
+          name: userRegister?.data?.user_name,
+          email: userRegister?.data?.email,
+          role: userRegister?.data?.role_id,
+          token: userRegister?.data?.token,
+        };
+      });
+    }
+  }, [userDetails, userRegister]);
 
   console.log(user);
+  const signOut = () => {
+    localStorage.removeItem("persist:root");
+  };
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
         <div className="row justify-content-between align-items-center">
           <div className="col-md-3">
-            <a href="/" className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none logo" > {" "} KOL{" "} </a>
+
+            <a
+              href="/"
+              className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none logo"
+            >
+              {" "}
+              KOL{" "}
+            </a>
           </div>
 
           {user.token ? (
@@ -53,8 +77,8 @@ const Header = () => {
                   <form className="search-bar">
                     <Dropdown>
                       <Dropdown.Toggle
-                        className="category-list"
-                        variant="default"
+                        className="custom-btn"
+                        variant=""
                         id="dropdown-basic"
                       >
                         All Categories
@@ -72,7 +96,6 @@ const Header = () => {
 
                     <input type="text" className=" search-box" placeholder="What are you looking for?" aria-label="Username" aria-describedby="basic-addon1" />
                     <button className="btn btn-search " type="button" aria-expanded="false">Search</button>
-
                   </form>
                 </nav>
               </div>
@@ -92,12 +115,14 @@ const Header = () => {
                       <i className="bi bi-chat-dots"></i>
                     </Link>
                     <Link to={"/chat"}>
+
                       <i className="bi bi-bell"></i>{" "}
                       <span className="count-badge">99</span>
                     </Link>
                   </div>
 
                   <div className="header-profile">
+
                     <div className="profile-user-icon"> 
                       <img src='./Images/1559154-200.png' width={25} height={25} />
                     </div>
@@ -118,7 +143,7 @@ const Header = () => {
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
-                 </div>
+                  </div>
                 </div>
               </div>
             </>
@@ -133,9 +158,9 @@ const Header = () => {
               </div>
             )}
           </div>
-      </div>
-    </header>
-  );
+        </div>
+      </header>
+    );
 };
 
 export default Header;
