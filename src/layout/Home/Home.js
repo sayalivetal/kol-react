@@ -29,7 +29,7 @@ const Home = () => {
       <div className="container">
         <div className="card">
           <div className="card-body">
-            <Filter />
+         
             <KolListing />
           </div>
         </div>

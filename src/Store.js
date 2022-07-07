@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import authReducer from "./reducers/AuthReducer";
 import AuthSlice from "./slices/AuthSlice/AuthSlice";
-import KolListing from "./slices/KolListing/KolListing";
+import KolListing from "./slices/KolListing/KolSlices";
 // import productReducer from "./reducers/ProductReducer";
 // import CartReducer from "./reducers/CartReducer";
 import { combineReducers } from "redux";
@@ -18,7 +18,7 @@ const reducers = combineReducers({
 const persistConfig = {
   key: "root",
   storage: storage,
-  // blacklist: [ "user"],
+  blacklist: [ "kolListing"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
