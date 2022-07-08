@@ -12,7 +12,7 @@ const routes = [
   { path: "/", exact: true, name: "landing", element: LandingPage },
   { path: "/account", exact: true, name: "Account", element: Account },
   { path: "/home", exact: true, name: "Home", element: Home },
-  { path: "/details", exact: true, name: "Details", element: Details },
+  { path: "/details/:id", exact: true, name: "Details", element: Details },
   { path: "/chat", exact: true, name: "Chat", element: Chat },
   { path: "*", exact: true, name: "NotFound", element: NotFound },
 ];

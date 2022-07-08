@@ -1,6 +1,6 @@
-body{
-  font-family: 'Montserrat', sans-serif !important;
-  background: #F5F5F5;
+body {
+  font-family: "Montserrat", sans-serif !important;
+  background: #f5f5f5;
 }
 .App {
   text-align: center;
@@ -36,23 +36,30 @@ body{
   background-color: #f01f4b;
   color: #fff;
 }
-.theme-color { color: #f01f4b;}
+.theme-color {
+  color: #f01f4b;
+}
 .theme-btn:hover {
   color: #fff;
 }
-.weight-normal { font-weight: 400;}
-.weight-600 { font-weight: 600;}
+.weight-normal {
+  font-weight: 400;
+}
+.weight-600 {
+  font-weight: 600;
+}
 .optionText a {
   color: #f01f4b;
   text-decoration: none;
 }
-.text-right{
+.text-right {
   text-align: right;
 }
-.ml-auto{
+.ml-auto {
   margin-left: auto;
 }
-.slick-prev:before, .slick-next:before {
+.slick-prev:before,
+.slick-next:before {
   color: black;
 }
 
@@ -64,6 +71,59 @@ body{
     transform: rotate(360deg);
   }
 }
+.show-more span {
+  position: relative !important;
+  visibility: visible !important;
+}
 
-.show-more span{ position: relative !important;
-visibility: visible !important;}
+
+
+
+
+
+
+
+
+
+.stream-user {
+  position: relative;
+  display: flex;
+    justify-content: center;
+    width: 90%;
+    margin: auto;
+}
+.stream-user:before {
+  content: "";
+  position: absolute;
+  background-image: url("../public/Images/dots.png");
+  background-repeat: no-repeat;
+  width: 48px;
+  height: 42px;
+  bottom: 10%;
+  left: 10px;
+}
+.stream-user:after {
+  content: "";
+  position: absolute;
+  background-image: url("../public/Images/dots.png");
+  background-repeat: no-repeat;
+  width: 48px;
+  height: 42px;
+  top: 10%;
+  right: 10px;
+}
+.stream-user-circle {
+  position: absolute;
+  display: flex;
+    justify-content: center;
+    width: 84%;
+    height: 84%;
+    background-color: #FEF4F6;
+    border-radius: 50%;
+}
+.stream-user-thumb { position: relative; z-index: 1; max-width: 100%;}
+.live-stream {background: #F01F4B;  color: #fff; font-size: 42px; padding: 12px 24px; font-weight: 600; margin: 10px 0; display: inline-block; text-shadow: 2px 3px black; }
+.list-large-text { font-size: 24px;}
+.infinite-scroll-component {
+  overflow: visible !important;
+}

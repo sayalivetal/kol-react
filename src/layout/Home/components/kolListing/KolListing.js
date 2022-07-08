@@ -52,11 +52,11 @@ const navigate = useNavigate()
     setPage(1);
     kolListing("reset");
   }, [languages, stream, location]);
-  useEffect(() => {
-   if(status===true){
-    navigate('/details')
-   }
-  }, [status]);
+  // useEffect(() => {
+  //  if(status===true){
+  //   navigate('/details')
+  //  }
+  // }, [status]);
   const handleLanguageChange = (e) => {
     setFreshposts([]);
     setLanguages(e.target.value);
@@ -69,11 +69,8 @@ const navigate = useNavigate()
     setFreshposts([]);
     setLocation(e.target.value);
   };
-  const sendDetails = (id) =>{
-    dispatch(kolDetails({id,token}))
-    console.log(id,token);
-  }
-  console.log(stream);
+
+  console.log(freshposts);
   return (
     <>
       <div className="row justify-content-between border-bottom pt-3 pb-4">
@@ -140,22 +137,24 @@ const navigate = useNavigate()
       >
         {freshposts &&
           freshposts.map((item, index) => {
-            console.log(item.avatar);
+            console.log(item.id);
             return (
               <div
                 key={index}
                 className="row justify-content-between py-4 list-row" 
               >
                 <div className="col-lg-3 py-2">
-                  <div className="kol-user-img" onClick={()=>sendDetails(item.profile_id)}>
-                    <img src={item.avatar} />
+                  <div className="kol-user-img">
+                  <Link to={`/details?${item.profile_id}`}> <img src={item.avatar} /></Link>
+                   
                   </div>
                 </div>
                 <div className="col-lg-9 border-bottom  py-2">
                   <div className="row justify-content-between">
                     <div className="col-lg-9">
-                      <h3 className="text-bold" onClick={()=>sendDetails(item.profile_id)}>
-                        {item.username}
+                      <h3 className="text-bold">
+                      <Link to={`/details?${item.profile_id}`}>{item.username}</Link>
+                        
                         <sup>
                           <i className="bi bi-patch-check-fill heading-icon"></i>
                         </sup>
@@ -206,7 +205,7 @@ const navigate = useNavigate()
                   <div className="row py-1">
                     <div className="col-lg-12 align-items-center d-flex">
                       <div className="ml-auto more-button">
-                        <Link to={`/details?id=${item.profile_id}`}>Show More Detail</Link>
+                        <Link to={`/details/${item.profile_id}`}>Show More Detail</Link>
                       </div>
                     </div>
                   </div>
