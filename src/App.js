@@ -4,10 +4,9 @@ import { Spinner } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import LandingPage from './pages/LandingPage/LandingPage';
 import './App.css';
-const DefaultLayout = React.lazy(() =>
-  import('./layout/KOLMarketPlace/KolMarketPlace')
-);
+import PrivateRoute from './PrivateRoute';
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
 const Dashboard = React.lazy(() => import('./layout/Dashboard/Dashboard'));
@@ -19,6 +18,7 @@ const ForgotPassword = React.lazy(() =>
 const ChangePassword = React.lazy(() =>
   import('./pages/ChangePassword/ChangePassword')
 );
+
 const Role = React.lazy(() => import('./pages/Role/Role'));
 const Home = React.lazy(() => import('./layout/Home/Home'));
 const EmailCheck = React.lazy(() => import('./pages/EmailCheck/EmailCheck'));
@@ -28,12 +28,15 @@ const PasswordSuccess = React.lazy(() =>
 );
 const loading = <Spinner animation='grow' />;
 
+
+
 const App = () => {
   return (
     <div>
       <Suspense fallback={loading}>
         <Routes>
-          <Route exact path='*' name='Home' element={<DefaultLayout />} />
+          <Route exact path='*' name='Home' element={<PrivateRoute />} />
+          <Route path='/' element={<LandingPage/>} />
           <Route exact path='/login' element={<Login />} />
           <Route exact path='/dashboard' element={<Dashboard />} />
           <Route exact path='/register' element={<Register />} />

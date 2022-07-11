@@ -6,32 +6,38 @@ import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { API } from "../../../../common/apis";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button, Dropdown } from "react-bootstrap";
-import {kolDetails} from '../../../../slices/KolListing/KolSlices'
-
+import { kolDetails } from "../../../../slices/KolListing/KolSlices";
+import { getAllLanguage } from "../../../../slices/api/simpleApi";
 import { kolListing } from "../../../../slices/api/simpleApi";
 import { useDispatch, useSelector } from "react-redux";
 
 const KolListing = () => {
-const dispatch = useDispatch()
-  const token = useSelector((state) => state?.user?.loginUser?.data?.token);
-  const status = useSelector((state) => state?.kolListing?.listingDetails?.status);
-const navigate = useNavigate()
+  const dispatch = useDispatch();
+  let token = localStorage.getItem("token");
+
+  console.log(token);
+
+  const status = useSelector(
+    (state) => state?.kolListing?.listingDetails?.status
+  );
+  const navigate = useNavigate();
   console.log(token);
   // const [kolProfile, setKolProfile] = useState(null);
   // console.log(kolProfile);
-  const [languages, setLanguages] = useState("");
-  const [stream, setStreams] = useState("");
-  const [location, setLocation] = useState("");
+  const [languages, setLanguages] = useState({});
+  const [language,setLanguage]=useState('')
+  const [stream, setStreams] = useState({});
+  const [location, setLocation] = useState({});
   const [kolProfile, setKolProfile] = useState([]);
   const [freshposts, setFreshposts] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
+
   const [page, setPage] = useState(1);
   const limit = 2;
   const didMount = useRef(false);
   const kolListing = async (actionType = "normal") => {
     let pageno = actionType === "reset" ? 1 : page;
     const response = await fetch(
-      `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${languages}&stream=${stream}&state=${location}`,
+      `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${language}&stream=${stream}&state=${location}`,
       {
         method: "GET",
         headers: {
@@ -42,7 +48,7 @@ const navigate = useNavigate()
     );
 
     const result = await response.json();
-
+      console.log(result);
     // setKolProfile([...result.kolProfiles]);
     setFreshposts([...freshposts, ...result.kolProfiles]);
     setPage((page) => page + 1);
@@ -59,8 +65,9 @@ const navigate = useNavigate()
   // }, [status]);
   const handleLanguageChange = (e) => {
     setFreshposts([]);
-    setLanguages(e.target.value);
+    setLanguage(e.target.value);
   };
+  console.log(language);
   const handleStreamChange = (e) => {
     setFreshposts([]);
     setStreams(e.target.value);
@@ -69,8 +76,14 @@ const navigate = useNavigate()
     setFreshposts([]);
     setLocation(e.target.value);
   };
-
-  console.log(freshposts);
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setLanguages({ ...data });
+    };
+    getAllLanguage(callback);
+  }, []);
+  console.log(languages);
   return (
     <>
       <div className="row justify-content-between border-bottom pt-3 pb-4">
@@ -80,9 +93,13 @@ const navigate = useNavigate()
             aria-label="Default select example"
             onChange={handleLanguageChange}
           >
-            <option selected>Languages</option>
+            {languages &&
+              Object.entries(languages).map(([key, value]) => (
+                <option value={key}>{value}</option>
+              ))}
+            {/* <option selected>Languages</option>
             <option value="English">English</option>
-            <option value="Hindi">Hindi</option>
+            <option value="Hindi">Hindi</option> */}
           </select>
           <select
             className="form-select"
@@ -141,20 +158,24 @@ const navigate = useNavigate()
             return (
               <div
                 key={index}
-                className="row justify-content-between py-4 list-row" 
+                className="row justify-content-between py-4 list-row"
               >
                 <div className="col-lg-3 py-2">
                   <div className="kol-user-img">
-                  <Link to={`/details?${item.profile_id}`}> <img src={item.avatar} /></Link>
-                   
+                    <Link to={`/details/${item.profile_id}`}>
+                      {" "}
+                      <img src={item.avatar} />
+                    </Link>
                   </div>
                 </div>
                 <div className="col-lg-9 border-bottom  py-2">
                   <div className="row justify-content-between">
                     <div className="col-lg-9">
                       <h3 className="text-bold">
-                      <Link to={`/details?${item.profile_id}`}>{item.username}</Link>
-                        
+                        <Link to={`/details/${item.profile_id}`}>
+                          {item.username}
+                        </Link>
+
                         <sup>
                           <i className="bi bi-patch-check-fill heading-icon"></i>
                         </sup>
@@ -203,9 +224,21 @@ const navigate = useNavigate()
                   </div>
 
                   <div className="row py-1">
-                    <div className="col-lg-12 align-items-center d-flex">
+                    <div className="col-lg-8 text-right">
+                      <Link to="/chat">
+                        <button className="ml-auto btn theme-btn">
+                          <span className="mx-2">
+                            <i className="bi bi-chat-dots"></i>
+                          </span>{" "}
+                          Chat with me
+                        </button>
+                      </Link>
+                    </div>
+                    <div className="col-lg-4 align-items-center d-flex">
                       <div className="ml-auto more-button">
-                        <Link to={`/details/${item.profile_id}`}>Show More Detail</Link>
+                        <Link to={`/details/${item.profile_id}`}>
+                          Show More Detail
+                        </Link>
                       </div>
                     </div>
                   </div>

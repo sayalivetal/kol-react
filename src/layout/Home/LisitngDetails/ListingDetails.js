@@ -12,7 +12,6 @@ import DetailSlider from "../components/DetailSlider/DetailSlider";
 import ReviewSlider from "../components/ReviewSlider/ReviewSlider";
 import { useSelector } from "react-redux";
 const ListingDetails = () => {
-
   const token = useSelector((state) => state?.user?.loginUser?.data?.token);
 
   console.log(token);
@@ -21,20 +20,18 @@ const ListingDetails = () => {
   const kolListing = async (actionType = "normal") => {
     const response = await fetch(`${API}/kol-profile/view?id=${id}`, {
       method: "GET",
-     
+
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: "Bearer " + token
+        Authorization: "Bearer " + token,
       },
     });
     let data = await response.json();
     console.log(data.kolProfile);
-    setKolProfile([...data?.kolProfile])
-   
+    setKolProfile([...data?.kolProfile]);
   };
   useEffect(() => {
-  
     kolListing();
   }, []);
   const { id } = useParams();
@@ -110,12 +107,14 @@ const ListingDetails = () => {
                         <p className="kol-bio">{item.bio}</p>
                       </div>
                       <div className="col-lg-12 text-right">
-                        <button className="ml-auto btn theme-btn">
-                          <span className="mx-2">
-                            <i className="bi bi-chat-dots"></i>
-                          </span>{" "}
-                          Chat with me
-                        </button>
+                        <Link to="/chat">
+                          <button className="ml-auto btn theme-btn">
+                            <span className="mx-2">
+                              <i className="bi bi-chat-dots"></i>
+                            </span>{" "}
+                            Chat with me
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -129,14 +128,14 @@ const ListingDetails = () => {
                         <h4>KOL are promoting Products</h4>
                       </div>
                       <div className="col-lg-12">
-                        <DetailSlider video={item.video_links}/>
+                        <DetailSlider video={item.video_links} />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <Announcement announcement={item.announcement}/>
+              <Announcement announcement={item.announcement} />
 
               <div className="card mt-3 border-0">
                 <div className="card-body review-block">

@@ -1,57 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllCategory } from "../../slices/api/simpleApi";
+import { getAllCategory,getAllLanguage } from "../../slices/api/simpleApi";
+import { userSelector, clearState } from "../../slices/AuthSlice/AuthSlice";
 import { Dropdown } from "react-bootstrap";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Header = () => {
-  const [categoryList, setCategoryList] = useState([]);
-  const userDetails = useSelector((state) => state?.user?.loginUser);
-  const userRegister = useSelector((state) => state?.user?.registerUser);
-  console.log(userRegister);
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    role: "",
-    token: "",
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [categoryList, setCategoryList] = useState({});
+  const [language,setLanguage] = useState({})
+  const {
+    isFetching,
+    isError,
+    username,
+    message,
+    email,
+    role: { payload },
+  } = useSelector(userSelector);
+  console.log(payload, email, username);
+
+  console.log(categoryList);
+  let token = localStorage.getItem("token");
+
+  console.log(token);
 
   useEffect(() => {
     const callback = (data) => {
-      setCategoryList([...data]);
+      console.log(data);
+      setCategoryList({ ...data });
     };
-    getAllCategory(callback);
+    getAllCategory(callback, token);
   }, []);
-
+  console.log(categoryList);
   useEffect(() => {
-    if (userDetails) {
-      setUser((state) => {
-        return {
-          ...state,
-          name: userDetails?.data?.user_name,
-          email: userDetails?.data?.email,
-          role: userDetails?.data?.role_id,
-          token: userDetails?.data?.token,
-        };
-      });
+    if (isError) {
+      dispatch(clearState());
+      navigate("/login");
     }
-    if (userRegister) {
-      setUser((state) => {
-        return {
-          ...state,
-          name: userRegister?.data?.user_name,
-          email: userRegister?.data?.email,
-          role: userRegister?.data?.role_id,
-          token: userRegister?.data?.token,
-        };
-      });
-    }
-  }, [userDetails, userRegister]);
-  console.log(user);
+  }, [isError]);
   const signOut = () => {
-    localStorage.removeItem("persist:root");
+    localStorage.removeItem("token");
+    navigate("/login");
   };
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
@@ -66,7 +58,7 @@ const Header = () => {
               KOL{" "}
             </a>
           </div>
-          {user.token ? (
+          {token ? (
             <>
               <div className="col-md-5 text-end">
                 <nav className="">
@@ -82,12 +74,9 @@ const Header = () => {
 
                       <Dropdown.Menu>
                         {categoryList &&
-                          categoryList.map((item, i) => {
-                            console.log("dropdown", item.name);
-                            return (
-                              <Dropdown.Item key={i}>{item.name}</Dropdown.Item>
-                            );
-                          })}
+                          Object.entries(categoryList).map(([key, value]) => (
+                            <Dropdown.Item key={key}>{value}</Dropdown.Item>
+                          ))} 
                       </Dropdown.Menu>
                     </Dropdown>
 
@@ -111,7 +100,7 @@ const Header = () => {
               <div className="col-md-4">
                 <div className="d-flex justify-content-end">
                   <div className="header-icon-bar">
-                    {user.role == 2 ? (
+                    {payload == 2 ? (
                       <>
                         <Link to="/dashboard">
                           <i className="bi bi-grid"></i>
@@ -140,7 +129,7 @@ const Header = () => {
                         className="custom-btn"
                         id="dropdown-basic"
                       >
-                        {user.name}
+                        {username}
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
@@ -148,7 +137,9 @@ const Header = () => {
                           <Link to="/account">Your Account</Link>
                         </Dropdown.Item>
                         <Dropdown.Item>
-                          <button><span onClick={signOut}>Sign out</span></button>
+                          <button>
+                            <span onClick={signOut}>Sign out</span>
+                          </button>
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>

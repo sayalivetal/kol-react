@@ -7,17 +7,34 @@ import "./EmailVerify.css";
 import {
   emailVerification,
   resendEmailOtp,
+  userSelector,clearState
 } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const EmailVerify = () => {
   const navigate = useNavigate();
-  const emailVerify = useSelector((state) => state?.user?.registerUser?.email);
+  const { isFetching, isSuccess, isError, errorMessage ,email} = useSelector(userSelector);
   // const userData = useSelector((state) => state?.user?.registerUser?.data);
   const userdata = useSelector((state) => state?.user?.loginUser);
- 
-  const [email, setEmail] = useState("");
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clearState());
+      navigate('/home');
+    }
+
+    if (isError) {
+      toast.error(errorMessage);
+      dispatch(clearState());
+    }
+  }, [isSuccess, isError]);
+
 
 
   // useEffect(() => {
@@ -25,27 +42,27 @@ const EmailVerify = () => {
   //     toast.success(userdata?.data?.message);
   //   }
   // }, [userdata]);
-  useEffect(() => {
-    if (userdata?.data?.token) {
-      navigate("/home");
-    }
-  }, [userdata]);
-  let asd;
-  useEffect(() => {
-    if (emailVerify) {
-      toast.success(
-        "You have been successfully registered, We have sent a verification code to your mail,please verify it!"
-      );
-      setEmail(emailVerify)
-    }
-  }, [emailVerify]);
-  useEffect(() => {
-    if (userdata?.email) {
-      //  toast.success(userdata.message);
-      asd = emailVerify ? emailVerify : userdata?.email;
-      setEmail(asd);
-    }
-  }, [userdata]);
+  // useEffect(() => {
+  //   if (userdata?.data?.token) {
+  //     navigate("/home");
+  //   }
+  // }, [userdata]);
+  // let asd;
+  // useEffect(() => {
+  //   if (emailVerify) {
+  //     toast.success(
+  //       "You have been successfully registered, We have sent a verification code to your mail,please verify it!"
+  //     );
+  //     setEmail(emailVerify)
+  //   }
+  // }, [emailVerify]);
+  // useEffect(() => {
+  //   if (userdata?.email) {
+  //     //  toast.success(userdata.message);
+  //     asd = emailVerify ? emailVerify : userdata?.email;
+  //     setEmail(asd);
+  //   }
+  // }, [userdata]);
   console.log(email);
   const dispatch = useDispatch();
   //state for otp change

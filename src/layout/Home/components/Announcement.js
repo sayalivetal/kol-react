@@ -25,7 +25,7 @@ const Announcement = ({announcement}) => {
         'December'];
 
         
-    let a = new Date(announcement.start_date)
+    let a = new Date(announcement?.start_date)
     console.log(a);
     let day = days[a.getDay()]
 console.log(day);
@@ -88,7 +88,7 @@ console.log(day);
               <div className="stream-user">
                 <div className="stream-user-circle">&nbsp;</div>
                 <img
-                  src={announcement.image}
+                  src={announcement?.image}
                   alt=""
                   className="stream-user-thumb"
                 />

@@ -10,6 +10,8 @@ const Contents = () => {
       {" "}
       <Routes>
         {routes.map((route, idx) => {
+        let token = localStorage.getItem('token');
+          console.log(route,token);
           return (
             route.element && (
               <Route
