@@ -36,4 +36,35 @@ export const getAllLanguage = async (callback) => {
   callback(result.data);
 };
 
+export const getAllStreams = async (callback) => {
+  const response = await fetch(`${API}/stream-list`, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+  callback(result.data);
+};
+
+export const getAllStates = async (callback) => {
+  const response = await fetch(`${API}/state-list`, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+  callback(result.data);
+};
+
+
 

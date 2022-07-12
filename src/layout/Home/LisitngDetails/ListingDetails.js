@@ -12,7 +12,7 @@ import DetailSlider from "../components/DetailSlider/DetailSlider";
 import ReviewSlider from "../components/ReviewSlider/ReviewSlider";
 import { useSelector } from "react-redux";
 const ListingDetails = () => {
-  const token = useSelector((state) => state?.user?.loginUser?.data?.token);
+  const token = localStorage.getItem("token")
 
   console.log(token);
   const [kolProfile, setKolProfile] = useState(null);
@@ -54,13 +54,13 @@ const ListingDetails = () => {
                   <div className="col-lg-12 px-4">
                     <div className="row justify-content-between py-4 list-row">
                       <div className="col-lg-2 py-2">
-                        <div className="kol-user-img">
+                        <div className="kol-user-img-details">
                           <img src={item.avatar} />
                         </div>
                       </div>
                       <div className="col-lg-10  py-2">
                         <div className="row justify-content-between">
-                          <div className="col-lg-9">
+                          <div className="col-lg-8">
                             <h3 className="text-bold">
                               {item.get_user.name}
                               <sup>
@@ -69,7 +69,7 @@ const ListingDetails = () => {
                             </h3>
                             <p>({item.tags})</p>
                           </div>
-                          <div className="col-lg-3">
+                          <div className="col-lg-4">
                             <p className="text-right">
                               <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                               <span>

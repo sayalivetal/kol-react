@@ -43,6 +43,12 @@ const Login = () => {
       toast.success(errorMessage)
       }
   },[statusCode])
+
+  useEffect(()=>{
+    if(errorMessage =='Please choose roles!'){
+      navigate('/role')
+    }
+  },[])
   const [password, setpassword] = useState("password");
   // useEffect(()=>{
   //   if(loginUserData?.message){
@@ -50,7 +56,7 @@ const Login = () => {
   //   }
   // },[loginUserData])
   // useEffect(()=>{
-  //   if(loginUserData?.data?.email){
+  //   if(errorMessage =='Please choose roles!'){
   //     navigate('/role')
   //   }
   //   if(loginUserData?.data?.token){

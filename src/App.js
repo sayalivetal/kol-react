@@ -38,7 +38,7 @@ const App = () => {
           <Route exact path='*' name='Home' element={<PrivateRoute />} />
           <Route path='/' element={<LandingPage/>} />
           <Route exact path='/login' element={<Login />} />
-          <Route exact path='/dashboard' element={<Dashboard />} />
+          <Route exact path='/dashboard/' element={<Dashboard />} />
           <Route exact path='/register' element={<Register />} />
           <Route exact path='/emailVerify' element={<EmailVerify />} />
           <Route exact path='/forgotPassword' element={<ForgotPassword />} />

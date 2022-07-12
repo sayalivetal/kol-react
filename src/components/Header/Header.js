@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllCategory,getAllLanguage } from "../../slices/api/simpleApi";
+import { getAllCategory, getAllLanguage } from "../../slices/api/simpleApi";
 import { userSelector, clearState } from "../../slices/AuthSlice/AuthSlice";
 import { Dropdown } from "react-bootstrap";
+import {kolType} from '../../slices/KolListing/KolSlices'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [categoryList, setCategoryList] = useState({});
-  const [language,setLanguage] = useState({})
+  const [language, setLanguage] = useState({});
   const {
     isFetching,
     isError,
@@ -45,6 +46,9 @@ const Header = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+  const handleChange = (e) => {
+    console.log(dispatch(kolType(e.target.value)));
+  };
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
@@ -63,22 +67,19 @@ const Header = () => {
               <div className="col-md-5 text-end">
                 <nav className="">
                   <form className="search-bar">
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        className="custom-btn"
-                        variant=""
-                        id="dropdown-basic"
-                      >
-                        All Categories
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        {categoryList &&
-                          Object.entries(categoryList).map(([key, value]) => (
-                            <Dropdown.Item key={key}>{value}</Dropdown.Item>
-                          ))} 
-                      </Dropdown.Menu>
-                    </Dropdown>
+                   
+                    <select
+                      className="form-select custom-btn"
+                      aria-label="Default select example"
+                      onChange={handleChange}
+                    >
+                      <option selected>Select Category</option>
+                      {categoryList &&
+                        Object.entries(categoryList).map(([key, value]) => (
+                          <option key={key}>{value}</option>
+                        ))}
+                 
+                    </select>
 
                     <input
                       type="text"
@@ -126,7 +127,7 @@ const Header = () => {
                     <Dropdown>
                       <Dropdown.Toggle
                         variant=""
-                        className="custom-btn"
+                        className="profile-btn"
                         id="dropdown-basic"
                       >
                         {username}

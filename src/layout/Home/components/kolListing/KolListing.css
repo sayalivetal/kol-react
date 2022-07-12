@@ -8,6 +8,7 @@
   max-height: 280px;
   border-radius: 20px;
   overflow: hidden;
+  background-color: #e3e3e3;
 }
 .kol-user-img img {
   width: 100%;
@@ -73,5 +74,5 @@
   cursor: pointer;
 }
 select, option{
-  font-family: bootstrap-icons !important;
+  /*font-family: bootstrap-icons !important;*/
 }

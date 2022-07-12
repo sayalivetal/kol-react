@@ -91,6 +91,7 @@ body {
     justify-content: center;
     width: 90%;
     margin: auto;
+    height: 100%;
 }
 .stream-user:before {
   content: "";
@@ -127,3 +128,5 @@ body {
 .infinite-scroll-component {
   overflow: visible !important;
 }
+
+.headText { color: rgb(33, 37, 41); text-decoration: none;}

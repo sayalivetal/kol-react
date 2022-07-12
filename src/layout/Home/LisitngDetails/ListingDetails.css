@@ -3,18 +3,20 @@
   min-height: 240px;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: #edecec;
 }
 .heading-icon {
   font-size: 18px;
   color: #1877f2;
 }
-.kol-user-img {
+.kol-user-img-details {
   min-width: 100%;
   min-height: 182px;
   max-height: 182px;
   border-radius: 20px;
   overflow: hidden;
   margin-top: -100px;
+  background-color: #e3e3e3;
 }
 .kol-user-img img {
   width: 100%;

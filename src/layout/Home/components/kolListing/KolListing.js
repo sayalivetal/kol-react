@@ -7,7 +7,7 @@ import { API } from "../../../../common/apis";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button, Dropdown } from "react-bootstrap";
 import { kolDetails } from "../../../../slices/KolListing/KolSlices";
-import { getAllLanguage } from "../../../../slices/api/simpleApi";
+import { getAllLanguage,getAllStates,getAllStreams } from "../../../../slices/api/simpleApi";
 import { kolListing } from "../../../../slices/api/simpleApi";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,18 +17,20 @@ const KolListing = () => {
 
   console.log(token);
 
-  const status = useSelector(
-    (state) => state?.kolListing?.listingDetails?.status
+  const kolType = useSelector(
+    (state) => state?.kolListing?.kolType
   );
   const navigate = useNavigate();
-  console.log(token);
+  console.log(kolType);
   // const [kolProfile, setKolProfile] = useState(null);
   // console.log(kolProfile);
   const [languages, setLanguages] = useState({});
   const [language,setLanguage]=useState('')
-  const [stream, setStreams] = useState({});
-  const [location, setLocation] = useState({});
-  const [kolProfile, setKolProfile] = useState([]);
+  const [stream, setStream] = useState('');
+  const [location, setLocation] = useState('');
+  const [state,setStates] = useState({})
+  const [streams, setStreams]=useState({})
+ 
   const [freshposts, setFreshposts] = useState([]);
 
   const [page, setPage] = useState(1);
@@ -36,6 +38,7 @@ const KolListing = () => {
   const didMount = useRef(false);
   const kolListing = async (actionType = "normal") => {
     let pageno = actionType === "reset" ? 1 : page;
+    console.log(pageno,language,limit,stream,location);
     const response = await fetch(
       `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${language}&stream=${stream}&state=${location}`,
       {
@@ -49,15 +52,21 @@ const KolListing = () => {
 
     const result = await response.json();
       console.log(result);
+      if(result.statusCode == 401){
+        localStorage.removeItem("token");
+        navigate("/login")
+      }
     // setKolProfile([...result.kolProfiles]);
     setFreshposts([...freshposts, ...result.kolProfiles]);
     setPage((page) => page + 1);
     // setIsFetching(false);
+ 
   };
+
   useEffect(() => {
     setPage(1);
     kolListing("reset");
-  }, [languages, stream, location]);
+  }, [language, stream, location]);
   // useEffect(() => {
   //  if(status===true){
   //   navigate('/details')
@@ -70,7 +79,7 @@ const KolListing = () => {
   console.log(language);
   const handleStreamChange = (e) => {
     setFreshposts([]);
-    setStreams(e.target.value);
+    setStream(e.target.value);
   };
   const handleLocationChange = (e) => {
     setFreshposts([]);
@@ -83,6 +92,21 @@ const KolListing = () => {
     };
     getAllLanguage(callback);
   }, []);
+
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setStreams({ ...data });
+    };
+    getAllStreams(callback);
+  }, []);
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setStates({ ...data });
+    };
+    getAllStates(callback);
+  }, []);
   console.log(languages);
   return (
     <>
@@ -93,6 +117,7 @@ const KolListing = () => {
             aria-label="Default select example"
             onChange={handleLanguageChange}
           >
+            <option selected>Languages</option>
             {languages &&
               Object.entries(languages).map(([key, value]) => (
                 <option value={key}>{value}</option>
@@ -102,18 +127,22 @@ const KolListing = () => {
             <option value="Hindi">Hindi</option> */}
           </select>
           <select
-            className="form-select"
+            className="form-select mx-3" 
             aria-label="Default select example"
             onChange={handleStreamChange}
           >
             <option selected>Streams</option>
-            <option value="Youtube">
+            {streams && 
+             Object.entries(streams).map(([key, value]) => (
+              <option value={key}>{value}</option>
+            ))}
+            {/* <option value="Youtube">
               youtube <span className="youtube-icon">&#xf62b;</span>
             </option>
             <option value="Instagram">instagram &#xf437;</option>
             <option value="Facebook">facebook &#xF344;</option>
             <option value="Tiktok">tiktok &#xf6cc;</option>
-            <option value="LinkedIn">LinkedIn &#xF472;</option>
+            <option value="LinkedIn">LinkedIn &#xF472;</option> */}
           </select>
 
           <select
@@ -121,10 +150,15 @@ const KolListing = () => {
             aria-label="Default select example"
             onChange={handleLocationChange}
           >
-            <option selected>Locations</option>
+             <option selected>Location</option>
+            {state && 
+             Object.entries(state).map(([key, value]) => (
+              <option value={key}>{value}</option>
+            ))}
+            {/* <option selected>Locations</option>
             <option value="Punjab">Punjab</option>
             <option value="Haryana">Haryana</option>
-            <option value="Chandigarh">Chandigarh</option>
+            <option value="Chandigarh">Chandigarh</option> */}
           </select>
         </div>
         <div className="col-lg-2 ml-auto">
@@ -168,11 +202,11 @@ const KolListing = () => {
                     </Link>
                   </div>
                 </div>
-                <div className="col-lg-9 border-bottom  py-2">
+                <div className="col-lg-8 border-bottom  py-2">
                   <div className="row justify-content-between">
                     <div className="col-lg-9">
                       <h3 className="text-bold">
-                        <Link to={`/details/${item.profile_id}`}>
+                        <Link  className="headText" to={`/details/${item.profile_id}`}>
                           {item.username}
                         </Link>
 
@@ -182,7 +216,7 @@ const KolListing = () => {
                       </h3>
                       <p>({item.tags})</p>
                     </div>
-                    <div className="col-lg-3">
+                    <div className="col-lg-4">
                       <p className="text-right">
                         <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                         <span>
@@ -224,6 +258,13 @@ const KolListing = () => {
                   </div>
 
                   <div className="row py-1">
+                    <div className="col-lg-4 align-items-center d-flex">
+                      <div className="more-button">
+                        <Link to={`/details/${item.profile_id}`}>
+                          Show More Detail
+                        </Link>
+                      </div>
+                    </div>
                     <div className="col-lg-8 text-right">
                       <Link to="/chat">
                         <button className="ml-auto btn theme-btn">
@@ -233,13 +274,6 @@ const KolListing = () => {
                           Chat with me
                         </button>
                       </Link>
-                    </div>
-                    <div className="col-lg-4 align-items-center d-flex">
-                      <div className="ml-auto more-button">
-                        <Link to={`/details/${item.profile_id}`}>
-                          Show More Detail
-                        </Link>
-                      </div>
                     </div>
                   </div>
                 </div>

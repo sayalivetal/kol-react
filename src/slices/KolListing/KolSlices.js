@@ -3,6 +3,7 @@ import { API } from "../../common/apis";
 
 const initialState = {
  listingDetails :{},
+ kolType:''
 };
 
 //API Integration with action for registration creation
@@ -41,9 +42,10 @@ const kolReducer = createSlice({
   initialState,
 
   reducers: {
-    // addRole: (action, state) => {
-    //   return { role: { ...state, ...action.payload } };
-    // },
+    kolType: (action, {payload}) => {
+      console.log(payload);
+      return {kolType: payload};
+    },
   },
   extraReducers: {
     [kolDetails.fulfilled]: (state, action) => {
@@ -52,5 +54,5 @@ const kolReducer = createSlice({
    
   },
 });
-export const { addRole } = kolReducer.actions;
+export const { kolType } = kolReducer.actions;
 export default kolReducer.reducer;
