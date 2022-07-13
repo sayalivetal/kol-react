@@ -7,30 +7,40 @@ import { API } from "../../../../common/apis";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button, Dropdown } from "react-bootstrap";
 import { kolDetails } from "../../../../slices/KolListing/KolSlices";
-import { getAllLanguage,getAllStates,getAllStreams } from "../../../../slices/api/simpleApi";
+import {
+  getAllLanguage,
+  getAllStates,
+  getAllStreams,
+} from "../../../../slices/api/simpleApi";
 import { kolListing } from "../../../../slices/api/simpleApi";
 import { useDispatch, useSelector } from "react-redux";
 
 const KolListing = () => {
   const dispatch = useDispatch();
+  const [searchCategory, setSearchCategory] = useState({
+    name: "",
+    kolType: "",
+  });
   let token = localStorage.getItem("token");
 
   console.log(token);
 
-  const kolType = useSelector(
-    (state) => state?.kolListing?.kolType
-  );
+  const { kolType, name } = useSelector((state) => state?.kolListing);
   const navigate = useNavigate();
-  console.log(kolType);
+  console.log(kolType, name);
+  // useEffect(()=>{
+  //   setSearchCategory({name:name,kolType:kolType})
+  // },[kolType,name])
   // const [kolProfile, setKolProfile] = useState(null);
-  // console.log(kolProfile);
+  // console.log("===============================================",searchCategory.kolType);
   const [languages, setLanguages] = useState({});
-  const [language,setLanguage]=useState('')
-  const [stream, setStream] = useState('');
-  const [location, setLocation] = useState('');
-  const [state,setStates] = useState({})
-  const [streams, setStreams]=useState({})
- 
+  const [language, setLanguage] = useState("");
+  const [stream, setStream] = useState("");
+  const [location, setLocation] = useState("");
+  const [state, setStates] = useState({});
+  const [streams, setStreams] = useState({});
+  const [kolName, setKolName] = useState("");
+  const [kolCategory, setKolCategory] = useState("");
   const [freshposts, setFreshposts] = useState([]);
 
   const [page, setPage] = useState(1);
@@ -38,9 +48,13 @@ const KolListing = () => {
   const didMount = useRef(false);
   const kolListing = async (actionType = "normal") => {
     let pageno = actionType === "reset" ? 1 : page;
-    console.log(pageno,language,limit,stream,location);
+    console.log(pageno, language, limit, stream, location);
     const response = await fetch(
-      `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${language}&stream=${stream}&state=${location}`,
+      `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${
+        language ? language : ""
+      }&stream=${stream ? stream : ""}&state=${
+        location ? location : ""
+      }&search=${kolName ? kolName : ""}&kol_type=${kolCategory ? kolCategory : ""}`,
       {
         method: "GET",
         headers: {
@@ -51,27 +65,37 @@ const KolListing = () => {
     );
 
     const result = await response.json();
-      console.log(result);
-      if(result.statusCode == 401){
-        localStorage.removeItem("token");
-        navigate("/login")
-      }
+    console.log(result.kolProfiles);
+ 
     // setKolProfile([...result.kolProfiles]);
     setFreshposts([...freshposts, ...result.kolProfiles]);
+    console.log(freshposts);
     setPage((page) => page + 1);
+    if (result.statusCode == 401) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     // setIsFetching(false);
- 
   };
+  useEffect(() => {
+    setKolName(name);
+    setFreshposts([]);
+  }, [name]);
+  useEffect(() => {
+    setKolCategory(kolType);
+    setFreshposts([]);
+  }, [kolType]);
+
+  console.log("hgjdgfffffffffffffffffffffffffffff", kolName,kolCategory);
 
   useEffect(() => {
     setPage(1);
     kolListing("reset");
-  }, [language, stream, location]);
-  // useEffect(() => {
-  //  if(status===true){
-  //   navigate('/details')
-  //  }
-  // }, [status]);
+  
+  }, [language, stream, location, kolName, kolCategory]);
+
+
+
   const handleLanguageChange = (e) => {
     setFreshposts([]);
     setLanguage(e.target.value);
@@ -107,7 +131,7 @@ const KolListing = () => {
     };
     getAllStates(callback);
   }, []);
-  console.log(languages);
+  console.log(freshposts);
   return (
     <>
       <div className="row justify-content-between border-bottom pt-3 pb-4">
@@ -127,15 +151,15 @@ const KolListing = () => {
             <option value="Hindi">Hindi</option> */}
           </select>
           <select
-            className="form-select mx-3" 
+            className="form-select mx-3"
             aria-label="Default select example"
             onChange={handleStreamChange}
           >
             <option selected>Streams</option>
-            {streams && 
-             Object.entries(streams).map(([key, value]) => (
-              <option value={key}>{value}</option>
-            ))}
+            {streams &&
+              Object.entries(streams).map(([key, value]) => (
+                <option value={key}>{value}</option>
+              ))}
             {/* <option value="Youtube">
               youtube <span className="youtube-icon">&#xf62b;</span>
             </option>
@@ -150,11 +174,11 @@ const KolListing = () => {
             aria-label="Default select example"
             onChange={handleLocationChange}
           >
-             <option selected>Location</option>
-            {state && 
-             Object.entries(state).map(([key, value]) => (
-              <option value={key}>{value}</option>
-            ))}
+            <option selected>Location</option>
+            {state &&
+              Object.entries(state).map(([key, value]) => (
+                <option value={key}>{value}</option>
+              ))}
             {/* <option selected>Locations</option>
             <option value="Punjab">Punjab</option>
             <option value="Haryana">Haryana</option>
@@ -206,7 +230,10 @@ const KolListing = () => {
                   <div className="row justify-content-between">
                     <div className="col-lg-9">
                       <h3 className="text-bold">
-                        <Link  className="headText" to={`/details/${item.profile_id}`}>
+                        <Link
+                          className="headText"
+                          to={`/details/${item.profile_id}`}
+                        >
                           {item.username}
                         </Link>
 
@@ -260,9 +287,11 @@ const KolListing = () => {
                   <div className="row py-1">
                     <div className="col-lg-4 align-items-center d-flex">
                       <div className="more-button">
-                        <Link to={`/details/${item.profile_id}`}>
+                        {/* <Link to={`/details/${item.profile_id}`}>
                           Show More Detail
-                        </Link>
+                        </Link> */}
+                        Mostly Active user
+                        {item.social_active}
                       </div>
                     </div>
                     <div className="col-lg-8 text-right">
