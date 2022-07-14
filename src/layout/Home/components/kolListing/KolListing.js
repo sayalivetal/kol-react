@@ -6,32 +6,61 @@ import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { API } from "../../../../common/apis";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button, Dropdown } from "react-bootstrap";
-import {kolDetails} from '../../../../slices/KolListing/KolSlices'
-
+import {
+  kolDetails,
+  kolAddBookmark,
+} from "../../../../slices/KolListing/KolSlices";
+import {
+  getAllLanguage,
+  getAllStates,
+  getAllStreams,
+} from "../../../../slices/api/simpleApi";
 import { kolListing } from "../../../../slices/api/simpleApi";
 import { useDispatch, useSelector } from "react-redux";
 
 const KolListing = () => {
-const dispatch = useDispatch()
-  const token = useSelector((state) => state?.user?.loginUser?.data?.token);
-  const status = useSelector((state) => state?.kolListing?.listingDetails?.status);
-const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const [searchCategory, setSearchCategory] = useState({
+    name: "",
+    kolType: "",
+  });
+  let token = localStorage.getItem("token");
+
   console.log(token);
+
+  const { kolType, name } = useSelector((state) => state?.kolListing);
+  const navigate = useNavigate();
+  console.log(kolType, name);
+  // useEffect(()=>{
+  //   setSearchCategory({name:name,kolType:kolType})
+  // },[kolType,name])
   // const [kolProfile, setKolProfile] = useState(null);
-  // console.log(kolProfile);
-  const [languages, setLanguages] = useState("");
-  const [stream, setStreams] = useState("");
+  // console.log("===============================================",searchCategory.kolType);
+  const [languages, setLanguages] = useState({});
+  const [language, setLanguage] = useState("");
+  const [stream, setStream] = useState("");
   const [location, setLocation] = useState("");
-  const [kolProfile, setKolProfile] = useState([]);
+  const [state, setStates] = useState({});
+  const [streams, setStreams] = useState({});
+  const [kolName, setKolName] = useState("");
+  const [kolCategory, setKolCategory] = useState("");
   const [freshposts, setFreshposts] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
+  const [bookmark, setBookmark] = useState(false);
+
   const [page, setPage] = useState(1);
   const limit = 2;
   const didMount = useRef(false);
   const kolListing = async (actionType = "normal") => {
     let pageno = actionType === "reset" ? 1 : page;
+    console.log(pageno, language, limit, stream, location);
     const response = await fetch(
-      `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${languages}&stream=${stream}&state=${location}`,
+      `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${
+        language ? language : ""
+      }&stream=${stream ? stream : ""}&state=${
+        location ? location : ""
+      }&search=${kolName ? kolName : ""}&kol_type=${
+        kolCategory ? kolCategory : ""
+      }`,
       {
         method: "GET",
         headers: {
@@ -42,38 +71,84 @@ const navigate = useNavigate()
     );
 
     const result = await response.json();
-
+    console.log(result.kolProfiles);
+    if (result.statusCode === 401) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     // setKolProfile([...result.kolProfiles]);
     setFreshposts([...freshposts, ...result.kolProfiles]);
+    console.log(freshposts);
     setPage((page) => page + 1);
+    if (result.statusCode == 401) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     // setIsFetching(false);
   };
   useEffect(() => {
+    setKolName(name);
+    setFreshposts([]);
+  }, [name]);
+  useEffect(() => {
+    setKolCategory(kolType);
+    setFreshposts([]);
+  }, [kolType]);
+
+  console.log("hgjdgfffffffffffffffffffffffffffff", kolName, kolCategory);
+
+  useEffect(() => {
     setPage(1);
     kolListing("reset");
-  }, [languages, stream, location]);
-  useEffect(() => {
-   if(status===true){
-    navigate('/details')
-   }
-  }, [status]);
+  }, [language, stream, location, kolName, kolCategory]);
+
   const handleLanguageChange = (e) => {
     setFreshposts([]);
-    setLanguages(e.target.value);
+    setLanguage(e.target.value);
   };
+  console.log(language);
   const handleStreamChange = (e) => {
     setFreshposts([]);
-    setStreams(e.target.value);
+    setStream(e.target.value);
   };
   const handleLocationChange = (e) => {
     setFreshposts([]);
     setLocation(e.target.value);
   };
-  const sendDetails = (id) =>{
-    dispatch(kolDetails({id,token}))
-    console.log(id,token);
-  }
-  console.log(stream);
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setLanguages({ ...data });
+    };
+    getAllLanguage(callback);
+  }, []);
+
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setStreams({ ...data });
+    };
+    getAllStreams(callback);
+  }, []);
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setStates({ ...data });
+    };
+    getAllStates(callback);
+  }, []);
+  console.log(freshposts);
+  useEffect(() => {
+    setBookmark(JSON.parse(window.localStorage.getItem("bookmark")));
+  }, []);
+  useEffect(() => {
+    window.localStorage.setItem("bookmark", bookmark);
+  }, [bookmark]);
+  const handleBookmark = (profileId) => {
+    setBookmark((state) => !state);
+    dispatch(kolAddBookmark({profileId,token}))
+    console.log(profileId, token);
+  };
   return (
     <>
       <div className="row justify-content-between border-bottom pt-3 pb-4">
@@ -84,22 +159,31 @@ const navigate = useNavigate()
             onChange={handleLanguageChange}
           >
             <option selected>Languages</option>
+            {languages &&
+              Object.entries(languages).map(([key, value]) => (
+                <option value={key}>{value}</option>
+              ))}
+            {/* <option selected>Languages</option>
             <option value="English">English</option>
-            <option value="Hindi">Hindi</option>
+            <option value="Hindi">Hindi</option> */}
           </select>
           <select
-            className="form-select"
+            className="form-select mx-3"
             aria-label="Default select example"
             onChange={handleStreamChange}
           >
             <option selected>Streams</option>
-            <option value="Youtube">
+            {streams &&
+              Object.entries(streams).map(([key, value]) => (
+                <option value={key}>{value}</option>
+              ))}
+            {/* <option value="Youtube">
               youtube <span className="youtube-icon">&#xf62b;</span>
             </option>
             <option value="Instagram">instagram &#xf437;</option>
             <option value="Facebook">facebook &#xF344;</option>
             <option value="Tiktok">tiktok &#xf6cc;</option>
-            <option value="LinkedIn">LinkedIn &#xF472;</option>
+            <option value="LinkedIn">LinkedIn &#xF472;</option> */}
           </select>
 
           <select
@@ -107,10 +191,15 @@ const navigate = useNavigate()
             aria-label="Default select example"
             onChange={handleLocationChange}
           >
-            <option selected>Locations</option>
+            <option selected>Location</option>
+            {state &&
+              Object.entries(state).map(([key, value]) => (
+                <option value={key}>{value}</option>
+              ))}
+            {/* <option selected>Locations</option>
             <option value="Punjab">Punjab</option>
             <option value="Haryana">Haryana</option>
-            <option value="Chandigarh">Chandigarh</option>
+            <option value="Chandigarh">Chandigarh</option> */}
           </select>
         </div>
         <div className="col-lg-2 ml-auto">
@@ -140,36 +229,52 @@ const navigate = useNavigate()
       >
         {freshposts &&
           freshposts.map((item, index) => {
-            console.log(item.avatar);
+            console.log(item.id);
             return (
               <div
                 key={index}
-                className="row justify-content-between py-4 list-row" 
+                className="row justify-content-between py-4 list-row"
               >
                 <div className="col-lg-3 py-2">
-                  <div className="kol-user-img" onClick={()=>sendDetails(item.profile_id)}>
-                    <img src={item.avatar} />
+                  <div className="kol-user-img">
+                    <Link to={`/details/${item.profile_id}`}>
+                      {" "}
+                      <img src={item.avatar} />
+                    </Link>
                   </div>
                 </div>
-                <div className="col-lg-9 border-bottom  py-2">
+                <div className="col-lg-8 border-bottom  py-2">
                   <div className="row justify-content-between">
-                    <div className="col-lg-9">
-                      <h3 className="text-bold" onClick={()=>sendDetails(item.profile_id)}>
-                        {item.username}
+                    <div className="col-lg-8">
+                      <h3 className="text-bold">
+                        <Link
+                          className="headText"
+                          to={`/details/${item.profile_id}`}
+                        >
+                          {item.username}
+                        </Link>
+
                         <sup>
                           <i className="bi bi-patch-check-fill heading-icon"></i>
                         </sup>
                       </h3>
                       <p>({item.tags})</p>
                     </div>
-                    <div className="col-lg-3">
+                    <div className="col-lg-4">
                       <p className="text-right">
                         <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                         <span>
                           {item.city} {item.state},india
                         </span>
                         <span className="book-icon">
-                          <i className="bi bi-bookmark mx-1 bookmark-icon"></i>
+                          <i
+                            className={`bi bi-bookmark mx-1 bookmark-icon ${
+                              bookmark ? "active" : ""
+                            }`}
+                            onClick={() =>
+                              handleBookmark(item.profile_id)
+                            }
+                          ></i>
                         </span>
                       </p>
                     </div>
@@ -204,10 +309,24 @@ const navigate = useNavigate()
                   </div>
 
                   <div className="row py-1">
-                    <div className="col-lg-12 align-items-center d-flex">
-                      <div className="ml-auto more-button">
-                        <Link to={`/details?id=${item.profile_id}`}>Show More Detail</Link>
+                    <div className="col-lg-4 align-items-center d-flex">
+                      <div className="more-button">
+                        {/* <Link to={`/details/${item.profile_id}`}>
+                          Show More Detail
+                        </Link> */}
+                        Mostly Active user
+                        {item.social_active}
                       </div>
+                    </div>
+                    <div className="col-lg-8 text-right">
+                      <Link to="/chat">
+                        <button className="ml-auto btn theme-btn">
+                          <span className="mx-2">
+                            <i className="bi bi-chat-dots"></i>
+                          </span>{" "}
+                          Chat with me
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

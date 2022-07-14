@@ -1,157 +1,73 @@
 import React from 'react'
 import '../Chat.css'
 const Conversation = () => {
-  var dat = {
-    data: {
-      chat1: [
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message: 'Hello',
-          },
-        },
-        {
-          from: {
-            type: 'user2',
-          },
-          msg: {
-            message: 'Hi',
-          },
-        },
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message: 'What plans for today?',
-          },
-        },
-        {
-          from: {
-            type: 'user2',
-          },
-          msg: {
-            message: 'Nothing much. How about you?',
-          },
-        },
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message: 'Planning to go to a movie. Wanna come?',
-          },
-        },
-        {
-          from: {
-            type: 'user2',
-          },
-          msg: {
-            message: 'Sure why not.',
-          },
-        },
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message: 'Great. see you then.',
-          },
-        },
-        {
-          from: {
-            type: 'user2',
-          },
-          msg: {
-            message: 'ya bye.',
-          },
-        },
-      ],
+ 
 
-      chat2: [
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message: 'Hi',
-          },
-        },
-        {
-          from: {
-            type: 'user2',
-          },
-          msg: {
-            message: 'Hi',
-          },
-        },
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message: 'How can I help you?',
-          },
-        },
-        {
-          from: {
-            type: 'user2',
-          },
-          msg: {
-            message: 'I would like to know more about your product.',
-          },
-        },
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message:
-              'Sure. I will send you an email with details on our product.',
-          },
-        },
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message: 'Let me know if you have any doubts.',
-          },
-        },
-        {
-          from: {
-            type: 'user2',
-          },
-          msg: {
-            message: 'Great. Thanks!',
-          },
-        },
-        {
-          from: {
-            type: 'user1',
-          },
-          msg: {
-            message: 'Anytime.',
-          },
-        },
-      ],
-    },
-  };
-  var chats = [];
-  for (var chat in dat.data) {
-    var str = '';
-    dat.data[chat].forEach(
-      (ch) =>
-        (str +=
-          '<div className="' + ch.from.type + '">' + ch.msg.message + '</div>')
-    );
-    chats.push(str);
-  }
-console.log(chats);
   return (
-    <div className=''>Conversation</div>
+    <>
+
+    <div className='chat-container'>
+      <div className='chat-row'>
+        <div className='chat-thumb-container'>
+          <div className='chat-user-thumb'>
+              <img src="Images/avatar.png" />
+          </div>
+          <span className='status-icon active'></span>
+        </div>
+
+        <div className='chat-info-container'>
+          <div className='chat-user-name'>Jone Doe  <span className='chat-time'>09:00 AM</span></div>
+          <div className='chat-message-text'>Hi, How are you? why are you so late, i am waiting.</div>
+          <div className='chat-message-text'>Hi, How are you? why are you so late.</div>
+          <div className='chat-message-text'>Hi, How are you? .</div>
+        </div>
+      </div>
+
+      <div className='chat-row'>
+        <div className='chat-thumb-container'>
+          <div className='chat-user-thumb'>
+              <img src="Images/avatar.png" />
+          </div>
+          <span className='status-icon in-active'></span>
+        </div>
+
+        <div className='chat-info-container'>
+          <div className='chat-user-name'>Jone Doe  <span className='chat-time'>09:00 AM</span></div>
+          <div className='chat-message-text'>Hi, How are you? why are you so late, i am waiting.</div>
+          <div className='chat-message-text'>Hi, How are you?</div>
+          <div className='chat-message-text'>Hi, How are you? why are you so late, i am waiting.</div>
+        </div>
+      </div>
+
+      <div className='chat-row'>
+        <div className='chat-thumb-container'>
+          <div className='chat-user-thumb'>
+              <img src="Images/avatar.png" />
+          </div>
+          <span className='status-icon in-active'></span>
+        </div>
+
+        <div className='chat-info-container'>
+          <div className='chat-user-name'>Jone Doe  <span className='chat-time'>09:00 AM</span></div>
+          <div className='chat-message-text'>Hi, How are you? why are you so late, i am waiting.</div>
+          <div className='chat-message-text'>Hi, How are you?</div>
+          <div className='chat-message-text'>Hi, How are you? why are you so late, i am waiting.</div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div className='chat-input-container'>
+        <div className='chat-input-row'>
+          <input type="text" className="form-control chat-control" placeholder='Write your message here' />
+          <button type="submit" className='chat-submit-btn'><i class="bi bi-send-fill"></i></button>
+        </div>
+    </div>
+
+
+    </>
   )
 }
 

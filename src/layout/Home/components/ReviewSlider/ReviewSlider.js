@@ -70,7 +70,7 @@ const ReviewSlider = () => {
       <div className="row justify-content-between py-2 list-row">
         <div className="col-lg-3 py-2">
           <div className="kol-review-user-img">
-            <img src="./Images/4.jpg" />
+            <img src="Imgaes/4.jpg" />
           </div>
         </div>
         <div className="col-lg-9  py-2">
