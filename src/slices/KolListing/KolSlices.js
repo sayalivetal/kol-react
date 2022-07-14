@@ -5,6 +5,7 @@ const initialState = {
  listingDetails :{},
  kolType:'',
  name:'',
+ message:''
 };
 
 //API Integration with action for registration creation
@@ -21,6 +22,39 @@ console.log(id,token);
           Accept: "application/json",
           Authorization: "Bearer " + token
         },
+      });
+      let data = await response.json();
+      console.log(data);
+      if (response.status === 200) {
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (e) {
+      console.log("Error", e.response.data);
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
+
+//bookmark add api integration
+export const  kolAddBookmark = createAsyncThunk(
+  "kol/bookmark",
+  async ({profileId, token},thunkAPI) => {
+console.log("hgjdfhg",profileId,token);
+    try {
+      const response = await fetch(`${API}/bookmark/add`, {
+        method: "Post",
+        body: JSON.stringify({
+          kol_profile_id:profileId,
+       
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token
+        },
+      
       });
       let data = await response.json();
       console.log(data);
@@ -55,6 +89,9 @@ const kolReducer = createSlice({
   extraReducers: {
     [kolDetails.fulfilled]: (state, action) => {
       return { listingDetails: { ...action.payload } };
+    },
+    [kolAddBookmark.fulfilled]: (state, {payload}) => {
+      state.message = payload.message
     },
    
   },

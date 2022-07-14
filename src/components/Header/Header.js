@@ -74,7 +74,7 @@ const Header = () => {
           </div>
           {token ? (
             <>
-              <div className="col-md-5 text-end">
+              <div className="col-md-6 text-end">
                 <nav className="search-bar">
                 <select
                       className="form-select custom-btn"
@@ -88,7 +88,7 @@ const Header = () => {
                         ))}
                  
                     </select>
-                  <form className="" onSubmit={handleSubmit}>
+                  <form className="search-form" onSubmit={handleSubmit}>
                     <input
                       type="text"
                       className=" search-box"
@@ -107,7 +107,7 @@ const Header = () => {
                   </form>
                 </nav>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div className="d-flex justify-content-end">
                   <div className="header-icon-bar">
                     {payload == 2 ? (
@@ -133,7 +133,7 @@ const Header = () => {
                     <div className="profile-user-icon">
                       <img src="Images/avatar.png" />
                     </div>
-                    <Dropdown>
+                    <Dropdown className="user-dropdown">
                       <Dropdown.Toggle
                         variant=""
                         className="profile-btn"
@@ -141,16 +141,24 @@ const Header = () => {
                       >
                         {username}
                       </Dropdown.Toggle>
-
+                      
                       <Dropdown.Menu>
-                        <Dropdown.Item>
-                          <Link to="/account">Your Account</Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item>
-                          <button>
-                            <span onClick={signOut}>Sign out</span>
-                          </button>
-                        </Dropdown.Item>
+                        <div className="user-drop-list">
+                          <div className="list-item-profile">
+                              <div className="profile-user-icon">
+                                <img src="Images/avatar.png" />
+                              </div>
+                              <div className="profile-user-name">
+                                <div className="user-name">{username}</div>
+                                <div className="user-designation">{username} </div>
+                              </div>
+                          </div>
+
+                            <Link className="list-item" to="/account">Profile</Link>
+                            <Link className="list-item"  to="/account">Your Account</Link>
+                            <Link  className="list-item" to="/bookmark">Bookmarks</Link>
+                            <div className="list-item" > <span onClick={signOut}>Sign out</span></div> 
+                        </div>
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>

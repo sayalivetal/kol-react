@@ -61,8 +61,9 @@
   cursor: pointer;
 }
 
-.book-icon:hover .bookmark-icon:before,
-.book-icon:focus .bookmark-icon:before {
+
+
+.bookmark-icon.active:before {
   content: '\f195' !important;
 }
 .more-button a {

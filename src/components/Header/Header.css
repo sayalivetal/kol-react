@@ -42,7 +42,20 @@
   line-height: 1.1;
   box-shadow: 0 0 0 0rem rgb(13 110 253 / 25%) !important;
 }
+.search-form { display: flex; width: 100%;}
+.user-dropdown .dropdown-menu.show { inset: 15px 0px auto auto!important; min-width: 14rem; }
+.user-dropdown  .dropdown-item { text-decoration: none;}
+.user-drop-list .list-item { text-decoration: none; width:100%; display: flex; padding: 6px 12px; color:#212529; }
+.user-drop-list .list-item:hover { background-color: #f2f2f2; }
+.list-item-profile { border-bottom: 1px solid #ddd; padding: 9px 12px 9px 60px; margin-bottom: 6px; display: flex; position: relative;}
+.list-item-profile .profile-user-icon { position: absolute; left: 12px;}
+.profile-user-name { display: flex; padding: 0px; flex-wrap: wrap; }
+
+.user-name { font-size: 16px; width: 100%;  }
+.user-designation { font-size: 12px; width: 100%; }
+
 .custom-btn {
+  width:184px;
   color: #fff !important;
   font-family: "Montserrat", sans-serif !important;
   line-height: 1.1;

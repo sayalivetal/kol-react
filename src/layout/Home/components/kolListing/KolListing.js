@@ -6,7 +6,10 @@ import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { API } from "../../../../common/apis";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button, Dropdown } from "react-bootstrap";
-import { kolDetails } from "../../../../slices/KolListing/KolSlices";
+import {
+  kolDetails,
+  kolAddBookmark,
+} from "../../../../slices/KolListing/KolSlices";
 import {
   getAllLanguage,
   getAllStates,
@@ -42,6 +45,7 @@ const KolListing = () => {
   const [kolName, setKolName] = useState("");
   const [kolCategory, setKolCategory] = useState("");
   const [freshposts, setFreshposts] = useState([]);
+  const [bookmark, setBookmark] = useState(false);
 
   const [page, setPage] = useState(1);
   const limit = 2;
@@ -54,7 +58,9 @@ const KolListing = () => {
         language ? language : ""
       }&stream=${stream ? stream : ""}&state=${
         location ? location : ""
-      }&search=${kolName ? kolName : ""}&kol_type=${kolCategory ? kolCategory : ""}`,
+      }&search=${kolName ? kolName : ""}&kol_type=${
+        kolCategory ? kolCategory : ""
+      }`,
       {
         method: "GET",
         headers: {
@@ -66,7 +72,10 @@ const KolListing = () => {
 
     const result = await response.json();
     console.log(result.kolProfiles);
- 
+    if (result.statusCode === 401) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
     // setKolProfile([...result.kolProfiles]);
     setFreshposts([...freshposts, ...result.kolProfiles]);
     console.log(freshposts);
@@ -86,15 +95,12 @@ const KolListing = () => {
     setFreshposts([]);
   }, [kolType]);
 
-  console.log("hgjdgfffffffffffffffffffffffffffff", kolName,kolCategory);
+  console.log("hgjdgfffffffffffffffffffffffffffff", kolName, kolCategory);
 
   useEffect(() => {
     setPage(1);
     kolListing("reset");
-  
   }, [language, stream, location, kolName, kolCategory]);
-
-
 
   const handleLanguageChange = (e) => {
     setFreshposts([]);
@@ -132,6 +138,17 @@ const KolListing = () => {
     getAllStates(callback);
   }, []);
   console.log(freshposts);
+  useEffect(() => {
+    setBookmark(JSON.parse(window.localStorage.getItem("bookmark")));
+  }, []);
+  useEffect(() => {
+    window.localStorage.setItem("bookmark", bookmark);
+  }, [bookmark]);
+  const handleBookmark = (profileId) => {
+    setBookmark((state) => !state);
+    dispatch(kolAddBookmark({profileId,token}))
+    console.log(profileId, token);
+  };
   return (
     <>
       <div className="row justify-content-between border-bottom pt-3 pb-4">
@@ -228,7 +245,7 @@ const KolListing = () => {
                 </div>
                 <div className="col-lg-8 border-bottom  py-2">
                   <div className="row justify-content-between">
-                    <div className="col-lg-9">
+                    <div className="col-lg-8">
                       <h3 className="text-bold">
                         <Link
                           className="headText"
@@ -250,7 +267,14 @@ const KolListing = () => {
                           {item.city} {item.state},india
                         </span>
                         <span className="book-icon">
-                          <i className="bi bi-bookmark mx-1 bookmark-icon"></i>
+                          <i
+                            className={`bi bi-bookmark mx-1 bookmark-icon ${
+                              bookmark ? "active" : ""
+                            }`}
+                            onClick={() =>
+                              handleBookmark(item.profile_id)
+                            }
+                          ></i>
                         </span>
                       </p>
                     </div>
