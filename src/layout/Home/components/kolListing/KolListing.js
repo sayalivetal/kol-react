@@ -9,6 +9,8 @@ import { Button, Dropdown } from "react-bootstrap";
 import {
   kolDetails,
   kolAddBookmark,
+  kolDeleteBookmark,
+  kolSelector
 } from "../../../../slices/KolListing/KolSlices";
 import {
   getAllLanguage,
@@ -26,16 +28,10 @@ const KolListing = () => {
   });
   let token = localStorage.getItem("token");
 
-  console.log(token);
-
-  const { kolType, name } = useSelector((state) => state?.kolListing);
+  const { kolType, name,message,isSuccess} = useSelector(kolSelector);
+  console.log("gddghfdgjgh",isSuccess);
   const navigate = useNavigate();
-  console.log(kolType, name);
-  // useEffect(()=>{
-  //   setSearchCategory({name:name,kolType:kolType})
-  // },[kolType,name])
-  // const [kolProfile, setKolProfile] = useState(null);
-  // console.log("===============================================",searchCategory.kolType);
+
   const [languages, setLanguages] = useState({});
   const [language, setLanguage] = useState("");
   const [stream, setStream] = useState("");
@@ -45,14 +41,14 @@ const KolListing = () => {
   const [kolName, setKolName] = useState("");
   const [kolCategory, setKolCategory] = useState("");
   const [freshposts, setFreshposts] = useState([]);
-  const [bookmark, setBookmark] = useState(false);
+  const [bookmark, setBookmark] = useState([]);
 
   const [page, setPage] = useState(1);
   const limit = 2;
   const didMount = useRef(false);
   const kolListing = async (actionType = "normal") => {
     let pageno = actionType === "reset" ? 1 : page;
-    console.log(pageno, language, limit, stream, location);
+    // console.log(pageno, language, limit, stream, location);
     const response = await fetch(
       `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${
         language ? language : ""
@@ -95,18 +91,16 @@ const KolListing = () => {
     setFreshposts([]);
   }, [kolType]);
 
-  console.log("hgjdgfffffffffffffffffffffffffffff", kolName, kolCategory);
-
   useEffect(() => {
     setPage(1);
     kolListing("reset");
-  }, [language, stream, location, kolName, kolCategory]);
+  }, [language, stream, location, kolName, kolCategory,bookmark]);
 
   const handleLanguageChange = (e) => {
     setFreshposts([]);
     setLanguage(e.target.value);
   };
-  console.log(language);
+
   const handleStreamChange = (e) => {
     setFreshposts([]);
     setStream(e.target.value);
@@ -117,7 +111,6 @@ const KolListing = () => {
   };
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
       setLanguages({ ...data });
     };
     getAllLanguage(callback);
@@ -125,29 +118,42 @@ const KolListing = () => {
 
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
       setStreams({ ...data });
     };
     getAllStreams(callback);
   }, []);
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
       setStates({ ...data });
     };
     getAllStates(callback);
   }, []);
-  console.log(freshposts);
-  useEffect(() => {
-    setBookmark(JSON.parse(window.localStorage.getItem("bookmark")));
-  }, []);
-  useEffect(() => {
-    window.localStorage.setItem("bookmark", bookmark);
-  }, [bookmark]);
-  const handleBookmark = (profileId) => {
-    setBookmark((state) => !state);
-    dispatch(kolAddBookmark({profileId,token}))
-    console.log(profileId, token);
+
+  // useEffect(() => {
+  //   setBookmark(JSON.parse(window.localStorage.getItem("bookmark")));
+  // }, []);
+  // useEffect(() => {
+  //   window.localStorage.setItem("bookmark", bookmark);
+  // }, [bookmark]);
+  const handleBookmark = (operationType, profileId) => {
+    let bookmarkType = [...bookmark];    
+    if(operationType === 'add'){
+      bookmarkType.push(profileId);
+    }else{
+      if (bookmark.includes(profileId)) {
+        const index = bookmarkType.indexOf(profileId);
+        bookmarkType.splice(index, 1);
+      }   
+    }
+    setBookmark(bookmarkType);
+    if (operationType === "add") {
+      console.log("add");
+      dispatch(kolAddBookmark({ profileId, token }));
+    }
+    if (operationType === "delete") {
+      console.log("delete");
+      dispatch(kolDeleteBookmark({ profileId, token }));
+    }
   };
   return (
     <>
@@ -229,7 +235,6 @@ const KolListing = () => {
       >
         {freshposts &&
           freshposts.map((item, index) => {
-            console.log(item.id);
             return (
               <div
                 key={index}
@@ -268,12 +273,14 @@ const KolListing = () => {
                         </span>
                         <span className="book-icon">
                           <i
-                            className={`bi bi-bookmark mx-1 bookmark-icon ${
-                              bookmark ? "active" : ""
-                            }`}
-                            onClick={() =>
-                              handleBookmark(item.profile_id)
-                            }
+                            className={`bi bi-bookmark mx-1 bookmark-icon ${((bookmark.length > 0 && bookmark.includes(item.profile_id)) || item.bookmark)?"active": ""}`}
+                            onClick={() => {
+                              let status = (bookmark.includes(item.profile_id)||item.bookmark)
+                                ? "delete"
+                                : "add";
+                              console.log('vsdfvfdvd',bookmark.includes(item.profile_id));  
+                              handleBookmark(status, item.profile_id);
+                            }}
                           ></i>
                         </span>
                       </p>

@@ -17,7 +17,7 @@ export const getAllCategory = async (callback,token) => {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   callback(result.kol_types);
 };
 
@@ -32,7 +32,7 @@ export const getAllLanguage = async (callback) => {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   callback(result.data);
 };
 
@@ -47,7 +47,7 @@ export const getAllStreams = async (callback) => {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   callback(result.data);
 };
 
@@ -62,7 +62,7 @@ export const getAllStates = async (callback) => {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   callback(result.data);
 };
 

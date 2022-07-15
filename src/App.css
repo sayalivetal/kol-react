@@ -130,18 +130,7 @@ body {
 }
 
 .headText { color: rgb(33, 37, 41); text-decoration: none;}
-.bookmark-thumb { 
-  background-color: #ddd;
-  border-radius: 12px;
-  height: 64px;
-  width: 64px;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  border-radius: 50%;
-}
-.bookmark-thumb img { width: 100%;}
+
 
 
 
@@ -202,5 +191,39 @@ body {
 
 
 
+/* bookmark css */
 
-
+.bookmark-bg{
+  background-image: url('/public/Images/details.png');
+  min-height: 240px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #edecec;
+}
+.banner-container{
+  margin: -16px -16px 20px -16px
+}
+.bookmark-card {
+  min-width: 100%;
+  min-height: 280px;
+  max-height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #e3e3e3;
+  position: relative;
+  display: flex;
+  margin: 15px 0;
+}
+.bookmark-delete { width:32px; height: 32px; z-index: 2; text-align: center; position: absolute; right:24px; top:24px; cursor: pointer; color: #fff; text-shadow: 0px 1px 3px #555555;   } 
+.bookmark-delete:hover { opacity: 0.8;}
+.bookmark-info { display: flex; width: 100%; text-shadow: 0px 1px 3px #555555; z-index: 2; position: absolute; color:#fff; flex-wrap: wrap; bottom: 0; padding: 15px 24px;
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+2&0+0,0.65+100 */
+background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.01) 2%, rgba(0,0,0,0.65) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.01) 2%,rgba(0,0,0,0.65) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.01) 2%,rgba(0,0,0,0.65) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ); /* IE6-9 */
+}
+.bookmark-info:hover { opacity: 0.85;}
+.bookmark-title { width: 100%; display: inline-block; margin: 0; cursor: pointer; }
+.bookmark-thumb { position: relative; left:0; top:0; z-index: 1; width: 100%; }
+.bookmark-thumb img { width: 100%; }

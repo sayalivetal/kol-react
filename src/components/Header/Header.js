@@ -22,21 +22,21 @@ const Header = () => {
     email,
     role: { payload },
   } = useSelector(userSelector);
-  console.log(payload, email, username);
 
-  console.log(categoryList);
+
+
   let token = localStorage.getItem("token");
 
-  console.log(token);
+
 
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
+   
       setCategoryList({ ...data });
     };
     getAllCategory(callback, token);
   }, []);
-  console.log(categoryList);
+
   useEffect(() => {
     if (isError) {
       dispatch(clearState());
@@ -51,14 +51,14 @@ const Header = () => {
     dispatch(kolType(e.target.value));
   };
   const handleCategoryChange = (e) =>{
-    console.log(e.target.value);
+
     setCategory(e.target.value)
   }
   const handleSubmit = (e) =>{
     e.preventDefault()
     dispatch(kolName(categoryType))
   }
-  console.log(categoryType);
+
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">

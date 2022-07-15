@@ -22,7 +22,7 @@ const Home = () => {
     }
   }, [token]);
   const { username, email } = useSelector(userSelector);
-  console.log(username, email);
+ 
   useEffect(() => {
     if (isError) {
       dispatch(clearState());
