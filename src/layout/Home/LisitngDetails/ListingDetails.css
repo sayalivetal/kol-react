@@ -69,15 +69,15 @@
 .geo-icon {
   color: #f01f4b;
 }
-.bookmark-icon {
+/* .bookmark-icon {
   color: #f01f4b;
   cursor: pointer;
-}
+} */
 
-.book-icon:hover .bookmark-icon:before,
+/* .book-icon:hover .bookmark-icon:before,
 .book-icon:focus .bookmark-icon:before {
   content: '\f195' !important;
-}
+} */
 .more-button a {
   text-decoration: none;
   color: #f01f4b;

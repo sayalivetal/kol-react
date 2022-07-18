@@ -6,7 +6,8 @@ const initialState = {
   kolType: "",
   name: "",
   message: "",
-  isSuccess: false
+  isSuccess: false,
+  bookmark: false,
 };
 
 //API Integration with action for registration creation

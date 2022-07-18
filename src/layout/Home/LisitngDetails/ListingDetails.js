@@ -7,13 +7,17 @@ import { Link } from "react-router-dom";
 import { API } from "../../../common/apis";
 import { useParams } from "react-router-dom";
 import Announcement from "../components/Announcement";
+import {kolAddBookmark,kolDeleteBookmark} from '../../../slices/KolListing/KolSlices'
 import "./ListingDetails.css";
 import DetailSlider from "../components/DetailSlider/DetailSlider";
 import ReviewSlider from "../components/ReviewSlider/ReviewSlider";
-import { useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
+import { getFeedback } from "../../../slices/api/simpleApi";
 const ListingDetails = () => {
-  const token = localStorage.getItem("token")
-
+  const { id } = useParams();
+  const dispatch = useDispatch()
+  const token = localStorage.getItem("token");
+  const[feedback,setFeedback]= useState([])
   console.log(token);
   const [kolProfile, setKolProfile] = useState(null);
 
@@ -34,8 +38,25 @@ const ListingDetails = () => {
   useEffect(() => {
     kolListing();
   }, []);
-  const { id } = useParams();
-  console.log(kolProfile);
+
+  useEffect(() => {
+    const callback = (data) => {
+      setFeedback([...data]);
+    };
+    getFeedback(callback, token,id);
+  }, [id]);
+ 
+  console.log("======================>",feedback);
+  const handleBookmark = (profileId, e) => {
+    let operationType = e.target.classList.contains("active");
+    if (!operationType) {
+      e.target.classList.add("active");
+      dispatch(kolAddBookmark({ profileId, token }));
+    } else {
+      e.target.classList.remove("active");
+      dispatch(kolDeleteBookmark({ profileId, token }));
+    }
+  };
   return (
     <>
       {kolProfile &&
@@ -76,7 +97,14 @@ const ListingDetails = () => {
                                 {item.city} {item.state},india
                               </span>
                               <span className="book-icon">
-                                <i className="bi bi-bookmark mx-1 bookmark-icon"></i>
+                                <i
+                                  className={`bi bi-bookmark mx-1 bookmark-icon ${
+                                    item.Bookmark ? "active" : ""
+                                  }`}
+                                  onClick={(e) => {
+                                    handleBookmark(item.user_id, e);
+                                  }}
+                                ></i>
                               </span>
                             </p>
                           </div>
@@ -146,7 +174,7 @@ const ListingDetails = () => {
                           See What Our Clients Talk About Us
                         </h3>
                       </div>
-                      <ReviewSlider />
+                      <ReviewSlider feedback={feedback}/>
                     </div>
                   </div>
                 </div>

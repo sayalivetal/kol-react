@@ -1,6 +1,29 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { getAllBookmark } from "../../slices/api/simpleApi";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  kolDeleteBookmark,
+  kolSelector,
+} from "../../slices/KolListing/KolSlices";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 const Bookmark = () => {
+  const dispatch = useDispatch();
+  const [bookmark, setBookmark] = useState([]);
+
+  let token = localStorage.getItem("token");
+  const bookmarkRender = useSelector(kolSelector);
+  useEffect(() => {
+    const callback = (data) => {
+      setBookmark([...data]);
+    };
+    getAllBookmark(callback, token);
+  }, [bookmarkRender]);
+
+  const handleBookmark = (profileId) => {
+    dispatch(kolDeleteBookmark({ profileId, token }));
+  };
+
   return (
     <div className="container">
       <div className="card">
@@ -9,106 +32,38 @@ const Bookmark = () => {
             <div className="col-lg-12 bookmark-bg"></div>
           </div>
           <div className="row my-3">
+            {bookmark &&
+              bookmark.map((item, index) => {
+                console.log(item.avatar);
+                return (
+                  <div className="col-lg-3" style={{}}>
+                    <div className="bookmark-card">
+                      <div className="bookmark-thumb">
+                        <Link to={`/details/${item.profile_id}`}>
+                          {" "}
+                          <img src={item.avatar} alt="" />
+                        </Link>
+                      </div>
+                      <div className="bookmark-delete">
+                        <i
+                          class="bi bi-trash3"
+                          onClick={() => {
+                            handleBookmark(item.kol_profile_id);
+                          }}
+                        ></i>
+                      </div>
+                      <div className="bookmark-info">
+                        <Link to={`/details/${item.profile_id}`}>
+                          {" "}
+                          <h3 className="bookmark-title">{item.username}</h3>
+                        </Link>
 
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/1.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
+                        <p className="m-0">{item.tags}</p>
+                      </div>
+                    </div>
                   </div>
-              </div>
-            </div>
-            
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/3.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
-                  </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/2.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
-                  </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/2.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
-                  </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/2.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
-                  </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/2.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
-                  </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/2.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
-                  </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/2.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
-                  </div>
-              </div>
-            </div>
-
-            <div className="col-lg-3">
-              <div className="bookmark-card">
-                <div className="bookmark-thumb"><img src="Images/2.png" alt="" /></div>
-                <div className="bookmark-delete"><i class="bi bi-trash3"></i></div>
-                  <div className="bookmark-info">
-                    <h3 className="bookmark-title">Sophia</h3>
-                    <p className="m-0">Graphic Designer</p>
-                  </div>
-              </div>
-            </div>
-
+                );
+              })}
           </div>
         </div>
       </div>

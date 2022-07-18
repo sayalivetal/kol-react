@@ -10,7 +10,7 @@ import {
   kolDetails,
   kolAddBookmark,
   kolDeleteBookmark,
-  kolSelector
+  kolSelector,
 } from "../../../../slices/KolListing/KolSlices";
 import {
   getAllLanguage,
@@ -28,8 +28,8 @@ const KolListing = () => {
   });
   let token = localStorage.getItem("token");
 
-  const { kolType, name,message,isSuccess} = useSelector(kolSelector);
-  console.log("gddghfdgjgh",isSuccess);
+  const { kolType, name, message, isSuccess } = useSelector(kolSelector);
+console.log(isSuccess);
   const navigate = useNavigate();
 
   const [languages, setLanguages] = useState({});
@@ -48,7 +48,7 @@ const KolListing = () => {
   const didMount = useRef(false);
   const kolListing = async (actionType = "normal") => {
     let pageno = actionType === "reset" ? 1 : page;
-    // console.log(pageno, language, limit, stream, location);
+
     const response = await fetch(
       `${API}/kol-profile/list?limit=${limit}&page=${pageno}&languages=${
         language ? language : ""
@@ -67,14 +67,14 @@ const KolListing = () => {
     );
 
     const result = await response.json();
-    console.log(result.kolProfiles);
+
     if (result.statusCode === 401) {
       localStorage.removeItem("token");
       navigate("/login");
     }
     // setKolProfile([...result.kolProfiles]);
     setFreshposts([...freshposts, ...result.kolProfiles]);
-    console.log(freshposts);
+
     setPage((page) => page + 1);
     if (result.statusCode == 401) {
       localStorage.removeItem("token");
@@ -94,7 +94,7 @@ const KolListing = () => {
   useEffect(() => {
     setPage(1);
     kolListing("reset");
-  }, [language, stream, location, kolName, kolCategory,bookmark]);
+  }, [language, stream, location, kolName, kolCategory]);
 
   const handleLanguageChange = (e) => {
     setFreshposts([]);
@@ -129,29 +129,15 @@ const KolListing = () => {
     getAllStates(callback);
   }, []);
 
-  // useEffect(() => {
-  //   setBookmark(JSON.parse(window.localStorage.getItem("bookmark")));
-  // }, []);
-  // useEffect(() => {
-  //   window.localStorage.setItem("bookmark", bookmark);
-  // }, [bookmark]);
-  const handleBookmark = (operationType, profileId) => {
-    let bookmarkType = [...bookmark];    
-    if(operationType === 'add'){
-      bookmarkType.push(profileId);
-    }else{
-      if (bookmark.includes(profileId)) {
-        const index = bookmarkType.indexOf(profileId);
-        bookmarkType.splice(index, 1);
-      }   
-    }
-    setBookmark(bookmarkType);
-    if (operationType === "add") {
-      console.log("add");
+console.log(freshposts);
+  const handleBookmark = (profileId, e) => {
+ 
+    let operationType = e.target.classList.contains("active");
+    if (!operationType) {
+      e.target.classList.add("active");
       dispatch(kolAddBookmark({ profileId, token }));
-    }
-    if (operationType === "delete") {
-      console.log("delete");
+    } else {
+      e.target.classList.remove("active");
       dispatch(kolDeleteBookmark({ profileId, token }));
     }
   };
@@ -244,7 +230,7 @@ const KolListing = () => {
                   <div className="kol-user-img">
                     <Link to={`/details/${item.profile_id}`}>
                       {" "}
-                      <img src={item.avatar} />
+                      <img src={item.avatar} /> 
                     </Link>
                   </div>
                 </div>
@@ -273,13 +259,11 @@ const KolListing = () => {
                         </span>
                         <span className="book-icon">
                           <i
-                            className={`bi bi-bookmark mx-1 bookmark-icon ${((bookmark.length > 0 && bookmark.includes(item.profile_id)) || item.bookmark)?"active": ""}`}
-                            onClick={() => {
-                              let status = (bookmark.includes(item.profile_id)||item.bookmark)
-                                ? "delete"
-                                : "add";
-                              console.log('vsdfvfdvd',bookmark.includes(item.profile_id));  
-                              handleBookmark(status, item.profile_id);
+                            className={`bi bi-bookmark mx-1 bookmark-icon ${
+                              item.bookmark ? "active" : ""
+                            }`}
+                            onClick={(e) => {
+                              handleBookmark(item.profile_id, e);
                             }}
                           ></i>
                         </span>

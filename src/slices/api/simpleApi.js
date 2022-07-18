@@ -67,4 +67,53 @@ export const getAllStates = async (callback) => {
 };
 
 
+export const getAllBookmark = async (callback,token) => {
+  const response = await fetch(`${API}/bookmark/list`, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  console.log(result.bookmarks);
+
+  callback(result.bookmarks);
+};
+
+
+export const getChatList = async (callback,token) => {
+  const response = await fetch(`${API}/Chat/chat-list-users `, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  console.log(result.bookmarks);
+
+  callback(result.bookmarks);
+};
+export const getFeedback = async (callback,token,id) => {
+  const response = await fetch(`${API}/feedback/kol-user-list?kol_profile_id=${id}`, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+
+  callback(result.Feedbacks);
+};
+
+
 
