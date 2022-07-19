@@ -120,10 +120,10 @@ const Header = () => {
                       ""
                     )}
 
-                    <Link to={"/chat"}>
+                    <Link to="/chat">
                       <i className="bi bi-chat-dots"></i>
                     </Link>
-                    <Link to={"/chat"}>
+                    <Link to="/chat">
                       <i className="bi bi-bell"></i>{" "}
                       <span className="count-badge">99</span>
                     </Link>

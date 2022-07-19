@@ -310,7 +310,7 @@ console.log(freshposts);
                       </div>
                     </div>
                     <div className="col-lg-8 text-right">
-                      <Link to="/chat">
+                      <Link to={`/chat?id=${item.user_id}`}>
                         <button className="ml-auto btn theme-btn">
                           <span className="mx-2">
                             <i className="bi bi-chat-dots"></i>

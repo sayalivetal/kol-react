@@ -154,7 +154,7 @@ body {
 .user-item-thumb { width: 50px; height: 50px; position: relative; }
 .user-item-text { width: 100%; padding-left: 15px;}
 .user-item-row { width: 100%; display: flex; }
-.user-item-name { width: 60%; font-size: 16px; font-weight: 600; margin: 4px 0; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.user-item-name {color:#342951;text-decoration: none; width: 60%; font-size: 16px; font-weight: 600; margin: 4px 0; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 .user-item-time { font-size: 14px; font-weight: 400; color: #9C9FAB;  margin: 4px 0 4px auto;}
 .user-item-last-msg { width: 100%; display: flex; font-size: 16px; color: #9C9FAB; }
 

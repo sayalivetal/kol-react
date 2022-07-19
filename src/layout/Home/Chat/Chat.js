@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import './Chat.css';
+import {useLocation} from "react-router-dom";
 import ContactList from './components/ContactList';
 import Conversation from './components/Conversation';
 const Chat = () => {
+
+  const search = useLocation().search;
+  const id = new URLSearchParams(search).get('id');
+  // const { id } = useParams();
+  console.log(id);
   const [term, setTerm] = useState('');
   return (
     <div className='container'>
@@ -35,7 +41,7 @@ const Chat = () => {
                         onChange={(e) => setTerm(e.target.value)}
                       />
                     </form>
-                    <ContactList />
+                    <ContactList id={`${id}`}/>
                   </div>
                 </div>
               </div>
@@ -45,7 +51,7 @@ const Chat = () => {
         <div className='col-lg-8'>
           <div className='card'>
             <div className='card-body p-0'>
-              <Conversation />
+              <Conversation id={`${id}`}/>
             </div>
           </div>
         </div>
