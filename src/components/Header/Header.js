@@ -1,58 +1,64 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllCategory } from "../../slices/api/simpleApi";
+import { getAllCategory, getAllLanguage } from "../../slices/api/simpleApi";
+import { userSelector, clearState } from "../../slices/AuthSlice/AuthSlice";
 import { Dropdown } from "react-bootstrap";
+import {kolType,kolName} from '../../slices/KolListing/KolSlices'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Header = () => {
-  const [categoryList, setCategoryList] = useState([]);
-  const userDetails = useSelector((state) => state?.user?.loginUser);
-  const userRegister = useSelector((state) => state?.user?.registerUser);
-  console.log(userRegister);
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    role: "",
-    token: "",
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [categoryList, setCategoryList] = useState({});
+  const [categoryType, setCategory] = useState("")
+  const [language, setLanguage] = useState({});
+  const {
+    isFetching,
+    isError,
+    username,
+    message,
+    email,
+    role: { payload },
+  } = useSelector(userSelector);
+
+
+
+  let token = localStorage.getItem("token");
+
+
 
   useEffect(() => {
     const callback = (data) => {
-      setCategoryList([...data]);
+   
+      setCategoryList({ ...data });
     };
-    getAllCategory(callback);
+    getAllCategory(callback, token);
   }, []);
 
   useEffect(() => {
-    if (userDetails) {
-      setUser((state) => {
-        return {
-          ...state,
-          name: userDetails?.data?.user_name,
-          email: userDetails?.data?.email,
-          role: userDetails?.data?.role_id,
-          token: userDetails?.data?.token,
-        };
-      });
+    if (isError) {
+      dispatch(clearState());
+      navigate("/login");
     }
-    if (userRegister) {
-      setUser((state) => {
-        return {
-          ...state,
-          name: userRegister?.data?.user_name,
-          email: userRegister?.data?.email,
-          role: userRegister?.data?.role_id,
-          token: userRegister?.data?.token,
-        };
-      });
-    }
-  }, [userDetails, userRegister]);
-  console.log(user);
+  }, [isError]);
   const signOut = () => {
-    localStorage.removeItem("persist:root");
+    localStorage.removeItem("token");
+    navigate("/login");
   };
+  const handleChange = (e) => {
+    dispatch(kolType(e.target.value));
+  };
+  const handleCategoryChange = (e) =>{
+
+    setCategory(e.target.value)
+  }
+  const handleSubmit = (e) =>{
+    e.preventDefault()
+    dispatch(kolName(categoryType))
+  }
+
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
@@ -66,41 +72,34 @@ const Header = () => {
               KOL{" "}
             </a>
           </div>
-          {user.token ? (
+          {token ? (
             <>
-              <div className="col-md-5 text-end">
-                <nav className="">
-                  <form className="search-bar">
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        className="custom-btn"
-                        variant=""
-                        id="dropdown-basic"
-                      >
-                        All Categories
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        {categoryList &&
-                          categoryList.map((item, i) => {
-                            console.log("dropdown", item.name);
-                            return (
-                              <Dropdown.Item key={i}>{item.name}</Dropdown.Item>
-                            );
-                          })}
-                      </Dropdown.Menu>
-                    </Dropdown>
-
+              <div className="col-md-6 text-end">
+                <nav className="search-bar">
+                <select
+                      className="form-select custom-btn"
+                      aria-label="Default select example"
+                      onChange={handleChange}
+                    >
+                      <option selected>Select Category</option>
+                      {categoryList &&
+                        Object.entries(categoryList).map(([key, value]) => (
+                          <option value={key}>{value}</option>
+                        ))}
+                 
+                    </select>
+                  <form className="search-form" onSubmit={handleSubmit}>
                     <input
                       type="text"
                       className=" search-box"
                       placeholder="What are you looking for?"
                       aria-label="Username"
                       aria-describedby="basic-addon1"
+                      onChange={handleCategoryChange}
                     />
                     <button
                       className="btn btn-search "
-                      type="button"
+                      type="submit"
                       aria-expanded="false"
                     >
                       Search
@@ -108,10 +107,10 @@ const Header = () => {
                   </form>
                 </nav>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-3">
                 <div className="d-flex justify-content-end">
                   <div className="header-icon-bar">
-                    {user.role == 2 ? (
+                    {payload == 2 ? (
                       <>
                         <Link to="/dashboard">
                           <i className="bi bi-grid"></i>
@@ -134,22 +133,32 @@ const Header = () => {
                     <div className="profile-user-icon">
                       <img src="Images/avatar.png" />
                     </div>
-                    <Dropdown>
+                    <Dropdown className="user-dropdown">
                       <Dropdown.Toggle
                         variant=""
-                        className="custom-btn"
+                        className="profile-btn"
                         id="dropdown-basic"
                       >
-                        {user.name}
+                        {username}
                       </Dropdown.Toggle>
-
+                      
                       <Dropdown.Menu>
-                        <Dropdown.Item>
-                          <Link to="/account">Your Account</Link>
-                        </Dropdown.Item>
-                        <Dropdown.Item>
-                          <button><span onClick={signOut}>Sign out</span></button>
-                        </Dropdown.Item>
+                        <div className="user-drop-list">
+                          <div className="list-item-profile">
+                              <div className="profile-user-icon">
+                                <img src="Images/avatar.png" />
+                              </div>
+                              <div className="profile-user-name">
+                                <div className="user-name">{username}</div>
+                                <div className="user-designation">{username} </div>
+                              </div>
+                          </div>
+
+                            <Link className="list-item" to="/account">Profile</Link>
+                            <Link className="list-item"  to="/account">Your Account</Link>
+                            <Link  className="list-item" to="/bookmark">Bookmarks</Link>
+                            <div className="list-item" > <span onClick={signOut}>Sign out</span></div> 
+                        </div>
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
