@@ -26,6 +26,9 @@ const Account = React.lazy(() => import('./pages/Account/Account'));
 const PasswordSuccess = React.lazy(() =>
   import('./pages/PasswordUpdate/PasswordUpdate')
 );
+
+const BioData = React.lazy(() => import('./layout/Dashboard/components/BioData'))
+const Announcement = React.lazy(() => import('./layout/Dashboard/components/Announcement'))
 const loading = <Spinner animation='grow' />;
 
 const App = () => {
@@ -35,7 +38,7 @@ const App = () => {
         <Routes>
           <Route exact path='*' name='Home' element={<DefaultLayout />} />
           <Route exact path='/login' element={<Login />} />
-          <Route exact path='/dashboard' element={<Dashboard />} />
+          <Route exact path='/dashboard/*' element={<Dashboard />} />
           <Route exact path='/register' element={<Register />} />
           <Route exact path='/emailVerify' element={<EmailVerify />} />
           <Route exact path='/forgotPassword' element={<ForgotPassword />} />
