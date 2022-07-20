@@ -7,7 +7,7 @@ const Chat = () => {
 
   const search = useLocation().search;
   const id = new URLSearchParams(search).get('id');
-  // const { id } = useParams();
+
   console.log(id);
   const [term, setTerm] = useState('');
   return (
@@ -51,7 +51,7 @@ const Chat = () => {
         <div className='col-lg-8'>
           <div className='card'>
             <div className='card-body p-0'>
-              <Conversation id={`${id}`}/>
+              {id ? <Conversation id={`${id}`}/>:""}
             </div>
           </div>
         </div>

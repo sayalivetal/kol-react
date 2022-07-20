@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
 import "../Chat.css";
 import Moment from 'react-moment'
-import { Link } from "react-router-dom";
+import { useDispatch,useSelector } from "react-redux";
+import { Link,useNavigate } from "react-router-dom";
 import { getChatList } from "../../../../slices/api/simpleApi";
+import {conversationList,chatSelector} from '../../../../slices/ChatSlice/ChatSlice'
 const ContactList = ({ id }) => {
+  const navigate = useNavigate()
+  const {isSuccess} = useSelector(chatSelector)
+  console.log(isSuccess);
+  const dispatch = useDispatch()
   console.log("==========>", id);
   let token = localStorage.getItem("token");
   const [contactList, setContactList] = useState([]);
+  const handleClick = (id) =>{
+    
+    dispatch(conversationList({id,token}))
+    
+  }
   useEffect(() => {
     const callback = (data) => {
       setContactList([...data]);
@@ -31,9 +42,9 @@ const ContactList = ({ id }) => {
                   </div>
                   <div className="user-item-text">
                     <div className="user-item-row">
-                      <Link to=""className="user-item-name">
+                      <span className="user-item-name" onClick={()=>handleClick(item.profile_id)}>
                         {item.name}
-                      </Link>
+                      </span>
                       <span className="user-item-time"><Moment format='h:mm A'>{item.time}</Moment></span>
                     </div>
 
