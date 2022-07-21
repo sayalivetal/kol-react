@@ -58,7 +58,7 @@ export const conversationList = createAsyncThunk(
         },
       });
       let data = await response.json();
-      console.log(data);
+   
       if (response.status === 200) {
         return data;
       } else {
@@ -92,7 +92,11 @@ const chatReducer = createSlice({
       state.isSuccess = true;
     },
     [conversationList.fulfilled]: (state, {payload}) => {
-      return { chatData: [...payload.data] };
+      console.log(payload);
+      if(payload?.data?.length > 0){
+        return { chatData:[...payload?.data] };
+      }
+    
    
     },
   },

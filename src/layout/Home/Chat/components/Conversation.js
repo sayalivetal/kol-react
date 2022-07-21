@@ -8,7 +8,7 @@ import {
 } from "../../../../slices/ChatSlice/ChatSlice";
 const Conversation = ({ id }) => {
   const chatData = useSelector(chatSelector);
-  console.log(chatData.chatData);
+  // console.log(chatData.chatData);
   let token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
@@ -17,24 +17,43 @@ const Conversation = ({ id }) => {
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
+  let a = localStorage.getItem("persist:root")
+
+  let b = JSON.parse(a)
+  let localStorageData = JSON.parse(b.user);
+  console.log(localStorageData);
+  let {username} = localStorageData
   useEffect(() => {
-    if(!chatData.chatData.length)return
-    setChatData([...chatData.chatData]);
+    if (!chatData.chatData.length){
+      setChatData([])
+    }
+    else{
+      setChatData([...chatData.chatData]);
+    }
+    
   }, [chatData]);
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(sendMessage({ message, id, token }));
-     e.target.reset();
-    
+    e.target.reset();
+    const newObj = {
+      avatar:'http://8ed8-203-145-168-10.in.ngrok.io/uploads/profile/16576921762043.face-sachin.jpg', 
+      message: message,
+      name: username,
+      sent_at: new Date()
+    }
+    setChatData([
+      ...chatList,
+      newObj
+    ])
   };
   console.log("==============>", chatList);
 
   return (
     <>
       <div className="chat-container">
-
-        {chatList.length > 0 ? chatList.map((item, index) => {
-
+        {chatList.length > 0 ? (
+          chatList.map((item, index) => {
             return (
               <div className="chat-row">
                 <div className="chat-thumb-container">
@@ -55,9 +74,29 @@ const Conversation = ({ id }) => {
                 </div>
               </div>
             );
+          })
+        ) : (
+          <>
+            <div className="chat-row">
+              <div className="chat-thumb-container">
+                <div className="chat-user-thumb">
+                  <img src="s" />
+                </div>
+                <span className="status-icon active"></span>
+              </div>
 
-          }):"ghdjfghdgf"}
-     </div>
+              <div className="chat-info-container">
+                <div className="chat-user-name">
+                  <span className="chat-time">
+                    <Moment format="h:mm A"></Moment>
+                  </span>
+                </div>
+                <div className="chat-message-text"></div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
       <div className="chat-input-container">
         <div>
           <form className="chat-input-row" onSubmit={handleSubmit}>

@@ -9,7 +9,7 @@ const Chat = () => {
   const id = new URLSearchParams(search).get('id');
 
   console.log(id);
-  const [term, setTerm] = useState('');
+
   return (
     <div className='container'>
       <div className='row'>
@@ -31,16 +31,7 @@ const Chat = () => {
               <div className='chat-bar-body'>
                 <div className='row'>
                   <div>
-                    <form className='chat-user-search'>
-                      <i className='bi bi-search search-icon'></i>
-                      <input
-                        className='form-control user-search-control'
-                        type='text'
-                        placeholder='Search'
-                        aria-label='Search'
-                        onChange={(e) => setTerm(e.target.value)}
-                      />
-                    </form>
+                    
                     <ContactList id={`${id}`}/>
                   </div>
                 </div>
