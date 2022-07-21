@@ -31,8 +31,7 @@ const Conversation = ({ id }) => {
   return (
     <>
       <div className="chat-container">
-        {chatList &&
-          chatList.map((item, index) => {
+        {chatList.length ? chatList.map((item, index) => {
             return (
               <div className="chat-row">
                 <div className="chat-thumb-container">
@@ -53,7 +52,7 @@ const Conversation = ({ id }) => {
                 </div>
               </div>
             );
-          })}
+          }):"ghdjfghdgf"}
         
         {/* <div className="chat-row">
           <div className="chat-thumb-container">
