@@ -8,16 +8,28 @@ import {conversationList,chatSelector} from '../../../../slices/ChatSlice/ChatSl
 const ContactList = ({ id }) => {
   const navigate = useNavigate()
   const {isSuccess} = useSelector(chatSelector)
+  const[urlId,seturlId] = useState()
   console.log(isSuccess);
   const dispatch = useDispatch()
-  console.log("==========>", id);
+ 
   let token = localStorage.getItem("token");
   const [contactList, setContactList] = useState([]);
+  useEffect(()=>{
+    seturlId(id)
+  },[])
+  console.log("======================================",urlId);
+  useEffect(()=>{
+    if(!id)return
+    handleClick(id)
+  },[id])
   const handleClick = (id) =>{
-    
-    dispatch(conversationList({id,token}))
+    seturlId(id)
+    // dispatch(conversationList({id,token}))
     
   }
+  useEffect(()=>{
+    dispatch(conversationList({urlId,token}))
+  },[urlId])
   useEffect(() => {
     const callback = (data) => {
       setContactList([...data]);
@@ -25,6 +37,10 @@ const ContactList = ({ id }) => {
     getChatList(callback, token);
   }, []);
   console.log(contactList);
+  // let a = contactList.filter((item,index)=>{
+  //   return item.profile_id == id;
+  // })
+  // console.log("===========>",a);
   return (
     <div className="contact-div">
       <div className="contact-table-scroll">
@@ -42,7 +58,7 @@ const ContactList = ({ id }) => {
                   </div>
                   <div className="user-item-text">
                     <div className="user-item-row">
-                      <span className="user-item-name" onClick={()=>handleClick(item.profile_id)}>
+                      <span className={`user-item-name ${item.profile_id == urlId?"first-active":"hbfgf"}`} onClick={()=>handleClick(item.profile_id)}>
                         {item.name}
                       </span>
                       <span className="user-item-time"><Moment format='h:mm A'>{item.time}</Moment></span>

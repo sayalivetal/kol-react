@@ -51,7 +51,7 @@ const Chat = () => {
         <div className='col-lg-8'>
           <div className='card'>
             <div className='card-body p-0'>
-              {id ? <Conversation id={`${id}`}/>:""}
+              <Conversation id={`${id}`}/>
             </div>
           </div>
         </div>
