@@ -45,10 +45,10 @@ export const sendMessage = createAsyncThunk(
 //API Integration with action for Conversation creation
 export const conversationList = createAsyncThunk(
   "chat/message",
-  async ({ id, token }, thunkAPI) => {
-    console.log(id, token);
+  async ({ urlId, token }, thunkAPI) => {
+    console.log(urlId, token);
     try {
-      const response = await fetch(`${API}/Chat/chat-list?receiver_id=${id}`, {
+      const response = await fetch(`${API}/Chat/chat-list?receiver_id=${urlId}`, {
         method: "GET",
 
         headers: {

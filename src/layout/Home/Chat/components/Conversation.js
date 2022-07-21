@@ -18,6 +18,7 @@ const Conversation = ({ id }) => {
     setMessage(e.target.value);
   };
   useEffect(() => {
+    if(!chatData.chatData.length)return
     setChatData([...chatData.chatData]);
   }, [chatData]);
   const handleSubmit = (e) => {
@@ -31,7 +32,9 @@ const Conversation = ({ id }) => {
   return (
     <>
       <div className="chat-container">
-        {chatList.length ? chatList.map((item, index) => {
+
+        {chatList.length > 0 ? chatList.map((item, index) => {
+
             return (
               <div className="chat-row">
                 <div className="chat-thumb-container">
@@ -52,31 +55,9 @@ const Conversation = ({ id }) => {
                 </div>
               </div>
             );
+
           }):"ghdjfghdgf"}
-        
-        {/* <div className="chat-row">
-          <div className="chat-thumb-container">
-            <div className="chat-user-thumb">
-              <img src="Images/avatar.png" />
-            </div>
-            <span className="status-icon in-active"></span>
-          </div>
-
-          <div className="chat-info-container">
-            <div className="chat-user-name">
-              Jone Doe <span className="chat-time">09:00 AM</span>
-            </div>
-            <div className="chat-message-text">
-              Hi, How are you? why are you so late, i am waiting.
-            </div>
-            <div className="chat-message-text">Hi, How are you?</div>
-            <div className="chat-message-text">
-              Hi, How are you? why are you so late, i am waiting.
-            </div>
-          </div>
-        </div> */}
-      </div>
-
+     </div>
       <div className="chat-input-container">
         <div>
           <form className="chat-input-row" onSubmit={handleSubmit}>
