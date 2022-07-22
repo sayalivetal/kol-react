@@ -71,6 +71,69 @@ export const conversationList = createAsyncThunk(
   }
 );
 
+//API Integration with action chat edit
+export const messageEdit = createAsyncThunk(
+  "chat/message",
+  async ({  token ,editData,id}, thunkAPI) => {
+    console.log(token ,editData,id);
+    try {
+      const response = await fetch(`${API}/Chat/edit-msg`, {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({
+          msg_id:id,
+          message: editData
+        }),
+      });
+      let data = await response.json();
+   
+      if (response.status === 200) {
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (e) {
+      console.log("Error", e.response.data);
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
+//API Integration with action chat delete
+export const messageDelete = createAsyncThunk(
+  "chat/message",
+  async ({  token ,id}, thunkAPI) => {
+    console.log(token ,id);
+    try {
+      const response = await fetch(`${API}/Chat/delete-msg?msg_id=${id}`, {
+        method: "GET",
+
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+      
+      });
+      let data = await response.json();
+   
+      if (response.status === 200) {
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (e) {
+      console.log("Error", e.response.data);
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
+
+
 //create slice for authentication reducers
 
 const chatReducer = createSlice({

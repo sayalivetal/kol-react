@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Moment from "react-moment";
+import Dropdown from "react-bootstrap/Dropdown";
 import "../Chat.css";
 import {
   sendMessage,
   chatSelector,
+  messageEdit,
+  messageDelete
 } from "../../../../slices/ChatSlice/ChatSlice";
 const Conversation = ({ id }) => {
   const chatData = useSelector(chatSelector);
@@ -13,49 +16,94 @@ const Conversation = ({ id }) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
   const [chatList, setChatData] = useState([]);
-  console.log(id);
+  const [deleteEdit, setDeleteEdit] = useState();
+  const [edit, setEdit] = useState();
+  const [editData, setEditData] = useState("");
+
+  console.log(editData);
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
-  let a = localStorage.getItem("persist:root")
+  let a = localStorage.getItem("persist:root");
 
-  let b = JSON.parse(a)
+  let b = JSON.parse(a);
   let localStorageData = JSON.parse(b.user);
   console.log(localStorageData);
-  let {username} = localStorageData
+  let { username } = localStorageData;
   useEffect(() => {
-    if (!chatData.chatData.length){
-      setChatData([])
-    }
-    else{
+    if (!chatData.chatData.length) {
+      setChatData([]);
+    } else {
       setChatData([...chatData.chatData]);
     }
-    
   }, [chatData]);
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(sendMessage({ message, id, token }));
     e.target.reset();
     const newObj = {
-      avatar:'http://8ed8-203-145-168-10.in.ngrok.io/uploads/profile/16576921762043.face-sachin.jpg', 
-      message: message,
+      avatar:
+        "http://8ed8-203-145-168-10.in.ngrok.io/uploads/profile/16576921762043.face-sachin.jpg",
+      message: editData,
       name: username,
-      sent_at: new Date()
-    }
-    setChatData([
-      ...chatList,
-      newObj
-    ])
+      sent_at: new Date(),
+    };
+    setChatData([...chatList, newObj]);
+  };
+  const handleDeleteEdit = (id, message) => {
+    setDeleteEdit(id);
+
+    console.log(id, message);
   };
   console.log("==============>", chatList);
 
+  const handleMouseOut = () => {
+    setDeleteEdit("");
+  };
+  const handleEditDeleteChange = (e, id) => {
+    if (e == "edit") {
+      setEdit(id);
+    }
+    if (e == "delete") {
+      dispatch(messageDelete({token,id}))
+    }
+  };
+  const handleSaveMessage = (id) => {
+    dispatch(messageEdit({ token, editData, id }));
+
+    // const newObj1 = {
+
+    //   message: chatData,
+    //   name: username,
+    //   avatar: null,
+    //   edit_at: "",
+    //   last_name: null,
+    //   message_id: null,
+    //   receiver_id: null,
+    //   sender_id: null,
+    //   sent_at: "",
+    // };
+    
+    // setChatData([...chatList, newObj1]);
+    // setEdit("");
+  };
+
+  console.log("jhfdgfhgfdhgfjhg", edit);
   return (
     <>
       <div className="chat-container">
         {chatList.length > 0 ? (
           chatList.map((item, index) => {
             return (
-              <div className="chat-row">
+              <div
+                className={`chat-row ${
+                  deleteEdit == item.message_id ? "delete-edit-div" : ""
+                }`}
+                onMouseOut={handleMouseOut}
+                onMouseOver={() =>
+                  handleDeleteEdit(item.message_id, item.message)
+                }
+              >
                 <div className="chat-thumb-container">
                   <div className="chat-user-thumb">
                     <img src={item.avatar} />
@@ -70,8 +118,42 @@ const Conversation = ({ id }) => {
                       <Moment format="h:mm A">{item.sent_at}</Moment>
                     </span>
                   </div>
-                  <div className="chat-message-text">{item.message}</div>
+                  {edit == item.message_id ? (
+                    <div className="chat-message-text">
+                      <input
+                        type="text"
+                        defaultValue={item.message}
+                        onChange={(e) => setEditData(e.target.value)}
+                      />
+                      <button
+                        onClick={() => handleSaveMessage(item.message_id)}
+                      >
+                        save
+                      </button>
+                      <button onClick={() => setEdit(false)}>Cancel</button>
+                    </div>
+                  ) : (
+                    <div className="chat-message-text">{item.message}</div>
+                  )}
                 </div>
+                {/* {deleteEdit == item.message_id ? (
+                  <Dropdown
+                    onSelect={(eventKey) =>
+                      handleEditDeleteChange(eventKey, item.message_id)
+                    }
+                  >
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Dropdown Button
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item eventKey="edit">Edit</Dropdown.Item>
+                      <Dropdown.Item eventKey="delete">Delete</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                ) : (
+                  ""
+                )} */}
               </div>
             );
           })

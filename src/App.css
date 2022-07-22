@@ -251,7 +251,13 @@ body {
   font-size: 16px;
   color: #9c9fab;
 }
+.delete-edit-div{
+  background-color: #ebebeb;
+}
 
+.chat-row:hover{
+  background-color: #ebebeb;
+}
 /* .chat-users-block .user-item-chat:first-child {
   background: #fafafa;
 } */
