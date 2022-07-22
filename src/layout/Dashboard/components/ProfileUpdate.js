@@ -2,39 +2,39 @@ import React, { useEffect, useState } from "react";
 import "../css/styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { bioDataFormSubmission ,dashboardSelector,getKolprofile} from "../../../slices/Dashboard/dashboard";
+import {
+  bioDataFormSubmission,
+  dashboardSelector,
+  getKolprofile,
+} from "../../../slices/Dashboard/dashboard";
 import { toast } from "react-toastify";
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+// import { dashboardSelector } from '../../../slices/Dashboard/dashboard';
 
-const BioData = () => {
-  const navigate = useNavigate()
+const ProfileUpdate = () => {
+  const navigate = useNavigate();
+  const { message, biodata } = useSelector(dashboardSelector);
 
-  const {message,biodata} = useSelector(dashboardSelector)
-  
-  useEffect(()=>{
-    toast.success(message)
-  },[message])
+  useEffect(() => {
+    toast.success(message);
+  }, [message]);
   const dispatch = useDispatch();
   const initialArr = {};
-  initialArr['name'] = '';
-  initialArr['social_user_id'] = '';
-  initialArr['followers'] = '';
-  initialArr['social_icon'] = '';
+  initialArr["name"] = "";
+  initialArr["social_user_id"] = "";
+  initialArr["followers"] = "";
+  initialArr["social_icon"] = "";
   //console.log(initialArr);
   const [inputList, setInputList] = useState([
-    { 
-      name: "", 
-      social_user_id: "", 
-      followers: "", 
-      social_icon: "" 
-    }
+    {
+      name: "",
+      social_user_id: "",
+      followers: "",
+      social_icon: "",
+    },
   ]);
-// useEffect(()=>{
-// if(biodata.status){
-//   navigate("../profileview")
-// }
-// },[biodata])
+
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -99,6 +99,7 @@ const BioData = () => {
   });
 
   const [social_active, setSocialActive] = useState([]);
+
   const [selectedFile, setSelectedFile] = useState();
   const [bannerFile, setBannerFile] = useState();
   const [tags, setTags] = useState([]);
@@ -108,6 +109,8 @@ const BioData = () => {
   const [linkCount, setLinkCount] = useState(0);
   const [video_links, setVideoLinks] = useState([]);
 
+  const [vedioLinkArr, setVedioLinkArr] = useState([]);
+  // console.log("============>",vedioLinkArr);
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -124,9 +127,9 @@ const BioData = () => {
     formData.append("video_links[]", kolProfile.video_links);
     formData.append("languages[]", kolProfile.languages);
     formData.append("tags[]", kolProfile.tags);
-    formData.append("state", kolProfile.state); 
-    
-    dispatch(bioDataFormSubmission(formData))
+    formData.append("state", kolProfile.state);
+
+    dispatch(bioDataFormSubmission(formData));
   };
 
   // For Social Active Field
@@ -230,16 +233,23 @@ const BioData = () => {
     setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
   };
 
+  useEffect(() => {
+    setSocialActive(biodata.kolProfile.social_active);
+  }, []);
+
+  useEffect(() => {
+    console.log("videoArr", biodata.kolProfile.video_links.split(","));
+    setVedioLinkArr([...biodata.kolProfile.video_links.split(",")]);
+  }, [biodata]);
+
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
 
   const handleVideoChange = (e) => {
-    console.log("=========>",e.target.value);
-    setVideoLinks((state)=>{
-      return[...state,e.target.value]
-    })
-      // [...video_links, e.target.value]);
+    setVideoLinks((state) => {
+      return [...state, e.target.value];
+    });
   };
 
   const removeLastElement = () => {
@@ -248,14 +258,18 @@ const BioData = () => {
 
   const languageHandleChange = (e) => {
     setKolProfile({ ...kolProfile, [e.target.name]: [e.target.value] });
-    console.log('language', kolProfile.languages)
-  }
-  const handleViewClick = (e) =>{
-    navigate("../profileview")
-  }
-  console.log(kolProfile.personal_email);
+  };
 
-  const {biodata:{kolProfileData}} = useSelector(dashboardSelector)
+  const handleViewClick = (e) => {
+    navigate("../profileview");
+  };
+
+  const {
+    biodata: { kolProfileData },
+  } = useSelector(dashboardSelector);
+
+  console.log("linkCount", linkCount);
+
   return (
     <>
       <div className="row col-12">
@@ -263,7 +277,12 @@ const BioData = () => {
           <h3 className="mt-4">Kol Profile</h3>
         </div>
         <div className="col-6">
-          <button className="btn btn-outline-secondary" onClick={handleViewClick}>View</button>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={handleViewClick}
+          >
+            View
+          </button>
         </div>
       </div>
       <div className="row">
@@ -277,9 +296,9 @@ const BioData = () => {
                 type="text"
                 className="form-control"
                 name="userName"
-                value={kolProfile.userName}
                 onChange={handleChange}
                 id="exampleInputEmail1"
+                defaultValue={biodata.kolProfile.get_user.name}
                 aria-describedby="emailHelp"
               />
             </div>
@@ -293,7 +312,7 @@ const BioData = () => {
                 className="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
-                defaultValue={kolProfile.personal_email}
+                defaultValue={biodata.kolProfile.personal_email}
                 onChange={handleChange}
               />
               <div id="emailHelp" className="form-text">
@@ -311,6 +330,7 @@ const BioData = () => {
                 name="kol_type"
                 onChange={handleChange}
                 aria-label="Default select example"
+                defaultValue={biodata.kolProfile.kol_type}
               >
                 <option selected>Select Type</option>
                 <option value="1">One</option>
@@ -328,6 +348,7 @@ const BioData = () => {
                 onChange={handleChange}
                 className="form-control"
                 id="exampleInputPassword1"
+                defaultValue={biodata.kolProfile.city}
               />
             </div>
           </div>
@@ -342,6 +363,7 @@ const BioData = () => {
                 onChange={handleChange}
                 name="state"
                 aria-label="Default select example"
+                defaultValue={biodata.kolProfile.state}
               >
                 <option selected>Select state</option>
                 <option value="Punjab">Punjab</option>
@@ -360,6 +382,7 @@ const BioData = () => {
                 className="form-control"
                 id="exampleInputPassword1"
                 onChange={handleChange}
+                defaultValue={biodata.kolProfile.zip_code}
               />
             </div>
           </div>
@@ -373,6 +396,7 @@ const BioData = () => {
                 onChange={languageHandleChange}
                 name="languages"
                 aria-label="Default select example"
+                defaultValue={biodata.kolProfile.languages}
               >
                 <option selected>Select Language</option>
                 <option value="hindi">Hindi</option>
@@ -390,10 +414,13 @@ const BioData = () => {
                 placeholder="Select Option"
                 value={data.filter((obj) => social_active.includes(obj.value))} // set selected values
                 options={data} // set list of the data
+                // defaultValue={biodata.kolProfile.social_active}
                 onChange={handleChangeSocialActive} // assign onChange function
                 name="social_active"
+                // inputValue={biodata.kolProfile.social_active}
                 isMulti
                 isClearable
+                // defaultValue={biodata.kolProfile.social_active}
               />
             </div>
           </div>
@@ -403,7 +430,7 @@ const BioData = () => {
               <b>Social Media Info</b>
             </label>
 
-            {inputList.map((x, i) => {
+            {biodata.kolProfile.get_social_media.map((x, i) => {
               return (
                 <div className="row topmrgn">
                   <div className="col-3">
@@ -454,7 +481,7 @@ const BioData = () => {
                           -{" "}
                         </button>
                       )}
-                      {inputList.length - 1 === i && (
+                      {biodata.kolProfile.get_social_media.length - 1 === i && (
                         <button
                           className="btn custome-btn left-mrgn"
                           onClick={handleAddClick}
@@ -477,56 +504,85 @@ const BioData = () => {
             </label>
 
             <div className="row">
-              <div className="col-8">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="enter video link"
-                  onChange={(e) => {
-                    handleVideoChange(e, 0);
-                  }}
-                />
-              </div>
-              <div className="col-4">
-                <button
-                  type="button"
-                  name="video_links"
-                  className="btn custome-btn"
-                  onClick={() => setLinkCount(linkCount + 1)}
-                >
-                  +
-                </button>
-              </div>
+                
+                {vedioLinkArr &&
+                  vedioLinkArr.map((item, index) => {
+                    return (
+                      <>
+                        <div className="col-8 linkdiv">
+                            <input
+                            type="text"
+                            className="form-control"
+                            placeholder="enter video link"
+                            onChange={(e) => {
+                                handleVideoChange(e, 0);
+                            }}
+                            defaultValue={item}
+                            />
+                        </div>
+                        {
+                            index== 0 ? ( <div className="col-4 linkdiv">
+                          <button
+                            type="button"
+                            name="video_links"
+                            className="btn custome-btn"
+                            onClick={() => setLinkCount(index + 1)}
+                          >
+                            +
+                          </button>
+                        </div> ) : <div className="col-4 linkdiv">
+                            <button
+                            type="button"
+                            name="video_links"
+                            className="btn sub-btn"
+                            onClick={() => {
+                                // if(linkCount == 1){
+                                //     setVedioLinkArr(vedioLinkArr);
+                                // }
+                                setLinkCount(index - 1);
+                                removeLastElement();
+                            }}
+                            >
+                            -
+                            </button>
+                        </div>
+                        
+                        }
+                        
+                      </>
+                    );
+                  })}
+                
             </div>
 
             {[...Array(linkCount)].map((_, i) => (
-              <div key={i} className="linkdiv">
-                <div className="row">
-                  <div className="col-8">
-                    <input
-                      type="text"
-                      className="form-control"
-                      onBlur={(e) => {
-                        handleVideoChange(e, i + 1);
-                      }}
-                      placeholder="enter video link"
-                    />
-                  </div>
-                  <div className="col-4">
-                    <button
-                      type="button"
-                      name="video_links"
-                      className="btn sub-btn"
-                      onClick={() => {
-                        setLinkCount(linkCount - 1);
-                        removeLastElement();
-                      }}
-                    >
-                      -
-                    </button>
-                  </div>
+                <div key={i} className="linkdiv">
+                    <div className="row">
+                        <div className="col-8">
+                            <input
+                            type="text"
+                            className="form-control"
+                            onBlur={(e) => {
+                                handleVideoChange(e, i + 1);
+                            }}
+                            placeholder="enter video link"
+                            />
+                        </div>
+                        <div className="col-4">
+                            <button
+                            type="button"
+                            name="video_links"
+                            className="btn sub-btn"
+                            onClick={() => {
+                                setLinkCount(linkCount - 1);
+                                removeLastElement();
+                            }}
+                            >
+                            -
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
             ))}
           </div>
 
@@ -539,6 +595,7 @@ const BioData = () => {
               id="exampleFormControlTextarea1"
               name="bio"
               onChange={handleChange}
+              defaultValue={biodata.kolProfile.bio}
               rows="3"
             ></textarea>
           </div>
@@ -565,6 +622,7 @@ const BioData = () => {
               name="tags"
               className="form-control"
               onChange={onChange}
+              // defaultValue={biodata.kolProfile.video_links}
             />
           </div>
 
@@ -578,11 +636,7 @@ const BioData = () => {
             <label className="form-label">
               <b>Upload Banner</b>
             </label>
-            <input
-              type="file"
-              name="userBanner"
-              onChange={handleChange}
-            />
+            <input type="file" name="userBanner" onChange={handleChange} />
           </div>
 
           <div className="mt-4 mx-auto d-block">
@@ -596,4 +650,4 @@ const BioData = () => {
   );
 };
 
-export default BioData;
+export default ProfileUpdate;

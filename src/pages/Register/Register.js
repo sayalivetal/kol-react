@@ -5,14 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../Firebase";
 import { Container, Row, Col } from "react-bootstrap";
-import { signupUser } from "../../slices/AuthSlice/AuthSlice";
+import { signupUser,userSelector,clearState } from "../../slices/AuthSlice/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
+
+  const { isFetching, isSuccess,statusCode, isError, errorMessage } = useSelector(userSelector)
   const role = useSelector((state) => state?.user?.role?.payload);
   //state for firebase values
+  console.log(isSuccess,statusCode);
   const [firebaseUser, setFirebaseuser] = useState({
     name: "",
     email: "",
@@ -28,38 +31,13 @@ const Register = () => {
     role: role,
     password: "",
   });
-  //state for store data of user register
-  const [data, setData] = useState({});
+  let token = localStorage.getItem('token');
+  console.log(token);
+
+  
   //navigaion
   const navigate = useNavigate();
   //useSelector for getting data from store
-  const userDetails = useSelector((state) => state?.user?.registerUser);
-  // const userRegister = useSelector((state)=>state.user.registerUser)
-  console.log(userDetails);
-  useEffect(() => {
-    if (!userDetails?.otp) return;
-    setData(userDetails);
-  }, [userDetails?.otp]);
-  useEffect(() => {
-    if (!userDetails?.data?.token) return;
-    setData(userDetails);
-  }, [userDetails?.data?.token]);
-
-  useEffect(() => {
-    if (data?.data?.token) {
-      navigate("/Home");
-    }
-  }, [data]);
-  console.log(data);
-  useEffect(() => {
-    if (data?.otp) {
-      navigate("/EmailVerify");
-    }
-  }, [data]);
-
-  if (userDetails?.statusCode == 301) {
-    toast.error("User already exists");
-  }
   //Dispatch form react redux
   const dispatch = useDispatch();
   //function for response from firebase
@@ -96,6 +74,38 @@ const Register = () => {
     console.log(firebaseUser);
     dispatch(signupUser(firebaseUser));
   }, [firebaseUser.token]);
+
+
+  //new Changes
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clearState());
+      navigate('/EmailVerify');
+    }
+    if(statusCode == 301){
+      navigate('/register')
+      toast.error(errorMessage)
+      dispatch(clearState());
+    }
+
+    if (isError) {
+      toast.error(errorMessage);
+      dispatch(clearState());
+    }
+  }, [isSuccess, isError]);
+
+  useEffect(()=>{
+    if (token) {
+    navigate('/home')
+    }
+  },[token])
   return (
     <div className="main-div">
       <section>

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ResetPassword } from "../../slices/AuthSlice/AuthSlice";
+import { ResetPassword, userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
 const ForgotPassword = () => {
   const navigate = useNavigate()
-  const email = useSelector((state) => state?.user?.loginUser?.data?.email);
-  const statusCode = useSelector((state) => state?.user?.loginUser?.statusCode);
-  const successMessage = useSelector(
-    (state) => state?.user?.loginUser?.message
-  );
+  const { isFetching, isSuccess,statusCode, isError, errorMessage,email }= useSelector(userSelector);
+
   console.log(statusCode);
   console.log(email);
   const dispatch = useDispatch();

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from 'react';
 import './css/styles.css'
+import { useDispatch,useSelector } from "react-redux";
 import BioData from './components/BioData';
 import Announcement from './components/Announcement'
 import Sidebar from "./components/Sidebar";
@@ -86,6 +87,7 @@ const Dashboard = () => {
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossOrigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
     </>
+
   );
 };
 
