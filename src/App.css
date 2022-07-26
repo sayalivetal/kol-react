@@ -457,3 +457,35 @@ body {
 .bookmark-thumb img {
   width: 100%;
 }
+
+.landing-Slider .slick-prev,
+.landing-Slider .slick-next {
+  top: -30px !important;
+}
+.landing-Slider .slick-prev {
+  right: 30px !important;
+  left: auto !important;
+}
+.landing-Slider .slick-next {
+  right: 0px !important;
+}
+.landing-Slider .slick-next:before {
+  content: '\F285';
+  font-family: bootstrap-icons !important;
+}
+
+.landing-Slider .slick-prev:before {
+  content: '\F284';
+  font-family: bootstrap-icons !important;
+}
+
+/* best kol profile landing page */
+.kol-profile-logo{
+  background-color: #342951;
+  height: 260px;
+  width: 260px;
+  border-radius: 13px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
