@@ -10,7 +10,7 @@ import {
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-// import { dashboardSelector } from '../../../slices/Dashboard/dashboard';
+import {imageUrl} from '../../../common/apis'
 
 const ProfileUpdate = () => {
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ const ProfileUpdate = () => {
       label: "Instagram",
     },
     {
-      value: "tiktok",
+      value: "tik-tok",
       label: "Tiktok",
     },
     {
@@ -76,9 +76,13 @@ const ProfileUpdate = () => {
       label: "Facebook",
     },
     {
-      value: "snapchat",
-      label: "Snapchat",
+      value: "linkedIn",
+      label: "LinkedIn",
     },
+    {
+      value: "patreon",
+      label: "Patreon",
+    }
   ];
 
   const [kolProfile, setKolProfile] = useState({
@@ -110,9 +114,10 @@ const ProfileUpdate = () => {
   const [video_links, setVideoLinks] = useState([]);
 
   const [vedioLinkArr, setVedioLinkArr] = useState([]);
-  // console.log("============>",vedioLinkArr);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const formData = new FormData();
 
     formData.append("avatar", selectedFile);
@@ -238,8 +243,34 @@ const ProfileUpdate = () => {
   }, []);
 
   useEffect(() => {
-    console.log("videoArr", biodata.kolProfile.video_links.split(","));
-    setVedioLinkArr([...biodata.kolProfile.video_links.split(",")]);
+    console.log('video-liunk',biodata.kolProfile.video_links.split(","))
+    let a = biodata.kolProfile.video_links.split(",")
+    console.log(a);
+    setVedioLinkArr([...a]);
+    setTags([...biodata.kolProfile.tags.split(",")]);
+    
+    setInputList([...biodata.kolProfile.get_social_media]);
+    console.log('vedioLinkArr ==', vedioLinkArr);
+
+    setKolProfile(() => {
+      return {
+        ...kolProfile,
+        video_links: [...vedioLinkArr],
+        tags: [...tags],
+        social_media: [...biodata.kolProfile.get_social_media],
+        city: biodata.kolProfile.city,
+        kol_type: biodata.kolProfile.kol_type,
+        zip_code: biodata.kolProfile.zip_code,
+        state: biodata.kolProfile.state,
+        personal_email: biodata.kolProfile.personal_email,
+        bio:  biodata.kolProfile.bio,
+        languages: biodata.kolProfile.languages.split(","),
+        social_active: biodata.kolProfile.social_active.split(","),
+      };
+    });
+
+    console.log('kolProfile123',kolProfile)
+    
   }, [biodata]);
 
   const deleteTag = (index) => {
@@ -268,7 +299,7 @@ const ProfileUpdate = () => {
     biodata: { kolProfileData },
   } = useSelector(dashboardSelector);
 
-  console.log("linkCount", linkCount);
+  console.log("biodata", biodata);
 
   return (
     <>
@@ -430,7 +461,7 @@ const ProfileUpdate = () => {
               <b>Social Media Info</b>
             </label>
 
-            {biodata.kolProfile.get_social_media.map((x, i) => {
+            {inputList.map((x, i) => {
               return (
                 <div className="row topmrgn">
                   <div className="col-3">
@@ -481,7 +512,7 @@ const ProfileUpdate = () => {
                           -{" "}
                         </button>
                       )}
-                      {biodata.kolProfile.get_social_media.length - 1 === i && (
+                      {inputList.length - 1 === i && (
                         <button
                           className="btn custome-btn left-mrgn"
                           onClick={handleAddClick}
@@ -504,85 +535,85 @@ const ProfileUpdate = () => {
             </label>
 
             <div className="row">
-                
-                {vedioLinkArr &&
-                  vedioLinkArr.map((item, index) => {
-                    return (
-                      <>
-                        <div className="col-8 linkdiv">
-                            <input
-                            type="text"
-                            className="form-control"
-                            placeholder="enter video link"
-                            onChange={(e) => {
-                                handleVideoChange(e, 0);
-                            }}
-                            defaultValue={item}
-                            />
-                        </div>
-                        {
-                            index== 0 ? ( <div className="col-4 linkdiv">
+              {vedioLinkArr &&
+                vedioLinkArr.map((item, index) => {
+                  return (
+                    <>
+                      <div className="col-8 linkdiv">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="enter video link"
+                          onChange={(e) => {
+                            handleVideoChange(e, 0);
+                          }}
+                          data1={index}
+                          defaultValue={item}
+                        />
+                      </div>
+                      {index == 0 ? (
+                        <div className="col-4 linkdiv">
                           <button
                             type="button"
                             name="video_links"
+                            data1={index}
                             className="btn custome-btn"
-                            onClick={() => setLinkCount(index + 1)}
+                            onClick={() => setLinkCount(linkCount + 1)}
                           >
                             +
                           </button>
-                        </div> ) : <div className="col-4 linkdiv">
-                            <button
+                        </div>
+                      ) : (
+                        <div className="col-4 linkdiv">
+                          <button
                             type="button"
                             name="video_links"
                             className="btn sub-btn"
                             onClick={() => {
-                                // if(linkCount == 1){
-                                //     setVedioLinkArr(vedioLinkArr);
-                                // }
-                                setLinkCount(index - 1);
-                                removeLastElement();
+                              // if(linkCount == 1){
+                              //     setVedioLinkArr(vedioLinkArr);
+                              // }
+                              setLinkCount(linkCount - 1);
+                              // removeLastElement();
                             }}
-                            >
+                          >
                             -
-                            </button>
+                          </button>
                         </div>
-                        
-                        }
-                        
-                      </>
-                    );
-                  })}
-                
+                      )}
+                    </>
+                  );
+                })}
             </div>
 
             {[...Array(linkCount)].map((_, i) => (
-                <div key={i} className="linkdiv">
-                    <div className="row">
-                        <div className="col-8">
-                            <input
-                            type="text"
-                            className="form-control"
-                            onBlur={(e) => {
-                                handleVideoChange(e, i + 1);
-                            }}
-                            placeholder="enter video link"
-                            />
-                        </div>
-                        <div className="col-4">
-                            <button
-                            type="button"
-                            name="video_links"
-                            className="btn sub-btn"
-                            onClick={() => {
-                                setLinkCount(linkCount - 1);
-                                removeLastElement();
-                            }}
-                            >
-                            -
-                            </button>
-                        </div>
-                    </div>
+              <div key={i} className="linkdiv">
+                <div className="row">
+                  <div className="col-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      onBlur={(e) => {
+                        handleVideoChange(e, i + 1);
+                      }}
+                      placeholder="enter video link"
+                    />
+                  </div>
+                  <div className="col-4">
+                    <button
+                      type="button"
+                      name="video_links"
+                      className="btn sub-btn"
+                      onClick={() => {
+                        setLinkCount(linkCount - 1);
+                        removeLastElement();
+                      }}
+                    >
+                      -
+                    </button>
+                  </div>
                 </div>
+              </div>
             ))}
           </div>
 
@@ -601,7 +632,7 @@ const ProfileUpdate = () => {
           </div>
 
           <div className="col-12 mt-3">
-            {tags.length && (
+            {tags.length ? (
               <div className="tagDiv">
                 {tags.map((tag, index) => (
                   <div className="tag">
@@ -610,6 +641,8 @@ const ProfileUpdate = () => {
                   </div>
                 ))}
               </div>
+            ) : (
+              ""
             )}
             <label className="form-label">
               <b>Enter Tags</b>
@@ -631,12 +664,14 @@ const ProfileUpdate = () => {
               <b>Upload Avatar</b>
             </label>
             <input type="file" name="userImage" onChange={handleChange} />
+            <img src={`${imageUrl}${biodata.kolProfile.avatar}`}  height={50} />
           </div>
           <div className="row mt-3">
             <label className="form-label">
               <b>Upload Banner</b>
             </label>
             <input type="file" name="userBanner" onChange={handleChange} />
+            <img src={`${imageUrl}${biodata.kolProfile.banner}`}  height={50} width={50}/>
           </div>
 
           <div className="mt-4 mx-auto d-block">

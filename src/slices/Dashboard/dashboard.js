@@ -6,6 +6,7 @@ const initialState = {
   biodata: {}, 
   message:'',
   statusCode: "",
+  isSuccess:false
 };
 
 //API Integration with action for dashboard form submission
@@ -25,8 +26,6 @@ export const bioDataFormSubmission = createAsyncThunk(
           method: "POST",
           body: formData,
           headers: {
-            //"Content-Type": "application/json",
-            // Accept: "application/json",
             Authorization: "Bearer " + localStorage.getItem("token")
           },
         });
@@ -56,8 +55,10 @@ export const getKolprofile = createAsyncThunk(
           Authorization: "Bearer " + localStorage.getItem("token")
         },
       });
+      
       let data = await response.json();
-      console.log(data);
+      console.log('data===========',data);
+     
       if (response.status === 200) {
         return data;
       } else {

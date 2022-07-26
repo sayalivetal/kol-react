@@ -15,6 +15,15 @@ const BioData = () => {
   useEffect(()=>{
     toast.success(message)
   },[message])
+
+  // useEffect(()=>{
+  //   if(!biodata.status){
+  //     return;
+  //   }
+  //   navigate("../profileview") 
+  // },[biodata])
+
+
   const dispatch = useDispatch();
   const initialArr = {};
   initialArr['name'] = '';
@@ -30,11 +39,7 @@ const BioData = () => {
       social_icon: "" 
     }
   ]);
-// useEffect(()=>{
-// if(biodata.status){
-//   navigate("../profileview")
-// }
-// },[biodata])
+
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -239,7 +244,6 @@ const BioData = () => {
     setVideoLinks((state)=>{
       return[...state,e.target.value]
     })
-      // [...video_links, e.target.value]);
   };
 
   const removeLastElement = () => {
@@ -251,9 +255,10 @@ const BioData = () => {
     console.log('language', kolProfile.languages)
   }
   const handleViewClick = (e) =>{
-    navigate("../profileview")
+    dispatch(getKolprofile())
+    navigate("../profile") 
   }
-  console.log(kolProfile.personal_email);
+  // console.log(kolProfile.personal_email);
 
   const {biodata:{kolProfileData}} = useSelector(dashboardSelector)
   return (

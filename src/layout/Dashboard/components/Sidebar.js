@@ -13,7 +13,7 @@ const Sidebar = () => {
                         Dashboard
                     </Link> */}
                     <div className="sb-sidenav-menu-heading">Personal Setting</div>
-                    <Link className="nav-link collapsed" to="profileupdate" >
+                    <Link className="nav-link collapsed" to="profileview" >
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
                         Personal Data
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
