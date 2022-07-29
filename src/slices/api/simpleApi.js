@@ -99,6 +99,7 @@ export const getChatList = async (callback,token) => {
 
   callback(result.bookmarks);
 };
+
 export const getFeedback = async (callback,token,id) => {
   const response = await fetch(`${API}/feedback/kol-user-list?kol_profile_id=${id}`, {
     method: "GET",
@@ -114,6 +115,48 @@ export const getFeedback = async (callback,token,id) => {
 
   callback(result.Feedbacks);
 };
+
+export const getKolAllAnnouncements = async (callback,token) => {
+  const response = await fetch(`${API}/announcement/list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+
+  callback(result.announcements);
+};
+
+export const getAnnouncement = async (callback,token , id) => {
+  const response = await fetch(`${API}/announcement/view?id=${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  callback(result.announcement);
+};
+
+export const deleteAnnouncement = async (callback,token , id) => {
+  const response = await fetch(`${API}/announcement/delete?id=${id}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+
 
 
 

@@ -6,21 +6,16 @@ const initialState = {
   biodata: {}, 
   message:'',
   statusCode: "",
-  isSuccess:false
+  isSuccess:false,
+  announcement:{}
 };
 
 //API Integration with action for dashboard form submission
 export const bioDataFormSubmission = createAsyncThunk(
     "dashboard/biodata/submit",
     async ( formData, thunkAPI) => {
-      // for (var pair of formData.entries()) {
-      //   console.log('fddf',pair[0]+ ', ' + pair[1]); 
-      // }
-      //console.log('fddf',formData);
-      const token = localStorage.getItem('token');
-  
-      // console.log(userName, personal_email, kol_type, city, zip_code, state, userImage, bio, social_media, social_active, video_links, languages, tags);
-      
+
+      const token = localStorage.getItem('token');      
       try {
         const response = await fetch(`${API}/kol-profile/add-update`, {
           method: "POST",
@@ -101,6 +96,8 @@ export const announceDataFormSubmission = createAsyncThunk(
 
 
 
+
+
 const dashboardReducer = createSlice({
   name: "dashboard",
   initialState,
@@ -116,15 +113,18 @@ const dashboardReducer = createSlice({
     [bioDataFormSubmission.pending]: (state, action) => {},
     [bioDataFormSubmission.rejected]: (state, action) => {},
 
-    [bioDataFormSubmission.fulfilled]: (state, {payload}) => {
-      state.message = payload.message;
-    },
     [getKolprofile.fulfilled]: (state, {payload}) => {
       return{biodata:{...payload}}
     },
     [getKolprofile.pending]: (state, action) => {},
-    [getKolprofile.rejected]: (state, action) => {}
-      
+    [getKolprofile.rejected]: (state, action) => {},
+
+    [announceDataFormSubmission.fulfilled]: (state, {payload}) => {
+      state.message = payload.message;
+    },
+    [announceDataFormSubmission.pending]: (state, action) => {},
+    [announceDataFormSubmission.rejected]: (state, action) => {},
+
   }
 });
 

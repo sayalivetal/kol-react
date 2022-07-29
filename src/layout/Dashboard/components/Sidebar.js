@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Sidebar = () => {
   return (
     <>
-        <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <nav className="sb-sidenav accordion header" id="sidenavAccordion">
             <div className="sb-sidenav-menu">
                 <div className="nav">
                     {/* <div className="sb-sidenav-menu-heading">Core</div>
@@ -12,13 +12,13 @@ const Sidebar = () => {
                         <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt" ></i></div>
                         Dashboard
                     </Link> */}
-                    <div className="sb-sidenav-menu-heading">Personal Setting</div>
-                    <Link className="nav-link collapsed" to="profileview" >
+                    <div className="sb-sidenav-menu-heading" style={{color:'white'}}>Personal Setting</div>
+                    <Link className="nav-link collapsed" style={{color:'white'}} to="profileview" >
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
                         Personal Data
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
                     </Link>
-                    <Link className="nav-link collapsed" to="announcement" >
+                    <Link className="nav-link collapsed" to="announcement/list" style={{color:'white'}}>
                         <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
                         Annoucement
                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
@@ -36,10 +36,10 @@ const Sidebar = () => {
                     </Link> */}
                 </div>
             </div>
-            <div className="sb-sidenav-footer">
+            {/* <div className="sb-sidenav-footer">
                 <div className="small">Logged in as:</div>
-                Start Bootstrap
-            </div>
+                Kol Dashboard
+            </div> */}
         </nav>
     </>
   )

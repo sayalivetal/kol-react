@@ -11706,6 +11706,18 @@ body {
   padding: 30px;
   box-shadow: 2px 2px 8px #d9d9d9;
 }
+
+.dashboard-main-listing {
+  width: 100%;
+  margin: 40px 0;
+  padding: 30px;
+  box-shadow: 2px 2px 8px #d9d9d9;
+}
+
+.error-show{
+  color: red;
+}
+
 select.form-select.form-text {
   width: 260px;
   margin: 0;
@@ -11783,3 +11795,23 @@ button.btn.custome-btn {
 .topmrgn{
   margin-top: 10px;
 }
+
+/* trable-style */
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin:25px auto;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px 15px;
+  font-family: Montserrat, sans-serif;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+

@@ -5,7 +5,6 @@ import Select from "react-select";
 import {
   bioDataFormSubmission,
   dashboardSelector,
-  getKolprofile,
 } from "../../../slices/Dashboard/dashboard";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -243,9 +242,9 @@ const ProfileUpdate = () => {
   }, []);
 
   useEffect(() => {
-    console.log('video-liunk',biodata.kolProfile.video_links.split(","))
+    
     let a = biodata.kolProfile.video_links.split(",")
-    console.log(a);
+    
     setVedioLinkArr([...a]);
     setTags([...biodata.kolProfile.tags.split(",")]);
     
@@ -329,7 +328,7 @@ const ProfileUpdate = () => {
                 name="userName"
                 onChange={handleChange}
                 id="exampleInputEmail1"
-                defaultValue={biodata.kolProfile.get_user.name}
+                defaultValue={biodata.kolProfile?.get_user?.name}
                 aria-describedby="emailHelp"
               />
             </div>
@@ -343,7 +342,7 @@ const ProfileUpdate = () => {
                 className="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
-                defaultValue={biodata.kolProfile.personal_email}
+                defaultValue={biodata.kolProfile?.personal_email}
                 onChange={handleChange}
               />
               <div id="emailHelp" className="form-text">
