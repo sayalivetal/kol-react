@@ -424,4 +424,4 @@ const authReducer = createSlice({
 export const { addRole,clearState } = authReducer.actions;
 export default authReducer.reducer;
 
-export const userSelector = (state) => state.user;
+export const userSelector = (state) => state?.user;

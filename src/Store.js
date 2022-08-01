@@ -9,11 +9,16 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import persistStore from "redux-persist/es/persistStore";
+import dashboardReducer from "./slices/Dashboard/dashboard";
 
 const reducers = combineReducers({
   user: AuthSlice,
   kolListing: KolListing,
+  //   cartData: CartReducer,
+  dashboard:dashboardReducer,
+
   chat: chatReducer,
+
 });
 
 const persistConfig = {
