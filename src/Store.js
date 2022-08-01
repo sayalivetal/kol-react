@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 // import authReducer from "./reducers/AuthReducer";
 import AuthSlice from "./slices/AuthSlice/AuthSlice";
 import KolListing from "./slices/KolListing/KolSlices";
+import chatReducer from "./slices/ChatSlice/ChatSlice";
 // import productReducer from "./reducers/ProductReducer";
 // import CartReducer from "./reducers/CartReducer";
 import { combineReducers } from "redux";
@@ -15,12 +16,15 @@ const reducers = combineReducers({
   kolListing: KolListing,
   //   cartData: CartReducer,
   dashboard:dashboardReducer,
+
+  chat: chatReducer,
+
 });
 
 const persistConfig = {
   key: "root",
   storage: storage,
-  blacklist: [ "kolListing"],
+  blacklist: [ "kolListing","chat"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

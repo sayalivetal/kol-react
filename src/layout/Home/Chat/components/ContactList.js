@@ -1,116 +1,109 @@
-import React, { useState,useEffect } from 'react';
-import '../Chat.css';
-const ContactList = () => {
-  // Chat/chat-list-users
+import React, { useState, useEffect } from "react";
+import "../Chat.css";
+import Moment from "react-moment";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { getChatList } from "../../../../slices/api/simpleApi";
+import {
+  conversationList,
+  chatSelector,
+} from "../../../../slices/ChatSlice/ChatSlice";
+const ContactList = ({ id }) => {
+  const navigate = useNavigate();
+  const [term, setTerm] = useState("");
+  const { isSuccess } = useSelector(chatSelector);
+  const [urlId, seturlId] = useState();
+  console.log("check", isSuccess);
+  const dispatch = useDispatch();
+
+  let token = localStorage.getItem("token");
+  const [contactList, setContactList] = useState([]);
+  useEffect(() => {
+    seturlId(id);
+  }, []);
+  console.log("======================================", term);
+  // useEffect(()=>{
+  //   if(term){
+  //     let a =  contactList.filter((item,index)=>{
+  //       return item.name == term
+  //  })
+  //  setContactList([...a])
+  //   }
+
+  // },[term])
+  useEffect(() => {
+    if (!id) return;
+    handleClick(id);
+  }, [id]);
+  const handleClick = (id) => {
+    seturlId(id);
+  };
+  useEffect(() => {
+    dispatch(conversationList({ urlId, token }));
+  }, [urlId]);
+  useEffect(() => {
+    if(term){
+      let a =  contactList.filter((item,index)=>{
+        return item.name.includes(term)
+      })
+      setContactList([...a]);
+      return;
+    }
+    const callback = (data) => {
+      setContactList([...data]);
+    };
+    getChatList(callback, token);
+  }, [term]);
+
   return (
-    <div className='contact-div'>
-      <div className='contact-table-scroll'>
-        <div className='chat-users-block'>
+    <>
+      <form className="chat-user-search">
+        <i className="bi bi-search search-icon"></i>
+        <input
+          className="form-control user-search-control"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+          onChange={(e) => setTerm(e.target.value)}
+        />
+      </form>
+      <div className="contact-div">
+        <div className="contact-table-scroll">
+          <div className="chat-users-block">
+            {contactList &&
+              contactList.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={`user-item-chat ${
+                      item.profile_id == urlId ? "current-active" : ""
+                    }`}
+                    onClick={() => handleClick(item.profile_id)}
+                  >
+                    <div className="user-item-thumb">
+                      <img
+                        src={item.avatar}
+                        className="profile-image rounded-circle"
+                      />
+                      <span className="status-icon in-active"></span>
+                    </div>
+                    <div className="user-item-text">
+                      <div className="user-item-row">
+                        <span className="user-item-name">{item.name}</span>
+                        <span className="user-item-time">
+                          <Moment format="h:mm A">{item.time}</Moment>
+                        </span>
+                      </div>
 
-            <div className='user-item-chat'>
-              <div className='user-item-thumb'>
-                <img  src='./Images/5.jpg'  className='profile-image rounded-circle' />
-                <span className='status-icon in-active'></span>
-              </div>
-              <div className='user-item-text'>
-                <div className='user-item-row'>
-                  <span className='user-item-name'>Jone Doe </span> 
-                  <span className='user-item-time'>11:55 PM</span>
+                      <div className="user-item-last-msg">{item.last_msg}</div>
+                    </div>
                   </div>
-                <div className='user-item-last-msg'>Hi, How are you?</div>
-              </div>
-            </div>
-
-            <div className='user-item-chat'>
-              <div className='user-item-thumb'>
-                <img  src='./Images/5.jpg'  className='profile-image rounded-circle' />
-                <span className='status-icon active'></span>
-              </div>
-              <div className='user-item-text'>
-                <div className='user-item-row'>
-                  <span className='user-item-name'>Jone Doe </span> 
-                  <span className='user-item-time'>11:55 PM</span>
-                  </div>
-                <div className='user-item-last-msg'>Hi, How are you?</div>
-              </div>
-            </div>
-
-            <div className='user-item-chat'>
-              <div className='user-item-thumb'>
-                <img  src='./Images/5.jpg'  className='profile-image rounded-circle' />
-                <span className='status-icon active'></span>
-              </div>
-              <div className='user-item-text'>
-                <div className='user-item-row'>
-                  <span className='user-item-name'>Jone Doe </span> 
-                  <span className='user-item-time'>11:55 PM</span>
-                  </div>
-                <div className='user-item-last-msg'>Hi, How are you?</div>
-              </div>
-            </div>
-
-            <div className='user-item-chat'>
-              <div className='user-item-thumb'>
-                <img  src='./Images/5.jpg'  className='profile-image rounded-circle' />
-                <span className='status-icon active'></span>
-              </div>
-              <div className='user-item-text'>
-                <div className='user-item-row'>
-                  <span className='user-item-name'>Jone Doe </span> 
-                  <span className='user-item-time'>11:55 PM</span>
-                  </div>
-                <div className='user-item-last-msg'>Hi, How are you?</div>
-              </div>
-            </div>
-
-            <div className='user-item-chat'>
-              <div className='user-item-thumb'>
-                <img  src='./Images/5.jpg'  className='profile-image rounded-circle' />
-                <span className='status-icon active'></span>
-              </div>
-              <div className='user-item-text'>
-                <div className='user-item-row'>
-                  <span className='user-item-name'>Jone Doe </span> 
-                  <span className='user-item-time'>11:55 PM</span>
-                  </div>
-                <div className='user-item-last-msg'>Hi, How are you?</div>
-              </div>
-            </div>
-
-            <div className='user-item-chat'>
-              <div className='user-item-thumb'>
-                <img  src='./Images/5.jpg'  className='profile-image rounded-circle' />
-                <span className='status-icon active'></span>
-              </div>
-              <div className='user-item-text'>
-                <div className='user-item-row'>
-                  <span className='user-item-name'>Jone Doe </span> 
-                  <span className='user-item-time'>11:55 PM</span>
-                  </div>
-                <div className='user-item-last-msg'>Hi, How are you?</div>
-              </div>
-            </div>
-
-            <div className='user-item-chat'>
-              <div className='user-item-thumb'>
-                <img  src='./Images/5.jpg'  className='profile-image rounded-circle' />
-                <span className='status-icon active'></span>
-              </div>
-              <div className='user-item-text'>
-                <div className='user-item-row'>
-                  <span className='user-item-name'>Jone Doe </span> 
-                  <span className='user-item-time'>11:55 PM</span>
-                  </div>
-                <div className='user-item-last-msg'>Hi, How are you?</div>
-              </div>
-            </div>
-          
-      
-
-
+                );
+              })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -95,9 +95,9 @@ export const getChatList = async (callback,token) => {
     },
   });
   const result = await response.json();
-  console.log(result.bookmarks);
+  console.log(result.data);
 
-  callback(result.bookmarks);
+  callback(result.data);
 };
 
 export const getFeedback = async (callback,token,id) => {

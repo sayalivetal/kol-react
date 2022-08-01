@@ -46,7 +46,7 @@ const Bookmark = () => {
                       </div>
                       <div className="bookmark-delete">
                         <i
-                          class="bi bi-trash3"
+                          className="bi bi-trash3"
                           onClick={() => {
                             handleBookmark(item.kol_profile_id);
                           }}
