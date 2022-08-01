@@ -39,28 +39,23 @@ export const bioDataFormSubmission = createAsyncThunk(
 
 export const getKolprofile = createAsyncThunk(
   "dashboard/profile/view",
-  async ( formData, thunkAPI) => {
+  async ( thunkAPI) => {
     try {
       const response = await fetch(`${API}/kol-profile/view-details`, {
         method: "GET",
-        // body: formData,
         headers: {
-          //"Content-Type": "application/json",
           Accept: "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
         },
       });
       
       let data = await response.json();
-      console.log('data===========',data);
-     
       if (response.status === 200) {
         return data;
       } else {
         return thunkAPI.rejectWithValue(data);
       }
     } catch (e) {
-      console.log("Error", e.response.data);
       return thunkAPI.rejectWithValue(e.response.data);
     }
   }
@@ -75,20 +70,17 @@ export const announceDataFormSubmission = createAsyncThunk(
         method: "POST",
         body: formData,
         headers: {
-          //"Content-Type": "application/json",
           Accept: "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
         },
       });
       let data = await response.json();
-      console.log(data);
       if (response.status === 200) {
         return data;
       } else {
         return thunkAPI.rejectWithValue(data);
       }
     } catch (e) {
-      console.log("Error", e.response.data);
       return thunkAPI.rejectWithValue(e.response.data);
     }
   }
@@ -116,6 +108,7 @@ const dashboardReducer = createSlice({
     [getKolprofile.fulfilled]: (state, {payload}) => {
       return{biodata:{...payload}}
     },
+    
     [getKolprofile.pending]: (state, action) => {},
     [getKolprofile.rejected]: (state, action) => {},
 

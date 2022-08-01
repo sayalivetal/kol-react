@@ -1,30 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getKolprofile } from "../../../slices/Dashboard/dashboard";
-import { dashboardSelector } from "../../../slices/Dashboard/dashboard";
-import { useNavigate } from "react-router-dom";
+import {getKolprofile} from '../../../slices/api/simpleApi'
+import { Link } from "react-router-dom";
 
 const ProfileView = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const {
-    biodata: { kolProfile },
-  } = useSelector(dashboardSelector);
+  
+  const token = localStorage.getItem("token");
+  const [kolProfile , setKolProfile] = useState({});
+
+  useEffect(() => {
+    const callback = (data) => {
+      setKolProfile(data)
+    };
+    getKolprofile(callback, token );
+  }, []);
 
   const openPersonalDataForm = () => {
-    dispatch(getKolprofile());
-    navigate("../profile")
+    // dispatch(getKolprofile());
+    // navigate("../profile")
   };
+
+  console.log('data',kolProfile)
 
   return (
     <>
-      <h3 className="mt-4">Kol Profile View</h3>
-      <button
-        className="btn btn-outline-secondary"
-        onClick={openPersonalDataForm}
-      >
-        Edit
-      </button>
+      <div className="row col-12">
+        <div className="col-6">
+            <h3 className="mt-4">Kol Profile View</h3>
+        </div>
+        <div className="col-6">
+          <Link to={`/dashboard/profile/`}>Edit</Link>
+        </div>
+
+      </div>
 
       <div className="dashboard-main-form">
         <div className="row mt-3">
@@ -32,7 +40,7 @@ const ProfileView = () => {
             <label className="form-label">
               <b>Name : </b>
             </label>
-            <span> {kolProfile?.get_user.name}</span>
+            <span> {kolProfile?.get_user?.name}</span>
           </div>
           <div className="col-6">
             <label className="form-label">
@@ -88,11 +96,11 @@ const ProfileView = () => {
             <label className="form-label">
               <b>Most Active Platform : </b>
             </label>
-            <span>
-              {" "}
-              {kolProfile?.social_active.charAt(0).toUpperCase() +
-                kolProfile?.social_active.slice(1)}
-            </span>
+             <span>
+              {/*
+               kolProfile?.social_active.charAt(0).toUpperCase() +
+  kolProfile?.social_active.slice(1) */}
+             </span>
           </div>
           <div className="col-6">
             <label className="form-label">
@@ -106,20 +114,20 @@ const ProfileView = () => {
             <label className="form-label">
               <b>Social Media Info : </b>
             </label>
-            <div style={{ marginLeft: "20px" }} className="row">
-              <div className="col">
-                {" "}
-                <h6>Platform :</h6> Youtube{" "}
-              </div>
-              <div className="col">
-                {" "}
-                <h6>Username :</h6> amitYoutuber@123
-              </div>
-              <div className="col">
-                {" "}
-                <h6>Followers :</h6> Youtube{" "}
-              </div>
-            </div>
+             <div style={{ marginLeft: "20px" }} className="row">
+               <div className="col">
+                 {" "}
+                 <h6>Platform :</h6> Youtube{" "}
+               </div>
+               <div className="col">
+                 {" "}
+                 <h6>Username :</h6> amitYoutuber@123
+               </div>
+               <div className="col">
+                 {" "}
+                 <h6>Followers :</h6> Youtube{" "}
+               </div>
+             </div>
           </div>
         </div>
         <div className="row mt-3">
@@ -140,7 +148,7 @@ const ProfileView = () => {
             <span>{kolProfile?.bio}</span>
           </div>
         </div>
-      </div>
+      </div> 
     </>
   );
 };

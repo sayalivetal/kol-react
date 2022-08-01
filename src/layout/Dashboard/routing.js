@@ -12,10 +12,11 @@ const AnnouncementView = lazy(() => import("../Dashboard/components/Announcement
 
 const routing = [
     { path: "/profileupdate", name: "BioData", element: BioData },
-    { path: "/announcement/:id", name: "Announcement", element: Announcement },
-    { path: "/announcement/", name: "Announcement", element: Announcement },
     { path: "/profileview", name: "ProfileView", element: ProfileView },
     { path: "/profile", name: "ProfileUpdate", element: ProfileUpdate },
+
+    { path: "/announcement/:id", name: "Announcement", element: Announcement },
+    { path: "/announcement/", name: "Announcement", element: Announcement },
     { path: "/announcement/list", name: "AnnouncementList", element: AnnouncementList },
     { path: "/announcement/view/:id", name: "AnnouncementView", element: AnnouncementView },
 ];

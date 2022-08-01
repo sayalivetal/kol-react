@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, Redirect } from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'slick-carousel/slick/slick.css';
@@ -7,6 +7,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import LandingPage from './pages/LandingPage/LandingPage';
 import './App.css';
 import PrivateRoute from './PrivateRoute';
+
+
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
 const Dashboard = React.lazy(() => import('./layout/Dashboard/Dashboard'));

@@ -119,6 +119,9 @@ const ProfileUpdate = () => {
 
     const formData = new FormData();
 
+    console.log('kolProfile======', kolProfile);
+    
+
     formData.append("avatar", selectedFile);
     formData.append("banner", bannerFile);
     formData.append("personal_email", kolProfile.personal_email);

@@ -134,8 +134,12 @@ const Announcement = () => {
             }
         }
 
-        
-
+        for (let key in error) { 
+            if (error[key] == 0) {
+                toast.error("Please fill details");
+                return;
+            }
+        }
 
         const formData = new FormData();
         formData.append("image", selectedFile);

@@ -156,6 +156,18 @@ export const deleteAnnouncement = async (callback,token , id) => {
   return result;
 };
 
+export const getKolprofile = async (callback,token ) => {
+  const response = await fetch(`${API}/kol-profile/view-details`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  console.log('result', result)
+  callback(result.kolProfile);
+};
 
 
 
