@@ -1,43 +1,39 @@
 import React, { useState } from 'react';
 import './Chat.css';
+import {useLocation} from "react-router-dom";
 import ContactList from './components/ContactList';
 import Conversation from './components/Conversation';
 const Chat = () => {
-  const [term, setTerm] = useState('');
+
+  const search = useLocation().search;
+  const id = new URLSearchParams(search).get('id');
+
+  console.log(id);
+
   return (
     <div className='container'>
       <div className='row'>
         <div className='col-lg-4'>
           <div className='card'>
-            <div className='card-body'>
-              <div className='row'>
-                <div className='col-lg-4'>
-                  <h4>Chat</h4>
-                </div>
-                <div className='col-lg-8'>
-                  {' '}
-                  <span>
-                    <i className='bi bi-telephone'></i>
-                  </span>
-                  <span>
-                    <i className='bi bi-camera-video'></i>
-                  </span>
+            <div className='card-body p-0'>
+              <div className='chat-head-bar'>
+                <div className='chat-head-row'>
+                  <div className='chat-head-text'>
+                    <h3 className='m-0'>Chat</h3>
+                  </div>
+                  <div className='chat-head-icons'>
+                    {' '}
+                      <i className='span-icon bi bi-telephone'></i>
+                      <i className='span-icon bi bi-camera-video'></i>
+                  </div>
                 </div>
               </div>
-              <hr />
-              <div className='row'>
-                <div>
-                  <form className='form-inline'>
-                    <i className='bi bi-search'></i>
-                    <input
-                      className='form-control form-control-sm ml-3 w-75'
-                      type='text'
-                      placeholder='Search'
-                      aria-label='Search'
-                      onChange={(e) => setTerm(e.target.value)}
-                    />
-                  </form>
-                  <ContactList />
+              <div className='chat-bar-body'>
+                <div className='row'>
+                  <div>
+                    
+                    <ContactList id={`${id}`}/>
+                  </div>
                 </div>
               </div>
             </div>
@@ -45,8 +41,8 @@ const Chat = () => {
         </div>
         <div className='col-lg-8'>
           <div className='card'>
-            <div className='card-body'>
-              <Conversation />
+            <div className='card-body p-0'>
+              <Conversation id={`${id}`}/>
             </div>
           </div>
         </div>

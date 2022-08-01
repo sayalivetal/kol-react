@@ -1,12 +1,12 @@
 import React,{useEffect, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { forgotPassword } from "../../slices/AuthSlice/AuthSlice";
+import { forgotPassword,userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch,useSelector } from "react-redux";
 import './EmailCheck.css'
 const EmailCheck = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const passwordChange = useSelector((state)=>state?.user?.loginUser?.data)
+  const { isFetching, isSuccess,statusCode, isError, errorMessage } = useSelector(userSelector)
  
   const[email,setEmail] = useState("")
   const[user,setUser] = useState({})
@@ -18,15 +18,12 @@ const EmailCheck = () => {
     dispatch(forgotPassword(email))
     console.log(email);
   }
-  useEffect(()=>{
-    if(!passwordChange?.otp)return
-    setUser({...passwordChange})
-  },[passwordChange?.otp])
+
 console.log(user);
 useEffect(()=>{
-  if(user.otp)
+  if(isSuccess)
   navigate('/forgotPassword')
-},[user])
+},[isSuccess])
   return (
     <div className="main-div">
       <section>

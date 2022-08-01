@@ -1,6 +1,6 @@
 import React from "react";
 import "./Banner.css";
-
+import KolPromotingSlider from "../KolPromotingSlider/KolPromotingSlider";
 import { Carousel } from "react-bootstrap";
 const Banner = () => {
   return (
@@ -53,6 +53,7 @@ const Banner = () => {
         </div>
       </div>
     </section>
+  
   );
 };
 

@@ -3,7 +3,7 @@ import GoogleButton from "react-google-button";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../Firebase";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginUser,signupUser,loginWithGoogle } from "../../slices/AuthSlice/AuthSlice";
+import { LoginUser,signupUser,loginWithGoogle,clearState,userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +11,7 @@ import "./Login.css";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate= useNavigate()
-  const loginUserData = useSelector((state)=>state?.user?.loginUser)
+  const { isFetching, isSuccess,statusCode, isError, errorMessage } = useSelector(userSelector)
   const [eye, seteye] = useState(true);
   const [type, settype] = useState(false);
   const [loginData, setLoginData] = useState({
@@ -24,31 +24,55 @@ const Login = () => {
     token: "",
   
   });
- 
+  let token = localStorage.getItem('token');
+  console.log(token);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
+  useEffect(()=>{
+    if (token) {
+    navigate('/home')
+    }
+  },[token])
+  useEffect(()=>{
+    if (statusCode == 401) {
+      navigate('/emailVerify')
+      toast.success(errorMessage)
+      }
+  },[statusCode])
+
+  useEffect(()=>{
+    if(errorMessage =='Please choose roles!'){
+      navigate('/role')
+    }
+  },[])
   const [password, setpassword] = useState("password");
   // useEffect(()=>{
   //   if(loginUserData?.message){
   //     toast.error(loginUserData?.message);
   //   }
   // },[loginUserData])
-  useEffect(()=>{
-    if(loginUserData?.data?.email){
-      navigate('/role')
-    }
-    if(loginUserData?.data?.token){
-      navigate('/home')
-    }
-  },[loginUserData])
-  useEffect(()=>{
-    if(loginUserData?.email){
-      navigate('/emailVerify')
-    }
-  },[loginUserData])
-  useEffect(()=>{
-    if(loginUserData?.data?.token){
-      navigate('/home')
-    }
-  },[loginUserData])
+  // useEffect(()=>{
+  //   if(errorMessage =='Please choose roles!'){
+  //     navigate('/role')
+  //   }
+  //   if(loginUserData?.data?.token){
+  //     navigate('/home')
+  //   }
+  // },[loginUserData])
+  // useEffect(()=>{
+  //   if(loginUserData?.email){
+  //     navigate('/emailVerify')
+  //   }
+  // },[loginUserData])
+  // useEffect(()=>{
+  //   if(loginUserData?.data?.token){
+  //     navigate('/home')
+  //   }
+  // },[loginUserData])
   const handleChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
