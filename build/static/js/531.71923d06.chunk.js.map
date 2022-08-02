@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/531.71923d06.chunk.js","mappings":"2JAQA,UANgB,WACd,OACE","sources":["pages/Account/Account.js"],"sourcesContent":["import React from 'react'\n\nconst Account = () => {\n  return (\n    <div>Account</div>\n  )\n}\n\nexport default Account"],"names":[],"sourceRoot":""}
