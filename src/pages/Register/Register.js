@@ -5,17 +5,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../Firebase";
 import { Container, Row, Col } from "react-bootstrap";
-import { signupUser,userSelector,clearState } from "../../slices/AuthSlice/AuthSlice";
+import {
+  signupUser,
+  userSelector,
+  clearState,
+} from "../../slices/AuthSlice/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
-
-  const { isFetching, isSuccess,statusCode, isError, errorMessage } = useSelector(userSelector)
+  const { isFetching, isSuccess, statusCode, isError, errorMessage } =
+    useSelector(userSelector);
   const role = useSelector((state) => state?.user?.role?.payload);
   //state for firebase values
-  console.log(isSuccess,statusCode);
+  console.log(isSuccess, statusCode);
   const [firebaseUser, setFirebaseuser] = useState({
     name: "",
     email: "",
@@ -31,10 +35,11 @@ const Register = () => {
     role: role,
     password: "",
   });
-  let token = localStorage.getItem('token');
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState(false);
+  let token = localStorage.getItem("token");
   console.log(token);
 
-  
   //navigaion
   const navigate = useNavigate();
   //useSelector for getting data from store
@@ -64,17 +69,27 @@ const Register = () => {
   //function for handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    dispatch(signupUser(formData));
-    e.target.reset();
-   };
+    if (
+      formData.name == "" ||
+      formData.email == "" ||
+      token == "" ||
+      formData.password == "" ||
+      role == ""
+    ) {
+      setError("All fields required please select all field");
+      setStatus(true);
+    } else {
+      console.log(formData);
+      dispatch(signupUser(formData));
+      e.target.reset();
+    }
+  };
   //action for signInwithGoogle
   useEffect(() => {
     if (!firebaseUser.token) return;
     console.log(firebaseUser);
     dispatch(signupUser(firebaseUser));
   }, [firebaseUser.token]);
-
 
   //new Changes
 
@@ -87,11 +102,11 @@ const Register = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(clearState());
-      navigate('/EmailVerify');
+      navigate("/EmailVerify");
     }
-    if(statusCode == 301){
-      navigate('/register')
-      toast.error(errorMessage)
+    if (statusCode == 301) {
+      navigate("/register");
+      toast.error(errorMessage);
       dispatch(clearState());
     }
 
@@ -101,11 +116,12 @@ const Register = () => {
     }
   }, [isSuccess, isError]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (token) {
-    navigate('/home')
+      navigate("/home");
     }
-  },[token])
+  }, [token]);
+  console.log(status);
   return (
     <div className="main-div">
       <section>
@@ -129,7 +145,6 @@ const Register = () => {
                 </div>
                 <div className="col-lg-6  col-sm-12 register-form">
                   <div className="row align-items-center ">
-                    {" "}
                     <form className="col-12" onSubmit={handleSubmit}>
                       <h2 className="register-heading mb-3">Register</h2>
 
@@ -139,10 +154,17 @@ const Register = () => {
                         <input
                           type="text"
                           name="name"
-                          className="form-control"
+                          className={` ${
+                             error === "" || formData.name
+                              ? "form-control"
+                              : "border-color"
+                          }`}
                           placeholder="First name"
                           onChange={handleChange}
                         />
+                        {error && formData.name == "" && (
+                          <span className="error-color">{error}</span>
+                        )}
                       </div>
 
                       <div className="form-group  mb-3">
@@ -151,10 +173,17 @@ const Register = () => {
                         <input
                           type="email"
                           name="email"
-                          className="form-control"
+                          className={` ${
+                            error === "" || formData.email 
+                            ? "form-control"
+                            : "border-color"
+                          }`}
                           placeholder="Enter email"
                           onChange={handleChange}
                         />
+                        {error && formData.email == "" && (
+                          <span className="error-color">{error}</span>
+                        )}
                       </div>
 
                       <div className="form-group  mb-3">
@@ -163,10 +192,17 @@ const Register = () => {
                         <input
                           type="password"
                           name="password"
-                          className="form-control"
+                          className={` ${
+                            error === "" && formData.password
+                            ? "form-control"
+                            : "border-color"
+                          }`}
                           placeholder="Enter password"
                           onChange={handleChange}
                         />
+                        {error && formData.password == "" && (
+                          <span className="error-color">{error}</span>
+                        )}
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button

@@ -350,6 +350,7 @@ const authReducer = createSlice({
       // return { loginUser: { ...action.payload.data} };
     },
     [emailVerification.pending]: (state, action) => {
+      
       state.isFetching = true;
     },
     [emailVerification.rejected]: (state, { payload }) => {

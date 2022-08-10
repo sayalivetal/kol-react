@@ -65,19 +65,19 @@ const LandingPage = () => {
                             <label className="form-label">Last Name</label>
                             <input type="text" className="form-control" placeholder="Last Name" />
                           </div>
-                          <div class="col-lg-6 mb-2">
+                          <div className="col-lg-6 mb-2">
                             <label className="form-label">Email</label>
                             <input type="text" className="form-control" placeholder="Enter Email" />
                           </div>
-                          <div class="col-lg-6 mb-2">
+                          <div className="col-lg-6 mb-2">
                             <label className="form-label">Phone No.</label>
                             <input type="text" className="form-control" placeholder="Enter Phone No." />
                           </div>
-                          <div class="col-lg-12 mb-2">
+                          <div className="col-lg-12 mb-2">
                             <label className="form-label">Message</label>
                             <textarea type="text" className="form-control" placeholder="Enter Message" rows="3"></textarea>
                           </div>
-                          <div class="col-lg-12 mb-2">
+                          <div className  ="col-lg-12 mb-2">
                             <button type="submit" className="btn theme-btn ">Send Message</button>
                           </div>
                         </form>

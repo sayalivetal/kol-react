@@ -35,43 +35,19 @@ const EmailVerify = () => {
     }
   }, [isSuccess, isError]);
 
-
-
-  // useEffect(() => {
-  //   if (userdata?.data?.message) {
-  //     toast.success(userdata?.data?.message);
-  //   }
-  // }, [userdata]);
-  // useEffect(() => {
-  //   if (userdata?.data?.token) {
-  //     navigate("/home");
-  //   }
-  // }, [userdata]);
-  // let asd;
-  // useEffect(() => {
-  //   if (emailVerify) {
-  //     toast.success(
-  //       "You have been successfully registered, We have sent a verification code to your mail,please verify it!"
-  //     );
-  //     setEmail(emailVerify)
-  //   }
-  // }, [emailVerify]);
-  // useEffect(() => {
-  //   if (userdata?.email) {
-  //     //  toast.success(userdata.message);
-  //     asd = emailVerify ? emailVerify : userdata?.email;
-  //     setEmail(asd);
-  //   }
-  // }, [userdata]);
   console.log(email);
   const dispatch = useDispatch();
   //state for otp change
   const [otp, setOtp] = useState("");
   //function for otp change
+  const [error,setError] = useState("")
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(emailVerification({ otp, email }));
+    if(otp === ""){
+      setError("opt required")
+    }
+    dispatch(emailVerification({ otp, email }))
     e.target.reset();
   };
   const handleOtp = () => {
@@ -100,8 +76,9 @@ const EmailVerify = () => {
                           numInputs={6}
                           separator={<span>&nbsp;</span>}
                         />
+                        {error && <span className="error-color">{error}</span>}
                       </div>
-
+                      
                       <button className="btn theme-btn btn-lg btn-block my-3" type="submit">
                         Verify &amp; Proceed
                       </button>
