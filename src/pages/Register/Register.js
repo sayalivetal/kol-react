@@ -193,7 +193,7 @@ const Register = () => {
                           type="password"
                           name="password"
                           className={` ${
-                            error === "" && formData.password
+                            error === "" || formData.password
                             ? "form-control"
                             : "border-color"
                           }`}
