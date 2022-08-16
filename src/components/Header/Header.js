@@ -75,10 +75,10 @@ const Header = () => {
                     aria-label="Default select example"
                     onChange={handleChange}
                   >
-                    <option selected>Select Category</option>
+                    <option defaultValue>Select Category</option>
                     {categoryList &&
                       Object.entries(categoryList).map(([key, value]) => (
-                        <option value={key}>{value}</option>
+                        <option key={key} value={key}>{value}</option>
                       ))}
                   </select>
                   <form className="search-form" onSubmit={handleSubmit}>
