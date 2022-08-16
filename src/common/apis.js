@@ -1,4 +1,4 @@
-export const API = 'http://kol.bootesnull.com/api';
+export const API = 'https://kol.bootesnull.com/api';
 
-export const imageUrl = 'http://kol.bootesnull.com/';
+export const imageUrl = 'http://kol.bootesnull.com';
 
