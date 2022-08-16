@@ -489,3 +489,212 @@ body {
   justify-content: center;
   display: flex;
 }
+
+.best-kol-img{
+  height: 260px;
+  width: 260px;
+  border-radius: 13px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+/* .backgroundBannerImage{
+  background-image: url("/public/Images/group.png");
+  height: 260px;
+  width: 260px;
+} */
+
+.backgroundBannerImage {
+  background-size: contain;
+  background-image: url("/public/Images/group.png");
+  min-height: 450px;
+  width: 100%;
+  background-color: #fffcf6;
+  background-repeat: no-repeat;
+  border-radius: 30px;
+}
+.info {
+  display: flex;
+  align-items: center;
+}
+.info i.bi{
+  font-size: 30px;
+  color: #f01f4b;
+}
+.info  p {
+  margin: 0;
+  font-size: 16px;
+  padding-left: 10px;
+}
+.candidate-info {
+  display: flex;
+}
+.box {
+  width: 30px;
+  height: 30px;
+  background: #f01f4b;
+  border-radius: 50px;
+}
+
+.employee-detail {
+  padding-left: 10px;
+}
+.rating {
+  display: flex;
+}
+h3.description {
+  font-size: 22px;
+  font-weight: 600;
+  color: #f01f4b;
+}
+h5.card-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+.card-text {
+  font-size: 16px;
+  line-height: 24px;
+}
+button.view-btn {
+  padding: 10px 30px;
+  width: auto;
+  border-radius: 10px;
+  color: #fff;
+  margin: 30px auto;
+  background: #f01f4b;
+  border: none;
+  font-weight: 500;
+  box-shadow: 2px 2px 2px #f01f4b;
+}
+.about-body {
+  padding: 95px 60px;
+}
+.about-body h2.card-title {
+  font-size: 56px;
+  font-weight: 700;
+  color:#342951;
+}
+ul.kol-count-list {
+   display: flex;
+  justify-content: space-between;
+  padding:40px;
+  list-style-type: none;
+}
+.count-num {
+  font-size: 36px;
+  font-weight: 700;
+  color: #f01f4b;
+  line-height: 40px;
+}
+.count-label {
+  font-size: 22px;
+  text-align: center;
+  color: #8b7db2;
+}
+.help-form {
+  background: #342951;
+  padding: 65px 60px;
+  border-radius: 4px;
+}
+.help-form h2.card-title {
+  color: #f9be3b;
+  font-size: 24px;
+  font-weight: 700;
+}
+.help-form label.form-label {
+  color: #fff;
+}
+.send-btn{
+  margin:0 auto;
+  display: table;
+}
+.why-choose {
+  padding: 20px 60px;
+}
+.icon-box {
+  display: flex;
+}
+.icon-info {
+  padding-left: 15px;
+  padding-bottom: 20px;
+}
+.icon-info h3 {
+ font-size: 24px;
+ line-height: 30px;
+ color:#342951;
+ font-family: Montserrat !important;
+ font-weight: 600;
+}
+.icon-info p {
+  font-size: 18px;
+  line-height: 24px;
+  color:#4B4B4B;
+  font-weight: 400;
+  font-family: Montserrat !important;
+ }
+ .imggg{
+  max-width: 350px;
+  min-height: 400px;
+ }
+
+ 
+.faq-questions {
+  font-family: Montserrat;
+  color: #8B7DB2;
+  opacity: 1;
+  font-weight: bold;
+  font-size: 24px;
+}
+.ques-cls p {
+  font-size: 16px;
+  color: #4B4B4B;
+  font-weight: 400;
+  font-family: 'Montserrat';
+}
+ .faq-div{
+  padding: 20px;
+  text-align: center;
+  font-family: Montserrat;
+ }
+
+.carousel-item {
+  display: flex !important;
+}
+.carousel-caption {
+  position: relative !important;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 4rem 60px;
+  text-align: left;
+}
+.carousel-caption h3 {
+  font-size: 64px;
+  color: #342951;
+  font-family: 'Montserrat';
+  font-weight: 600;
+}
+.carousel-caption span {
+  color: #FFBE3B;
+}
+.banner-img {
+  width: 250px;
+  height: 250px;
+  margin:5rem auto;
+}
+.carousel-control-prev {
+  width: auto !important;
+ }
+ .carousel-control-next {
+   width: auto !important;
+}
+.ques-cls {
+  border: 10px black;
+  padding: 15px;
+  background: #fff;
+  background-clip: border-box;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: 1px solid #E7E7E7;
+}
