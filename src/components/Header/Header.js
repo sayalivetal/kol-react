@@ -7,7 +7,6 @@ import { userSelector, clearState } from "../../slices/AuthSlice/AuthSlice";
 import { Dropdown } from "react-bootstrap";
 import { kolType, kolName } from "../../slices/KolListing/KolSlices";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,7 +19,7 @@ const Header = () => {
     username,
     message,
     email,
-    role: { payload },
+    role:{payload}
   } = useSelector(userSelector);
 
   let token = localStorage.getItem("token");
@@ -31,7 +30,6 @@ const Header = () => {
     };
     getAllCategory(callback, token);
   }, []);
-
   useEffect(() => {
     if (isError) {
       dispatch(clearState());
@@ -45,6 +43,7 @@ const Header = () => {
   const handleChange = (e) => {
     dispatch(kolType(e.target.value));
   };
+
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   };
@@ -52,6 +51,7 @@ const Header = () => {
     e.preventDefault();
     dispatch(kolName(categoryType));
   };
+
 
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
@@ -113,15 +113,15 @@ const Header = () => {
                       ""
                     )}
 
-                    <Link to="/chat">
+                    <Link to={"/chat"}>
                       <i className="bi bi-chat-dots"></i>
                     </Link>
-                    <Link to="/chat">
+                    <Link to={"/chat"}>
+
                       <i className="bi bi-bell"></i>{" "}
                       <span className="count-badge">99</span>
                     </Link>
                   </div>
-
                   <div className="header-profile">
                     <div className="profile-user-icon">
                       <img src="Images/avatar.png" />
@@ -149,6 +149,7 @@ const Header = () => {
                             </div>
                           </div>
 
+
                           <Link className="list-item" to="/account">
                             Profile
                           </Link>
@@ -161,6 +162,12 @@ const Header = () => {
                           <div className="list-item">
                             <span onClick={signOut}>Sign out</span>
                           </div>
+
+                            <Link className="list-item" to="/account">Profile</Link>
+                            <Link className="list-item"  to="/account">Your Account</Link>
+                            <Link  className="list-item" to="/bookmark">Bookmarks</Link>
+                            <div className="list-item" > <span onClick={signOut}>Sign out</span></div> 
+
                         </div>
                       </Dropdown.Menu>
                     </Dropdown>
@@ -184,5 +191,15 @@ const Header = () => {
     </header>
   );
 };
-
 export default Header;
+
+
+
+
+
+
+
+
+
+
+
