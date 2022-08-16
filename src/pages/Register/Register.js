@@ -4,7 +4,7 @@ import "./Register.css";
 import { useDispatch, useSelector } from "react-redux";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../Firebase";
-import { Container, Row, Col } from "react-bootstrap";
+//import { Container, Row, Col } from "react-bootstrap";
 import {
   signupUser,
   userSelector,
@@ -15,8 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
-  const { isFetching, isSuccess, statusCode, isError, errorMessage } =
-    useSelector(userSelector);
+  const { isFetching, isSuccess, statusCode, isError, errorMessage } = useSelector(userSelector);
   const role = useSelector((state) => state?.user?.role?.payload);
   //state for firebase values
   console.log(isSuccess, statusCode);
@@ -104,7 +103,7 @@ const Register = () => {
       dispatch(clearState());
       navigate("/EmailVerify");
     }
-    if (statusCode == 301) {
+    if (statusCode === 301) {
       navigate("/register");
       toast.error(errorMessage);
       dispatch(clearState());
