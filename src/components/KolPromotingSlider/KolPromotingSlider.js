@@ -1,192 +1,148 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import ReactStars from "react-rating-stars-component";
-const KolPromotingSlider = () => {
+import {imageUrl} from '../../common/apis'
+import YouTube, { YouTubeProps } from 'react-youtube';
+import ReactPlayer from 'react-player'
+
+const KolPromotingSlider = (features) => {
   const [settings, setSettings] = useState({
     slidesToShow: 1,
     slidesToScroll: 1,
   });
+
+  // console.log('features slider',features.features)
+  const koldata = features.features;
+
+  // console.log('koldata132', koldata)
+
+  // _onReady(e) {
+  //   // access to player in all event handlers via event.target
+  //   e.target.pauseVideo();
+  // }
+
+  const opts = {
+    height: '390',
+    width: '640',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 1,
+    },
+  };
+
+
   return (
     <Slider {...settings} className="landing-Slider">
-      <div className="card mt-3">
-        <div className="card-body">
-          <div className="col-lg-12 px-4">
-            <div className="row py-1">
-              <div className="col-lg-9">
-                <h3>Logitech</h3>
-                  <div>
-                    <i className="bi bi-geo-alt"></i>
-                    <p>
-                      TENEIL IT Tower Plot No. F-549, IT Park, Ind. Area, Sector
-                      75, SAS Nagar (Mohali) Punjab 160055.
-                    </p>
-                  </div>
+      {
+        
+        koldata.map((item,index) => {
 
-                  <div>
-                    <h3 className="weight-normal m-0">Preeti Parihar</h3>
-                    <p>
-                      The Lorem ipsum text is derived from sections of Cicero De
-                      finibus bonorum et malorum The physical source may have
-                      been the Loeb Classical Library edition of De finibus,
-                      where the Latin text, presented on the left-hand pages,
-                      breaks off on page 34 with Neque porro quisquam est qui do
-                      and continues on page.
-                    </p>
-                    <h3 className="weight-normal m-0">4</h3>
-                    <ReactStars
-                          count={6}
-                          size={24}
-                          activeColor="#ffd700"
-                          value={4}
-                        />
-                  </div>
-              </div>
-              <div className="col-lg-3">
-                  <div className="kol-profile-logo">
-                    <img src=""/>
-                  </div>
-              </div>
+          //Calculate Final Star Rating
+          let lengthFeedback = item['Feedbacks'].length;
+          let ratingCount = 0;
+          item['Feedbacks'].map((feedbackKey , i) => {
+            ratingCount += feedbackKey.rating
+          })
+          let finalRating = Math.ceil(ratingCount / lengthFeedback)
+          //Calculate Fianl Star Rating
 
-              <div className="col-lg-12">
-                  <h3>Description</h3>
-                  <p>The Lorem ipsum text is derived from sections and of Cicero's De finibus bonorum et malorum The physical source may have been the 1914 Loeb Classical Library edition of De finibus, where the Latin text, presented on the left-hand even pages, breaks off on page 34 with Neque porro quisquam est qui do and continues on page 36 with lorem ipsum suggesting that the galley type of that page was mixed up to make the dummy text seen today.</p>
+          // make videos Array
+          let videoArr = [];
+          videoArr = item.video_links.split(",");
+
+          // Make videos Array
+
+          return (
+            <div key={index}> 
+                <div className="card mt-3" >
+                  <div className="card-body px-0">
+                      <div className="col-lg-12">
+                        <div className="row py-1 px-4">
+                          <div className="col-lg-9">
+                            <div className="candidate-info">
+                              <div className="employee-detail">
+                                <h3 className="weight-normal m-0">{item.username}</h3>
+                                <p>
+                                  {item.bio}
+                                </p>
+                                <div className="rating">
+                                  <h3 className="weight-normal m-0">{finalRating}</h3>
+                                  <ReactStars
+                                    count={6}
+                                    size={24}
+                                    activeColor="#ffd700"
+                                    value={finalRating}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="info py-4">
+                              <i className="bi bi-geo-alt"></i>
+                              <p>
+                                { item.Address.address + ', '+ item.Address.city+' , '+ item.Address.state +' , '+ item.Address.zip  }
+                              </p>
+                            </div>
+                          </div>
+                          <div className="col-lg-3">
+                            <div className="kol-profile-logo">
+                              <img src={`${imageUrl}${item.avatar}`} className='best-kol-img'/> 
+                            </div>
+                          </div>
+                        </div>
+
+                        <hr/>
+
+                        <div className="row pt-4 py-1 px-4">
+                            <div className="col-lg-12 py-4">
+                              <h4>KOL promoting Videos</h4>
+                            </div>
+
+                                <div className="row">
+                                  {/* <YouTube videoId="2g811Eo7K8U" opts={opts} onReady={onPlayerReady} /> */}
+                                  {
+                                    videoArr.map((videoUrl , key) => {
+                                      return( 
+                                        <>
+                                          <div className="col-lg-3">
+                                            <div className="card">
+                                              <div index={key}> 
+                                                <ReactPlayer url={videoUrl} width={310} height={180} />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </>
+                                      )
+                                    })
+                                  }    
+                                </div>
+                        </div>
+
+                      </div>
+
+
+                      <div className="row">
+                        <button className="view-btn">View more</button>
+                      </div>
+
+                  </div>
                 </div>
+
+
+
+
+
+                <div className="card mt-3">
+                  <div className="card-body px-0">
+                                    second slide
+                  </div>
+                </div>
+
+
+
             </div>
-
-            <div className="row py-1">
-              <div className="col-lg-12">
-                <h4>KOL are promoting Products</h4>
-              </div>
-
-              <div className="row">
-                <div className="col-lg-3">
-                  <div className="card">
-                    <div>
-                      <iframe
-                        src=""
-                        frameBorder="0"
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen
-                        title="video"
-                      />
-                    </div>
-
-                    <div className="card-body">
-                      <h5 className="card-title">Nike shoose</h5>
-                      <div className="card-text">
-                        The Lorem ipsum text is derived from sections and of
-                        Cicero's De finibus bonorum et malorum
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-3">
-                  <div className="card">
-                    <div>
-                      <iframe
-                        src=""
-                        frameBorder="0"
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen
-                        title="video"
-                      />
-                    </div>
-
-                    <div className="card-body">
-                      <h5 className="card-title">Nike shoose</h5>
-                      <div className="card-text">
-                        The Lorem ipsum text is derived from sections and of
-                        Cicero's De finibus bonorum et malorum
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-3">
-                  <div className="card">
-                    <div>
-                      <iframe
-                        src=""
-                        frameBorder="0"
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen
-                        title="video"
-                      />
-                    </div>
-
-                    <div className="card-body">
-                      <h5 className="card-title">Nike shoose</h5>
-                      <div className="card-text">
-                        The Lorem ipsum text is derived from sections and of
-                        Cicero's De finibus bonorum et malorum
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-lg-3">
-                  <div className="card">
-                    <div>
-                      <iframe
-                        src=""
-                        frameBorder="0"
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen
-                        title="video"
-                      />
-                    </div>
-
-                    <div className="card-body">
-                      <h5 className="card-title">Nike shoose</h5>
-                      <div className="card-text">
-                        The Lorem ipsum text is derived from sections and of
-                        Cicero's De finibus bonorum et malorum
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row"><button>View more</button></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="card">
-        <div>
-          <iframe
-            src=""
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            title="video"
-          />
-        </div>
-
-        <div className="card-body">
-          <h5 className="card-title">Nike shoose</h5>
-          <div className="card-text">
-            The Lorem ipsum text is derived from sections and of Cicero's De
-            finibus bonorum et malorum
-          </div>
-        </div>
-      </div>
-      <div className="card">
-        <div>
-          <iframe
-            src=""
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            title="video"
-          />
-        </div>
-
-        <div className="card-body">
-          <h5 className="card-title">Nike shoose</h5>
-          <div className="card-text">
-            The Lorem ipsum text is derived from sections and of Cicero's De
-            finibus bonorum et malorum
-          </div>
-        </div>
-      </div>
+          )
+        })
+      }
     </Slider>
   );
 };
