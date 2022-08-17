@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllBookmark } from "../../slices/api/simpleApi";
 import { useSelector, useDispatch } from "react-redux";
+import { imageUrl } from "../../common/apis";
 import {
   kolDeleteBookmark,
   kolSelector,
@@ -41,7 +42,7 @@ const Bookmark = () => {
                       <div className="bookmark-thumb">
                         <Link to={`/details/${item.profile_id}`}>
                           {" "}
-                          <img src={item.avatar} alt="" />
+                          <img src={`${imageUrl}${item.avatar}`} alt="" />
                         </Link>
                       </div>
                       <div className="bookmark-delete">
@@ -53,9 +54,8 @@ const Bookmark = () => {
                         ></i>
                       </div>
                       <div className="bookmark-info">
-                        <Link to={`/details/${item.profile_id}`}>
-                          {" "}
-                          <h3 className="bookmark-title">{item.username}</h3>
+                        <Link className="bookmark-title" to={`/details/${item.profile_id}`}>
+                          <h3 >{item.username}</h3>
                         </Link>
 
                         <p className="m-0">{item.tags}</p>

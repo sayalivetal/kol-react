@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { addRole } from "../../slices/AuthSlice/AuthSlice";
-import { updateRole,userSelector} from "../../slices/AuthSlice/AuthSlice";
+import { updateRole, userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -9,14 +9,14 @@ import { toast } from "react-toastify";
 const Role = () => {
   // const email = useSelector((state) => state?.user?.loginUser?.data?.email);
   // const token = useSelector((state) => state?.user?.loginUser?.data?.token);
-  const { isFetching, isSuccess,statusCode, isError, errorMessage, email} = useSelector(userSelector)
+  const { isFetching, isSuccess, statusCode, isError, errorMessage, email } =
+    useSelector(userSelector);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [renderButton, setRenderButton] = useState("");
   const [role, setUserRole] = useState("");
 
- 
-  let token = localStorage.getItem("token")
+  let token = localStorage.getItem("token");
   const onChangeValue = (e) => {
     setUserRole(e.target.value);
     if (e.target.value === "3") {
@@ -27,7 +27,7 @@ const Role = () => {
   };
   useEffect(() => {
     if (errorMessage) {
-     toast.success(errorMessage)
+      toast.success(errorMessage);
     }
   }, [token]);
   useEffect(() => {
@@ -38,11 +38,13 @@ const Role = () => {
   console.log(role, email);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(role && email){
-      dispatch(updateRole({role,email}));
-    }else{
-      dispatch(addRole(role));
-      navigate("/register");
+    if (role) {
+      if (role && email) {
+        dispatch(updateRole({ role, email }));
+      } else {
+        dispatch(addRole(role));
+        navigate("/register");
+      }
     }
   };
 
