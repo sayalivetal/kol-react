@@ -2,38 +2,47 @@ import React, { useState } from "react";
 import Slider from "react-slick";
 import ReactStars from "react-rating-stars-component";
 import { imageUrl } from "../../common/apis";
-import YouTube, { YouTubeProps } from "react-youtube";
+//import YouTube, { YouTubeProps } from "react-youtube";
 import ReactPlayer from "react-player";
 
 const KolPromotingSlider = (features) => {
+  
   const [settings, setSettings] = useState({
     slidesToShow: 1,
     slidesToScroll: 1,
   });
   // console.log('features slider',features.features)
   const koldata = features.features;
-  // console.log('koldata132', koldata)
+  //console.log('koldata132', koldata)
   // _onReady(e) {
   //   e.target.pauseVideo();
   // }
 
-  const opts = {
-    height: "390",
-    width: "640",
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
-    },
+  // const opts = {
+  //   height: "390",
+  //   width: "640",
+  //   playerVars: {
+  //     // https://developers.google.com/youtube/player_parameters
+  //     autoplay: 1,
+  //   },
+  // };
+
+  const promotionVideos = {
+    slidesToShow: 4,
+    slidesToScroll: 1
   };
+
+  
 
   return (
     <Slider {...settings} className="landing-Slider">
       {koldata?.map((item, index) => {
+
         //Calculate Final Star Rating
         let lengthFeedback = item["Feedbacks"].length;
         let ratingCount = 0;
         item["Feedbacks"].map((feedbackKey, i) => {
-          ratingCount += feedbackKey.rating;
+          return ratingCount += feedbackKey.rating;
         });
         let finalRating = Math.ceil(ratingCount / lengthFeedback);
         //Calculate Final Star Rating
@@ -46,10 +55,9 @@ const KolPromotingSlider = (features) => {
 
         return (
           <div key={index}>
-            <div className="card mt-3">
-              <div className="card-body px-0">
-                <div className="col-lg-12">
-                  <div className="row py-1 px-4">
+            <div className="card mt-2 b-radius">
+                <div className="kol-profile-info">
+                  <div className="row">
                     <div className="col-lg-9">
                       <div className="candidate-info">
                         <div className="employee-detail">
@@ -85,40 +93,45 @@ const KolPromotingSlider = (features) => {
                       </div>
                     </div>
                   </div>
+                </div> 
 
-                  <hr />
-
-                  <div className="row pt-4 py-1 px-4">
-                    <div className="col-lg-12 py-4">
-                      <h4>KOL promoting Videos</h4>
+                <div className="kol-profile-videos">
+                  <div className="row">
+                    <div className="col-lg-12 py-2">
+                      <h3>KOL promoting Videos</h3>
                     </div>
 
                     <div className="row">
                       {/* <YouTube videoId="2g811Eo7K8U" opts={opts} onReady={onPlayerReady} /> */}
-                      {videoArr.map((videoUrl, id) => {
-                        return (
-                          <div className="col-lg-3" key={id}>
-                            <div className="card">
-                              <div>
-                                <ReactPlayer
-                                  url={videoUrl}
-                                  width={310}
-                                  height={180}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
+                      {/* <Slider {...promotionVideos} className=""> */}
+                      {/* {console.log("hello",videoArr)} */}
+                        {
+                          videoArr.map((video, index) => {
+                            return (
+                                  <div className="col-lg-3" key={index}>
+                                    <div className="video-item">
+                                      <ReactPlayer
+                                          url={video}
+                                          width={310}
+                                          height={180}
+                                        />
+                                    </div>
+                                  </div>
+                            );
+                          })
+                        }
+                      {/* </Slider> */}
                     </div>
                   </div>
-                </div>
+                </div> 
 
-                <div className="row">
-                  <button className="view-btn">View more</button>
+                <div className="profile-profile-btn">
+                  <div className="row">
+                    <div className="col-lg-12 text-center"><button className="btn theme-btn px-4">View more</button></div>
+                  </div>
                 </div>
-              </div>
             </div>
+
           </div>
         );
       })}

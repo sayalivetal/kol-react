@@ -7,11 +7,13 @@ import { API } from "../../common/apis";
 import { toast } from "react-toastify";
 import ReactPlayer from "react-player";
 
+
 const LandingPage = () => {
   const [bannerList, setBannerList] = useState([]);
   const [totalUsers, setTotalUsers] = useState({});
   const [kolVideoLists, setKolVideoLists] = useState([]);
-  const [features, setfeatures] = useState([]);
+  const [howItWorkVideo, setHowItWorkVideo] = useState([]);
+  const [features, setFeatures] = useState([]);
   const [faqsList, setFaqsList] = useState([]);
 
   const [contactUsData, setContactUsData] = useState({
@@ -19,10 +21,11 @@ const LandingPage = () => {
     last_name: "",
     email: "",
     mobile: "",
-    messsage: "",
+    message: "",
   });
 
   let token = localStorage.getItem("token");
+ 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +37,7 @@ const LandingPage = () => {
         },
       }).then((response) => response.json());
 
-      //Start of totalcount API
+      //Start of totalCounts API
       const totalCounts = await fetch(`${API}/dashboard/get-total-count`, {
         method: "GET",
         headers: {
@@ -43,7 +46,7 @@ const LandingPage = () => {
           Authorization: "Bearer " + token,
         },
       }).then((totalCounts) => totalCounts.json());
-      //End of totalcount API
+      //End of totalCounts API
 
       ////Start of VideosList API
       const videoLists = await fetch(`${API}/dashboard/information-list`, {
@@ -51,7 +54,7 @@ const LandingPage = () => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + token,
+          //Authorization: "Bearer " + token,
         },
       }).then((videoLists) => videoLists.json());
       //End of VideosList API
@@ -62,10 +65,24 @@ const LandingPage = () => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + token,
+          //Authorization: "Bearer " + token,
         },
       }).then((featuredList) => featuredList.json());
+     // console.log(featuredList)
       //End Featured List API
+
+      //Start How KOL Works API
+      const videoHowKolWorks = await fetch(`${API}/dashboard/information-list`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          //Authorization: "Bearer " + token,
+        },
+      }).then((videoHowKolWorks) => videoHowKolWorks.json());
+     // console.log(videoHowKolWorks.InformativeVideos)
+      //Ends How KOL Works API
+
 
       //Start of Faq API
       const faqs = await fetch(`${API}/dashboard/faq-list`, {
@@ -76,12 +93,13 @@ const LandingPage = () => {
       setBannerList(response.banners);
       setTotalUsers(totalCounts.InformativeVideos);
       setKolVideoLists(videoLists.InformativeVideos);
-      setfeatures(featuredList.kolProfiles);
-      setFaqsList(faqs.banners);
+      setFeatures(featuredList.kolProfiles);
+      setHowItWorkVideo(videoHowKolWorks.InformativeVideos);
+       setFaqsList(faqs.banners);
     };
 
     fetchData();
-  }, []);
+  },[]);
 
   //console.log('faqsList123',faqsList);
 
@@ -111,19 +129,41 @@ const LandingPage = () => {
       <Banner bannerList={bannerList} />
       <section>
         <div className="container">
-          <div className="row py-4">
-            <h3>Best KOL Profiles</h3>
-            <KolPromotingSlider features={features} />
+            <div className="row py-4">
+              <h2 className="mt-2">Best KOL Profiles</h2>
+              <KolPromotingSlider features={features} />
+            </div>
+
+            <div className="row py-4">
+            <h2 className="mt-2">How KOL Works</h2>
+              <div className="col-lg-12 ">
+                <div className="mt-2">
+                  {howItWorkVideo.map((item, index)=>{
+                    return(
+                      <div className="full-video" key={index}>
+                        <ReactPlayer
+                            url={item.banner}
+                            width='100%'
+                            height='100%'
+                            
+                          />
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
 
             <div className="row py-4">
               <div className="col-lg-12">
-                <h3>About Us</h3>
+                <h2>About Us</h2>
 
                 <div className="row">
                   <div className="col-lg-7">
-                    <div className="card">
+                    <div className="card b-radius h-100 mt-2">
                       <div className="card-body about-body">
-                        <h2 className="card-title ">
+                        <div>
+                        <h2 className="card-title mb-3">
                           We do things differently
                         </h2>
                         <div className="card-text">
@@ -138,93 +178,89 @@ const LandingPage = () => {
                           <ul className="kol-count-list">
                             <li>
                               <div className="count-num">
-                                {totalUsers.TotalUsers}
+                                {totalUsers?.TotalUsers}
                               </div>
                               <div className="count-label">User</div>
                             </li>
                             <li>
                               <div className="count-num">
-                                {totalUsers.TotalKolUsers}
+                                {totalUsers?.TotalKolUsers+"+"}
                               </div>
                               <div className="count-label">KOL</div>
                             </li>
                             <li>
                               <div className="count-num">
-                                {totalUsers.TotalVideos}
+                                {totalUsers?.TotalVideos+"+"}
                               </div>
                               <div className="count-label">Video</div>
                             </li>
                           </ul>
                         </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div className="col-lg-5">
-                    <div className="card">
-                      <div className="card-body help-form">
+                    <div className="card b-radius help-form h-100  mt-2">
+                      <div className="card-body ">
                         <h2 className="card-title py-2">
                           How can we help You?
                         </h2>
                         <form className="cta-form row" onSubmit={handleSubmit}>
-                          <div className="col-lg-6 mb-4">
+                          <div className="col-lg-6 mb-3">
                             <label className="form-label">First Name</label>
                             <input
                               type="text"
                               className="form-control"
                               onChange={handleChange}
                               name="first_name"
-                              placeholder="First Name"
+                              placeholder=""
                             />
                           </div>
-                          <div className="col-lg-6 mb-4">
+                          <div className="col-lg-6 mb-3">
                             <label className="form-label">Last Name</label>
                             <input
                               type="text"
                               className="form-control"
                               onChange={handleChange}
                               name="last_name"
-                              placeholder="Last Name"
+                              placeholder=""
                             />
                           </div>
 
-                          <div className="col-lg-6 mb-2">
+                          <div className="col-lg-6 mb-3">
                             <label className="form-label">Email</label>
                             <input
                               type="text"
                               className="form-control"
                               onChange={handleChange}
                               name="email"
-                              placeholder="Enter Email"
+                              placeholder=""
                             />
                           </div>
-                          <div className="col-lg-6 mb-2">
+                          <div className="col-lg-6 mb-3">
                             <label className="form-label">Phone No.</label>
                             <input
                               type="text"
                               className="form-control"
                               onChange={handleChange}
                               name="mobile"
-                              placeholder="Enter Phone No."
+                              placeholder=""
                             />
                           </div>
-                          <div className="col-lg-12 mb-2">
+                          <div className="col-lg-12 mb-4">
                             <label className="form-label">Message</label>
                             <textarea
                               type="text"
                               className="form-control"
                               onChange={handleChange}
-                              name="messsage"
-                              placeholder="Enter Message"
+                              name="message"
+                              placeholder=""
                               rows="3"
                             ></textarea>
                           </div>
-                          <div className="col-lg-12 mb-2">
-                            <button
-                              type="submit"
-                              className="btn theme-btn send-btn"
-                            >
-                              Send Message
-                            </button>
+                          <div className="col-lg-12 mb-2 text-center">
+                            <button type="submit" className="btn theme-btn send-btn">Send Message</button>
                           </div>
                         </form>
                       </div>
@@ -233,26 +269,22 @@ const LandingPage = () => {
                 </div>
               </div>
             </div>
+
             <div className="row py-4">
               <div className="col-lg-12">
-                <h3>Why people choose kol</h3>
-                <div className="row">
-                  <div className="card">
-                    <div className="card-body py-4 px-3">
+                <h2>Why people choose kol</h2>
+                  <div className="card b-radius mt-3">
+                    <div className="card-body p-4">
                       <div className="row">
-                        <div className="col-lg-3">
-                          <div className="imgg">
-                            <img
-                              className="imggg"
-                              src="./Images/Building.png"
-                              alt="Image"
-                            />
+                        <div className="col-lg-4">
+                          <div className="thumb-img">
+                            <img className="img-fluid" src="./Images/Building.png" alt="thumb" />
                           </div>
                         </div>
-                        <div className="col-lg-9 px-4">
+                        <div className="col-lg-8">
                           <div className="why-choose">
                             <div className="row">
-                              <div className="col-lg-6">
+                              <div className="col-lg-6 my-4">
                                 <div className="icon-box">
                                   <img
                                     src="./Images/setting.png"
@@ -268,7 +300,7 @@ const LandingPage = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-lg-6">
+                              <div className="col-lg-6 my-4">
                                 <div className="icon-box">
                                   <img
                                     src="./Images/social-care.png"
@@ -276,7 +308,7 @@ const LandingPage = () => {
                                     alt="Settings"
                                   />
                                   <div className="icon-info">
-                                    <h3>Easy Setup</h3>
+                                    <h3>Multi Platform support</h3>
                                     <p>
                                       In publishing and graphic design, Lorem
                                       ipsum is a placeholder
@@ -285,7 +317,7 @@ const LandingPage = () => {
                                 </div>
                               </div>
 
-                              <div className="col-lg-6">
+                              <div className="col-lg-6 my-4">
                                 <div className="icon-box">
                                   <img
                                     src="./Images/viewers.png"
@@ -293,7 +325,7 @@ const LandingPage = () => {
                                     alt="Settings"
                                   />
                                   <div className="icon-info">
-                                    <h3>Easy Setup</h3>
+                                    <h3>Enjoyable for viewers</h3>
                                     <p>
                                       In publishing and graphic design, Lorem
                                       ipsum is a placeholder
@@ -301,7 +333,7 @@ const LandingPage = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-lg-6">
+                              <div className="col-lg-6 my-4">
                                 <div className="icon-box">
                                   <img
                                     src="./Images/choices.png"
@@ -309,7 +341,7 @@ const LandingPage = () => {
                                     alt="Settings"
                                   />
                                   <div className="icon-info">
-                                    <h3>Easy Setup</h3>
+                                    <h3>Your choice</h3>
                                     <p>
                                       In publishing and graphic design, Lorem
                                       ipsum is a placeholder
@@ -318,7 +350,7 @@ const LandingPage = () => {
                                 </div>
                               </div>
 
-                              <div className="col-lg-6">
+                              <div className="col-lg-6 my-4">
                                 <div className="icon-box">
                                   <img
                                     src="./Images/fair-trade.png"
@@ -326,7 +358,7 @@ const LandingPage = () => {
                                     alt="Settings"
                                   />
                                   <div className="icon-info">
-                                    <h3>Easy Setup</h3>
+                                    <h3>Clear and fair</h3>
                                     <p>
                                       In publishing and graphic design, Lorem
                                       ipsum is a placeholder
@@ -334,7 +366,7 @@ const LandingPage = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="col-lg-6">
+                              <div className="col-lg-6 my-4">
                                 <div className="icon-box">
                                   <img
                                     src="./Images/people.png"
@@ -342,7 +374,7 @@ const LandingPage = () => {
                                     alt="Settings"
                                   />
                                   <div className="icon-info">
-                                    <h3>Easy Setup</h3>
+                                    <h3>For everyone</h3>
                                     <p>
                                       In publishing and graphic design, Lorem
                                       ipsum is a placeholder
@@ -356,31 +388,29 @@ const LandingPage = () => {
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
             </div>
+
             <div className="row py-4">
-              <div className="col-lg-12">
-                <div className="row">
-                  <div className="card p-4">
+              <div className="col-lg-12 ">
+                  <div className="card b-radius faq-block">
                     <div className="faq-div">
-                      <h3>
+                      <h2 className="mb-2">
                         <b>Frequently Asked Questions</b>
-                      </h3>
+                      </h2>
                     </div>
                     {faqsList.map((data, index) => {
                       return (
                         <div className="ques-cls" key={index}>
                           <h5 className="faq-questions">Q - {data.question}</h5>
-                          <p>{data.answer}</p>
+                          <p>A — &nbsp; {data.answer}</p>
                         </div>
                       );
                     })}
                   </div>
-                </div>
               </div>
             </div>
-          </div>
+          
         </div>
       </section>
 
