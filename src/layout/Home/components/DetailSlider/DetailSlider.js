@@ -41,10 +41,10 @@ const DetailSlider = ({video}) => {
                   </div>
 
                   <div className="card-body">
-                    <h5 className="card-title">Nike shoose</h5>
+                    <h5 className="card-title">Nike shose</h5>
                     <div className="card-text">
                       The Lorem ipsum text is derived from sections and of
-                      Cicero's De finibus bonorum et malorum
+                      Cicero's De Lorem ipsum text is derived 
                     </div>
                   </div>
                 </div>

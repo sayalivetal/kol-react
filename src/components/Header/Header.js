@@ -107,6 +107,7 @@ const Header = () => {
                       <>
                         <Link to="/dashboard">
                           <i className="bi bi-grid"></i>
+                          
                         </Link>
                       </>
                     ) : (
@@ -115,16 +116,35 @@ const Header = () => {
 
                     <Link to={"/chat"}>
                       <i className="bi bi-chat-dots"></i>
+                      <span className="count-badge">15</span>
                     </Link>
-                    <Link to={"/chat"}>
+                    {/* <Link to={"/chat"}>
 
                       <i className="bi bi-bell"></i>{" "}
-                      <span className="count-badge">99</span>
-                    </Link>
+                      <span className="count-badge">15</span>
+                    </Link> */}
+                    <Dropdown className="notify-dropdown">
+                      <Dropdown.Toggle
+                        variant=""
+                        className="notify-drop-btn"
+                        id="dropdown-notify"
+                      >
+                        <i className="bi bi-bell"></i>{" "}
+                      <span className="count-badge">15</span>
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <div className="notification-list">
+                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
+                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
+                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
+                        </div>
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </div>
                   <div className="header-profile">
                     <div className="profile-user-icon">
-                      <img src="Images/avatar.png" />
+                      <img src="Images/avatar.png" alt="avatar"/>
                     </div>
                     <Dropdown className="user-dropdown">
                       <Dropdown.Toggle
@@ -159,14 +179,9 @@ const Header = () => {
                           <Link className="list-item" to="/bookmark">
                             Bookmarks
                           </Link>
-                          <div className="list-item">
-                            <span onClick={signOut}>Sign out</span>
+                          <div className="list-item" onClick={signOut}>
+                           Sign out
                           </div>
-
-                            <Link className="list-item" to="/account">Profile</Link>
-                            <Link className="list-item"  to="/account">Your Account</Link>
-                            <Link  className="list-item" to="/bookmark">Bookmarks</Link>
-                            <div className="list-item" > <span onClick={signOut}>Sign out</span></div> 
 
                         </div>
                       </Dropdown.Menu>

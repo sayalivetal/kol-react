@@ -4,7 +4,7 @@ import Footer from "../../../components/Footer/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
-import { API } from "../../../common/apis";
+import { API,imageUrl } from "../../../common/apis";
 import { useParams } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import {kolAddBookmark,kolDeleteBookmark} from '../../../slices/KolListing/KolSlices'
@@ -13,6 +13,7 @@ import DetailSlider from "../components/DetailSlider/DetailSlider";
 import ReviewSlider from "../components/ReviewSlider/ReviewSlider";
 import { useDispatch,useSelector } from "react-redux";
 import { getFeedback } from "../../../slices/api/simpleApi";
+
 const ListingDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch()
@@ -69,14 +70,14 @@ const ListingDetails = () => {
                   <div className="banner-container">
                     <div
                       className="col-lg-12 detail-bg"
-                      style={{ backgroundImage: `url(${item.banner})` }}
+                      style={{ backgroundImage: `url(${imageUrl}${item.banner})` }}
                     ></div>
                   </div>
                   <div className="col-lg-12 px-4">
                     <div className="row justify-content-between py-4 list-row">
                       <div className="col-lg-2 py-2">
                         <div className="kol-user-img-details">
-                          <img src={item.avatar} />
+                          <img src={`${imageUrl}${item.avatar}`} />
                         </div>
                       </div>
                       <div className="col-lg-10  py-2">

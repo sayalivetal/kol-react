@@ -30,11 +30,7 @@ const Chat = () => {
                 </div>
               </div>
               <div className='chat-bar-body'>
-                <div className='row'>
-                  <div>
-                    <ContactList id={`${id}`}/>
-                  </div>
-                </div>
+                <ContactList id={`${id}`}/>
               </div>
             </div>
           </div>
@@ -49,7 +45,7 @@ const Chat = () => {
 
         <div className='col-lg-3'>
           <div className='card'>
-            <div className='card-body p-0'>
+            <div className='card-body'>
               <ContactDealer id={`${id}`} />
             </div>
           </div>

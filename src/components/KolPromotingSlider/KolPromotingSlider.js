@@ -60,24 +60,28 @@ const KolPromotingSlider = (features) => {
                   <div className="row">
                     <div className="col-lg-9">
                       <div className="candidate-info">
-                        <div className="employee-detail">
-                          <h3 className="weight-normal m-0">{item.username}</h3>
-                          <p>{item.bio}</p>
-                          <div className="rating">
-                            <h3 className="weight-normal m-0">{finalRating}</h3>
-                            <ReactStars
-                              count={6}
-                              size={24}
-                              activeColor="#ffd700"
-                              value={finalRating}
-                            />
+                          <img src={`${imageUrl}${item.avatar}`} className="rounded-circle profile-avatar" alt="logo"/>
+                          <div className="profile-detail">
+                            <h3 className="kol-user-name">{item.username}</h3>
+                            <p>{item.bio}</p>
+                            <div className="rating py-1">
+                              <h3 className="rating-count">{finalRating}</h3>
+                              <ReactStars
+                                count={6}
+                                size={24}
+                                activeColor="#ffd700"
+                                value={finalRating}
+                              />
+                            </div>
                           </div>
-                        </div>
                       </div>
-                      <div className="info py-4">
+                      <div className="info py-2">
                         <i className="bi bi-geo-alt"></i>
                         <p>
+                          {console.log(item)}
                           {item.Address.address +
+                            ", " +
+                            item.Address.landmark +
                             ", " +
                             item.Address.city +
                             " , " +
@@ -89,7 +93,7 @@ const KolPromotingSlider = (features) => {
                     </div>
                     <div className="col-lg-3">
                       <div className="kol-profile-logo">
-                        <img src={`${imageUrl}${item.avatar}`} className="best-kol-img" alt="logo"/>
+                        <img src={`${imageUrl}${item.banner}`} className="best-kol-img" alt="logo"/>
                       </div>
                     </div>
                   </div>
@@ -100,28 +104,21 @@ const KolPromotingSlider = (features) => {
                     <div className="col-lg-12 py-2">
                       <h3>KOL promoting Videos</h3>
                     </div>
-
-                    <div className="row">
                       {/* <YouTube videoId="2g811Eo7K8U" opts={opts} onReady={onPlayerReady} /> */}
-                      {/* <Slider {...promotionVideos} className=""> */}
-                      {/* {console.log("hello",videoArr)} */}
-                        {
-                          videoArr.map((video, index) => {
+                        {videoArr.slice(0, 4).map((video, index) => {
                             return (
                                   <div className="col-lg-3" key={index}>
                                     <div className="video-item">
                                       <ReactPlayer
                                           url={video}
-                                          width={310}
-                                          height={180}
+                                          width='100%'
+                                          height='100%'
                                         />
                                     </div>
                                   </div>
                             );
                           })
                         }
-                      {/* </Slider> */}
-                    </div>
                   </div>
                 </div> 
 
