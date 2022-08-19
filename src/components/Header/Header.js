@@ -57,10 +57,10 @@ const Header = () => {
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
         <div className="row justify-content-between align-items-center">
-          <div className="col-md-3">
+          <div className="col-sm-2 col-lg-2 col-4">
             <a
               href="/"
-              className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none logo"
+              className="d-flex align-items-center mb-2 mb-md-0 text-dark text-decoration-none logo"
             >
               {" "}
               KOL{" "}
@@ -68,7 +68,7 @@ const Header = () => {
           </div>
           {token ? (
             <>
-              <div className="col-md-6 text-end">
+              <div className="col-sm-7 col-lg-6 text-end d-none d-md-block">
                 <nav className="search-bar">
                   <select
                     className="form-select custom-btn"
@@ -100,7 +100,7 @@ const Header = () => {
                   </form>
                 </nav>
               </div>
-              <div className="col-md-3">
+              <div className="col-sm-3 col-lg-4 col-8">
                 <div className="d-flex justify-content-end">
                   <div className="header-icon-bar">
                     {payload == 2 ? (
@@ -152,7 +152,7 @@ const Header = () => {
                         className="profile-btn"
                         id="dropdown-basic"
                       >
-                        {username}
+                        <span className="profile-btn-user">{username}</span>
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>

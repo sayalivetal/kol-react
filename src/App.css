@@ -772,3 +772,26 @@ h1.banner-title:first-child::nth-line(-n+2){
   margin-bottom: 20px;
   border: 1px solid #efeeee;
 }
+
+
+
+.detail-bg {
+  background-image: url(/public/Images/details.png);
+  min-height: 240px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #edecec;
+  background-position: top center;
+}
+.user-thumb { margin-top: -136px;}
+.kol-user-img {
+  max-height: 182px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #e3e3e3;
+  width: auto;
+  display: inline-table;
+  margin-bottom: 30px;
+}
+.fw-medium { font-weight: 500;}
+.col-form-label {color:#495057}
