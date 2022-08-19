@@ -43,13 +43,13 @@ const EditAccount = () => {
                           <div className="col-12">
                             <div className="form-check d-inline-block me-3">
                                 <input className="form-check-input" type="radio" name="gender" id="male" />
-                                <label className="form-check-label" for="male">
+                                <label className="form-check-label" htmlFor="male">
                                     Male
                                 </label>
                             </div>
                             <div className="form-check d-inline-block">
                                 <input className="form-check-input" type="radio" name="gender" id="female" />
-                                <label className="form-check-label" for="female">
+                                <label className="form-check-label" htmlFor="female">
                                     Female
                                 </label>
                             </div>
