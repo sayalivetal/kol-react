@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkkol_marketplace_new=self.webpackChunkkol_marketplace_new||[]).push([[531],{8531:function(e,n,c){c.r(n);c(2791);var t=c(184);n.default=function(){return(0,t.jsx)("div",{children:"Account"})}}}]);
-//# sourceMappingURL=531.71923d06.chunk.js.map
