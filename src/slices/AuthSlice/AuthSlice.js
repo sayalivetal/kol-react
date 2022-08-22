@@ -61,6 +61,7 @@ export const loginWithGoogle = createAsyncThunk(
     try {
       const response = await fetch(`${API}/login-with-google`, {
         method: "POST",
+        mode: 'no-cors',
         body: JSON.stringify({
           name: name,
           email: email,
@@ -94,6 +95,7 @@ export const emailVerification = createAsyncThunk(
     try {
       const response = await fetch(`${API}/verify-OTP`, {
         method: "POST",
+        mode: 'no-cors',
         body: JSON.stringify({
           otp,
           email: email,
@@ -128,6 +130,7 @@ export const resendEmailOtp = createAsyncThunk(
     try {
       const response = await fetch(`${API}/resend-OTP`, {
         method: "POST",
+        mode: 'no-cors',
         body: JSON.stringify({
           email: email,
         }),
@@ -155,6 +158,7 @@ export const updateRole = createAsyncThunk(
     try {
       const response = await fetch(`${API}/update-role`, {
         method: "PUT",
+        mode: 'no-cors',
         body: JSON.stringify({
           email: email,
           role_id:role
@@ -182,6 +186,7 @@ export const forgotPassword = createAsyncThunk(
     try {
       const response = await fetch(`${API}/check-email-forgot-password`, {
         method: "PATCH",
+        mode: 'no-cors',
         body: JSON.stringify({
           email,
         }),
@@ -212,6 +217,7 @@ export const LoginUser = createAsyncThunk(
     try {
       const response = await fetch(`${API}/login`, {
         method: "POST",
+        mode: 'no-cors',
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -246,6 +252,7 @@ export const ResetPassword = createAsyncThunk(
     try {
       const response = await fetch(`${API}/forgot-password  `, {
         method: "PUT",
+        mode: 'no-cors',
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -278,6 +285,7 @@ export const ChangePasswordUser = createAsyncThunk(
     try {
       const response = await fetch(`${API}/reset-password`, {
         method: "PUT",
+        mode: 'no-cors',
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

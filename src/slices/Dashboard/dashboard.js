@@ -19,6 +19,7 @@ export const bioDataFormSubmission = createAsyncThunk(
       try {
         const response = await fetch(`${API}/kol-profile/add-update`, {
           method: "POST",
+          mode: 'no-cors',
           body: formData,
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token")
@@ -43,6 +44,7 @@ export const getKolprofile = createAsyncThunk(
     try {
       const response = await fetch(`${API}/kol-profile/view-details`, {
         method: "GET",
+        mode: 'no-cors',
         headers: {
           Accept: "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -68,6 +70,7 @@ export const announceDataFormSubmission = createAsyncThunk(
     try {
       const response = await fetch(`${API}/announcement/add-update`, {
         method: "POST",
+        mode: 'no-cors',
         body: formData,
         headers: {
           Accept: "application/json",
