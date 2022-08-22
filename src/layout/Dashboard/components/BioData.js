@@ -6,6 +6,7 @@ import { bioDataFormSubmission ,dashboardSelector,getKolprofile} from "../../../
 import { toast } from "react-toastify";
 import { useNavigate} from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
+import { API } from "../../../common/apis";
 
 const BioData = () => {
   const navigate = useNavigate()
@@ -14,7 +15,7 @@ const BioData = () => {
   
   useEffect(()=>{
     toast.success(message)
-  },[message])
+  },[message]);
 
   // useEffect(()=>{
   //   if(!biodata.status){
@@ -63,29 +64,6 @@ const BioData = () => {
     ]);
   };
 
-  const data = [
-    {
-      value: "youtube",
-      label: "Youtube",
-    },
-    {
-      value: "instagram",
-      label: "Instagram",
-    },
-    {
-      value: "tiktok",
-      label: "Tiktok",
-    },
-    {
-      value: "facebook",
-      label: "Facebook",
-    },
-    {
-      value: "snapchat",
-      label: "Snapchat",
-    },
-  ];
-
   const [kolProfile, setKolProfile] = useState({
     userName: "",
     personal_email: "",
@@ -96,7 +74,7 @@ const BioData = () => {
     userImage: "",
     bio: "",
     social_media: [],
-    social_active: [],
+    social_active: "",
     video_links: [],
     languages: [],
     tags: [],
@@ -125,7 +103,7 @@ const BioData = () => {
     formData.append("zip_code", kolProfile.zip_code);
     formData.append("bio", kolProfile.bio);
     formData.append("social_media[]", JSON.stringify(kolProfile.social_media));
-    formData.append("social_active[]", kolProfile.social_active);
+    formData.append("social_active", kolProfile.social_active);
     formData.append("video_links[]", kolProfile.video_links);
     formData.append("languages[]", kolProfile.languages);
     formData.append("tags[]", kolProfile.tags);
@@ -135,14 +113,14 @@ const BioData = () => {
   };
 
   // For Social Active Field
-  useEffect(() => {
-    setKolProfile(() => {
-      return {
-        ...kolProfile,
-        social_active: [...social_active],
-      };
-    });
-  }, [social_active]);
+  // useEffect(() => {
+  //   setKolProfile(() => {
+  //     return {
+  //       ...kolProfile,
+  //       social_active: social_active,
+  //     };
+  //   });
+  // }, [social_active]);
 
   useEffect(() => {
     setKolProfile(() => {
@@ -232,8 +210,13 @@ const BioData = () => {
   };
 
   const handleChangeSocialActive = (e) => {
-    setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
+    //setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
+    setKolProfile((prevState) => {
+       return { ...prevState, [e.target.name]: [e.target.value] }
+      });
   };
+
+  console.log('kolProfile 1231', kolProfile);
 
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
@@ -242,7 +225,7 @@ const BioData = () => {
   const handleVideoChange = (e) => {
     console.log("=========>",e.target.value);
     setVideoLinks((state)=>{
-      return[...state,e.target.value]
+      return { ...kolProfile, [e.target.name]: [e.target.value] }
     })
   };
 
@@ -252,15 +235,34 @@ const BioData = () => {
 
   const languageHandleChange = (e) => {
     setKolProfile({ ...kolProfile, [e.target.name]: [e.target.value] });
-    console.log('language', kolProfile.languages)
+    // console.log('language', kolProfile.languages)
   }
   const handleViewClick = (e) =>{
     dispatch(getKolprofile())
     navigate("../profile") 
   }
-  // console.log(kolProfile.personal_email);
+  
+  useEffect(()=>{
+    const fetchData = async () => {
+      const socialMediaDBList = await fetch(`${API}/stream-list`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }).then((socialMediaDBList) => socialMediaDBList.json());
 
-  const {biodata:{kolProfileData}} = useSelector(dashboardSelector)
+      setSocialActive(socialMediaDBList.data);
+    }
+
+    fetchData();
+    
+  },[]);
+
+  //console.log('social_active',social_active)
+
+
+  const {biodata:{kolProfileData}} = useSelector(dashboardSelector)  
   return (
     <>
       <div className="row col-12">
@@ -285,7 +287,6 @@ const BioData = () => {
                 value={kolProfile.userName}
                 onChange={handleChange}
                 id="exampleInputEmail1"
-                aria-describedby="emailHelp"
               />
             </div>
             <div className="col-6">
@@ -297,7 +298,6 @@ const BioData = () => {
                 name="personal_email"
                 className="form-control"
                 id="exampleInputEmail1"
-                aria-describedby="emailHelp"
                 defaultValue={kolProfile.personal_email}
                 onChange={handleChange}
               />
@@ -390,7 +390,7 @@ const BioData = () => {
                 <b>Most Active Platform</b>
               </label>
 
-              <Select
+              {/* <Select
                 className="dropdown"
                 placeholder="Select Option"
                 value={data.filter((obj) => social_active.includes(obj.value))} // set selected values
@@ -399,10 +399,19 @@ const BioData = () => {
                 name="social_active"
                 isMulti
                 isClearable
-              />
+              /> */}
+              
+              <select className="form-select" name="social_active" onChange={handleChangeSocialActive}>
+                <option defaultValue>Select Event Type</option>
+                { Object.keys(social_active).map((keyName, keyIndex)=>{
+                    return   <option key={keyIndex} value={keyName}>{keyName}</option>
+                }) }
+              </select>
+              
+              
             </div>
           </div>
-
+          
           <div className="row mt-3">
             <label className="form-label">
               <b>Social Media Info</b>

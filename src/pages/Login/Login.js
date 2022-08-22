@@ -115,6 +115,7 @@ const Login = () => {
     if (!firebaseUser.token) return;
     dispatch(loginWithGoogle(firebaseUser))
   },[firebaseUser.token])
+
   return (
     <div className="main-div">
       <section>

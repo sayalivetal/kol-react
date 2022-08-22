@@ -1,11 +1,12 @@
 body {
   font-family: 'Montserrat', sans-serif !important;
   background: #f5f5f5;
-  color:#4B4B4B;
+  color:#342951;
 }
 .App {
   text-align: center;
 }
+.card {border: 1px solid rgba(0,0,0,.06);}
 
 @media (min-width: 1680px){
 .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
@@ -13,6 +14,7 @@ body {
 }
 }
 
+.btn { font-weight: 500;}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -38,7 +40,7 @@ body {
 .App-link {
   color: #61dafb;
 }
-
+.theme-color { color: #f01f4b;}
 .theme-btn {
   background-color: #f01f4b;
   color: #fff;
@@ -68,7 +70,8 @@ body {
 }
 .slick-prev:before,
 .slick-next:before {
-  color: black;
+  color: #4B4B4B;
+  font-size: 36px;
 }
 
 @keyframes App-logo-spin {
@@ -154,7 +157,7 @@ body {
   width: 100%;
   display: flex;
   padding: 1rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ebebeb;
 }
 .chat-head-row {
   width: 100%;
@@ -204,6 +207,7 @@ body {
   padding-left: 50px;
   line-height: 1.9;
   border-radius: 8px;
+  border-color: #ebebeb;
 }
 .chat-users-block {
   width: 100%;
@@ -349,7 +353,7 @@ body {
   width: 100%;
   display: block;
   padding: 1rem;
-  border-top: 1px solid #dddd;
+  border-top: 1px solid #ebebeb;
 }
 .chat-input-row {
   display: flex;
@@ -471,9 +475,11 @@ body {
 .landing-Slider .slick-prev,
 .landing-Slider .slick-next {
   top: -30px !important;
+  width:32px;
+  height: 48px;
 }
 .landing-Slider .slick-prev {
-  right: 30px !important;
+  right: 42px !important;
   left: auto !important;
 }
 .landing-Slider .slick-next {
@@ -482,11 +488,15 @@ body {
 .landing-Slider .slick-next:before {
   content: '\F285';
   font-family: bootstrap-icons !important;
+  font-weight: 700;
+  font-size: 32px;
 }
 
 .landing-Slider .slick-prev:before {
   content: '\F284';
   font-family: bootstrap-icons !important;
+  font-weight: 700;
+  font-size: 32px;
 }
 
 /* best kol profile landing page */
@@ -498,6 +508,7 @@ body {
   align-items: center;
   justify-content: center;
   display: flex;
+  margin-left: auto;
 }
 
 .best-kol-img{
@@ -527,38 +538,53 @@ body {
 }
 
 .kol-profile-info { width:100%; display: inline-block; padding: 2rem;}
-.kol-profile-videos { width:100%; display: inline-block; border-top:1px solid #d1d1d1; padding: 2rem;}
-.profile-profile-btn { width:100%; display: inline-block; padding: 2rem;}
-.video-item { border:1px solid #d1d1d1; }
+.kol-user-name { font-weight: 600; color:#342951; text-transform: capitalize;}
+
+
+
+
+
+.kol-profile-videos { width:100%; display: inline-block; border-top:1px solid #e9e9e9; padding: 2rem;}
+.profile-profile-btn { width:100%; display: inline-block; padding: 0.5rem 0 2rem 0;}
+.video-item { border:1px solid #d1d1d1; border-radius: 2px; overflow: hidden; margin-bottom: 15px; }
+.video-item iframe { float: left;}
 .full-video { width: 100%; height: 640px; border-radius: 16px; overflow: hidden; box-shadow: 0px 2px 4px rgb(0 0 0 / 20%);}
 .info {
   display: flex;
   align-items: center;
+  font-weight: 600;
+  color: #342951;
+  width: 60%;
 }
 .info i.bi{
-  font-size: 30px;
+  font-size: 60px;
   color: #f01f4b;
+  width: 64px;
 }
 .info  p {
   margin: 0;
   font-size: 16px;
-  padding-left: 10px;
+  padding-left: 15px;
 }
 .candidate-info {
   display: flex;
+  align-items: flex-start;
+  line-height: 32px;
 }
+.profile-avatar { width:64px; height: 64px; margin-right: 15px;}
 .box {
   width: 64px;
   align-self: baseline;
   margin-top: 8px;
 }
 
-.employee-detail {
-  padding-left: 10px;
-}
+
 .rating {
   display: flex;
+  align-items: center;
 }
+.rating-count { font-size: 32px; font-weight: 500; color: #8B7DB3; padding-right: 12px; line-height: 36px;  margin: 0;}
+.react-stars span { font-size: 36px!important; line-height: 36px;}
 h3.description {
   font-size: 22px;
   font-weight: 600;
@@ -746,3 +772,26 @@ h1.banner-title:first-child::nth-line(-n+2){
   margin-bottom: 20px;
   border: 1px solid #efeeee;
 }
+
+
+
+.detail-bg {
+  background-image: url(/public/Images/details.png);
+  min-height: 240px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #edecec;
+  background-position: top center;
+}
+.user-thumb { margin-top: -136px;}
+.kol-user-img {
+  max-height: 182px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #e3e3e3;
+  width: auto;
+  display: inline-table;
+  margin-bottom: 30px;
+}
+.fw-medium { font-weight: 500;}
+.col-form-label {color:#495057}
