@@ -2,7 +2,7 @@
   "name": "kol-marketplace-new",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://kolr.bootesnull.com/",
+  "proxy": "http://kolr.bootesnull.com",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
