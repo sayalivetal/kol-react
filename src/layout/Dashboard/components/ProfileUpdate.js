@@ -250,11 +250,11 @@ const ProfileUpdate = () => {
   };
 
   useEffect(() => {
-    setSocialActive(biodata.kolProfile.social_active);
+    setSocialActive(biodata?.kolProfile?.social_active);
   }, []);
 
   useEffect(() => {
-    let a = biodata.kolProfile.video_links.split(",");
+    let a = biodata?.kolProfile?.video_links.split(",");
 
     setVedioLinkArr([...a]);
     setTags([...biodata.kolProfile.tags.split(",")]);
