@@ -2,44 +2,37 @@ import React, { useEffect, useState } from "react";
 import "../css/styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { bioDataFormSubmission ,dashboardSelector,getKolprofile} from "../../../slices/Dashboard/dashboard";
+import {
+  bioDataFormSubmission,
+  dashboardSelector,
+  getKolprofile,
+} from "../../../slices/Dashboard/dashboard";
 import { toast } from "react-toastify";
-import { useNavigate,Link} from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { API } from "../../../common/apis";
 import { getAllCategory } from "../../../slices/api/simpleApi";
 
 const BioData = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const {message,biodata} = useSelector(dashboardSelector)
+  const { message, biodata } = useSelector(dashboardSelector);
   const [categoryList, setCategoryList] = useState({});
-  // useEffect(()=>{
-  //   toast.success(message)
-  // },[message]);
-
-  // useEffect(()=>{
-  //   if(!biodata.status){
-  //     return;
-  //   }
-  //   navigate("../profileview") 
-  // },[biodata])
-
 
   const dispatch = useDispatch();
   const initialArr = {};
-  initialArr['name'] = '';
-  initialArr['social_user_id'] = '';
-  initialArr['followers'] = '';
-  initialArr['social_icon'] = '';
+  initialArr["name"] = "";
+  initialArr["social_user_id"] = "";
+  initialArr["followers"] = "";
+  initialArr["social_icon"] = "";
   //console.log(initialArr);
   const [inputList, setInputList] = useState([
-    { 
-      name: "", 
-      social_user_id: "", 
-      followers: "", 
-      social_icon: "" 
-    }
+    {
+      name: "",
+      social_user_id: "",
+      followers: "",
+      social_icon: "",
+    },
   ]);
 
   // handle input change
@@ -108,30 +101,22 @@ const BioData = () => {
     formData.append("video_links[]", kolProfile.video_links);
     formData.append("languages[]", kolProfile.languages);
     formData.append("tags[]", kolProfile.tags);
-    formData.append("state", kolProfile.state); 
-    
-    dispatch(bioDataFormSubmission(formData)).then(()=>{
-      navigate('../profileView')
-    })
+    formData.append("state", kolProfile.state);
+
+    dispatch(bioDataFormSubmission(formData)).then(() => {
+      navigate("../profileView");
+    });
   };
   let token = localStorage.getItem("token");
-    console.log("gjhdfjhgggg",token);
-    useEffect(() => {
-      const callback = (data) => {
-        console.log(data);
-        setCategoryList({ ...data });
-      };
-      getAllCategory(callback, token);
-    }, []);
-  // For Social Active Field
-  // useEffect(() => {
-  //   setKolProfile(() => {
-  //     return {
-  //       ...kolProfile,
-  //       social_active: social_active,
-  //     };
-  //   });
-  // }, [social_active]);
+  console.log("gjhdfjhgggg", token);
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setCategoryList({ ...data });
+    };
+    getAllCategory(callback, token);
+  }, []);
+
 
   useEffect(() => {
     setKolProfile(() => {
@@ -223,19 +208,19 @@ const BioData = () => {
   const handleChangeSocialActive = (e) => {
     //setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
     setKolProfile((prevState) => {
-       return { ...prevState, [e.target.name]: [e.target.value] }
-      });
+      return { ...prevState, [e.target.name]: [e.target.value] };
+    });
   };
 
-  console.log('kolProfile 1231', kolProfile);
+  console.log("kolProfile 1231", kolProfile);
 
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
 
   const handleVideoChange = (e) => {
-    console.log("=========>",e.target.value);
-    setVideoLinks((prevState) => [...prevState, e.target.value])
+    console.log("=========>", e.target.value);
+    setVideoLinks((prevState) => [...prevState, e.target.value]);
   };
 
   const removeLastElement = () => {
@@ -245,13 +230,13 @@ const BioData = () => {
   const languageHandleChange = (e) => {
     setKolProfile({ ...kolProfile, [e.target.name]: [e.target.value] });
     // console.log('language', kolProfile.languages)
-  }
-  const handleViewClick = (e) =>{
-    dispatch(getKolprofile())
-    navigate("../profile") 
-  }
-  
-  useEffect(()=>{
+  };
+  const handleViewClick = (e) => {
+    dispatch(getKolprofile());
+    navigate("../profile");
+  };
+
+  useEffect(() => {
     const fetchData = async () => {
       const socialMediaDBList = await fetch(`${API}/stream-list`, {
         method: "GET",
@@ -262,16 +247,16 @@ const BioData = () => {
       }).then((socialMediaDBList) => socialMediaDBList.json());
 
       setSocialActive(socialMediaDBList.data);
-    }
+    };
 
     fetchData();
-    
-  },[]);
+  }, []);
 
   //console.log('social_active',social_active)
 
-
-  const {biodata:{kolProfileData}} = useSelector(dashboardSelector)  
+  const {
+    biodata: { kolProfileData },
+  } = useSelector(dashboardSelector);
   return (
     <>
       <div className="row col-12">
@@ -279,7 +264,7 @@ const BioData = () => {
           <h3 className="mt-4">Kol Profile</h3>
         </div>
         <div className="col-6">
-        <Link to={'/dashboard/profileview'}> View</Link>
+          <Link to={"/dashboard/profileview"}> View</Link>
         </div>
       </div>
       <div className="row">
@@ -320,29 +305,21 @@ const BioData = () => {
               <label className="form-label">
                 <b>Kol Type</b>
               </label>
-              {/* <select
-                className="form-select"
+
+              <select
+                className="form-select custom-btn"
+                aria-label="Default select example"
                 name="kol_type"
                 onChange={handleChange}
-                aria-label="Default select example"
               >
-                <option selected>Select Type</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select> */}
-               <select
-                    className="form-select custom-btn"
-                    aria-label="Default select example"
-                    name="kol_type"
-                    onChange={handleChange}
-                  >
-                    <option defaultValue>Select Type</option>
-                    {categoryList &&
-                      Object.entries(categoryList).map(([key, value]) => (
-                        <option key={key} value={key}>{value}</option>
-                      ))}
-                  </select>
+                <option defaultValue>Select Type</option>
+                {categoryList &&
+                  Object.entries(categoryList).map(([key, value]) => (
+                    <option key={key} value={key}>
+                      {value}
+                    </option>
+                  ))}
+              </select>
             </div>
             <div className="col-6">
               <label htmlFor="exampleInputPassword1" className="form-label">
@@ -421,18 +398,24 @@ const BioData = () => {
                 isMulti
                 isClearable
               /> */}
-              
-              <select className="form-select" name="social_active" onChange={handleChangeSocialActive}>
+
+              <select
+                className="form-select"
+                name="social_active"
+                onChange={handleChangeSocialActive}
+              >
                 <option defaultValue>Select Event Type</option>
-                { Object.keys(social_active).map((keyName, keyIndex)=>{
-                    return   <option key={keyIndex} value={keyName}>{keyName}</option>
-                }) }
+                {Object.keys(social_active).map((keyName, keyIndex) => {
+                  return (
+                    <option key={keyIndex} value={keyName}>
+                      {keyName}
+                    </option>
+                  );
+                })}
               </select>
-              
-              
             </div>
           </div>
-          
+
           <div className="row mt-3">
             <label className="form-label">
               <b>Social Media Info</b>
@@ -613,11 +596,7 @@ const BioData = () => {
             <label className="form-label">
               <b>Upload Banner</b>
             </label>
-            <input
-              type="file"
-              name="userBanner"
-              onChange={handleChange}
-            />
+            <input type="file" name="userBanner" onChange={handleChange} />
           </div>
 
           <div className="mt-4 mx-auto d-block">

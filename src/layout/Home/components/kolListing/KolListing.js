@@ -188,10 +188,7 @@ console.log(freshposts);
               Object.entries(state).map(([key, value]) => (
                 <option value={key}>{value}</option>
               ))}
-            {/* <option selected>Locations</option>
-            <option value="Punjab">Punjab</option>
-            <option value="Haryana">Haryana</option>
-            <option value="Chandigarh">Chandigarh</option> */}
+            
           </select>
         </div>
         <div className="col-lg-2 ml-auto">
