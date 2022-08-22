@@ -10,7 +10,7 @@ export const getAllCategory = async (callback,token) => {
   const response = await fetch(`${API}/kol-type/list`, {
     method: "GET",
 
-    mode: 'no-cors',
+
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -25,7 +25,7 @@ export const getAllCategory = async (callback,token) => {
 export const getAllLanguage = async (callback) => {
   const response = await fetch(`${API}/language-list`, {
     method: "GET",
-    mode: 'no-cors',
+  
 
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const getAllLanguage = async (callback) => {
 export const getAllStreams = async (callback) => {
   const response = await fetch(`${API}/stream-list`, {
     method: "GET",
-    mode: 'no-cors',
+
 
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export const getAllStreams = async (callback) => {
 export const getAllStates = async (callback) => {
   const response = await fetch(`${API}/state-list`, {
     method: "GET",
-    mode: 'no-cors',
+  
 
     headers: {
       "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export const getAllBookmark = async (callback,token) => {
   const response = await fetch(`${API}/bookmark/list`, {
     method: "GET",
 
-    mode: 'no-cors',
+  
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -92,7 +92,7 @@ export const getAllBookmark = async (callback,token) => {
 export const getChatList = async (callback,token) => {
   const response = await fetch(`${API}/Chat/chat-list-users `, {
     method: "GET",
-    mode: 'no-cors',
+  
 
     headers: {
       "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export const getChatList = async (callback,token) => {
 export const getFeedback = async (callback,token,id) => {
   const response = await fetch(`${API}/feedback/kol-user-list?kol_profile_id=${id}`, {
     method: "GET",
-    mode: 'no-cors',
+   
 
     headers: {
       "Content-Type": "application/json",
@@ -126,7 +126,7 @@ export const getFeedback = async (callback,token,id) => {
 export const getKolAllAnnouncements = async (callback,token) => {
   const response = await fetch(`${API}/announcement/list`, {
     method: "GET",
-    mode: 'no-cors',
+
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -142,7 +142,7 @@ export const getKolAllAnnouncements = async (callback,token) => {
 export const getAnnouncement = async (callback,token , id) => {
   const response = await fetch(`${API}/announcement/view?id=${id}`, {
     method: "GET",
-    mode: 'no-cors',
+
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -156,7 +156,7 @@ export const getAnnouncement = async (callback,token , id) => {
 export const deleteAnnouncement = async (callback,token , id) => {
   const response = await fetch(`${API}/announcement/delete?id=${id}`, {
     method: "GET",
-    mode: 'no-cors',
+   
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + token,
@@ -169,7 +169,7 @@ export const deleteAnnouncement = async (callback,token , id) => {
 export const getKolprofile = async (callback,token ) => {
   const response = await fetch(`${API}/kol-profile/view-details`, {
     method: "GET",
-    mode: 'no-cors',
+   
     headers: {
       Accept: "application/json",
       Authorization: "Bearer " + token,

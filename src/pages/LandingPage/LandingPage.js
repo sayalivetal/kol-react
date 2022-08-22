@@ -31,6 +31,7 @@ const LandingPage = () => {
     const fetchData = async () => {
       const response = await fetch(`${API}/dashboard/banner-list`, {
         method: "GET",
+      
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -40,6 +41,7 @@ const LandingPage = () => {
       //Start of totalCounts API
       const totalCounts = await fetch(`${API}/dashboard/get-total-count`, {
         method: "GET",
+       
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -51,6 +53,7 @@ const LandingPage = () => {
       ////Start of VideosList API
       const videoLists = await fetch(`${API}/dashboard/information-list`, {
         method: "GET",
+      
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -62,6 +65,7 @@ const LandingPage = () => {
       //Start Featured List API
       const featuredList = await fetch(`${API}/kol-profile/featured-list`, {
         method: "GET",
+       
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -74,6 +78,7 @@ const LandingPage = () => {
       //Start How KOL Works API
       const videoHowKolWorks = await fetch(`${API}/dashboard/information-list`, {
         method: "GET",
+    
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -87,6 +92,7 @@ const LandingPage = () => {
       //Start of Faq API
       const faqs = await fetch(`${API}/dashboard/faq-list`, {
         method: "GET",
+      
       }).then((faqs) => faqs.json());
       //End of FAQ Api
 

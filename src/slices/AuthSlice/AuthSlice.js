@@ -21,7 +21,7 @@ export const signupUser = createAsyncThunk(
     console.log(name, email, token, role, password);
     try {
       const response = await fetch(`${API}/register`, {
-        mode: 'no-cors',
+     
         method: "POST",
         body: JSON.stringify({
           name: name,
