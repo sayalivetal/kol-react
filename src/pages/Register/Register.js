@@ -79,7 +79,9 @@ const Register = () => {
       setStatus(true);
     } else {
       console.log(formData);
-      dispatch(signupUser(formData));
+      dispatch(signupUser(formData)).then(()=>{
+        console.log("hello");
+      })
       e.target.reset();
     }
   };

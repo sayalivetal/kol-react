@@ -14,19 +14,19 @@ import { getAllCategory } from "../../../slices/api/simpleApi";
 import { getKolprofile } from "../../../slices/api/simpleApi";
 const ProfileUpdate = () => {
   const navigate = useNavigate();
-  // const { message, biodata } = useSelector(dashboardSelector);
+  const { message, biodata } = useSelector(dashboardSelector);
 
-  const [biodata, setBiodata] = useState({});
-  let token = localStorage.getItem("token");
-  console.log(token);
-  useEffect(() => {
-    const callback = (data) => {
-      console.log("hello",data);
-      setBiodata(data);
-    };
-    getKolprofile(callback, token);
-  }, []);
-  console.log("fjshdfjfhjsf", biodata);
+  // const [biodata, setBiodata] = useState({});
+  // let token = localStorage.getItem("token");
+  // console.log(token);
+  // useEffect(() => {
+  //   const callback = (data) => {
+  //     console.log("hello",data);
+  //     setBiodata(data);
+  //   };
+  //   getKolprofile(callback, token);
+  // }, []);
+  // console.log("fjshdfjfhjsf", biodata);
 
   const dispatch = useDispatch();
   const initialArr = {};

@@ -254,6 +254,7 @@ const BioData = () => {
   useEffect(()=>{
     const fetchData = async () => {
       const socialMediaDBList = await fetch(`${API}/stream-list`, {
+        mode: 'no-cors',
         method: "GET",
         headers: {
           "Content-Type": "application/json",
