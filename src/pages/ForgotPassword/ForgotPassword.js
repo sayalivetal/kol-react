@@ -4,8 +4,9 @@ import { ResetPassword, userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
 const ForgotPassword = () => {
-  const navigate = useNavigate()
-  const { isFetching, isSuccess,statusCode, isError, errorMessage,email }= useSelector(userSelector);
+  const navigate = useNavigate();
+  const { isFetching, isSuccess, statusCode, isError, errorMessage, email } =
+    useSelector(userSelector);
 
   console.log(statusCode);
   console.log(email);
@@ -107,14 +108,11 @@ const ForgotPassword = () => {
   const handlSubmit = (e) => {
     e.preventDefault();
     console.log(passwordValue);
-    dispatch(ResetPassword(passwordValue));
+    dispatch(ResetPassword(passwordValue)).then(() => {
+      navigate("/passwordSuccess");
+    });
   };
-  useEffect(()=>{
-    if(statusCode == 201){
-      navigate('/passwordSuccess')
-    }
-    
-  },[statusCode])
+
   return (
     <div className="main-div">
       <section>

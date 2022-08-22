@@ -25,11 +25,7 @@ const Role = () => {
       setRenderButton(" as KOL");
     }
   };
-  useEffect(() => {
-    if (errorMessage) {
-      toast.success(errorMessage);
-    }
-  }, [token]);
+
   useEffect(() => {
     if (token) {
       navigate("/home");

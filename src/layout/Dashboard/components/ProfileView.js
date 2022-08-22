@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {getKolprofile} from '../../../slices/api/simpleApi'
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const ProfileView = () => {
-  
+  const navigate = useNavigate()
   const token = localStorage.getItem("token");
   const [kolProfile , setKolProfile] = useState({});
 
   useEffect(() => {
     const callback = (data) => {
-      setKolProfile(data)
+    
+      if(data === 'Please add profile details first.'){
+        navigate("../profileupdate")
+      }
+      else{
+        setKolProfile(data)
+      }
+    
     };
     getKolprofile(callback, token );
   }, []);
@@ -29,7 +36,7 @@ const ProfileView = () => {
             <h3 className="mt-4">Kol Profile View</h3>
         </div>
         <div className="col-6">
-          <Link to={`/dashboard/profile/`}>Edit</Link>
+          <Link to={`/dashboard/profile`}>Edit</Link>
         </div>
 
       </div>
