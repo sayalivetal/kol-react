@@ -15,7 +15,7 @@ export const bioDataFormSubmission = createAsyncThunk(
     "dashboard/biodata/submit",
     async ( formData, thunkAPI) => {
 
-      const token = localStorage.getItem('token');      
+      // const token = localStorage.getItem('token');      
       try {
         const response = await fetch(`${API}/kol-profile/add-update`, {
           method: "POST",

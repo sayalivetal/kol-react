@@ -4,18 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { bioDataFormSubmission ,dashboardSelector,getKolprofile} from "../../../slices/Dashboard/dashboard";
 import { toast } from "react-toastify";
-import { useNavigate} from 'react-router-dom';
+import { useNavigate,Link} from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css";
 import { API } from "../../../common/apis";
+import { getAllCategory } from "../../../slices/api/simpleApi";
 
 const BioData = () => {
   const navigate = useNavigate()
 
   const {message,biodata} = useSelector(dashboardSelector)
-  
-  useEffect(()=>{
-    toast.success(message)
-  },[message]);
+  const [categoryList, setCategoryList] = useState({});
+  // useEffect(()=>{
+  //   toast.success(message)
+  // },[message]);
 
   // useEffect(()=>{
   //   if(!biodata.status){
@@ -109,9 +110,19 @@ const BioData = () => {
     formData.append("tags[]", kolProfile.tags);
     formData.append("state", kolProfile.state); 
     
-    dispatch(bioDataFormSubmission(formData))
+    dispatch(bioDataFormSubmission(formData)).then(()=>{
+      navigate('../profileView')
+    })
   };
-
+  let token = localStorage.getItem("token");
+    console.log("gjhdfjhgggg",token);
+    useEffect(() => {
+      const callback = (data) => {
+        console.log(data);
+        setCategoryList({ ...data });
+      };
+      getAllCategory(callback, token);
+    }, []);
   // For Social Active Field
   // useEffect(() => {
   //   setKolProfile(() => {
@@ -224,9 +235,7 @@ const BioData = () => {
 
   const handleVideoChange = (e) => {
     console.log("=========>",e.target.value);
-    setVideoLinks((state)=>{
-      return { ...kolProfile, [e.target.name]: [e.target.value] }
-    })
+    setVideoLinks((prevState) => [...prevState, e.target.value])
   };
 
   const removeLastElement = () => {
@@ -270,7 +279,7 @@ const BioData = () => {
           <h3 className="mt-4">Kol Profile</h3>
         </div>
         <div className="col-6">
-          <button className="btn btn-outline-secondary" onClick={handleViewClick}>View</button>
+        <Link to={'/dashboard/profileview'}> View</Link>
         </div>
       </div>
       <div className="row">
@@ -311,7 +320,7 @@ const BioData = () => {
               <label className="form-label">
                 <b>Kol Type</b>
               </label>
-              <select
+              {/* <select
                 className="form-select"
                 name="kol_type"
                 onChange={handleChange}
@@ -321,7 +330,19 @@ const BioData = () => {
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
-              </select>
+              </select> */}
+               <select
+                    className="form-select custom-btn"
+                    aria-label="Default select example"
+                    name="kol_type"
+                    onChange={handleChange}
+                  >
+                    <option defaultValue>Select Type</option>
+                    {categoryList &&
+                      Object.entries(categoryList).map(([key, value]) => (
+                        <option key={key} value={key}>{value}</option>
+                      ))}
+                  </select>
             </div>
             <div className="col-6">
               <label htmlFor="exampleInputPassword1" className="form-label">

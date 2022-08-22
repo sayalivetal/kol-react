@@ -38,7 +38,7 @@ const Header = () => {
   }, [isError]);
   const signOut = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/");
   };
   const handleChange = (e) => {
     dispatch(kolType(e.target.value));

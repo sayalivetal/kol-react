@@ -7,17 +7,27 @@ import {
   dashboardSelector,
 } from "../../../slices/Dashboard/dashboard";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import {imageUrl} from '../../../common/apis'
-
+import { imageUrl } from "../../../common/apis";
+import { getAllCategory } from "../../../slices/api/simpleApi";
+import { getKolprofile } from "../../../slices/api/simpleApi";
 const ProfileUpdate = () => {
   const navigate = useNavigate();
-  const { message, biodata } = useSelector(dashboardSelector);
+  // const { message, biodata } = useSelector(dashboardSelector);
 
+  const [biodata, setBiodata] = useState({});
+  let token = localStorage.getItem("token");
+  console.log(token);
   useEffect(() => {
-    toast.success(message);
-  }, [message]);
+    const callback = (data) => {
+      console.log("hello",data);
+      setBiodata(data);
+    };
+    getKolprofile(callback, token);
+  }, []);
+  console.log("fjshdfjfhjsf", biodata);
+
   const dispatch = useDispatch();
   const initialArr = {};
   initialArr["name"] = "";
@@ -81,7 +91,7 @@ const ProfileUpdate = () => {
     {
       value: "patreon",
       label: "Patreon",
-    }
+    },
   ];
 
   const [kolProfile, setKolProfile] = useState({
@@ -119,8 +129,7 @@ const ProfileUpdate = () => {
 
     const formData = new FormData();
 
-    console.log('kolProfile======', kolProfile);
-    
+    console.log("kolProfile======", kolProfile);
 
     formData.append("avatar", selectedFile);
     formData.append("banner", bannerFile);
@@ -245,14 +254,13 @@ const ProfileUpdate = () => {
   }, []);
 
   useEffect(() => {
-    
-    let a = biodata.kolProfile.video_links.split(",")
-    
+    let a = biodata.kolProfile.video_links.split(",");
+
     setVedioLinkArr([...a]);
     setTags([...biodata.kolProfile.tags.split(",")]);
-    
+
     setInputList([...biodata.kolProfile.get_social_media]);
-    console.log('vedioLinkArr ==', vedioLinkArr);
+    console.log("vedioLinkArr ==", vedioLinkArr);
 
     setKolProfile(() => {
       return {
@@ -265,14 +273,13 @@ const ProfileUpdate = () => {
         zip_code: biodata.kolProfile.zip_code,
         state: biodata.kolProfile.state,
         personal_email: biodata.kolProfile.personal_email,
-        bio:  biodata.kolProfile.bio,
+        bio: biodata.kolProfile.bio,
         languages: biodata.kolProfile.languages.split(","),
         social_active: biodata.kolProfile.social_active.split(","),
       };
     });
 
-    console.log('kolProfile123',kolProfile)
-    
+    console.log("kolProfile123", kolProfile);
   }, [biodata]);
 
   const deleteTag = (index) => {
@@ -293,10 +300,6 @@ const ProfileUpdate = () => {
     setKolProfile({ ...kolProfile, [e.target.name]: [e.target.value] });
   };
 
-  const handleViewClick = (e) => {
-    navigate("../profileview");
-  };
-
   const {
     biodata: { kolProfileData },
   } = useSelector(dashboardSelector);
@@ -310,12 +313,7 @@ const ProfileUpdate = () => {
           <h3 className="mt-4">Kol Profile</h3>
         </div>
         <div className="col-6">
-          <button
-            className="btn btn-outline-secondary"
-            onClick={handleViewClick}
-          >
-            View
-          </button>
+          <Link to="../profileview"> View</Link>
         </div>
       </div>
       <div className="row">
@@ -666,14 +664,18 @@ const ProfileUpdate = () => {
               <b>Upload Avatar</b>
             </label>
             <input type="file" name="userImage" onChange={handleChange} />
-            <img src={`${imageUrl}${biodata.kolProfile.avatar}`}  height={50} />
+            <img src={`${imageUrl}${biodata.kolProfile.avatar}`} height={50} />
           </div>
           <div className="row mt-3">
             <label className="form-label">
               <b>Upload Banner</b>
             </label>
             <input type="file" name="userBanner" onChange={handleChange} />
-            <img src={`${imageUrl}${biodata.kolProfile.banner}`}  height={50} width={50}/>
+            <img
+              src={`${imageUrl}${biodata.kolProfile.banner}`}
+              height={50}
+              width={50}
+            />
           </div>
 
           <div className="mt-4 mx-auto d-block">
