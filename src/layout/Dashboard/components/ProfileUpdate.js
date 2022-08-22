@@ -14,6 +14,7 @@ import { getAllCategory } from "../../../slices/api/simpleApi";
 import { getKolprofile } from "../../../slices/api/simpleApi";
 const ProfileUpdate = () => {
   const navigate = useNavigate();
+
   // const { message, biodata } = useSelector(dashboardSelector);
 
   const [biodata, setBiodata] = useState({});
@@ -27,6 +28,7 @@ const ProfileUpdate = () => {
     getKolprofile(callback, token);
   }, []);
   console.log("fjshdfjfhjsf", biodata);
+
 
   const dispatch = useDispatch();
   const initialArr = {};

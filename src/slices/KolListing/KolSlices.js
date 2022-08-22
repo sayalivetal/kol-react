@@ -18,6 +18,7 @@ export const kolDetails = createAsyncThunk(
     try {
       const response = await fetch(`${API}/kol-profile/view?id=${id}`, {
         method: "GET",
+        mode: 'no-cors',
 
         headers: {
           "Content-Type": "application/json",
@@ -47,6 +48,7 @@ export const kolAddBookmark = createAsyncThunk(
     try {
       const response = await fetch(`${API}/bookmark/add`, {
         method: "Post",
+        mode: 'no-cors',
         body: JSON.stringify({
           kol_profile_id: profileId,
         }),
@@ -81,6 +83,7 @@ export const kolDeleteBookmark = createAsyncThunk(
         `${API}/bookmark/delete?kol_profile_id=${profileId}`,
         {
           method: "DELETE",
+          mode: 'no-cors',
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
