@@ -17,7 +17,7 @@ export const sendMessage = createAsyncThunk(
     try {
       const response = await fetch(`${API}/Chat/send-message`, {
         method: "POST",
-        mode: 'no-cors',
+      
 
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +51,7 @@ export const conversationList = createAsyncThunk(
     try {
       const response = await fetch(`${API}/Chat/chat-list?receiver_id=${urlId}`, {
         method: "GET",
-        mode: 'no-cors',
+   
 
         headers: {
           "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export const messageEdit = createAsyncThunk(
     try {
       const response = await fetch(`${API}/Chat/edit-msg`, {
         method: "PUT",
-        mode: 'no-cors',
+      
 
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export const messageDelete = createAsyncThunk(
     try {
       const response = await fetch(`${API}/Chat/delete-msg?msg_id=${id}`, {
         method: "GET",
-        mode: 'no-cors',
+
 
         headers: {
           "Content-Type": "application/json",
