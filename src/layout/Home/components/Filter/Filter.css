@@ -1,0 +1,18 @@
+.filter-col .dropdown{
+    margin-right: 8px;
+}
+.btn-outline-danger{
+    background-color: #ffff !important;
+    border-color: #F01F4B !important;
+    color: #212529;
+}
+.filter-col .btn-outline-danger:hover{
+    border-color: #F01F4B !important;
+    color: #212529;
+}
+.filter-col .btn-check:focus+.btn-outline-danger, .filter-col .btn-outline-danger:focus {
+    box-shadow: 0 0 0 0rem rgb(220 53 69 / 50%);
+}
+.sort:focus{
+    box-shadow: 0 0 0 0rem rgb(220 53 69 / 50%); 
+}

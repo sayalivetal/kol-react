@@ -1,0 +1,79 @@
+.heading-icon {
+  font-size: 18px;
+  color: #1877f2;
+}
+.kol-user-img {
+  min-width: 100%;
+  min-height: 280px;
+  max-height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #e3e3e3;
+}
+.kol-user-img img {
+  width: 100%;
+}
+.team-list {
+  width: auto;
+  display: inline-block;
+}
+.facebook-icon {
+  color: #1877f2;
+}
+.youtube-icon {
+  color: #ff0000;
+}
+.text-normal {
+  color: #8b7db2;
+}
+.social-count-list {
+  display: flex;
+  list-style: none;
+}
+.social-count-list li {
+  border-left: 2px solid #a5a5a5;
+  padding: 0px 15px;
+}
+.team-list {
+  display: flex;
+  list-style: none;
+}
+.team-list li {
+  border: 1px solid #ddd;
+  margin-right: -10px;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+.team-list li img {
+  width: 100%;
+  object-fit: contain;
+}
+.geo-icon {
+  color: #f01f4b;
+}
+.bookmark-icon {
+  color: #f01f4b;
+  cursor: pointer;
+}
+
+
+
+.bookmark-icon.active:before {
+  content: '\f195' !important;
+}
+.more-button a {
+  text-decoration: none;
+  color: #f01f4b;
+  font-size: 16px;
+}
+.list-row {
+  cursor: pointer;
+}
+select, option{
+  /*font-family: bootstrap-icons !important;*/
+}

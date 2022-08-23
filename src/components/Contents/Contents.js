@@ -4,11 +4,13 @@ import { Navigate, Route, Routes } from "react-router-dom";
 //routes config
 import routes from "../../routes";
 const Contents = () => {
+ 
   return (
     <div>
       {" "}
       <Routes>
         {routes.map((route, idx) => {
+      
           return (
             route.element && (
               <Route
@@ -21,7 +23,7 @@ const Contents = () => {
             )
           );
         })}
-        {/* <Route path="/" element={<Navigate to="Home" replace />} /> */}
+     
       </Routes>
     </div>
   );

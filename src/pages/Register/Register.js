@@ -4,15 +4,21 @@ import "./Register.css";
 import { useDispatch, useSelector } from "react-redux";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../Firebase";
-import { Container, Row, Col } from "react-bootstrap";
-import { signupUser } from "../../slices/AuthSlice/AuthSlice";
+//import { Container, Row, Col } from "react-bootstrap";
+import {
+  signupUser,
+  userSelector,
+  clearState,
+} from "../../slices/AuthSlice/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
+  const { isFetching, isSuccess, statusCode, isError, errorMessage } = useSelector(userSelector);
   const role = useSelector((state) => state?.user?.role?.payload);
   //state for firebase values
+  console.log(isSuccess, statusCode);
   const [firebaseUser, setFirebaseuser] = useState({
     name: "",
     email: "",
@@ -28,41 +34,14 @@ const Register = () => {
     role: role,
     password: "",
   });
-  //state for store data of user register
-  const [data, setData] = useState({});
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState(false);
+  let token = localStorage.getItem("token");
+  console.log(token);
+
   //navigaion
   const navigate = useNavigate();
   //useSelector for getting data from store
-  const userDetails = useSelector((state) => state?.user?.registerUser);
-  // const userRegister = useSelector((state)=>state.user.registerUser)
-  console.log(userDetails);
-  useEffect(() => {
-    if (!userDetails?.otp) return;
-    setData(userDetails);
-  }, [userDetails?.otp]);
-  useEffect(() => {
-    if (!userDetails?.data?.token) return;
-    setData(userDetails);
-  }, [userDetails?.data?.token]);
-
-
-  useEffect(() => {
-    if (data?.data?.token) {
-     
-       navigate("/Home");
-    }
-  }, [data]);
-  console.log(data);
-  useEffect(() => {
-    if (data?.otp) {
-      navigate("/EmailVerify");
-    }
-  }, [data]);
-
-
-  if(userDetails?.statusCode == 301){
-    toast.error("User already exists");
-  }
   //Dispatch form react redux
   const dispatch = useDispatch();
   //function for response from firebase
@@ -89,9 +68,22 @@ const Register = () => {
   //function for handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    dispatch(signupUser(formData));
-    
+    if (
+      formData.name == "" ||
+      formData.email == "" ||
+      token == "" ||
+      formData.password == "" ||
+      role == ""
+    ) {
+      setError("All fields required please select all field");
+      setStatus(true);
+    } else {
+      console.log(formData);
+      dispatch(signupUser(formData)).then(()=>{
+        console.log("hello");
+      })
+      e.target.reset();
+    }
   };
   //action for signInwithGoogle
   useEffect(() => {
@@ -99,6 +91,38 @@ const Register = () => {
     console.log(firebaseUser);
     dispatch(signupUser(firebaseUser));
   }, [firebaseUser.token]);
+
+  //new Changes
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clearState());
+      navigate("/EmailVerify");
+    }
+    if (statusCode === 301) {
+      navigate("/register");
+      toast.error(errorMessage);
+      dispatch(clearState());
+    }
+
+    if (isError) {
+      toast.error(errorMessage);
+      dispatch(clearState());
+    }
+  }, [isSuccess, isError]);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/home");
+    }
+  }, [token]);
+  console.log(status);
   return (
     <div className="main-div">
       <section>
@@ -122,41 +146,64 @@ const Register = () => {
                 </div>
                 <div className="col-lg-6  col-sm-12 register-form">
                   <div className="row align-items-center ">
-                    {" "}
                     <form className="col-12" onSubmit={handleSubmit}>
                       <h2 className="register-heading mb-3">Register</h2>
 
                       <div className="form-group mb-3">
-                        <label>Name</label><span className="astric-span">*</span>
+                        <label>Name</label>
+                        <span className="astric-span">*</span>
                         <input
                           type="text"
                           name="name"
-                          className="form-control"
+                          className={` ${
+                             error === "" || formData.name
+                              ? "form-control"
+                              : "border-color"
+                          }`}
                           placeholder="First name"
                           onChange={handleChange}
                         />
+                        {error && formData.name == "" && (
+                          <span className="error-color">{error}</span>
+                        )}
                       </div>
 
                       <div className="form-group  mb-3">
-                        <label>Email</label><span className="astric-span">*</span>
+                        <label>Email</label>
+                        <span className="astric-span">*</span>
                         <input
                           type="email"
                           name="email"
-                          className="form-control"
+                          className={` ${
+                            error === "" || formData.email 
+                            ? "form-control"
+                            : "border-color"
+                          }`}
                           placeholder="Enter email"
                           onChange={handleChange}
                         />
+                        {error && formData.email == "" && (
+                          <span className="error-color">{error}</span>
+                        )}
                       </div>
 
                       <div className="form-group  mb-3">
-                        <label>Password</label><span className="astric-span">*</span>
+                        <label>Password</label>
+                        <span className="astric-span">*</span>
                         <input
                           type="password"
                           name="password"
-                          className="form-control"
+                          className={` ${
+                            error === "" || formData.password
+                            ? "form-control"
+                            : "border-color"
+                          }`}
                           placeholder="Enter password"
                           onChange={handleChange}
                         />
+                        {error && formData.password == "" && (
+                          <span className="error-color">{error}</span>
+                        )}
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button
@@ -170,7 +217,6 @@ const Register = () => {
                         </span>
                       </div>
                     </form>
-                    
                     <div className="col-12 justify-content-center align-items-center position-relative my-4">
                       <hr className="col-12" />{" "}
                       <span className="orText">or </span>

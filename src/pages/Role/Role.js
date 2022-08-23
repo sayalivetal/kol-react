@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { addRole } from "../../slices/AuthSlice/AuthSlice";
-import { updateRole } from "../../slices/AuthSlice/AuthSlice";
+import { updateRole, userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import "./Role.css";
+import { toast } from "react-toastify";
 const Role = () => {
-  const email = useSelector((state)=>state?.user?.loginUser?.data?.email)
-  const token = useSelector((state)=>state?.user?.loginUser?.data?.token)
+  // const email = useSelector((state) => state?.user?.loginUser?.data?.email);
+  // const token = useSelector((state) => state?.user?.loginUser?.data?.token);
+  const { isFetching, isSuccess, statusCode, isError, errorMessage, email } =
+    useSelector(userSelector);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [renderButton, setRenderButton] = useState("");
   const [role, setUserRole] = useState("");
 
+  let token = localStorage.getItem("token");
   const onChangeValue = (e) => {
     setUserRole(e.target.value);
     if (e.target.value === "3") {
@@ -21,21 +25,23 @@ const Role = () => {
       setRenderButton(" as KOL");
     }
   };
-  useEffect(()=>{
-    if(token){
-      navigate('/home')
+
+  useEffect(() => {
+    if (token) {
+      navigate("/home");
     }
-  },[token])
-console.log(role,email);
+  }, [token]);
+  console.log(role, email);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(role && email){
-      dispatch(updateRole({role,email}));
-    }else{
-      dispatch(addRole(role));
-    navigate("/register");
+    if (role) {
+      if (role && email) {
+        dispatch(updateRole({ role, email }));
+      } else {
+        dispatch(addRole(role));
+        navigate("/register");
+      }
     }
-    
   };
 
   return (
@@ -66,8 +72,20 @@ console.log(role,email);
                               </div>
                             </div>
                             <div className="joiner-option form-group">
-                              <input type="radio" value="3" name="role" id="user" onChange={onChangeValue} />
-                              <label htmlFor="user" className="join-option-label" name="role">Join as a User</label>
+                              <input
+                                type="radio"
+                                value="3"
+                                name="role"
+                                id="user"
+                                onChange={onChangeValue}
+                              />
+                              <label
+                                htmlFor="user"
+                                className="join-option-label"
+                                name="role"
+                              >
+                                Join as a User
+                              </label>
                             </div>
                           </div>
                         </div>
@@ -81,8 +99,21 @@ console.log(role,email);
                               </div>
                             </div>
                             <div className="joiner-option form-group">
-                              <input type="radio" value="2" name="role" id="kol" onChange={onChangeValue} />
-                              <label htmlFor="kol" className="join-option-label" name="role"> Join as a Kol</label>
+                              <input
+                                type="radio"
+                                value="2"
+                                name="role"
+                                id="kol"
+                                onChange={onChangeValue}
+                              />
+                              <label
+                                htmlFor="kol"
+                                className="join-option-label"
+                                name="role"
+                              >
+                                {" "}
+                                Join as a Kol
+                              </label>
                             </div>
                           </div>
                         </div>

@@ -7,54 +7,48 @@ import "./EmailVerify.css";
 import {
   emailVerification,
   resendEmailOtp,
+  userSelector,clearState
 } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const EmailVerify = () => {
   const navigate = useNavigate();
-  const emailVerify = useSelector((state) => state?.user?.registerUser?.email);
+  const { isFetching, isSuccess, isError, errorMessage ,email} = useSelector(userSelector);
   // const userData = useSelector((state) => state?.user?.registerUser?.data);
   const userdata = useSelector((state) => state?.user?.loginUser);
- 
-  const [email, setEmail] = useState("");
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
 
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clearState());
+      navigate('/home');
+    }
 
-  useEffect(() => {
-    if (userdata?.data?.message) {
-      toast.success(userdata?.data?.message);
+    if (isError) {
+      toast.error(errorMessage);
+      dispatch(clearState());
     }
-  }, [userdata]);
-  useEffect(() => {
-    if (userdata?.data?.data?.token) {
-      navigate("/home");
-    }
-  }, [userdata]);
-  let asd;
-  useEffect(() => {
-    if (emailVerify) {
-      toast.success(
-        "You have been successfully registered, We have sent a verification code to your mail,please verify it!"
-      );
-      setEmail(emailVerify)
-    }
-  }, [emailVerify]);
-  useEffect(() => {
-    if (userdata?.email) {
-      toast.success(userdata.message);
-      asd = emailVerify ? emailVerify : userdata?.email;
-      setEmail(asd);
-    }
-  }, [userdata]);
+  }, [isSuccess, isError]);
+
   console.log(email);
   const dispatch = useDispatch();
   //state for otp change
   const [otp, setOtp] = useState("");
   //function for otp change
+  const [error,setError] = useState("")
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(emailVerification({ otp, email }));
+    if(otp === ""){
+      setError("opt required")
+    }
+    dispatch(emailVerification({ otp, email }))
+    e.target.reset();
   };
   const handleOtp = () => {
     dispatch(resendEmailOtp(email));
@@ -82,8 +76,9 @@ const EmailVerify = () => {
                           numInputs={6}
                           separator={<span>&nbsp;</span>}
                         />
+                        {error && <span className="error-color">{error}</span>}
                       </div>
-
+                      
                       <button className="btn theme-btn btn-lg btn-block my-3" type="submit">
                         Verify &amp; Proceed
                       </button>

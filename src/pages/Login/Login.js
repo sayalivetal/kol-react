@@ -3,7 +3,7 @@ import GoogleButton from "react-google-button";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../Firebase";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginUser,signupUser,loginWithGoogle } from "../../slices/AuthSlice/AuthSlice";
+import { LoginUser,signupUser,loginWithGoogle,clearState,userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,7 +11,7 @@ import "./Login.css";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate= useNavigate()
-  const loginUserData = useSelector((state)=>state?.user?.loginUser)
+  const { isFetching, isSuccess,statusCode, isError, errorMessage } = useSelector(userSelector)
   const [eye, seteye] = useState(true);
   const [type, settype] = useState(false);
   const [loginData, setLoginData] = useState({
@@ -24,37 +24,62 @@ const Login = () => {
     token: "",
   
   });
- 
-  const [password, setpassword] = useState("password");
+  let token = localStorage.getItem('token');
+  console.log(token);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
   useEffect(()=>{
-    if(loginUserData?.message){
-      toast.error(loginUserData?.message);
+    if (token) {
+    navigate('/home')
     }
-  },[loginUserData])
+  },[token])
   useEffect(()=>{
-    if(loginUserData?.data?.email){
+    if (statusCode == 401) {
+      navigate('/emailVerify')
+      toast.success(errorMessage)
+      }
+  },[statusCode])
+
+  useEffect(()=>{
+    if(errorMessage =='Please choose roles!'){
       navigate('/role')
     }
-    if(loginUserData?.data?.token){
-      navigate('/home')
-    }
-  },[loginUserData])
-  useEffect(()=>{
-    if(loginUserData?.email){
-      navigate('/emailVerify')
-    }
-  },[loginUserData])
-  useEffect(()=>{
-    if(loginUserData?.data?.token){
-      navigate('/home')
-    }
-  },[loginUserData])
+  },[])
+  const [password, setpassword] = useState("password");
+  // useEffect(()=>{
+  //   if(loginUserData?.message){
+  //     toast.error(loginUserData?.message);
+  //   }
+  // },[loginUserData])
+  // useEffect(()=>{
+  //   if(errorMessage =='Please choose roles!'){
+  //     navigate('/role')
+  //   }
+  //   if(loginUserData?.data?.token){
+  //     navigate('/home')
+  //   }
+  // },[loginUserData])
+  // useEffect(()=>{
+  //   if(loginUserData?.email){
+  //     navigate('/emailVerify')
+  //   }
+  // },[loginUserData])
+  // useEffect(()=>{
+  //   if(loginUserData?.data?.token){
+  //     navigate('/home')
+  //   }
+  // },[loginUserData])
   const handleChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(LoginUser(loginData));
+    e.target.reset();
   };
  
   const Eye = () => {
@@ -90,6 +115,7 @@ const Login = () => {
     if (!firebaseUser.token) return;
     dispatch(loginWithGoogle(firebaseUser))
   },[firebaseUser.token])
+
   return (
     <div className="main-div">
       <section>
@@ -173,7 +199,7 @@ const Login = () => {
                     <div className="col-12 d-flex justify-content-center align-items-center mt-3">
                       <span className="optionText text-center">
                         Don't have an account?{" "}
-                        <Link to="/register">Register here</Link>
+                        <Link to="/role">Register here</Link>
                       </span>
                     </div>
                   </div>

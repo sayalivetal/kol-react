@@ -2,9 +2,16 @@ import { createReducer, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API } from "../../common/apis";
 
 const initialState = {
-  loginuser: {},
-  registerUser: {},
+
   role: {},
+  loading:'',
+  username: '',
+  email: '',
+  isFetching: false,
+  isSuccess: false,
+  isError: false,
+  errorMessage: '',
+  statusCode:''
 };
 
 //API Integration with action for registration creation
@@ -14,11 +21,12 @@ export const signupUser = createAsyncThunk(
     console.log(name, email, token, role, password);
     try {
       const response = await fetch(`${API}/register`, {
+     
         method: "POST",
         body: JSON.stringify({
           name: name,
           email: email,
-          password: password,
+          password:password?password:"",
           role_id: role,
           firebase_token: token,
         }),
@@ -29,9 +37,13 @@ export const signupUser = createAsyncThunk(
       });
       let data = await response.json();
       console.log(data);
-      if (response.status === 200) {
-        return data;
-      } else {
+      if (response.status == 200 ) {
+        if(data?.data?.token){
+        localStorage.setItem('token', data.data.token);
+        }
+        return { ...data };
+      }else {
+     
         return thunkAPI.rejectWithValue(data);
       }
     } catch (e) {
@@ -49,6 +61,7 @@ export const loginWithGoogle = createAsyncThunk(
     try {
       const response = await fetch(`${API}/login-with-google`, {
         method: "POST",
+        mode: 'no-cors',
         body: JSON.stringify({
           name: name,
           email: email,
@@ -63,7 +76,8 @@ export const loginWithGoogle = createAsyncThunk(
       let data = await response.json();
       console.log(data);
       if (response.status === 200) {
-        return data;
+         localStorage.setItem('token', data.data.token);
+        return { ...data };
       } else {
         return thunkAPI.rejectWithValue(data);
       }
@@ -81,6 +95,7 @@ export const emailVerification = createAsyncThunk(
     try {
       const response = await fetch(`${API}/verify-OTP`, {
         method: "POST",
+        mode: 'no-cors',
         body: JSON.stringify({
           otp,
           email: email,
@@ -91,11 +106,10 @@ export const emailVerification = createAsyncThunk(
         },
       });
       let data = await response.json();
-      console.log(data);
+      console.log(data.token);
       if (response.status === 200) {
-        return {
-          data,
-        };
+        localStorage.setItem('token', data.data.token);
+        return { ...data};
       } else {
         return thunkAPI.rejectWithValue(data);
       }
@@ -116,6 +130,7 @@ export const resendEmailOtp = createAsyncThunk(
     try {
       const response = await fetch(`${API}/resend-OTP`, {
         method: "POST",
+        mode: 'no-cors',
         body: JSON.stringify({
           email: email,
         }),
@@ -143,6 +158,7 @@ export const updateRole = createAsyncThunk(
     try {
       const response = await fetch(`${API}/update-role`, {
         method: "PUT",
+        mode: 'no-cors',
         body: JSON.stringify({
           email: email,
           role_id:role
@@ -170,6 +186,7 @@ export const forgotPassword = createAsyncThunk(
     try {
       const response = await fetch(`${API}/check-email-forgot-password`, {
         method: "PATCH",
+        mode: 'no-cors',
         body: JSON.stringify({
           email,
         }),
@@ -200,6 +217,7 @@ export const LoginUser = createAsyncThunk(
     try {
       const response = await fetch(`${API}/login`, {
         method: "POST",
+        mode: 'no-cors',
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -210,9 +228,12 @@ export const LoginUser = createAsyncThunk(
         }),
       });
       let data = await response.json();
-
+      console.log(data.data.token);
       if (response.status === 200) {
-        return data;
+        if(data?.data?.token){
+          localStorage.setItem('token', data.data.token);
+          }
+          return { ...data };
       } else {
         return thunkAPI.rejectWithValue(data);
       }
@@ -231,6 +252,7 @@ export const ResetPassword = createAsyncThunk(
     try {
       const response = await fetch(`${API}/forgot-password  `, {
         method: "PUT",
+        mode: 'no-cors',
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -263,6 +285,7 @@ export const ChangePasswordUser = createAsyncThunk(
     try {
       const response = await fetch(`${API}/reset-password`, {
         method: "PUT",
+        mode: 'no-cors',
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -297,43 +320,109 @@ const authReducer = createSlice({
     addRole: (action, state) => {
       return { role: { ...state, ...action.payload } };
     },
+    clearState: (state) => {
+      state.isError = false;
+      state.isSuccess = false;
+      state.isFetching = false;
+
+      return state;
+    },
   },
   extraReducers: {
-    [signupUser.fulfilled]: (state, action) => {
-      return { registerUser: { ...action.payload } };
+    [signupUser.fulfilled]: (state, { payload }) => {
+      console.log(payload);
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.errorMessage = payload?.message;
+      state.email = payload.data?payload.data.email:payload.email;
+      state.username = payload.data?payload.data.user_name:'';
+     state.statusCode = payload.statusCode;
+      // return { registerUser: { ...action.payload } };
     },
-    [signupUser.pending]: (state, action) => {},
-    [signupUser.rejected]: (state, action) => {},
-    [emailVerification.fulfilled]: (state, action) => {
-      return { loginUser: { ...action.payload } };
+    [signupUser.pending]: (state, action) => {
+      state.isFetching = true;
     },
-    [emailVerification.pending]: (state, action) => {},
-    [emailVerification.rejected]: (state, action) => {},
-    [forgotPassword.fulfilled]: (state, action) => {
-      return { loginUser: { ...action.payload } };
+    [signupUser.rejected]: (state, { payload }) => {
+      console.log(payload);
+      state.isFetching = false;
+      state.isError = true;
+      state.errorMessage = payload?.message;
     },
-    [forgotPassword.pending]: (state, action) => {},
+    [emailVerification.fulfilled]: (state, { payload }) => {
+
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.email = payload.email;
+     
+      // console.log(action.payload.data);
+      // return { loginUser: { ...action.payload.data} };
+    },
+    [emailVerification.pending]: (state, action) => {
+      
+      state.isFetching = true;
+    },
+    [emailVerification.rejected]: (state, { payload }) => {
+      state.isFetching = false;
+      state.isError = true;
+      state.errorMessage = payload.message;
+    },
+    [forgotPassword.fulfilled]: (state, {payload}) => {
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.errorMessage = payload?.message;
+      state.email = payload.data?payload.data.email:payload.email;
+      state.username = payload.data?payload.data.user_name:'';
+     state.statusCode = payload.statusCode;
+    },
+    [forgotPassword.pending]: (state, action) => {
+    
+    },
     [forgotPassword.rejected]: (state, action) => {},
     [ResetPassword.fulfilled]: (state, action) => {
       return { loginUser: { ...action.payload } };
     },
     [ResetPassword.pending]: (state, action) => {},
     [ResetPassword.rejected]: (state, action) => {},
-    [LoginUser.fulfilled]: (state, action) => {
-      return { loginUser: { ...action.payload } };
+    [LoginUser.fulfilled]: (state, {payload}) => {
+      console.log(payload);
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.errorMessage = payload?.message;
+      state.email = payload.data?payload.data.email:payload.email;
+      state.username = payload.data?payload.data.user_name:'';
+     state.statusCode = payload.statusCode;
     },
-    [LoginUser.pending]: (state, action) => {},
+    [LoginUser.pending]: (state, action) => {
+
+    },
     [LoginUser.rejected]: (state, action) => {},
-    [ChangePasswordUser.fulfilled]: (state, action) => {
-      return { loginUser: { ...action.payload } };
+    [ChangePasswordUser.fulfilled]: (state, {payload}) => {
+      console.log(payload);
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.errorMessage = payload?.message;
+      state.email = payload.data?payload.data.email:payload.email;
+      state.username = payload.data?payload.data.user_name:'';
+     state.statusCode = payload.statusCode;
     },
     [ChangePasswordUser.pending]: (state, action) => {},
     [ChangePasswordUser.rejected]: (state, action) => {},
-    [loginWithGoogle.fulfilled]: (state, action) => {
-      return { loginUser: { ...action.payload } };
+    [loginWithGoogle.fulfilled]: (state, {payload}) => {
+      console.log(payload);
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.errorMessage = payload?.message;
+      state.email = payload.data?payload.data.email:payload.email;
+      state.username = payload.data?payload.data.user_name:'';
+     state.statusCode = payload.statusCode;
     },
-    [loginWithGoogle.pending]: (state, action) => {},
-    [loginWithGoogle.rejected]: (state, action) => {},
+    [loginWithGoogle.pending]: (state, action) => {
+      state.isFetching = true;
+    },
+    [loginWithGoogle.rejected]: (state, action) => {
+      state.isFetching = false;
+      state.isError = true;
+    },
     [updateRole.fulfilled]: (state, action) => {
       return { loginUser: { ...action.payload } };
     },
@@ -341,5 +430,7 @@ const authReducer = createSlice({
     [updateRole.rejected]: (state, action) => {},
   },
 });
-export const { addRole } = authReducer.actions;
+export const { addRole,clearState } = authReducer.actions;
 export default authReducer.reducer;
+
+export const userSelector = (state) => state?.user;

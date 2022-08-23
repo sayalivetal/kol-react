@@ -1,139 +1,204 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useSelector, useDispatch } from "react-redux";
-import {getAllCategory} from '../../slices/api/simpleApi'
+import { getAllCategory, getAllLanguage } from "../../slices/api/simpleApi";
+import { userSelector, clearState } from "../../slices/AuthSlice/AuthSlice";
 import { Dropdown } from "react-bootstrap";
+import { kolType, kolName } from "../../slices/KolListing/KolSlices";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-
 const Header = () => {
-  const [categoryList, setCategoryList] = useState([]);
-  const userDetails = useSelector((state) => state?.user?.loginUser);
-  const userLoginDetails = useEffect((state)=>state) 
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    role: "",
-    token: "",
-  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [categoryList, setCategoryList] = useState({});
+  const [categoryType, setCategory] = useState("");
+  const [language, setLanguage] = useState({});
+  const {
+    isFetching,
+    isError,
+    username,
+    message,
+    email,
+    role:{payload}
+  } = useSelector(userSelector);
+
+  let token = localStorage.getItem("token");
 
   useEffect(() => {
-    const callback = data =>{
-      setCategoryList([...data])
-    }
-   getAllCategory(callback);
+    const callback = (data) => {
+      setCategoryList({ ...data });
+    };
+    getAllCategory(callback, token);
   }, []);
-  console.log("asd",categoryList);
-
   useEffect(() => {
-    setUser((state) => {
-      return {
-        ...state,
-        name: userDetails?.data?.user_name,
-        email: userDetails?.data?.email,
-        role: userDetails?.data?.role_id,
-        token: userDetails?.data?.token,
-      };
-    });
-  }, [userDetails]);
-  console.log(user);
+    if (isError) {
+      dispatch(clearState());
+      navigate("/login");
+    }
+  }, [isError]);
+  const signOut = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+  const handleChange = (e) => {
+    dispatch(kolType(e.target.value));
+  };
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(kolName(categoryType));
+  };
+
+
   return (
-    <header className="d-flex flex-wrap py-3 mb-4 header head-back-color">
+    <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
         <div className="row justify-content-between align-items-center">
-          <div className="col-md-3">
+          <div className="col-sm-2 col-lg-2 col-4">
             <a
               href="/"
-              className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none logo"
+              className="d-flex align-items-center mb-2 mb-md-0 text-dark text-decoration-none logo"
             >
-              KOL
+              {" "}
+              KOL{" "}
             </a>
           </div>
-          {user.token ? (
+          {token ? (
             <>
-            
-            <div className="col-md-5 text-end">
+              <div className="col-sm-7 col-lg-6 text-end d-none d-md-block">
+                <nav className="search-bar">
+                  <select
+                    className="form-select custom-btn"
+                    aria-label="Default select example"
+                    onChange={handleChange}
+                  >
+                    <option defaultValue>Select Category</option>
+                    {categoryList &&
+                      Object.entries(categoryList).map(([key, value]) => (
+                        <option key={key} value={key}>{value}</option>
+                      ))}
+                  </select>
+                  <form className="search-form" onSubmit={handleSubmit}>
+                    <input
+                      type="text"
+                      className=" search-box"
+                      placeholder="What are you looking for?"
+                      aria-label="Username"
+                      aria-describedby="basic-addon1"
+                      onChange={handleCategoryChange}
+                    />
+                    <button
+                      className="btn btn-search "
+                      type="submit"
+                      aria-expanded="false"
+                    >
+                      Search
+                    </button>
+                  </form>
+                </nav>
+              </div>
+              <div className="col-sm-3 col-lg-4 col-8">
+                <div className="d-flex justify-content-end">
+                  <div className="header-icon-bar">
+                    {payload == 2 ? (
+                      <>
+                        <Link to="/dashboard">
+                          <i className="bi bi-grid"></i>
+                          
+                        </Link>
+                      </>
+                    ) : (
+                      ""
+                    )}
 
-              <nav className="navbar bg-light">
-                <form className="container-fluid">
-                  <div className="input-group">
-                    <Dropdown>
-                      <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        All Categories
+                    <Link to={"/chat"}>
+                      <i className="bi bi-chat-dots"></i>
+                      <span className="count-badge">15</span>
+                    </Link>
+                    {/* <Link to={"/chat"}>
+
+                      <i className="bi bi-bell"></i>{" "}
+                      <span className="count-badge">15</span>
+                    </Link> */}
+                    <Dropdown className="notify-dropdown">
+                      <Dropdown.Toggle
+                        variant=""
+                        className="notify-drop-btn"
+                        id="dropdown-notify"
+                      >
+                        <i className="bi bi-bell"></i>{" "}
+                      <span className="count-badge">15</span>
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
-                      { 
-                        categoryList && categoryList.map((item, i)=>{
-                          console.log('dropdown',item.name)
-                          return  <Dropdown.Item key={i} >{item.name}</Dropdown.Item>;
-                        }) 
-                      }
+                        <div className="notification-list">
+                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
+                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
+                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
+                        </div>
                       </Dropdown.Menu>
                     </Dropdown>
-                    
-                    <input type="text" className="form-control" placeholder="What are you looking for?" aria-label="Username" aria-describedby="basic-addon1"/>
-                    <button
-                      className="btn btn-secondary " type="button" aria-expanded="false">Search
-                    </button>
-                    
                   </div>
-                </form>
-              </nav>
-            </div>
-            <div className="col-md-4">
-              <div className="row">
-                <div className="col">
-                  
-                  <i className="fa-regular fa-envelope"></i> 
-                  <a href='#'><i className="fa fa-envelope"></i></a>
-                  <a href='#'>
-                    <span className="e-badge e-badge-secondary e-badge-notification e-badge-overlap">99</span>
-                    <i className="fa fa-bell"></i>
-                  </a>
-                                       
-                </div>
+                  <div className="header-profile">
+                    <div className="profile-user-icon">
+                      <img src="Images/avatar.png" alt="avatar"/>
+                    </div>
+                    <Dropdown className="user-dropdown">
+                      <Dropdown.Toggle
+                        variant=""
+                        className="profile-btn"
+                        id="dropdown-basic"
+                      >
+                        <span className="profile-btn-user">{username}</span>
+                      </Dropdown.Toggle>
 
-                <div className="col">      
-                  <div className="dropdown">
-                    <img src='./Images/1559154-200.png' width={25} height={25}/>
-                    <button
-                      className="btn btn-default  dropdown-toggle test"
-                      type="button"
-                      id="dropdownMenuButton1"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      {user.name}
-                    </button>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton1"
-                    >
-                      <li>
-                        <a className="dropdown-item">Action</a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item">Another action</a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item">Something else here</a>
-                      </li>
-                    </ul>
+                      <Dropdown.Menu>
+                        <div className="user-drop-list">
+                          <div className="list-item-profile">
+                            <div className="profile-user-icon">
+                              <img src="Images/avatar.png" />
+                            </div>
+                            <div className="profile-user-name">
+                              <div className="user-name">{username}</div>
+                              <div className="user-designation">
+                                {username}{" "}
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <Link className="list-item" to="/account">
+                            Profile
+                          </Link>
+                          <Link className="list-item" to="/account">
+                            Your Account
+                          </Link>
+                          <Link className="list-item" to="/bookmark">
+                            Bookmarks
+                          </Link>
+                          <div className="list-item" onClick={signOut}>
+                           Sign out
+                          </div>
+
+                        </div>
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </div>
                 </div>
               </div>
-            </div>
             </>
           ) : (
             <div className="col-md-4 text-end">
-              <button type="button" className="btn  me-4 outlined-button">
-                <Link to="/role"> Sign Up</Link>
-              </button>
-              <button type="button" className="btn outlined-button">
-                <Link to="/login">Sign In</Link>
-              </button>
+              <Link className="btn  me-4 outlined-button text-light" to="/role">
+                Sign Up
+              </Link>
+
+              <Link className="btn outlined-button text-light" to="/login">
+                Sign In
+              </Link>
             </div>
           )}
         </div>
@@ -141,5 +206,15 @@ const Header = () => {
     </header>
   );
 };
-
 export default Header;
+
+
+
+
+
+
+
+
+
+
+

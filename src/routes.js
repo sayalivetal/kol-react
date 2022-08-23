@@ -1,12 +1,24 @@
 import React, { lazy } from "react";
-import Dashboard from "./layout/Dashboard/Dashboard";
-// import Banner from "./components/Banner/Banner";
-import Home from "./layout/Home/Home";
+
 const LandingPage = lazy(() => import("./pages/LandingPage/LandingPage"));
-
+const Account = lazy(() => import("./pages/Account/Account"));
+const EditAccount = lazy(() => import("./pages/Account/EditAccount"));
+const Home = lazy(() => import("./layout/Home/Home"));
+const NotFound = lazy(()=>import("./pages/404page/404"))
+const Chat = lazy(()=>import('./layout/Home/Chat/Chat'))
+const Bookmark = lazy(()=>import('./pages/Bookmark/Bookmark'))
+const Details = lazy(() =>
+  import("./layout/Home/LisitngDetails/ListingDetails")
+);
 const routes = [
-{ path: "/", exact: true, name: "landing", element: LandingPage },
-
+  // { path: "/", exact: true, name: "landing", element: LandingPage },
+  { path: "/account", exact: true, name: "Account", element: Account },
+  { path: "/edit-account", exact: true, name: "Edit-Account", element: EditAccount },
+  { path: "/home", exact: true, name: "Home", element: Home },
+  { path: "/details/:id", exact: true, name: "Details", element: Details },
+  { path: "/chat", exact: true, name: "Chat", element: Chat },
+  { path: "/bookmark", exact: true, name: "Bookmark", element: Bookmark },
+  { path: "*", exact: true, name: "NotFound", element: NotFound },
 ];
 
 export default routes;

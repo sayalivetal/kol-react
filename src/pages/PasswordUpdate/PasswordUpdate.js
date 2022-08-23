@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { userSelector } from "../../slices/AuthSlice/AuthSlice";
 const PasswordUpdate = () => {
-  const token = useSelector((state) => state?.user?.loginUser?.data.token);
-
+  const { isFetching, isSuccess,statusCode, isError, errorMessage } = useSelector(userSelector);
+  
   return (
     <div className="main-div">
       <section>
@@ -30,11 +31,11 @@ const PasswordUpdate = () => {
                 </div>
                 <div className="col-lg-6  col-sm-12 login-form">
                   <div className="row align-items-center justify-content-center ">
-                    <div className= {token?'roundIconUpdate rounded-circle my-3':'roundIconUpdate1 rounded-circle my-3'} >
-                      {token?<i className="bi bi-check2 check-mark"></i>:<i className="bi bi-x check-mark"></i>}
+                    <div className= {isSuccess?'roundIconUpdate rounded-circle my-3':'roundIconUpdate1 rounded-circle my-3'} >
+                      {isSuccess?<i className="bi bi-check2 check-mark"></i>:<i className="bi bi-x check-mark"></i>}
                     </div>
                     <div className="d-flex justify-content-center flex-wrap">
-                      {token ? <h3 className="text-center">Password Updated successfully!</h3>:<h3 className="text-center">Password not Updated successfully!</h3>}
+                      {isSuccess ? <h3 className="text-center">Password Updated successfully!</h3>:<h3 className="text-center">Password not Updated successfully!</h3>}
                       <p className="text-center">
                         Your password has been changed successfully Use your new
                         password to log in.

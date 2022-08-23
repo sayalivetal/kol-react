@@ -1,0 +1,66 @@
+.contact-div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 400px;
+  width: 100%;
+}
+.contact-table-scroll {
+  overflow-y: scroll;
+  height: 400px;
+}
+.profile-image {
+  width: 50px;
+  height: 50px;
+}
+
+
+.kol-user-card { display: flex; align-items: center; border:1px solid #ebebeb; padding:8px 10px; border-radius: 8px; margin: 16px 0; width: 100%;}
+.kol-user-info { padding-left: 15px; font-size: 16px;  font-weight: 600; width: 100%;}
+.deal-user-name { 
+  width: 64%;
+  display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.kol-user-icon { width: 72px;}
+.kol-user-loc {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  color: #9C9FAB;
+  width: 100%;
+}
+.kol-user-loc i.loc{
+  font-size: 20px;
+  color: #f01f4b;
+  width: 24px;
+  font-weight: 700;
+}
+.kol-user-loc p {
+  margin: 0;
+  font-size: 14px;
+  padding-left:0px;
+}
+
+.kol-user-deals { display: block; width: 100%; overflow-x: hidden;overflow-y: auto; max-height: 330px; border: 1px solid #ebebeb; padding: 10px; border-radius: 4px; }
+.kol-list-deal { display: block;  border:1px solid #ebebeb; padding:12px 12px 8px 12px; border-radius: 8px; margin:0 0 8px 0; font-size: 13px; }
+
+.kol-deal-row { display: flex;  flex-wrap: wrap;    align-items: center; margin-bottom: 8px; width: 100%; }
+.kol-deal-heading { width: 60%;}
+.price-check { margin-top: 2px;}
+
+.deal-icon-text { color: #9C9FAB; font-weight: 400; font-size: 13px; margin-right: 12px; }
+.deal-icon-text i { font-size: 12px; margin-right:2px; }
+
+
+
+
+
+
+
+
+.deal-action-bar { display: block; width: 100%; /*border-top: 1px solid #ebebeb;*/}
+.deal-form-row { display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between;  width: 100%; padding-top: 1rem;}
+.deal-form-row .btn { white-space: nowrap; margin-left: 8px;}
