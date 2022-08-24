@@ -28,7 +28,7 @@ const Conversation = ({ id }) => {
 
   let b = JSON.parse(a);
   let localStorageData = JSON.parse(b.user);
-  console.log(localStorageData);
+  //console.log(localStorageData);
   let { username } = localStorageData;
   useEffect(() => {
     if (!chatData.chatData.length) {
@@ -55,7 +55,7 @@ const Conversation = ({ id }) => {
 
   //   console.log(id, message);
   // };
-  console.log("==============>", chatList);
+  //console.log("==============>", chatList);
 
   // const handleMouseOut = () => {
   //   setDeleteEdit("");
@@ -86,7 +86,7 @@ const Conversation = ({ id }) => {
   //   setChatData([...chatList, newObj1]);
   // };
 
-  console.log("jhfdgfhgfdhgfjhg", edit);
+  //console.log("jhfdgfhgfdhgfjhg", edit);
   return (
     <>
       <div className="chat-container">
@@ -96,7 +96,7 @@ const Conversation = ({ id }) => {
               <div className="chat-tow">
                 <div className="chat-thumb-container">
                   <div className="chat-user-thumb">
-                    <img src={item.avatar} />
+                    <img src={item.avatar}  alt="avatar" />
                   </div>
                   <span className="status-icon active"></span>
                 </div>
@@ -119,7 +119,7 @@ const Conversation = ({ id }) => {
             <div className="chat-row">
               <div className="chat-thumb-container">
                 <div className="chat-user-thumb">
-                  <img src="s" />
+                  <img src="Images/3.png" alt="avatar" />
                 </div>
                 <span className="status-icon active"></span>
               </div>

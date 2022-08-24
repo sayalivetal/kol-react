@@ -636,9 +636,10 @@ ul.kol-count-list {
 }
 .count-label {
   font-size: 1.5rem;
-  text-align: center;
+  text-align: left;
   color: #8B7DB2;
   font-weight: 500;
+  
 }
 .help-form {
   background: #030426;
