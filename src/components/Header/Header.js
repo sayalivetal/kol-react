@@ -19,10 +19,11 @@ const Header = () => {
     username,
     message,
     email,
-    role:{payload}
+
   } = useSelector(userSelector);
 
   let token = localStorage.getItem("token");
+  let role = localStorage.getItem("role")
 
   useEffect(() => {
     const callback = (data) => {
@@ -103,7 +104,7 @@ const Header = () => {
               <div className="col-sm-3 col-lg-4 col-8">
                 <div className="d-flex justify-content-end">
                   <div className="header-icon-bar">
-                    {payload == 2 ? (
+                    {role == 2 ? (
                       <>
                         <Link to="/dashboard">
                           <i className="bi bi-grid"></i>

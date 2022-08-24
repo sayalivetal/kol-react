@@ -10,7 +10,7 @@ const ProfileView = () => {
 
   useEffect(() => {
     const callback = (data) => {
-    
+    console.log("hbjfhjfg",data);
       // if(data === 'Please add profile details first.'){
       //   navigate("../profileupdate")
       // }
