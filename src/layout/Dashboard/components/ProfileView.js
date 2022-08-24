@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {getKolprofile} from '../../../slices/api/simpleApi'
+import { getKolprofile } from "../../../slices/api/simpleApi";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const ProfileView = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [kolProfile , setKolProfile] = useState({});
+  const [kolProfile, setKolProfile] = useState({});
 
   useEffect(() => {
     const callback = (data) => {
-    console.log("hbjfhjfg",data);
+      console.log("hbjfhjfg", data);
       // if(data === 'Please add profile details first.'){
       //   navigate("../profileupdate")
       // }
       // else{
-        setKolProfile(data)
+      setKolProfile(data);
       // }
-    
     };
-    getKolprofile(callback, token );
+    getKolprofile(callback, token);
   }, []);
 
   const openPersonalDataForm = () => {
@@ -27,18 +26,17 @@ const ProfileView = () => {
     // navigate("../profile")
   };
 
-  console.log('data',kolProfile)
+  console.log("data", kolProfile);
 
   return (
     <>
       <div className="row col-12">
         <div className="col-6">
-            <h3 className="mt-4">Kol Profile View</h3>
+          <h3 className="mt-4">Kol Profile View</h3>
         </div>
         <div className="col-6">
           <Link to={`/dashboard/profile`}>Edit</Link>
         </div>
-
       </div>
 
       <div className="dashboard-main-form">
@@ -91,23 +89,19 @@ const ProfileView = () => {
             </label>
             <span> {kolProfile?.languages}</span>
           </div>
-          <div className="col-6">
+          {/* <div className="col-6">
             <label className="form-label">
               <b>State : </b>
             </label>
             <span> Uttar Pradesh</span>
-          </div>
+          </div> */}
         </div>
         <div className="row mt-3">
           <div className="col-6">
             <label className="form-label">
               <b>Most Active Platform : </b>
             </label>
-             <span>
-              {/*
-               kolProfile?.social_active.charAt(0).toUpperCase() +
-  kolProfile?.social_active.slice(1) */}
-             </span>
+            <span>{kolProfile.social_active}</span>
           </div>
           <div className="col-6">
             <label className="form-label">
@@ -121,20 +115,27 @@ const ProfileView = () => {
             <label className="form-label">
               <b>Social Media Info : </b>
             </label>
-             <div style={{ marginLeft: "20px" }} className="row">
-               <div className="col">
-                 {" "}
-                 <h6>Platform :</h6> Youtube{" "}
-               </div>
-               <div className="col">
-                 {" "}
-                 <h6>Username :</h6> amitYoutuber@123
-               </div>
-               <div className="col">
-                 {" "}
-                 <h6>Followers :</h6> Youtube{" "}
-               </div>
-             </div>
+            {
+              kolProfile?.social_media?.map((item,index)=>{
+                return(
+                  <div style={{ marginLeft: "20px" }} className="row">
+                  <div className="col">
+                    {" "}
+                    <h6>Platform :</h6>{item.name}
+                  </div>
+                  <div className="col">
+                    {" "}
+                    <h6>Username :</h6> amitYoutuber@123
+                  </div>
+                  <div className="col">
+                    {" "}
+                    <h6>Followers :</h6> Youtube{" "}
+                  </div>
+                </div>
+                )
+              })
+            }
+           
           </div>
         </div>
         <div className="row mt-3">
@@ -155,7 +156,7 @@ const ProfileView = () => {
             <span>{kolProfile?.bio}</span>
           </div>
         </div>
-      </div> 
+      </div>
     </>
   );
 };

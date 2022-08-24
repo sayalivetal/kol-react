@@ -11,7 +11,12 @@ import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { API } from "../../../common/apis";
-import { getAllCategory ,getAllStreams,getAllStates,getAllLanguage} from "../../../slices/api/simpleApi";
+import {
+  getAllCategory,
+  getAllStreams,
+  getAllStates,
+  getAllLanguage,
+} from "../../../slices/api/simpleApi";
 
 const BioData = () => {
   const navigate = useNavigate();
@@ -118,7 +123,6 @@ const BioData = () => {
     };
     getAllCategory(callback, token);
   }, []);
-
 
   useEffect(() => {
     setKolProfile(() => {
@@ -244,10 +248,7 @@ const BioData = () => {
       setSocialActive({ ...data });
     };
     getAllStreams(callback, token);
-
-
   }, []);
-
 
   useEffect(() => {
     const callback = (data) => {
@@ -255,10 +256,7 @@ const BioData = () => {
       setState({ ...data });
     };
     getAllStates(callback, token);
-
-
   }, []);
-
 
   useEffect(() => {
     const callback = (data) => {
@@ -266,8 +264,6 @@ const BioData = () => {
       setLanguage({ ...data });
     };
     getAllLanguage(callback, token);
-
-
   }, []);
 
   //console.log('social_active',social_active)
@@ -405,17 +401,6 @@ const BioData = () => {
               <label className=" form-label">
                 <b>Most Active Platform</b>
               </label>
-
-              {/* <Select
-                className="dropdown"
-                placeholder="Select Option"
-                value={data.filter((obj) => social_active.includes(obj.value))} // set selected values
-                options={data} // set list of the data
-                onChange={handleChangeSocialActive} // assign onChange function
-                name="social_active"
-                isMulti
-                isClearable
-              /> */}
 
               <select
                 className="form-select"

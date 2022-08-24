@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../css/styles.css";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
+import Select from 'react-select'
+import { MultiSelect } from "react-multi-select-component";
 import {
   bioDataFormSubmission,
   dashboardSelector,
@@ -14,30 +15,32 @@ import {
   getAllCategory,
   getAllLanguage,
   getAllStates,
+  getAllStreams,
 } from "../../../slices/api/simpleApi";
 import { getKolprofile } from "../../../slices/api/simpleApi";
 const ProfileUpdate = () => {
   const navigate = useNavigate();
 
+  const [selected, setSelected] = useState([]);
+  console.log(selected);
   // const { message, biodata } = useSelector(dashboardSelector);
   const [categoryList, setCategoryList] = useState({});
   const [biodata, setBiodata] = useState({});
   const [state, setStates] = useState({});
   const [language, setLanguages] = useState("");
+  const [videoList, setVideoList] = useState([]);
+  console.log(videoList);
   let token = localStorage.getItem("token");
-  console.log(token);
+
   useEffect(() => {
     const callback = (data) => {
-      console.log("hello", data);
       setBiodata(data);
     };
     getKolprofile(callback, token);
   }, []);
-  console.log("fjshdfjfhjsf", biodata.kol_type);
 
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
       setCategoryList({ ...data });
     };
     getAllCategory(callback, token);
@@ -54,7 +57,6 @@ const ProfileUpdate = () => {
     };
     getAllStates(callback);
   }, []);
-
 
   const dispatch = useDispatch();
   const initialArr = {};
@@ -95,33 +97,25 @@ const ProfileUpdate = () => {
     ]);
   };
 
-  const data = [
-    {
-      value: "youtube",
-      label: "Youtube",
-    },
-    {
-      value: "instagram",
-      label: "Instagram",
-    },
-    {
-      value: "tik-tok",
-      label: "Tiktok",
-    },
-    {
-      value: "facebook",
-      label: "Facebook",
-    },
-    {
-      value: "linkedIn",
-      label: "LinkedIn",
-    },
-    {
-      value: "patreon",
-      label: "Patreon",
-    },
-  ];
+  // handle input change
+  const handleInputVideoChange = (e, index) => {
+    const { value } = e.target;
+    const list = [...videoList];
+    list[index] = value;
+    setVideoList(list);
+  };
 
+  // handle click event of the Remove button
+  const handleVideoRemoveClick = (index) => {
+    const list = [...videoList];
+    list.splice(index, 1);
+    setVideoList(list);
+  };
+
+  // handle click event of the Add button
+  const handleVideoAddClick = () => {
+    setVideoList([...videoList, ""]);
+  };
   const [kolProfile, setKolProfile] = useState({
     userName: "",
     personal_email: "",
@@ -132,7 +126,7 @@ const ProfileUpdate = () => {
     userImage: "",
     bio: "",
     social_media: [],
-    social_active: [],
+    social_active: "",
     video_links: [],
     languages: [],
     tags: [],
@@ -146,35 +140,25 @@ const ProfileUpdate = () => {
   const [tags, setTags] = useState([]);
   const [input, setInput] = useState("");
   const [isKeyReleased, setIsKeyReleased] = useState(false);
-  const [count, setCount] = useState(0);
-  const [linkCount, setLinkCount] = useState(0);
+
   const [video_links, setVideoLinks] = useState([]);
 
-  const [vedioLinkArr, setVedioLinkArr] = useState([]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-
-    console.log("kolProfile======", kolProfile);
-
-    formData.append("avatar", selectedFile);
-    formData.append("banner", bannerFile);
-    formData.append("personal_email", kolProfile.personal_email);
-    formData.append("kol_type", kolProfile.kol_type);
-    formData.append("city", kolProfile.city);
-    formData.append("zip_code", kolProfile.zip_code);
-    formData.append("bio", kolProfile.bio);
-    formData.append("social_media[]", JSON.stringify(kolProfile.social_media));
-    formData.append("social_active[]", kolProfile.social_active);
-    formData.append("video_links[]", kolProfile.video_links);
-    formData.append("languages[]", kolProfile.languages);
-    formData.append("tags[]", kolProfile.tags);
-    formData.append("state", kolProfile.state);
-
-    dispatch(bioDataFormSubmission(formData));
-  };
+  useEffect(() => {
+    setKolProfile(() => {
+      return {
+        ...kolProfile,
+        social_media: [...inputList],
+      };
+    });
+  }, [inputList]);
+  useEffect(() => {
+    setKolProfile(() => {
+      return {
+        ...kolProfile,
+        video_links: [...videoList],
+      };
+    });
+  }, [videoList]);
 
   // For Social Active Field
   useEffect(() => {
@@ -186,24 +170,7 @@ const ProfileUpdate = () => {
     });
   }, [social_active]);
 
-  useEffect(() => {
-    setKolProfile(() => {
-      return {
-        ...kolProfile,
-        // social_media: [...inputList],
-      };
-    });
-  }, [inputList]);
-
   // For Social Media video link
-  useEffect(() => {
-    setKolProfile(() => {
-      return {
-        ...kolProfile,
-        video_links: [...video_links],
-      };
-    });
-  }, [video_links]);
 
   useEffect(() => {
     setKolProfile(() => {
@@ -219,7 +186,6 @@ const ProfileUpdate = () => {
     if (e.target.name == "userImage") {
       const file = e.target.files[0];
       if (file.size > 1000000) {
-        console.log("File is large");
         return;
       }
       setSelectedFile(e.target.files[0]);
@@ -228,7 +194,6 @@ const ProfileUpdate = () => {
     if (e.target.name == "userBanner") {
       const file = e.target.files[0];
       if (file.size > 1000000) {
-        console.log("File is large");
         return;
       }
       setBannerFile(e.target.files[0]);
@@ -274,55 +239,59 @@ const ProfileUpdate = () => {
   };
 
   const handleChangeSocialActive = (e) => {
-    setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
+    // setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
   };
 
   useEffect(() => {
-    setSocialActive(biodata?.social_active);
+    const callback = (data) => {
+      setSocialActive({ ...data });
+    };
+    getAllStreams(callback, token);
   }, []);
 
   useEffect(() => {
-    // console.log(biodata.video_links);
-    // let a = biodata?.video_links?.split(",");
+    if (biodata.get_social_media) {
+      setInputList([...biodata.get_social_media]);
+    }
+    if (biodata.video_links) {
+      let str = biodata.video_links;
+      let chars = str.split(",");
 
-    // setVedioLinkArr([...a]);
-    // setTags([...biodata?.tags?.split(",")]);
-
-    // setInputList([...biodata?.get_social_media]);
-    // console.log("vedioLinkArr ==", vedioLinkArr);
-
+      setVideoList([...chars]);
+    }
+    if (biodata.tags) {
+      let str = biodata.tags;
+      let tag = str.split(",");
+      setTags([...tag]);
+    }
+    if (biodata.languages) {
+      let str = biodata.languages;
+      let language = str.split(",");
+      setSelected([...language]);
+    }
     setKolProfile(() => {
       return {
         ...kolProfile,
-        video_links: [...vedioLinkArr],
-        tags: [...tags],
-        // social_media: [...biodata.get_social_media],
-        city: biodata.city,
+        userName: biodata?.get_user?.name,
+        personal_email: biodata.personal_email,
         kol_type: biodata.kol_type,
+        city: biodata.city,
         zip_code: biodata.zip_code,
         state: biodata.state,
-        personal_email: biodata.personal_email,
+        userImage: biodata.banner,
         bio: biodata.bio,
-        // languages: biodata.languages.split(","),
-        // social_active: biodata.social_active.split(","),
+        social_media: [...inputList],
+        social_active: biodata.social_active,
+        video_links: [...videoList],
+        languages: biodata.languages,
+        tags: [...tags],
+        avatar: biodata.avatar,
       };
     });
-
-    console.log("kolProfile123", kolProfile);
   }, [biodata]);
 
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
-  };
-
-  const handleVideoChange = (e) => {
-    setVideoLinks((state) => {
-      return [...state, e.target.value];
-    });
-  };
-
-  const removeLastElement = () => {
-    return kolProfile.video_links.pop();
   };
 
   const languageHandleChange = (e) => {
@@ -333,7 +302,58 @@ const ProfileUpdate = () => {
     biodata: { kolProfileData },
   } = useSelector(dashboardSelector);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    console.log(kolProfile.video_links);
+    if (!selectedFile || !bannerFile) {
+      formData.append("personal_email", kolProfile.personal_email);
+      formData.append("kol_type", kolProfile.kol_type);
+      formData.append("city", kolProfile.city);
+      formData.append("zip_code", kolProfile.zip_code);
+      formData.append("bio", kolProfile.bio);
+      formData.append(
+        "social_media[]",
+        JSON.stringify(kolProfile.social_media)
+      );
+      formData.append("social_active", kolProfile.social_active);
+      formData.append("video_links[]", kolProfile.video_links);
+      formData.append("languages[]", kolProfile.languages);
+      formData.append("tags[]", kolProfile.tags);
+      formData.append("state", kolProfile.state);
+    } else {
+      formData.append("avatar", selectedFile);
+      formData.append("banner", bannerFile);
+      formData.append("personal_email", kolProfile.personal_email);
+      formData.append("kol_type", kolProfile.kol_type);
+      formData.append("city", kolProfile.city);
+      formData.append("zip_code", kolProfile.zip_code);
+      formData.append("bio", kolProfile.bio);
+      formData.append(
+        "social_media[]",
+        JSON.stringify(kolProfile.social_media)
+      );
+      formData.append("social_active", kolProfile.social_active);
+      formData.append("video_links[]", kolProfile.video_links);
+      formData.append("languages[]", kolProfile.languages);
+      formData.append("tags[]", kolProfile.tags);
+      formData.append("state", kolProfile.state);
+    }
+
+    dispatch(bioDataFormSubmission(formData)).then(() => {
+      console.log("hello");
+    });
+  };
+  let a = Object.entries(language).map(([key, value]) => {
+    return {
+      label: key,
+      value: value,
+    };
+  });
+  console.log("kolProfile", kolProfile);
   console.log("biodata", biodata);
+  console.log(language, a);
 
   return (
     <>
@@ -372,7 +392,7 @@ const ProfileUpdate = () => {
                 className="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
-                value={biodata?.personal_email}
+                defaultValue={biodata?.personal_email}
                 onChange={handleChange}
               />
               <div id="emailHelp" className="form-text">
@@ -390,13 +410,9 @@ const ProfileUpdate = () => {
                 name="kol_type"
                 onChange={handleChange}
                 aria-label="Default select example"
-                value={biodata.kol_type}
+                defaultValue={biodata.kol_type}
               >
-                <option value={biodata.kol_type}>
-                  {categoryList[biodata.kol_type]
-                    ? categoryList[biodata.kol_type]
-                    : "select"}
-                </option>
+                <option value={biodata.kol_type}>{biodata.kol_type}</option>
                 {categoryList &&
                   Object.entries(categoryList).map(([key, value]) => (
                     <option key={key} value={key}>
@@ -415,7 +431,7 @@ const ProfileUpdate = () => {
                 onChange={handleChange}
                 className="form-control"
                 id="exampleInputPassword1"
-                defaultValue={biodata.city}
+                value={biodata.city}
               />
             </div>
           </div>
@@ -460,37 +476,50 @@ const ProfileUpdate = () => {
                 <b>Language</b>
               </label>
 
-              <select
+              {/* <select
                 className="form-select form-text"
                 onChange={languageHandleChange}
                 name="languages"
-                aria-label="Default select example"
+                multiple
               >
                 <option value={biodata.languages}>{biodata.languages}</option>
                 {language &&
                   Object.entries(language).map(([key, value]) => (
-                    <option value={key}>{value}</option>
+                    console.log(key,value)
+                    // <option value={key}>{value}</option>
                   ))}
-              </select>
+              </select> */}
+              <Select
+                options={a}
+                defaultValue={a[0]}
+                // onChange={setSelected}
+                // hasSelectAll={false}
+                // labelledBy="string"
+                // disableSearch={true}
+                isMulti
+              />
             </div>
             <div className=" col-6">
               <label className=" form-label">
                 <b>Most Active Platform</b>
               </label>
 
-              <Select
-                className="dropdown"
-                placeholder="Select Option"
-                // value={data.filter((obj) => social_active.includes(obj.value))} // set selected values
-                options={data} // set list of the data
-                // defaultValue={biodata.kolProfile.social_active}
-                onChange={handleChangeSocialActive} // assign onChange function
+              <select
+                className="form-select"
                 name="social_active"
-                // inputValue={biodata.kolProfile.social_active}
-                isMulti
-                isClearable
-                // defaultValue={biodata.kolProfile.social_active}
-              />
+                onChange={handleChangeSocialActive}
+              >
+                <option value={biodata?.social_active}>
+                  {biodata?.social_active}
+                </option>
+                {Object.keys(social_active).map((keyName, keyIndex) => {
+                  return (
+                    <option key={keyIndex} value={keyName}>
+                      {keyName}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
           </div>
 
@@ -571,88 +600,42 @@ const ProfileUpdate = () => {
             <label className="form-label">
               <b>Video Links</b>
             </label>
-
-            <div className="row">
-              {vedioLinkArr &&
-                vedioLinkArr.map((item, index) => {
-                  return (
-                    <>
-                      <div className="col-8 linkdiv">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="enter video link"
-                          onChange={(e) => {
-                            handleVideoChange(e, 0);
-                          }}
-                          data1={index}
-                          defaultValue={item}
-                        />
-                      </div>
-                      {index == 0 ? (
-                        <div className="col-4 linkdiv">
-                          <button
-                            type="button"
-                            name="video_links"
-                            data1={index}
-                            className="btn custome-btn"
-                            onClick={() => setLinkCount(linkCount + 1)}
-                          >
-                            +
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="col-4 linkdiv">
-                          <button
-                            type="button"
-                            name="video_links"
-                            className="btn sub-btn"
-                            onClick={() => {
-                              // if(linkCount == 1){
-                              //     setVedioLinkArr(vedioLinkArr);
-                              // }
-                              setLinkCount(linkCount - 1);
-                              // removeLastElement();
-                            }}
-                          >
-                            -
-                          </button>
-                        </div>
-                      )}
-                    </>
-                  );
-                })}
-            </div>
-
-            {[...Array(linkCount)].map((_, i) => (
-              <div key={i} className="linkdiv">
-                <div className="row">
+            {videoList.map((x, i) => {
+              return (
+                <div className="row topmrgn">
                   <div className="col-8">
                     <input
-                      type="text"
+                      name="videoLink"
+                      placeholder="Video Link"
                       className="form-control"
-                      onBlur={(e) => {
-                        handleVideoChange(e, i + 1);
-                      }}
-                      placeholder="enter video link"
+                      defaultValue={x}
+                      onChange={(e) => handleInputVideoChange(e, i)}
                     />
                   </div>
-                  <div className="col-4">
-                    <button
-                      type="button"
-                      name="video_links"
-                      className="btn sub-btn"
-                      onClick={() => {
-                        setLinkCount(linkCount - 1);
-                        removeLastElement();
-                      }}
-                    >
-                      -
-                    </button>
+
+                  <div className="col-2">
+                    <div className="btn-box">
+                      {videoList.length !== 1 && (
+                        <button
+                          className="btn sub-btn"
+                          onClick={() => handleVideoRemoveClick(i)}
+                        >
+                          -
+                        </button>
+                      )}
+                      {videoList.length - 1 === i && (
+                        <button
+                          className="btn custome-btn left-mrgn"
+                          onClick={handleVideoAddClick}
+                        >
+                          +
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="col-12 mt-3">
