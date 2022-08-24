@@ -40,6 +40,7 @@ export const signupUser = createAsyncThunk(
       if (response.status == 200 ) {
         if(data?.data?.token){
         localStorage.setItem('token', data.data.token);
+        localStorage.setItem('role', data.data.role_id);
         }
         return { ...data };
       }else {
@@ -61,7 +62,7 @@ export const loginWithGoogle = createAsyncThunk(
     try {
       const response = await fetch(`${API}/login-with-google`, {
         method: "POST",
-        mode: 'no-cors',
+       
         body: JSON.stringify({
           name: name,
           email: email,
@@ -77,6 +78,7 @@ export const loginWithGoogle = createAsyncThunk(
       console.log(data);
       if (response.status === 200) {
          localStorage.setItem('token', data.data.token);
+         localStorage.setItem('role', data.data.role_id);
         return { ...data };
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -95,7 +97,7 @@ export const emailVerification = createAsyncThunk(
     try {
       const response = await fetch(`${API}/verify-OTP`, {
         method: "POST",
-        mode: 'no-cors',
+    
         body: JSON.stringify({
           otp,
           email: email,
@@ -109,6 +111,7 @@ export const emailVerification = createAsyncThunk(
       console.log(data.token);
       if (response.status === 200) {
         localStorage.setItem('token', data.data.token);
+        localStorage.setItem('role', data.data.role_id);
         return { ...data};
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -130,7 +133,7 @@ export const resendEmailOtp = createAsyncThunk(
     try {
       const response = await fetch(`${API}/resend-OTP`, {
         method: "POST",
-        mode: 'no-cors',
+     
         body: JSON.stringify({
           email: email,
         }),
@@ -158,7 +161,7 @@ export const updateRole = createAsyncThunk(
     try {
       const response = await fetch(`${API}/update-role`, {
         method: "PUT",
-        mode: 'no-cors',
+      
         body: JSON.stringify({
           email: email,
           role_id:role
@@ -186,7 +189,7 @@ export const forgotPassword = createAsyncThunk(
     try {
       const response = await fetch(`${API}/check-email-forgot-password`, {
         method: "PATCH",
-        mode: 'no-cors',
+      
         body: JSON.stringify({
           email,
         }),
@@ -217,7 +220,7 @@ export const LoginUser = createAsyncThunk(
     try {
       const response = await fetch(`${API}/login`, {
         method: "POST",
-        mode: 'no-cors',
+      
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -252,7 +255,7 @@ export const ResetPassword = createAsyncThunk(
     try {
       const response = await fetch(`${API}/forgot-password  `, {
         method: "PUT",
-        mode: 'no-cors',
+      
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -285,7 +288,7 @@ export const ChangePasswordUser = createAsyncThunk(
     try {
       const response = await fetch(`${API}/reset-password`, {
         method: "PUT",
-        mode: 'no-cors',
+      
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

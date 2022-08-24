@@ -372,7 +372,7 @@ const ProfileUpdate = () => {
                 className="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
-                defaultValue={biodata?.personal_email}
+                value={biodata?.personal_email}
                 onChange={handleChange}
               />
               <div id="emailHelp" className="form-text">
@@ -390,7 +390,7 @@ const ProfileUpdate = () => {
                 name="kol_type"
                 onChange={handleChange}
                 aria-label="Default select example"
-                // defaultValue={biodata.kol_type}
+                value={biodata.kol_type}
               >
                 <option value={biodata.kol_type}>
                   {categoryList[biodata.kol_type]
@@ -450,7 +450,7 @@ const ProfileUpdate = () => {
                 className="form-control"
                 id="exampleInputPassword1"
                 onChange={handleChange}
-                defaultValue={biodata.zip_code}
+                value={biodata.zip_code}
               />
             </div>
           </div>

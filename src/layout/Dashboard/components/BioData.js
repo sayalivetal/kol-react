@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { API } from "../../../common/apis";
-import { getAllCategory } from "../../../slices/api/simpleApi";
+import { getAllCategory ,getAllStreams,getAllStates,getAllLanguage} from "../../../slices/api/simpleApi";
 
 const BioData = () => {
   const navigate = useNavigate();
@@ -76,6 +76,8 @@ const BioData = () => {
   });
 
   const [social_active, setSocialActive] = useState([]);
+  const [language, setLanguage] = useState([]);
+  const [state, setState] = useState([]);
   const [selectedFile, setSelectedFile] = useState();
   const [bannerFile, setBannerFile] = useState();
   const [tags, setTags] = useState([]);
@@ -237,20 +239,35 @@ const BioData = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const socialMediaDBList = await fetch(`${API}/stream-list`, {
-        mode: 'no-cors',
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }).then((socialMediaDBList) => socialMediaDBList.json());
-
-      setSocialActive(socialMediaDBList.data);
+    const callback = (data) => {
+      console.log(data);
+      setSocialActive({ ...data });
     };
+    getAllStreams(callback, token);
 
-    fetchData();
+
+  }, []);
+
+
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setState({ ...data });
+    };
+    getAllStates(callback, token);
+
+
+  }, []);
+
+
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setLanguage({ ...data });
+    };
+    getAllLanguage(callback, token);
+
+
   }, []);
 
   //console.log('social_active',social_active)
