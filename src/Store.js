@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import AuthSlice from "./slices/AuthSlice/AuthSlice";
 import KolListing from "./slices/KolListing/KolSlices";
 import chatReducer from "./slices/ChatSlice/ChatSlice";
+import DealsReducer from "./slices/DealsSlice/DealsSlice";
 // import productReducer from "./reducers/ProductReducer";
 // import CartReducer from "./reducers/CartReducer";
 import { combineReducers } from "redux";
@@ -18,6 +19,7 @@ const reducers = combineReducers({
   dashboard:dashboardReducer,
 
   chat: chatReducer,
+  deal: DealsReducer,
 
 });
 
