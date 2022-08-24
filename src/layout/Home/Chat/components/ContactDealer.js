@@ -41,7 +41,7 @@ const ContactDealer = () => {
     viewDeals(callback);
   },[]);
 
-  console.log(dealdetail);
+ // console.log(dealdetail);
 
   return (
     <>
