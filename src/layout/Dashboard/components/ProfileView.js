@@ -11,12 +11,12 @@ const ProfileView = () => {
   useEffect(() => {
     const callback = (data) => {
     
-      if(data === 'Please add profile details first.'){
-        navigate("../profileupdate")
-      }
-      else{
+      // if(data === 'Please add profile details first.'){
+      //   navigate("../profileupdate")
+      // }
+      // else{
         setKolProfile(data)
-      }
+      // }
     
     };
     getKolprofile(callback, token );

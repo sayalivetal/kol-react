@@ -10,24 +10,50 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { imageUrl } from "../../../common/apis";
-import { getAllCategory } from "../../../slices/api/simpleApi";
+import {
+  getAllCategory,
+  getAllLanguage,
+  getAllStates,
+} from "../../../slices/api/simpleApi";
 import { getKolprofile } from "../../../slices/api/simpleApi";
 const ProfileUpdate = () => {
   const navigate = useNavigate();
 
   // const { message, biodata } = useSelector(dashboardSelector);
-
+  const [categoryList, setCategoryList] = useState({});
   const [biodata, setBiodata] = useState({});
+  const [state, setStates] = useState({});
+  const [language, setLanguages] = useState("");
   let token = localStorage.getItem("token");
   console.log(token);
   useEffect(() => {
     const callback = (data) => {
-        console.log("hello",data);
+      console.log("hello", data);
       setBiodata(data);
     };
     getKolprofile(callback, token);
   }, []);
-  console.log("fjshdfjfhjsf", biodata);
+  console.log("fjshdfjfhjsf", biodata.kol_type);
+
+  useEffect(() => {
+    const callback = (data) => {
+      console.log(data);
+      setCategoryList({ ...data });
+    };
+    getAllCategory(callback, token);
+  }, []);
+  useEffect(() => {
+    const callback = (data) => {
+      setLanguages({ ...data });
+    };
+    getAllLanguage(callback);
+  }, []);
+  useEffect(() => {
+    const callback = (data) => {
+      setStates({ ...data });
+    };
+    getAllStates(callback);
+  }, []);
 
 
   const dispatch = useDispatch();
@@ -252,17 +278,17 @@ const ProfileUpdate = () => {
   };
 
   useEffect(() => {
-    setSocialActive(biodata.social_active);
+    setSocialActive(biodata?.social_active);
   }, []);
 
   useEffect(() => {
-    console.log(biodata.video_links);
-    // let a = biodata.video_links.split(",");
+    // console.log(biodata.video_links);
+    // let a = biodata?.video_links?.split(",");
 
     // setVedioLinkArr([...a]);
     // setTags([...biodata?.tags?.split(",")]);
 
-    // setInputList([...biodata.get_social_media]);
+    // setInputList([...biodata?.get_social_media]);
     // console.log("vedioLinkArr ==", vedioLinkArr);
 
     setKolProfile(() => {
@@ -310,386 +336,390 @@ const ProfileUpdate = () => {
   console.log("biodata", biodata);
 
   return (
-    <></>
-    // <>
-    //   <div className="row col-12">
-    //     <div className="col-6">
-    //       <h3 className="mt-4">Kol Profile</h3>
-    //     </div>
-    //     <div className="col-6">
-    //       <Link to="../profileview"> View</Link>
-    //     </div>
-    //   </div>
-    //   <div className="row">
-    //     <form className="dashboard-main-form" onSubmit={handleSubmit}>
-    //       <div className="row mt-3">
-    //         <div className="col-6">
-    //           <label htmlFor="exampleInputEmail1" className="form-label">
-    //             <b>Name</b>
-    //           </label>
-    //           <input
-    //             type="text"
-    //             className="form-control"
-    //             name="userName"
-    //             onChange={handleChange}
-    //             id="exampleInputEmail1"
-    //             defaultValue={biodata.kolProfile?.get_user?.name}
-    //             aria-describedby="emailHelp"
-    //           />
-    //         </div>
-    //         <div className="col-6">
-    //           <label htmlFor="exampleInputEmail1" className="form-label">
-    //             <b>Email address</b>
-    //           </label>
-    //           <input
-    //             type="email"
-    //             name="personal_email"
-    //             className="form-control"
-    //             id="exampleInputEmail1"
-    //             aria-describedby="emailHelp"
-    //             defaultValue={biodata.kolProfile?.personal_email}
-    //             onChange={handleChange}
-    //           />
-    //           <div id="emailHelp" className="form-text">
-    //             We'll never share your email with anyone else.
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className="row mt-3">
-    //         <div className="col-6">
-    //           <label className="form-label">
-    //             <b>Kol Type</b>
-    //           </label>
-    //           <select
-    //             className="form-select"
-    //             name="kol_type"
-    //             onChange={handleChange}
-    //             aria-label="Default select example"
-    //             defaultValue={biodata.kolProfile.kol_type}
-    //           >
-    //             <option selected>Select Type</option>
-    //             <option value="1">One</option>
-    //             <option value="2">Two</option>
-    //             <option value="3">Three</option>
-    //           </select>
-    //         </div>
-    //         <div className="col-6">
-    //           <label htmlFor="exampleInputPassword1" className="form-label">
-    //             <b>City</b>
-    //           </label>
-    //           <input
-    //             type="text"
-    //             name="city"
-    //             onChange={handleChange}
-    //             className="form-control"
-    //             id="exampleInputPassword1"
-    //             defaultValue={biodata.kolProfile.city}
-    //           />
-    //         </div>
-    //       </div>
+    <>
+      <div className="row col-12">
+        <div className="col-6">
+          <h3 className="mt-4">Kol Profile</h3>
+        </div>
+        <div className="col-6">
+          <Link to="../profileview"> View</Link>
+        </div>
+      </div>
+      <div className="row">
+        <form className="dashboard-main-form" onSubmit={handleSubmit}>
+          <div className="row mt-3">
+            <div className="col-6">
+              <label htmlFor="exampleInputEmail1" className="form-label">
+                <b>Name</b>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="userName"
+                onChange={handleChange}
+                id="exampleInputEmail1"
+                defaultValue={biodata?.get_user?.name}
+                aria-describedby="emailHelp"
+              />
+            </div>
+            <div className="col-6">
+              <label htmlFor="exampleInputEmail1" className="form-label">
+                <b>Email address</b>
+              </label>
+              <input
+                type="email"
+                name="personal_email"
+                className="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                defaultValue={biodata?.personal_email}
+                onChange={handleChange}
+              />
+              <div id="emailHelp" className="form-text">
+                We'll never share your email with anyone else.
+              </div>
+            </div>
+          </div>
+          <div className="row mt-3">
+            <div className="col-6">
+              <label className="form-label">
+                <b>Kol Type</b>
+              </label>
+              <select
+                className="form-select"
+                name="kol_type"
+                onChange={handleChange}
+                aria-label="Default select example"
+                // defaultValue={biodata.kol_type}
+              >
+                <option value={biodata.kol_type}>
+                  {categoryList[biodata.kol_type]
+                    ? categoryList[biodata.kol_type]
+                    : "select"}
+                </option>
+                {categoryList &&
+                  Object.entries(categoryList).map(([key, value]) => (
+                    <option key={key} value={key}>
+                      {categoryList[key] ? "select" : value}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="col-6">
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                <b>City</b>
+              </label>
+              <input
+                type="text"
+                name="city"
+                onChange={handleChange}
+                className="form-control"
+                id="exampleInputPassword1"
+                defaultValue={biodata.city}
+              />
+            </div>
+          </div>
 
-    //       <div className="row mt-3">
-    //         <div className="col-6">
-    //           <label className="form-label">
-    //             <b>State</b>
-    //           </label>
-    //           <select
-    //             className="form-select form-text"
-    //             onChange={handleChange}
-    //             name="state"
-    //             aria-label="Default select example"
-    //             defaultValue={biodata.kolProfile.state}
-    //           >
-    //             <option selected>Select state</option>
-    //             <option value="Punjab">Punjab</option>
-    //             <option value="Haryana">Haryana</option>
-    //             <option value="Uttar Pradesh">Uttar Pradesh</option>
-    //             <option value="Maharastra">Maharastra</option>
-    //           </select>
-    //         </div>
-    //         <div className="col-6">
-    //           <label htmlFor="exampleInputPassword1" className=" form-label">
-    //             <b>Zip code</b>
-    //           </label>
-    //           <input
-    //             type="text"
-    //             name="zip_code"
-    //             className="form-control"
-    //             id="exampleInputPassword1"
-    //             onChange={handleChange}
-    //             defaultValue={biodata.kolProfile.zip_code}
-    //           />
-    //         </div>
-    //       </div>
-    //       <div className="row mt-3">
-    //         <div className="col-6">
-    //           <label htmlFor="exampleInputPassword1" className=" form-label">
-    //             <b>Language</b>
-    //           </label>
-    //           <select
-    //             className="form-select form-text"
-    //             onChange={languageHandleChange}
-    //             name="languages"
-    //             aria-label="Default select example"
-    //             defaultValue={biodata.kolProfile.languages}
-    //           >
-    //             <option selected>Select Language</option>
-    //             <option value="hindi">Hindi</option>
-    //             <option value="punjabi">Punjabi</option>
-    //             <option value="english">English</option>
-    //           </select>
-    //         </div>
-    //         <div className=" col-6">
-    //           <label className=" form-label">
-    //             <b>Most Active Platform</b>
-    //           </label>
+          <div className="row mt-3">
+            <div className="col-6">
+              <label className="form-label">
+                <b>State</b>
+              </label>
 
-    //           <Select
-    //             className="dropdown"
-    //             placeholder="Select Option"
-    //             value={data.filter((obj) => social_active.includes(obj.value))} // set selected values
-    //             options={data} // set list of the data
-    //             // defaultValue={biodata.kolProfile.social_active}
-    //             onChange={handleChangeSocialActive} // assign onChange function
-    //             name="social_active"
-    //             // inputValue={biodata.kolProfile.social_active}
-    //             isMulti
-    //             isClearable
-    //             // defaultValue={biodata.kolProfile.social_active}
-    //           />
-    //         </div>
-    //       </div>
+              <select
+                className="form-select form-text"
+                onChange={handleChange}
+                name="state"
+                aria-label="Default select example"
+              >
+                <option value={biodata.state}>{biodata.state}</option>
 
-    //       <div className="row mt-3">
-    //         <label className="form-label">
-    //           <b>Social Media Info</b>
-    //         </label>
+                {state &&
+                  Object.entries(state).map(([key, value]) => (
+                    <option value={key}>{value}</option>
+                  ))}
+              </select>
+            </div>
+            <div className="col-6">
+              <label htmlFor="exampleInputPassword1" className=" form-label">
+                <b>Zip code</b>
+              </label>
+              <input
+                type="text"
+                name="zip_code"
+                className="form-control"
+                id="exampleInputPassword1"
+                onChange={handleChange}
+                defaultValue={biodata.zip_code}
+              />
+            </div>
+          </div>
+          <div className="row mt-3">
+            <div className="col-6">
+              <label htmlFor="exampleInputPassword1" className=" form-label">
+                <b>Language</b>
+              </label>
 
-    //         {inputList.map((x, i) => {
-    //           return (
-    //             <div className="row topmrgn">
-    //               <div className="col-3">
-    //                 <input
-    //                   name="name"
-    //                   placeholder="Platform Name"
-    //                   className="form-control"
-    //                   value={x.name}
-    //                   onChange={(e) => handleInputChange(e, i)}
-    //                 />
-    //               </div>
-    //               <div className="col-2">
-    //                 <input
-    //                   className="form-control ml10"
-    //                   name="social_user_id"
-    //                   placeholder="Enter User Id"
-    //                   value={x.social_user_id}
-    //                   onChange={(e) => handleInputChange(e, i)}
-    //                 />
-    //               </div>
-    //               <div className="col-2">
-    //                 <input
-    //                   className="form-control ml10"
-    //                   name="followers"
-    //                   placeholder="30k"
-    //                   value={x.followers}
-    //                   onChange={(e) => handleInputChange(e, i)}
-    //                 />
-    //               </div>
-    //               <div className="col-2">
-    //                 <input
-    //                   className="form-control ml10"
-    //                   name="social_icon"
-    //                   placeholder="fb-btn"
-    //                   value={x.social_icon}
-    //                   onChange={(e) => handleInputChange(e, i)}
-    //                 />
-    //               </div>
+              <select
+                className="form-select form-text"
+                onChange={languageHandleChange}
+                name="languages"
+                aria-label="Default select example"
+              >
+                <option value={biodata.languages}>{biodata.languages}</option>
+                {language &&
+                  Object.entries(language).map(([key, value]) => (
+                    <option value={key}>{value}</option>
+                  ))}
+              </select>
+            </div>
+            <div className=" col-6">
+              <label className=" form-label">
+                <b>Most Active Platform</b>
+              </label>
 
-    //               <div className="col-2">
-    //                 <div className="btn-box">
-    //                   {inputList.length !== 1 && (
-    //                     <button
-    //                       className="btn sub-btn"
-    //                       onClick={() => handleRemoveClick(i)}
-    //                     >
-    //                       {" "}
-    //                       -{" "}
-    //                     </button>
-    //                   )}
-    //                   {inputList.length - 1 === i && (
-    //                     <button
-    //                       className="btn custome-btn left-mrgn"
-    //                       onClick={handleAddClick}
-    //                     >
-    //                       {" "}
-    //                       +{" "}
-    //                     </button>
-    //                   )}
-    //                 </div>
-    //               </div>
-    //             </div>
-    //           );
-    //         })}
-    //         {/* <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div> */}
-    //       </div>
+              <Select
+                className="dropdown"
+                placeholder="Select Option"
+                // value={data.filter((obj) => social_active.includes(obj.value))} // set selected values
+                options={data} // set list of the data
+                // defaultValue={biodata.kolProfile.social_active}
+                onChange={handleChangeSocialActive} // assign onChange function
+                name="social_active"
+                // inputValue={biodata.kolProfile.social_active}
+                isMulti
+                isClearable
+                // defaultValue={biodata.kolProfile.social_active}
+              />
+            </div>
+          </div>
 
-    //       <div className="col-12 mt-3">
-    //         <label className="form-label">
-    //           <b>Video Links</b>
-    //         </label>
+          <div className="row mt-3">
+            <label className="form-label">
+              <b>Social Media Info</b>
+            </label>
 
-    //         <div className="row">
-    //           {vedioLinkArr &&
-    //             vedioLinkArr.map((item, index) => {
-    //               return (
-    //                 <>
-    //                   <div className="col-8 linkdiv">
-    //                     <input
-    //                       type="text"
-    //                       className="form-control"
-    //                       placeholder="enter video link"
-    //                       onChange={(e) => {
-    //                         handleVideoChange(e, 0);
-    //                       }}
-    //                       data1={index}
-    //                       defaultValue={item}
-    //                     />
-    //                   </div>
-    //                   {index == 0 ? (
-    //                     <div className="col-4 linkdiv">
-    //                       <button
-    //                         type="button"
-    //                         name="video_links"
-    //                         data1={index}
-    //                         className="btn custome-btn"
-    //                         onClick={() => setLinkCount(linkCount + 1)}
-    //                       >
-    //                         +
-    //                       </button>
-    //                     </div>
-    //                   ) : (
-    //                     <div className="col-4 linkdiv">
-    //                       <button
-    //                         type="button"
-    //                         name="video_links"
-    //                         className="btn sub-btn"
-    //                         onClick={() => {
-    //                           // if(linkCount == 1){
-    //                           //     setVedioLinkArr(vedioLinkArr);
-    //                           // }
-    //                           setLinkCount(linkCount - 1);
-    //                           // removeLastElement();
-    //                         }}
-    //                       >
-    //                         -
-    //                       </button>
-    //                     </div>
-    //                   )}
-    //                 </>
-    //               );
-    //             })}
-    //         </div>
+            {inputList.map((x, i) => {
+              return (
+                <div className="row topmrgn">
+                  <div className="col-3">
+                    <input
+                      name="name"
+                      placeholder="Platform Name"
+                      className="form-control"
+                      value={x.name}
+                      onChange={(e) => handleInputChange(e, i)}
+                    />
+                  </div>
+                  <div className="col-2">
+                    <input
+                      className="form-control ml10"
+                      name="social_user_id"
+                      placeholder="Enter User Id"
+                      value={x.social_user_id}
+                      onChange={(e) => handleInputChange(e, i)}
+                    />
+                  </div>
+                  <div className="col-2">
+                    <input
+                      className="form-control ml10"
+                      name="followers"
+                      placeholder="30k"
+                      value={x.followers}
+                      onChange={(e) => handleInputChange(e, i)}
+                    />
+                  </div>
+                  <div className="col-2">
+                    <input
+                      className="form-control ml10"
+                      name="social_icon"
+                      placeholder="fb-btn"
+                      value={x.social_icon}
+                      onChange={(e) => handleInputChange(e, i)}
+                    />
+                  </div>
 
-    //         {[...Array(linkCount)].map((_, i) => (
-    //           <div key={i} className="linkdiv">
-    //             <div className="row">
-    //               <div className="col-8">
-    //                 <input
-    //                   type="text"
-    //                   className="form-control"
-    //                   onBlur={(e) => {
-    //                     handleVideoChange(e, i + 1);
-    //                   }}
-    //                   placeholder="enter video link"
-    //                 />
-    //               </div>
-    //               <div className="col-4">
-    //                 <button
-    //                   type="button"
-    //                   name="video_links"
-    //                   className="btn sub-btn"
-    //                   onClick={() => {
-    //                     setLinkCount(linkCount - 1);
-    //                     removeLastElement();
-    //                   }}
-    //                 >
-    //                   -
-    //                 </button>
-    //               </div>
-    //             </div>
-    //           </div>
-    //         ))}
-    //       </div>
+                  <div className="col-2">
+                    <div className="btn-box">
+                      {inputList.length !== 1 && (
+                        <button
+                          className="btn sub-btn"
+                          onClick={() => handleRemoveClick(i)}
+                        >
+                          {" "}
+                          -{" "}
+                        </button>
+                      )}
+                      {inputList.length - 1 === i && (
+                        <button
+                          className="btn custome-btn left-mrgn"
+                          onClick={handleAddClick}
+                        >
+                          {" "}
+                          +{" "}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            {/* <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div> */}
+          </div>
 
-    //       <div className="col-12 mt-3">
-    //         <label className="form-label">
-    //           <b>Bio</b>
-    //         </label>
-    //         <textarea
-    //           className="form-control form-text"
-    //           id="exampleFormControlTextarea1"
-    //           name="bio"
-    //           onChange={handleChange}
-    //           defaultValue={biodata.kolProfile.bio}
-    //           rows="3"
-    //         ></textarea>
-    //       </div>
+          <div className="col-12 mt-3">
+            <label className="form-label">
+              <b>Video Links</b>
+            </label>
 
-    //       <div className="col-12 mt-3">
-    //         {tags.length ? (
-    //           <div className="tagDiv">
-    //             {tags.map((tag, index) => (
-    //               <div className="tag">
-    //                 {tag}
-    //                 <button onClick={() => deleteTag(index)}>x</button>
-    //               </div>
-    //             ))}
-    //           </div>
-    //         ) : (
-    //           ""
-    //         )}
-    //         <label className="form-label">
-    //           <b>Enter Tags</b>
-    //         </label>
-    //         <input
-    //           value={input}
-    //           placeholder="Enter a tag"
-    //           onKeyDown={onKeyDown}
-    //           onKeyUp={onKeyUp}
-    //           name="tags"
-    //           className="form-control"
-    //           onChange={onChange}
-    //           // defaultValue={biodata.kolProfile.video_links}
-    //         />
-    //       </div>
+            <div className="row">
+              {vedioLinkArr &&
+                vedioLinkArr.map((item, index) => {
+                  return (
+                    <>
+                      <div className="col-8 linkdiv">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="enter video link"
+                          onChange={(e) => {
+                            handleVideoChange(e, 0);
+                          }}
+                          data1={index}
+                          defaultValue={item}
+                        />
+                      </div>
+                      {index == 0 ? (
+                        <div className="col-4 linkdiv">
+                          <button
+                            type="button"
+                            name="video_links"
+                            data1={index}
+                            className="btn custome-btn"
+                            onClick={() => setLinkCount(linkCount + 1)}
+                          >
+                            +
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="col-4 linkdiv">
+                          <button
+                            type="button"
+                            name="video_links"
+                            className="btn sub-btn"
+                            onClick={() => {
+                              // if(linkCount == 1){
+                              //     setVedioLinkArr(vedioLinkArr);
+                              // }
+                              setLinkCount(linkCount - 1);
+                              // removeLastElement();
+                            }}
+                          >
+                            -
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  );
+                })}
+            </div>
 
-    //       <div className="row mt-3">
-    //         <label className="form-label">
-    //           <b>Upload Avatar</b>
-    //         </label>
-    //         <input type="file" name="userImage" onChange={handleChange} />
-    //         <img src={`${imageUrl}${biodata.kolProfile.avatar}`} height={50} />
-    //       </div>
-    //       <div className="row mt-3">
-    //         <label className="form-label">
-    //           <b>Upload Banner</b>
-    //         </label>
-    //         <input type="file" name="userBanner" onChange={handleChange} />
-    //         <img
-    //           src={`${imageUrl}${biodata.kolProfile.banner}`}
-    //           height={50}
-    //           width={50}
-    //         />
-    //       </div>
+            {[...Array(linkCount)].map((_, i) => (
+              <div key={i} className="linkdiv">
+                <div className="row">
+                  <div className="col-8">
+                    <input
+                      type="text"
+                      className="form-control"
+                      onBlur={(e) => {
+                        handleVideoChange(e, i + 1);
+                      }}
+                      placeholder="enter video link"
+                    />
+                  </div>
+                  <div className="col-4">
+                    <button
+                      type="button"
+                      name="video_links"
+                      className="btn sub-btn"
+                      onClick={() => {
+                        setLinkCount(linkCount - 1);
+                        removeLastElement();
+                      }}
+                    >
+                      -
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
-    //       <div className="mt-4 mx-auto d-block">
-    //         <button type="submit" className="btn btn-primary form-text">
-    //           Submit
-    //         </button>
-    //       </div>
-    //     </form>
-    //   </div>
-    // </>
+          <div className="col-12 mt-3">
+            <label className="form-label">
+              <b>Bio</b>
+            </label>
+            <textarea
+              className="form-control form-text"
+              id="exampleFormControlTextarea1"
+              name="bio"
+              onChange={handleChange}
+              defaultValue={biodata.bio}
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div className="col-12 mt-3">
+            {tags.length ? (
+              <div className="tagDiv">
+                {tags.map((tag, index) => (
+                  <div className="tag">
+                    {tag}
+                    <button onClick={() => deleteTag(index)}>x</button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              ""
+            )}
+            <label className="form-label">
+              <b>Enter Tags</b>
+            </label>
+            <input
+              value={input}
+              placeholder="Enter a tag"
+              onKeyDown={onKeyDown}
+              onKeyUp={onKeyUp}
+              name="tags"
+              className="form-control"
+              onChange={onChange}
+              // defaultValue={biodata.kolProfile.video_links}
+            />
+          </div>
+
+          <div className="row mt-3">
+            <label className="form-label">
+              <b>Upload Avatar</b>
+            </label>
+            <input type="file" name="userImage" onChange={handleChange} />
+            <img src={`${imageUrl}${biodata.avatar}`} height={50} />
+          </div>
+          <div className="row mt-3">
+            <label className="form-label">
+              <b>Upload Banner</b>
+            </label>
+            <input type="file" name="userBanner" onChange={handleChange} />
+            <img src={`${imageUrl}${biodata.banner}`} height={50} width={50} />
+          </div>
+
+          <div className="mt-4 mx-auto d-block">
+            <button type="submit" className="btn btn-primary form-text">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 
