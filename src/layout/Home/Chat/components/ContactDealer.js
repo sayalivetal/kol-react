@@ -1,10 +1,20 @@
 import React, {  useEffect, useState } from "react";
 import "../Chat.css";
+import {useLocation} from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createDeal, viewDeals } from "../../../../slices/DealsSlice/DealsSlice";
+import { createDeal } from "../../../../slices/DealsSlice/DealsSlice";
+import { getDealsListOfKol, getDealsListForUsers } from "../../../../slices/api/simpleApi";
+import { imageUrl } from "../../../../common/apis";
 
 const ContactDealer = () => {
   let token = localStorage.getItem("token");
+  let role = localStorage.getItem("role");
+  console.log(role);
+
+  const search = useLocation().search;
+  const id = new URLSearchParams(search).get('id');
+ // console.log(id);
+
   const dispatch = useDispatch();
   const [dealModal, setDealModal] = useState(false);
   const [dealForm, setDealForm] = useState({
@@ -15,7 +25,8 @@ const ContactDealer = () => {
     type:"",
     token
   });
-  const [dealdetail, setDealDetails] = useState({})
+  const [dealdetail, setDealDetails] = useState();
+  const [kolDealForUser, setKolDealForUser] = useState();
 
   const showDealModal= () => {
     setDealModal(!dealModal);
@@ -36,63 +47,112 @@ const ContactDealer = () => {
 
   useEffect(()=> {
     const callback = (data) => {
-      setDealDetails({...data});
+      setKolDealForUser({...data});
+      console.log()
     };
-    viewDeals(callback);
+    getDealsListForUsers(callback, token,id);
   },[]);
 
- // console.log(dealdetail);
+
+  useEffect(()=> {
+    const callback = (data) => {
+      setDealDetails({...data});
+      console.log()
+    };
+    getDealsListOfKol(callback, token);
+  },[]);
+
+  // console.log(dealdetail);
+  console.log(kolDealForUser);
 
   return (
     <>
       <div className="col-lg-12">
             <h5>About the Creator</h5>
       </div>
-
-      <div className="kol-user-card">
-          <div className="kol-user-icon"><img className="rounded-circle  img-fluid" src="Images/3.png"  alt="avatar"/></div>
+      { role === 3 ? (
+      <>
+        <div className="kol-user-card">
+          <div className="kol-user-icon"><img className="rounded-circle  img-fluid" src={`${imageUrl}${dealdetail?.avatar}`}  alt="avatar"/></div>
           <div className="kol-user-info">
-            <div className="d-flex justify-content-between"><span className="deal-user-name">Sara Jammal</span> <span className=""><i className="bi bi-instagram"></i> 456k</span></div>
+            <div className="d-flex justify-content-between">
+              <span className="deal-user-name">{`${dealdetail?.get_user?.name} ${dealdetail?.get_user?.last_name}`}</span>
+              <span className=""><i className="bi bi-instagram"></i> 456k</span>
+            </div>
             <div className="kol-user-loc">
                 <i className="loc bi-geo-alt"></i>
-                <p>Mohali Punjab, India</p>
+                <p>
+                  {dealdetail?.city} {dealdetail?.state}, india
+                </p>
               </div>
           </div>
       </div>
 
       <h5 className="mt-3 mb-1 theme-color d-flex">Deals <button className="btn btn-sm theme-btn ms-auto" onClick={showDealModal}>+ Deal</button></h5>
       <div className="kol-user-deals">
-          <div className="kol-list-deal">
+        {dealdetail?.get_deal && dealdetail?.get_deal.map((item, index)=> {
+          return(
+            <div key={index} className="kol-list-deal">
             <div className="kol-deal-row justify-content-between align-items-start mb-0">
-              <div className="kol-deal-heading h6">Instagram Post</div>
-              <div className="deal-price h6">$2500 <input className="form-check-input price-check" type="radio" name="" id=""></input></div>
+              <div className="kol-deal-heading h6">{item.title}</div>
+              <div className="deal-price h6">${item.price} <input className="form-check-input price-check" type="radio" name="" id=""></input></div>
             </div>
 
             <div className="kol-deal-row">
-              <span className="deal-icon-text"><i className="fa fa-calendar"></i>Days</span>
-              <span className="deal-icon-text"><i className="fa fa-picture-o"></i> Image</span>
+              <span className="deal-icon-text"><i className="fa fa-calendar"></i>{item.total_days} Days</span>
+              <span className="deal-icon-text"><i className="fa fa-picture-o"></i> {item.type}</span>
             </div>
             
-            <p>When you are submitting a CV for a job, it is essential to write a profile summary at the top.
-              A profile summary is a brief description of your CV listing your unique skills and experience.</p>
+            <p>{item.description}</p>
           </div>
-          
-          <div className="kol-list-deal">
-            <div className="kol-deal-row justify-content-between align-items-start mb-0">
-              <div className="kol-deal-heading h6">Instagram Post</div>
-              <div className="deal-price h6">$2500 <input className="form-check-input price-check" type="radio" name="" id=""></input></div>
-            </div>
-            
-            <div className="kol-deal-row">
-              <span className="deal-icon-text"><i className="fa fa-calendar"></i>Days</span>
-              <span className="deal-icon-text"><i className="fa fa-picture-o"></i> Image</span>
-            </div>
-            
-            <p>When you are submitting a CV for a job, it is essential to write a profile summary at the top.
-              A profile summary is a brief description of your CV listing your unique skills and experience.</p>
-          </div>
+          );
+        })}
 
       </div>
+      </>
+      ) : (
+      <>
+        <div className="kol-user-card">
+          <div className="kol-user-icon"><img className="rounded-circle  img-fluid" src={`${imageUrl}${dealdetail?.avatar}`}  alt="avatar"/></div>
+          <div className="kol-user-info">
+            <div className="d-flex justify-content-between">
+              <span className="deal-user-name">{`${dealdetail?.get_user?.name} ${dealdetail?.get_user?.last_name}`}</span>
+              <span className=""><i className="bi bi-instagram"></i> 456k</span>
+            </div>
+            <div className="kol-user-loc">
+                <i className="loc bi-geo-alt"></i>
+                <p>
+                  {dealdetail?.city} {dealdetail?.state}, india
+                </p>
+              </div>
+          </div>
+      </div>
+
+      <h5 className="mt-3 mb-1 theme-color d-flex">Deals </h5>
+      <div className="kol-user-deals">
+        {dealdetail?.get_deal && dealdetail?.get_deal.map((item, index)=> {
+          return(
+            <div key={index} className="kol-list-deal">
+            <div className="kol-deal-row justify-content-between align-items-start mb-0">
+              <div className="kol-deal-heading h6">{item.title}</div>
+              <div className="deal-price h6">${item.price} <input className="form-check-input price-check" type="radio" name="" id=""></input></div>
+            </div>
+
+            <div className="kol-deal-row">
+              <span className="deal-icon-text"><i className="fa fa-calendar"></i>{item.total_days} Days</span>
+              <span className="deal-icon-text"><i className="fa fa-picture-o"></i> {item.type}</span>
+            </div>
+            
+            <p>{item.description}</p>
+          </div>
+          );
+        })}
+
+      </div>
+      </>
+      )}
+
+      
 
       <div className="deal-action-bar">
           <form className="deal-form-row" >
@@ -129,7 +189,7 @@ const ContactDealer = () => {
                     </div>
                     <div className="col-6 mb-3">
                       <label className="form-label">Price</label>
-                      <input type="text" pattern="[0-9]+" className="form-control" name="price" required autoComplete="off" onChange={handleDealChange}/>
+                      <input type="number" className="form-control" name="price" required autoComplete="off" onChange={handleDealChange}/>
                     </div>
                     <div className="col-6 mb-3">
                       <label className="form-label">Days</label>

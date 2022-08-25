@@ -143,6 +143,7 @@ export const resendEmailOtp = createAsyncThunk(
         },
       });
       let data = await response.json();
+      console.log(data);
 
       return data;
     } catch (e) {

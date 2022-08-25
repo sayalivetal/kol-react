@@ -44,20 +44,7 @@ export const createDeal = createAsyncThunk(
 );
 
 
-  export const viewDeals = async (callback) => {
-    const response = await fetch(`${API}/deal/list-deals`, {
-      method: "GET",
-  
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-       // Authorization: "Bearer " + token,
-      },
-    });
-    const result = await response.json();
-  
-    callback(result.data);
-  };
+
 
   
 

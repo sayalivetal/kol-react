@@ -87,13 +87,14 @@ const Conversation = ({ id }) => {
   // };
 
   //console.log("jhfdgfhgfdhgfjhg", edit);
+
   return (
     <>
       <div className="chat-container">
         {chatList.length > 0 ? (
           chatList.map((item, index) => {
             return (
-              <div className="chat-tow">
+              <div className="chat-row">
                 <div className="chat-thumb-container">
                   <div className="chat-user-thumb">
                     <img src={item.avatar}  alt="avatar" />

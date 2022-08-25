@@ -4,6 +4,7 @@ import ReactStars from "react-rating-stars-component";
 import { imageUrl } from "../../common/apis";
 //import YouTube, { YouTubeProps } from "react-youtube";
 import ReactPlayer from "react-player";
+import { Link } from "react-router-dom";
 
 const KolPromotingSlider = (features) => {
   
@@ -124,7 +125,7 @@ const KolPromotingSlider = (features) => {
 
                 <div className="profile-profile-btn">
                   <div className="row">
-                    <div className="col-lg-12 text-center"><button className="btn theme-btn px-4">View more</button></div>
+                    <div className="col-lg-12 text-center"><Link to={`/details/${item.profile_id}`} className="btn theme-btn px-4">View more</Link></div>
                   </div>
                 </div>
             </div>

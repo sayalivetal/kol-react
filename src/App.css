@@ -285,12 +285,13 @@ body {
 .chat-row {
   display: flex;
   width: 100%;
-  padding: 15px 0;
+  padding: 12px 0;
   align-items: flex-start;
 }
 .chat-thumb-container {
   position: relative;
   width: 52px;
+  margin-top: 8px;
 }
 .chat-user-thumb {
   background-color: #ddd;

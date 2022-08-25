@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { API } from "../../common/apis";
 
 // let token = localStorage.getItem('token')
@@ -122,6 +122,41 @@ export const getFeedback = async (callback,token,id) => {
 
   callback(result.Feedbacks);
 };
+
+// Deals api for users
+export const getDealsListForUsers = async (callback,token,id) => {
+  //console.log(callback,token,id)
+  const response = await fetch(`${API}/deal/list-deals?kol_profile_id=${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+
+  callback(result);
+};
+
+// Deals api for KOL
+export const getDealsListOfKol = async (callback,token) => {
+  //console.log(callback,token)
+  const response = await fetch(`${API}/kol-profile/view-details`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+
+  callback(result.kolProfile);
+};
+
 
 export const getKolAllAnnouncements = async (callback,token) => {
   const response = await fetch(`${API}/announcement/list`, {

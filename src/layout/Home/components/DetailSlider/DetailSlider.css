@@ -16,21 +16,23 @@
 
 .detail-main .slick-prev,
 .detail-main .slick-next {
-  top: -30px !important;
+  top: -40px !important;
 }
 .detail-main .slick-prev {
-  right: 30px !important;
+  right: 60px !important;
   left: auto !important;
 }
 .detail-main .slick-next {
-  right: 0px !important;
+  right: 30px !important;
 }
 .detail-main .slick-next:before {
   content: '\F285';
   font-family: bootstrap-icons !important;
+  font-size: 28px;
 }
 
 .detail-main .slick-prev:before {
   content: '\F284';
   font-family: bootstrap-icons !important;
+  font-size: 28px;
 }
