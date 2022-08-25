@@ -113,7 +113,7 @@ export const getFeedback = async (callback, token, id) => {
   callback(result.Feedbacks);
 };
 
-<<<<<<< HEAD
+
 // Deals api for users
 export const getDealsListForUsers = async (callback,token,id) => {
   //console.log(callback,token,id)
@@ -150,9 +150,6 @@ export const getDealsListOfKol = async (callback,token) => {
 
 
 export const getKolAllAnnouncements = async (callback,token) => {
-=======
-export const getKolAllAnnouncements = async (callback, token) => {
->>>>>>> 094e7f7c1c2146a2c4101b2a8766c883feaa435b
   const response = await fetch(`${API}/announcement/list`, {
     method: "GET",
 
