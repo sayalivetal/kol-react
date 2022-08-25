@@ -13,17 +13,11 @@ const Header = () => {
   const [categoryList, setCategoryList] = useState({});
   const [categoryType, setCategory] = useState("");
   const [language, setLanguage] = useState({});
-  const {
-    isFetching,
-    isError,
-    username,
-    message,
-    email,
-
-  } = useSelector(userSelector);
+  const { isFetching, isError, username, message, email } =
+    useSelector(userSelector);
 
   let token = localStorage.getItem("token");
-  let role = localStorage.getItem("role")
+  let role = localStorage.getItem("role");
 
   useEffect(() => {
     const callback = (data) => {
@@ -53,7 +47,6 @@ const Header = () => {
     dispatch(kolName(categoryType));
   };
 
-
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
@@ -79,7 +72,9 @@ const Header = () => {
                     <option defaultValue>Select Category</option>
                     {categoryList &&
                       Object.entries(categoryList).map(([key, value]) => (
-                        <option key={key} value={key}>{value}</option>
+                        <option key={key} value={key}>
+                          {value}
+                        </option>
                       ))}
                   </select>
                   <form className="search-form" onSubmit={handleSubmit}>
@@ -108,7 +103,6 @@ const Header = () => {
                       <>
                         <Link to="/dashboard">
                           <i className="bi bi-grid"></i>
-                          
                         </Link>
                       </>
                     ) : (
@@ -131,21 +125,30 @@ const Header = () => {
                         id="dropdown-notify"
                       >
                         <i className="bi bi-bell"></i>{" "}
-                      <span className="count-badge">15</span>
+                        <span className="count-badge">15</span>
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
                         <div className="notification-list">
-                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
-                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
-                          <Link to={"/chat"} className="list-item">Please add a deal as per the promotion Notification Text</Link>
+                          <Link to={"/chat"} className="list-item">
+                            Please add a deal as per the promotion Notification
+                            Text
+                          </Link>
+                          <Link to={"/chat"} className="list-item">
+                            Please add a deal as per the promotion Notification
+                            Text
+                          </Link>
+                          <Link to={"/chat"} className="list-item">
+                            Please add a deal as per the promotion Notification
+                            Text
+                          </Link>
                         </div>
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
                   <div className="header-profile">
                     <div className="profile-user-icon">
-                      <img src="Images/avatar.png" alt="avatar"/>
+                      <img src="Images/avatar.png" alt="avatar" />
                     </div>
                     <Dropdown className="user-dropdown">
                       <Dropdown.Toggle
@@ -170,20 +173,25 @@ const Header = () => {
                             </div>
                           </div>
 
-
                           <Link className="list-item" to="/account">
                             Profile
                           </Link>
                           <Link className="list-item" to="/account">
                             Your Account
                           </Link>
-                          <Link className="list-item" to="/bookmark">
-                            Bookmarks
-                          </Link>
-                          <div className="list-item" onClick={signOut}>
-                           Sign out
-                          </div>
+                          {role == 3 ? (
+                            <>
+                              <Link className="list-item" to="/bookmark">
+                                Bookmarks
+                              </Link>
+                            </>
+                          ) : (
+                            ""
+                          )}
 
+                          <div className="list-item" onClick={signOut}>
+                            Sign out
+                          </div>
                         </div>
                       </Dropdown.Menu>
                     </Dropdown>
@@ -208,14 +216,3 @@ const Header = () => {
   );
 };
 export default Header;
-
-
-
-
-
-
-
-
-
-
-

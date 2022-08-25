@@ -25,7 +25,7 @@ const ListingDetails = () => {
   const kolListing = async (actionType = "normal") => {
     const response = await fetch(`${API}/kol-profile/view?id=${id}`, {
       method: "GET",
-      mode: 'no-cors',
+   
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
