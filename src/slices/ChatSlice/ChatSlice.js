@@ -47,7 +47,7 @@ export const sendMessage = createAsyncThunk(
 export const conversationList = createAsyncThunk(
   "chat/message",
   async ({ urlId, token }, thunkAPI) => {
-    console.log(urlId, token);
+    //console.log(urlId, token);
     try {
       const response = await fetch(`${API}/Chat/chat-list?receiver_id=${urlId}`, {
         method: "GET",
@@ -77,7 +77,7 @@ export const conversationList = createAsyncThunk(
 export const messageEdit = createAsyncThunk(
   "chat/message",
   async ({  token ,editData,id}, thunkAPI) => {
-    console.log(token ,editData,id);
+    //console.log(token ,editData,id);
     try {
       const response = await fetch(`${API}/Chat/edit-msg`, {
         method: "PUT",
@@ -110,7 +110,7 @@ export const messageEdit = createAsyncThunk(
 export const messageDelete = createAsyncThunk(
   "chat/message",
   async ({  token ,id}, thunkAPI) => {
-    console.log(token ,id);
+   // console.log(token ,id);
     try {
       const response = await fetch(`${API}/Chat/delete-msg?msg_id=${id}`, {
         method: "GET",
@@ -159,7 +159,7 @@ const chatReducer = createSlice({
       state.isSuccess = true;
     },
     [conversationList.fulfilled]: (state, {payload}) => {
-      console.log(payload);
+      //console.log(payload);
       if(payload?.data?.length > 0){
         return { chatData:[...payload?.data] };
       }

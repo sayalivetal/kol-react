@@ -183,19 +183,19 @@ const LandingPage = () => {
                           <ul className="kol-count-list">
                             <li>
                               <div className="count-num">
-                                {totalUsers?.TotalUsers}
+                                {/* {totalUsers?.TotalUsers} */} 100k
                               </div>
                               <div className="count-label">User</div>
                             </li>
                             <li>
                               <div className="count-num">
-                                {totalUsers?.TotalKolUsers+"+"}
+                                {/* {totalUsers?.TotalKolUsers+"+"} */} 500+
                               </div>
                               <div className="count-label">KOL</div>
                             </li>
                             <li>
                               <div className="count-num">
-                                {totalUsers?.TotalVideos+"+"}
+                                {/* {totalUsers?.TotalVideos+"+"} */} 2000+
                               </div>
                               <div className="count-label">Video</div>
                             </li>
