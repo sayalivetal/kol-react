@@ -81,7 +81,7 @@ const BioData = () => {
 
   const [social_active, setSocialActive] = useState([]);
   const [language, setLanguage] = useState([]);
-  const [state, setState] = useState([]);
+  const [state, setState] = useState({});
   const [selectedFile, setSelectedFile] = useState();
   const [bannerFile, setBannerFile] = useState();
   const [tags, setTags] = useState([]);
@@ -90,7 +90,7 @@ const BioData = () => {
   const [count, setCount] = useState(0);
   const [linkCount, setLinkCount] = useState(0);
   const [video_links, setVideoLinks] = useState([]);
-
+  const [b, setA] = useState([]);
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -131,6 +131,19 @@ const BioData = () => {
       };
     });
   }, [inputList]);
+  useEffect(() => {
+    console.log(b);
+    let x = b.map((item, index) => {
+      return item.value;
+    });
+    console.log(x);
+    setKolProfile(() => {
+      return {
+        ...kolProfile,
+        languages: [...x],
+      };
+    });
+  }, [b]);
 
   // For Social Media video link
   useEffect(() => {
@@ -233,9 +246,10 @@ const BioData = () => {
   };
 
   const languageHandleChange = (e) => {
-    setKolProfile({ ...kolProfile, [e.target.name]: [e.target.value] });
-    // console.log('language', kolProfile.languages)
+    console.log("jghjdfhgjdghgdh", e);
+    setA([...e]);
   };
+
   const handleViewClick = (e) => {
     dispatch(getKolprofile());
     navigate("../profile");
@@ -267,9 +281,12 @@ const BioData = () => {
 
   //console.log('social_active',social_active)
 
-  const {
-    biodata: { kolProfileData },
-  } = useSelector(dashboardSelector);
+  let a = Object.entries(language).map(([key, value]) => {
+    return {
+      label: key,
+      value: value,
+    };
+  });
   return (
     <>
       <div className="row col-12">
@@ -320,15 +337,14 @@ const BioData = () => {
               </label>
 
               <select
-                className="form-select custom-btn"
-                aria-label="Default select example"
+                className="form-select"
                 name="kol_type"
                 onChange={handleChange}
               >
                 <option defaultValue>Select Type</option>
                 {categoryList &&
                   Object.entries(categoryList).map(([key, value]) => (
-                    <option key={key} value={key}>
+                    <option key={key} value={value}>
                       {value}
                     </option>
                   ))}
@@ -359,11 +375,12 @@ const BioData = () => {
                 name="state"
                 aria-label="Default select example"
               >
-                <option selected>Select state</option>
-                <option value="Punjab">Punjab</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                <option value="Maharastra">Maharastra</option>
+                <option defaultValue>Select State</option>
+
+                {state &&
+                  Object.entries(state).map(([key, value]) => (
+                    <option value={key}>{value}</option>
+                  ))}
               </select>
             </div>
             <div className="col-6">
@@ -384,17 +401,8 @@ const BioData = () => {
               <label htmlFor="exampleInputPassword1" className=" form-label">
                 <b>Language</b>
               </label>
-              <select
-                className="form-select form-text"
-                onChange={languageHandleChange}
-                name="languages"
-                aria-label="Default select example"
-              >
-                <option selected>Select Language</option>
-                <option value="hindi">Hindi</option>
-                <option value="punjabi">Punjabi</option>
-                <option value="english">English</option>
-              </select>
+
+              <Select options={a} onChange={languageHandleChange} isMulti />
             </div>
             <div className=" col-6">
               <label className=" form-label">
@@ -427,13 +435,22 @@ const BioData = () => {
               return (
                 <div className="row topmrgn">
                   <div className="col-3">
-                    <input
+                    <select
+                      className="form-select"
                       name="name"
-                      placeholder="Platform Name"
-                      className="form-control"
-                      value={x.name}
                       onChange={(e) => handleInputChange(e, i)}
-                    />
+                    >
+                      <option defaultValue>
+                        Select Social Active platform
+                      </option>
+                      {Object.keys(social_active).map((keyName, keyIndex) => {
+                        return (
+                          <option key={keyIndex} value={keyName}>
+                            {keyName}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                   <div className="col-2">
                     <input
@@ -564,7 +581,7 @@ const BioData = () => {
           </div>
 
           <div className="col-12 mt-3">
-            {tags.length && (
+            {tags.length > 0 && (
               <div className="tagDiv">
                 {tags.map((tag, index) => (
                   <div className="tag">

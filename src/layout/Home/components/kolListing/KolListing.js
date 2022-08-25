@@ -29,7 +29,8 @@ const KolListing = () => {
   let token = localStorage.getItem("token");
 
   const { kolType, name, message, isSuccess } = useSelector(kolSelector);
-//console.log(isSuccess);
+
+
   const navigate = useNavigate();
 
   const [languages, setLanguages] = useState({});
@@ -129,9 +130,10 @@ const KolListing = () => {
     getAllStates(callback);
   }, []);
 
-//console.log(freshposts);
+
+  console.log(freshposts);
+
   const handleBookmark = (profileId, e) => {
- 
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
       e.target.classList.add("active");
@@ -185,7 +187,6 @@ const KolListing = () => {
               Object.entries(state).map(([key, value]) => (
                 <option value={key}>{value}</option>
               ))}
-            
           </select>
         </div>
         <div className="col-lg-2 ml-auto">
@@ -224,7 +225,7 @@ const KolListing = () => {
                   <div className="kol-user-img">
                     <Link to={`/details/${item.profile_id}`}>
                       {" "}
-                      <img src={item.avatar} /> 
+                      <img src={item.avatar} />
                     </Link>
                   </div>
                 </div>

@@ -11,12 +11,12 @@ const ProfileView = () => {
   useEffect(() => {
     const callback = (data) => {
       console.log("hbjfhjfg", data);
-      // if(data === 'Please add profile details first.'){
-      //   navigate("../profileupdate")
-      // }
-      // else{
+      if(data === 'Please add profile details first.'){
+        navigate("../profileupdate")
+      }
+      else{
       setKolProfile(data);
-      // }
+      } 
     };
     getKolprofile(callback, token);
   }, []);
@@ -116,7 +116,8 @@ const ProfileView = () => {
               <b>Social Media Info : </b>
             </label>
             {
-              kolProfile?.social_media?.map((item,index)=>{
+              kolProfile?.get_social_media?.map((item,index)=>{
+                console.log(item);
                 return(
                   <div style={{ marginLeft: "20px" }} className="row">
                   <div className="col">
@@ -125,11 +126,15 @@ const ProfileView = () => {
                   </div>
                   <div className="col">
                     {" "}
-                    <h6>Username :</h6> amitYoutuber@123
+                    <h6>Username :</h6>{item.social_user_id}
                   </div>
                   <div className="col">
                     {" "}
-                    <h6>Followers :</h6> Youtube{" "}
+                    <h6>Followers :</h6>{item.followers}
+                  </div>
+                  <div className="col">
+                    {" "}
+                    <h6>Icon :</h6>{item.social_icon}
                   </div>
                 </div>
                 )
