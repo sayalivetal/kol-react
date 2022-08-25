@@ -29,7 +29,7 @@ const KolListing = () => {
   let token = localStorage.getItem("token");
 
   const { kolType, name, message, isSuccess } = useSelector(kolSelector);
-console.log(isSuccess);
+  console.log(isSuccess);
   const navigate = useNavigate();
 
   const [languages, setLanguages] = useState({});
@@ -59,7 +59,6 @@ console.log(isSuccess);
       }`,
       {
         method: "GET",
-        mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -130,9 +129,8 @@ console.log(isSuccess);
     getAllStates(callback);
   }, []);
 
-console.log(freshposts);
+  console.log(freshposts);
   const handleBookmark = (profileId, e) => {
- 
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
       e.target.classList.add("active");
@@ -189,7 +187,6 @@ console.log(freshposts);
               Object.entries(state).map(([key, value]) => (
                 <option value={key}>{value}</option>
               ))}
-            
           </select>
         </div>
         <div className="col-lg-2 ml-auto">
@@ -228,7 +225,7 @@ console.log(freshposts);
                   <div className="kol-user-img">
                     <Link to={`/details/${item.profile_id}`}>
                       {" "}
-                      <img src={item.avatar} /> 
+                      <img src={item.avatar} />
                     </Link>
                   </div>
                 </div>

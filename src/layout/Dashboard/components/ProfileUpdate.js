@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../css/styles.css";
 import { useDispatch, useSelector } from "react-redux";
-import Select from 'react-select'
+import Select from "react-select";
 import { MultiSelect } from "react-multi-select-component";
 import {
   bioDataFormSubmission,
@@ -27,9 +27,20 @@ const ProfileUpdate = () => {
   const [categoryList, setCategoryList] = useState({});
   const [biodata, setBiodata] = useState({});
   const [state, setStates] = useState({});
-  const [language, setLanguages] = useState("");
+  const [language, setLanguages] = useState([]);
   const [videoList, setVideoList] = useState([]);
-  console.log(videoList);
+  const [b, setA] = useState([]);
+  const [social_active, setSocialActive] = useState([]);
+
+  const [selectedFile, setSelectedFile] = useState();
+  const [bannerFile, setBannerFile] = useState();
+  const [tags, setTags] = useState([]);
+  const [input, setInput] = useState("");
+  const [isKeyReleased, setIsKeyReleased] = useState(false);
+  const [kolType, setKolType] = useState("");
+
+  const [video_links, setVideoLinks] = useState([]);
+  console.log(language);
   let token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -38,7 +49,17 @@ const ProfileUpdate = () => {
     };
     getKolprofile(callback, token);
   }, []);
-
+  useEffect(() => {
+    let a = selected.map((item, index) => {
+      return {
+        label: item,
+        value: item,
+      };
+    });
+    setA([...a]);
+    console.log(a);
+  }, [selected]);
+  console.log(b);
   useEffect(() => {
     const callback = (data) => {
       setCategoryList({ ...data });
@@ -77,6 +98,7 @@ const ProfileUpdate = () => {
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
+    console.log(value);
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
@@ -133,16 +155,6 @@ const ProfileUpdate = () => {
     avatar: "",
   });
 
-  const [social_active, setSocialActive] = useState([]);
-
-  const [selectedFile, setSelectedFile] = useState();
-  const [bannerFile, setBannerFile] = useState();
-  const [tags, setTags] = useState([]);
-  const [input, setInput] = useState("");
-  const [isKeyReleased, setIsKeyReleased] = useState(false);
-
-  const [video_links, setVideoLinks] = useState([]);
-
   useEffect(() => {
     setKolProfile(() => {
       return {
@@ -152,6 +164,20 @@ const ProfileUpdate = () => {
     });
   }, [inputList]);
   useEffect(() => {
+    console.log(b);
+    let x = b.map((item, index) => {
+      return item.value;
+    });
+    console.log(x);
+    setKolProfile(() => {
+      return {
+        ...kolProfile,
+        languages: [...x],
+      };
+    });
+  }, [b]);
+  useEffect(() => {
+    console.log(videoList);
     setKolProfile(() => {
       return {
         ...kolProfile,
@@ -159,18 +185,6 @@ const ProfileUpdate = () => {
       };
     });
   }, [videoList]);
-
-  // For Social Active Field
-  useEffect(() => {
-    setKolProfile(() => {
-      return {
-        ...kolProfile,
-        // social_active: [...social_active],
-      };
-    });
-  }, [social_active]);
-
-  // For Social Media video link
 
   useEffect(() => {
     setKolProfile(() => {
@@ -269,12 +283,23 @@ const ProfileUpdate = () => {
       let language = str.split(",");
       setSelected([...language]);
     }
+    if (biodata.kol_type) {
+      console.log(biodata.kol_type, categoryList);
+      setKolType(
+        Object.keys(categoryList).find(
+          (key) => categoryList[key] == biodata.kol_type
+        )
+      );
+    }
+  }, [biodata]);
+  useEffect(() => {
     setKolProfile(() => {
+      console.log(videoList, inputList);
       return {
         ...kolProfile,
         userName: biodata?.get_user?.name,
         personal_email: biodata.personal_email,
-        kol_type: biodata.kol_type,
+        kol_type: kolType,
         city: biodata.city,
         zip_code: biodata.zip_code,
         state: biodata.state,
@@ -288,20 +313,21 @@ const ProfileUpdate = () => {
         avatar: biodata.avatar,
       };
     });
-  }, [biodata]);
+  }, [tags, inputList, videoList, biodata, kolType]);
 
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
 
   const languageHandleChange = (e) => {
-    setKolProfile({ ...kolProfile, [e.target.name]: [e.target.value] });
+    console.log("jghjdfhgjdghgdh", e);
+    setA([...e]);
   };
 
   const {
     biodata: { kolProfileData },
   } = useSelector(dashboardSelector);
-
+  console.log("fgsdhjjjj", kolProfile.languages);
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -353,7 +379,7 @@ const ProfileUpdate = () => {
   });
   console.log("kolProfile", kolProfile);
   console.log("biodata", biodata);
-  console.log(language, a);
+  // console.log("hgdfffffffffffffffffffffff", kolProfile);
 
   return (
     <>
@@ -410,9 +436,13 @@ const ProfileUpdate = () => {
                 name="kol_type"
                 onChange={handleChange}
                 aria-label="Default select example"
-                defaultValue={biodata.kol_type}
+                defaultValue={kolType?kolType:"hgdf"}
               >
-                <option value={biodata.kol_type}>{biodata.kol_type}</option>
+                <option
+                  value={kolType}
+                >
+                  {biodata.kol_type}
+                </option>
                 {categoryList &&
                   Object.entries(categoryList).map(([key, value]) => (
                     <option key={key} value={key}>
@@ -475,28 +505,13 @@ const ProfileUpdate = () => {
               <label htmlFor="exampleInputPassword1" className=" form-label">
                 <b>Language</b>
               </label>
+              
 
-              {/* <select
-                className="form-select form-text"
-                onChange={languageHandleChange}
-                name="languages"
-                multiple
-              >
-                <option value={biodata.languages}>{biodata.languages}</option>
-                {language &&
-                  Object.entries(language).map(([key, value]) => (
-                    console.log(key,value)
-                    // <option value={key}>{value}</option>
-                  ))}
-              </select> */}
               <Select
                 options={a}
-                defaultValue={a[0]}
-                // onChange={setSelected}
-                // hasSelectAll={false}
-                // labelledBy="string"
-                // disableSearch={true}
+                onChange={languageHandleChange}
                 isMulti
+                value={b}
               />
             </div>
             <div className=" col-6">
@@ -532,13 +547,23 @@ const ProfileUpdate = () => {
               return (
                 <div className="row topmrgn">
                   <div className="col-3">
-                    <input
+                
+                    <select
+                      className="form-select"
                       name="name"
-                      placeholder="Platform Name"
-                      className="form-control"
-                      value={x.name}
                       onChange={(e) => handleInputChange(e, i)}
-                    />
+                    >
+                      <option value={x.name}>
+                        {x.name}
+                      </option>
+                      {Object.keys(social_active).map((keyName, keyIndex) => {
+                        return (
+                          <option key={keyIndex} value={keyName}>
+                            {keyName}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                   <div className="col-2">
                     <input

@@ -9,16 +9,17 @@ const AnnouncementView = () => {
   const { id } = useParams();
   const token = localStorage.getItem("token");
 
-  const [announcementData , setAnnouncementData] = useState({imageUrl: ''});
+  const [announcementData , setAnnouncementData] = useState([]);
   
   useEffect(() => {
     const callback = (data) => {
-      setAnnouncementData(data[0])
+      console.log(data);
+      setAnnouncementData([...data])
     };
     getAnnouncement(callback, token , id);
-  }, []);
+  }, [id]);
 
-
+console.log(announcementData);
 
   return (
     <>
@@ -28,55 +29,61 @@ const AnnouncementView = () => {
         </div>
         <div className="col-6">
           <Link to={`/dashboard/announcement/${id}`}>Edit</Link>
-          <Link to={`/dashboard/announcement`}>Add</Link>
+          {/* <Link to={`/dashboard/announcement`}>Add</Link> */}
         </div>
 
       </div>
-    
-      <div className="dashboard-main-form">
-        <div className="row mt-3">
-          <div className="col-6">
-            <label className="form-label">
-              <b>Title : </b>
-            </label>
-            <span> {announcementData.title}</span>
-          </div>
-          <div className="col-6">
-            <label className="form-label">
-              <b>Start Date : </b>
-            </label>
-            <span> {announcementData.start_date}</span>
-          </div>
-        </div>
-        <div className="row mt-3">
-          <div className="col-6">
-            <label className="form-label">
-              <b>Description : </b>
-            </label>
-            <span> {announcementData.description}</span>
-          </div>
-          <div className="col-6">
+    {
+      announcementData && announcementData.map((item,index)=>{
+        return(
+          <div className="dashboard-main-form" key={index}>
+          <div className="row mt-3">
+            <div className="col-6">
               <label className="form-label">
-                <b>End Date : </b>
+                <b>Title : </b>
               </label>
-              <span> {announcementData.end_date}</span>
-          </div>
-        </div>
-        <div className="row mt-3">
-          <div className="col-6">
-            <label className="form-label">
-              <b>Social Media Platform : </b>
-            </label>
-            <span> {announcementData.platform}</span>
-          </div>
-          <div className="col-6">
+              <span> {item.title}</span>
+            </div>
+            <div className="col-6">
               <label className="form-label">
-                <b>Image : </b>
+                <b>Start Date : </b>
               </label>
-              <img src={`${imageUrl}${announcementData.imageUrl}` } /> 
+              <span> {item.start_date}</span>
+            </div>
+          </div>
+          <div className="row mt-3">
+            <div className="col-6">
+              <label className="form-label">
+                <b>Description : </b>
+              </label>
+              <span> {item.description}</span>
+            </div>
+            <div className="col-6">
+                <label className="form-label">
+                  <b>End Date : </b>
+                </label>
+                <span> {item.end_date}</span>
+            </div>
+          </div>
+          <div className="row mt-3">
+            <div className="col-6">
+              <label className="form-label">
+                <b>Social Media Platform : </b>
+              </label>
+              <span> {item.social_platform}</span>
+            </div>
+            <div className="col-6">
+                <label className="form-label">
+                  <b>Image : </b>
+                </label>
+                <img className='img-fluid' src={`${imageUrl}${item.image}`}/> 
+            </div>
           </div>
         </div>
-      </div>
+        )
+      })
+    }
+     
     </>
   )
 }
