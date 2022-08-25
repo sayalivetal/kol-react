@@ -89,7 +89,7 @@ export const getChatList = async (callback, token) => {
     },
   });
   const result = await response.json();
-  console.log(result.data);
+  //console.log(result.data);
 
   callback(result.data);
 };

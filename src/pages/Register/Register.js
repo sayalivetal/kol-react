@@ -164,7 +164,7 @@ const Register = () => {
                           onChange={handleChange}
                         />
                         {error && formData.name == "" && (
-                          <span className="color-danger">{error}</span>
+                          <span className="text-danger">{error}</span>
                         )}
                       </div>
 
@@ -183,7 +183,7 @@ const Register = () => {
                           onChange={handleChange}
                         />
                         {error && formData.email == "" && (
-                          <span className="color-danger">{error}</span>
+                          <span className="text-danger">{error}</span>
                         )}
                       </div>
 
@@ -202,7 +202,7 @@ const Register = () => {
                           onChange={handleChange}
                         />
                         {error && formData.password == "" && (
-                          <span className="color-danger">{error}</span>
+                          <span className="text-danger">{error}</span>
                         )}
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">

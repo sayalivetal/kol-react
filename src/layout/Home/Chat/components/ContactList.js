@@ -13,7 +13,7 @@ const ContactList = ({ id }) => {
   const [term, setTerm] = useState("");
   const { isSuccess } = useSelector(chatSelector);
   const [urlId, seturlId] = useState();
-  console.log("check", isSuccess);
+  //console.log("check", isSuccess);
   const dispatch = useDispatch();
 
   let token = localStorage.getItem("token");
@@ -21,7 +21,7 @@ const ContactList = ({ id }) => {
   useEffect(() => {
     seturlId(id);
   }, []);
-  console.log("======================================", term);
+ // console.log("======================================", term);
   // useEffect(()=>{
   //   if(term){
   //     let a =  contactList.filter((item,index)=>{

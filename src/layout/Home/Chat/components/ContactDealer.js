@@ -31,7 +31,7 @@ const ContactDealer = () => {
   const handleDealSubmit = (e) => {
     e.preventDefault();
     dispatch(createDeal(dealForm ));
-    setDealModal(false);
+    //setDealModal(false);
   }
 
   useEffect(()=> {
@@ -129,11 +129,11 @@ const ContactDealer = () => {
                     </div>
                     <div className="col-6 mb-3">
                       <label className="form-label">Price</label>
-                      <input type="text" className="form-control" name="price" required autoComplete="off" onChange={handleDealChange}/>
+                      <input type="text" pattern="[0-9]+" className="form-control" name="price" required autoComplete="off" onChange={handleDealChange}/>
                     </div>
                     <div className="col-6 mb-3">
                       <label className="form-label">Days</label>
-                      <input type="text" className="form-control" name="total_days" required autoComplete="off" onChange={handleDealChange}/>
+                      <input type="number" className="form-control" name="total_days" required autoComplete="off" onChange={handleDealChange}/>
                     </div>
                     <div className="col-12 mb-3">
                       <div className="form-check d-inline-block me-3">

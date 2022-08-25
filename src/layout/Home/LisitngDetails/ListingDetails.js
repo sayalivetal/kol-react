@@ -47,7 +47,7 @@ const ListingDetails = () => {
     getFeedback(callback, token,id);
   }, [id]);
  
-  console.log("======================>",feedback);
+ // console.log("======================>",feedback);
   const handleBookmark = (profileId, e) => {
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
@@ -62,9 +62,9 @@ const ListingDetails = () => {
     <>
       {kolProfile &&
         kolProfile?.map((item, index) => {
-          console.log(item);
+          //console.log(item);
           return (
-            <div className="container">
+            <div className="container" key={index}>
               <div className="card">
                 <div className="card-body">
                   <div className="banner-container">

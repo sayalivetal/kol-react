@@ -29,7 +29,8 @@ const KolListing = () => {
   let token = localStorage.getItem("token");
 
   const { kolType, name, message, isSuccess } = useSelector(kolSelector);
-  console.log(isSuccess);
+
+
   const navigate = useNavigate();
 
   const [languages, setLanguages] = useState({});
@@ -129,7 +130,9 @@ const KolListing = () => {
     getAllStates(callback);
   }, []);
 
+
   console.log(freshposts);
+
   const handleBookmark = (profileId, e) => {
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
@@ -146,10 +149,9 @@ const KolListing = () => {
         <div className="col-lg-7 d-flex filter-col">
           <select
             className="form-select"
-            aria-label="Default select example"
             onChange={handleLanguageChange}
           >
-            <option selected>Languages</option>
+            <option defaultValue>Languages</option>
             {languages &&
               Object.entries(languages).map(([key, value]) => (
                 <option value={key}>{value}</option>
@@ -160,10 +162,9 @@ const KolListing = () => {
           </select>
           <select
             className="form-select mx-3"
-            aria-label="Default select example"
             onChange={handleStreamChange}
           >
-            <option selected>Streams</option>
+            <option defaultValue>Streams</option>
             {streams &&
               Object.entries(streams).map(([key, value]) => (
                 <option value={key}>{value}</option>
@@ -179,10 +180,9 @@ const KolListing = () => {
 
           <select
             className="form-select"
-            aria-label="Default select example"
             onChange={handleLocationChange}
           >
-            <option selected>Location</option>
+            <option defaultValue>Location</option>
             {state &&
               Object.entries(state).map(([key, value]) => (
                 <option value={key}>{value}</option>
