@@ -70,7 +70,7 @@ const ContactDealer = () => {
       <div className="col-lg-12">
             <h5>About the Creator</h5>
       </div>
-      { role === 3 ? (
+      { role === 2 ? (
       <>
         <div className="kol-user-card">
           <div className="kol-user-icon"><img className="rounded-circle  img-fluid" src={`${imageUrl}${dealdetail?.avatar}`}  alt="avatar"/></div>
