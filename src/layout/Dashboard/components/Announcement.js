@@ -174,122 +174,124 @@ const Announcement = () => {
 
   return (
     <>
-      <div className="row col-12">
-        <div className="col-6">
-          <h3 className="mt-4">Add Announcement</h3>
+      <div className="card">
+        <div className="card-header">
+          <div className="card-title h5 justify-content-between m-0 d-flex align-items-center">
+            <span>Add Announcements </span> {id && <Link className="btn theme-btn btn-sm" to={`/dashboard/announcement/view/${id}`}>View</Link>}
+          </div>
         </div>
-        <div className="col-6">
-          {id && <Link to={`/dashboard/announcement/view/${id}`}>View</Link>}
+        <div className="card-body px-4" >
+          <div className="row">
+            <form className="" onSubmit={handleSubmit}>
+              <div className="row mt-3">
+                <div className="col-6">
+                  <label className="form-label">
+                    <b>Title</b>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={announcement.title}
+                    onChange={handleChange}
+                    name="title"
+                  />
+                  {error.title == 1 ? (
+                    <span className="error-show">Please fill valid title</span>
+                  ) : null}
+                </div>
+                <div className="col-6 ">
+                  <label className="form-label">
+                    <b>Social Media Platform</b>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={announcement.social_platform}
+                    onChange={handleChange}
+                    name="social_platform"
+                  />
+                  {error.social_platform == 1 ? (
+                    <span className="error-show">
+                      Please fill valid social Media
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+              <div className="row mt-3">
+                <div className="col-6">
+                  <label className="form-label">
+                    <b>Start Date</b>
+                  </label>
+                  <DatePicker
+                    selected={startDate}
+                    name="start_date_time"
+                    onChange={(date) => setStartDate(date)}
+                    timeInputLabel="Time:"
+                    dateFormat="yyyy-MM-dd hh:mm:ss aa"
+                    showTimeInput
+                    value={announcement.start_date}
+                  />
+                  {error.start_date == 1 ? (
+                    <span className="error-show">Please fill valid start date</span>
+                  ) : null}
+                </div>
+                <div className="col-6">
+                  <label className="form-label">
+                    <b>End Date</b>
+                  </label>
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    timeInputLabel="Time:"
+                    dateFormat="yyyy-MM-dd hh:mm:ss aa"
+                    showTimeInput
+                    name="end_date_time"
+                    value={announcement.end_date}
+                  />
+                  {error.start_date == 1 ? (
+                    <span className="error-show">Please fill valid end date</span>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="col-12 mt-3">
+                <label className="form-label">
+                  <b>Description</b>
+                </label>
+                <textarea
+                  className="form-control form-text"
+                  id="exampleFormControlTextarea1"
+                  name="description"
+                  onChange={handleChange}
+                  rows="3"
+                  value={announcement.description}
+                ></textarea>
+                {error.description == 1 ? (
+                  <span className="error-show">Please fill description</span>
+                ) : null}
+              </div>
+              <div className="row mt-3">
+                <label className="form-label">
+                  <b>Upload Avatar</b>
+                </label>
+                <input type="file" name="userImage" onChange={handleChange} />
+              </div>
+
+              {announcement.imageUrl && (
+                <img src={`${imageUrl}${announcement.imageUrl}`} />
+              )}
+
+              <div>
+                <button type="submit" className="btn theme-btn form-text">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      </div>  
 
-      <div className="row">
-        <form className="dashboard-main-form" onSubmit={handleSubmit}>
-          <div className="row mt-3">
-            <div className="col-6">
-              <label className="form-label">
-                <b>Title</b>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                value={announcement.title}
-                onChange={handleChange}
-                name="title"
-              />
-              {error.title == 1 ? (
-                <span className="error-show">Please fill valid title</span>
-              ) : null}
-            </div>
-            <div className="col-6 ">
-              <label className="form-label">
-                <b>Social Media Platform</b>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                value={announcement.social_platform}
-                onChange={handleChange}
-                name="social_platform"
-              />
-              {error.social_platform == 1 ? (
-                <span className="error-show">
-                  Please fill valid social Media
-                </span>
-              ) : null}
-            </div>
-          </div>
-          <div className="row mt-3">
-            <div className="col-6">
-              <label className="form-label">
-                <b>Start Date</b>
-              </label>
-              <DatePicker
-                selected={startDate}
-                name="start_date_time"
-                onChange={(date) => setStartDate(date)}
-                timeInputLabel="Time:"
-                dateFormat="yyyy-MM-dd hh:mm:ss aa"
-                showTimeInput
-                value={announcement.start_date}
-              />
-              {error.start_date == 1 ? (
-                <span className="error-show">Please fill valid start date</span>
-              ) : null}
-            </div>
-            <div className="col-6">
-              <label className="form-label">
-                <b>End Date</b>
-              </label>
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                timeInputLabel="Time:"
-                dateFormat="yyyy-MM-dd hh:mm:ss aa"
-                showTimeInput
-                name="end_date_time"
-                value={announcement.end_date}
-              />
-              {error.start_date == 1 ? (
-                <span className="error-show">Please fill valid end date</span>
-              ) : null}
-            </div>
-          </div>
-
-          <div className="col-12 mt-3">
-            <label className="form-label">
-              <b>Description</b>
-            </label>
-            <textarea
-              className="form-control form-text"
-              id="exampleFormControlTextarea1"
-              name="description"
-              onChange={handleChange}
-              rows="3"
-              value={announcement.description}
-            ></textarea>
-            {error.description == 1 ? (
-              <span className="error-show">Please fill description</span>
-            ) : null}
-          </div>
-          <div className="row mt-3">
-            <label className="form-label">
-              <b>Upload Avatar</b>
-            </label>
-            <input type="file" name="userImage" onChange={handleChange} />
-          </div>
-
-          {announcement.imageUrl && (
-            <img src={`${imageUrl}${announcement.imageUrl}`} />
-          )}
-
-          <div>
-            <button type="submit" className="btn btn-primary form-text">
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
+      
     </>
   );
 };

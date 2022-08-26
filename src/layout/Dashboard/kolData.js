@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 
 //routes config
 
@@ -7,7 +7,7 @@ import routing from "./routing";
 const KolData = () => {
   
   return (
-    <div>
+    <div className="container-fluid">
       <Routes>
         {routing.map((route, idx) => {
             return (
@@ -24,6 +24,15 @@ const KolData = () => {
             })
         }
       </Routes>
+
+      <footer className="row py-4 mt-auto align-items-center justify-content-between small">
+          <div className=" col-6 text-muted">Copyright &copy; Your Website 2022</div>
+          <div className=" col-6 text-right">
+              <Link to={"/dashboard/profileview"} >Privacy Policy</Link>
+              <Link to={"/dashboard/profileview"} >Terms &amp; Conditions</Link>
+          </div>
+      </footer>
+
     </div>
   );
 };

@@ -112,7 +112,7 @@ const Header = () => {
                   <div className="header-icon-bar">
                     {role == 2 ? (
                       <>
-                        <Link to="/dashboard/profileview">
+                        <Link to="/dashboard/profile-view">
                           <i className="bi bi-grid"></i>
                         </Link>
                       </>
