@@ -4,6 +4,16 @@ import { getUserDetails } from "../../slices/api/simpleApi";
 
 const EditAccount = () => {
   const [userDetails, setUserDetails] = useState({});
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    gender: "",
+    address: "",
+    landmark: "",
+    city: "",
+    zip: "",
+  });
   let token = localStorage.getItem("token");
   useEffect(() => {
     const callback = (data) => {
@@ -12,12 +22,13 @@ const EditAccount = () => {
     getUserDetails(callback, token);
   }, []);
   console.log(userDetails);
-  const handleChange = (e) =>{
-    
-  }
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-  }
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  console.log(userData);
   return (
     <div>
       <div className="container">
@@ -50,8 +61,8 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder=""
-                          name=""
+                          placeholder="Enter First name"
+                          name="firstName"
                           defaultValue={userDetails.name}
                           onChange={handleChange}
                         />
@@ -65,8 +76,8 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder=""
-                          name=""
+                          placeholder="Enter Last name"
+                          name="lastName"
                           defaultValue={userDetails.last_name}
                           onChange={handleChange}
                         />
@@ -80,8 +91,8 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder=""
-                          name=""
+                          placeholder="Emter Mobile number"
+                          name="phone"
                           defaultValue={userDetails.phone}
                           onChange={handleChange}
                         />
@@ -98,7 +109,7 @@ const EditAccount = () => {
                             type="radio"
                             name="gender"
                             id="male"
-                            defaultValue={userDetails.gender}
+                            value="male"
                             onChange={handleChange}
                           />
                           <label className="form-check-label" htmlFor="male">
@@ -111,7 +122,7 @@ const EditAccount = () => {
                             type="radio"
                             name="gender"
                             id="female"
-                            defaultValue={userDetails.gender}
+                            value="female"
                             onChange={handleChange}
                           />
                           <label className="form-check-label" htmlFor="female">
@@ -128,8 +139,8 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder=""
-                          name=""
+                          placeholder="Enter Address"
+                          name="address"
                           onChange={handleChange}
                           defaultValue={userDetails?.get_address?.address}
                         />
@@ -143,8 +154,8 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder=""
-                          name=""
+                          placeholder="Enter Landmark"
+                          name="landmark"
                           defaultValue={userDetails?.get_address?.landmark}
                           onChange={handleChange}
                         />
@@ -158,8 +169,8 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder=""
-                          name=""
+                          placeholder="Enter city"
+                          name="city"
                           defaultValue={userDetails?.get_address?.city}
                           onChange={handleChange}
                         />
@@ -173,8 +184,8 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder=""
-                          name=""
+                          placeholder="Enter Zip code"
+                          name="zip"
                           defaultValue={userDetails?.get_address?.zip}
                           onChange={handleChange}
                         />
