@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserDetails } from "../../slices/api/simpleApi";
-
+import { imageUrl } from "../../common/apis";
 const Account = () => {
   const [userDetails, setUserDetails] = useState({});
   let token = localStorage.getItem("token");
@@ -28,7 +28,7 @@ const Account = () => {
                 <div className="col-xl-2 col-lg-3 col-md-12 py-2 align-self-start user-thumb">
                   <div className="kol-user-img">
                     <img
-                      src="Images/3.png"
+                      src={`${imageUrl}${userDetails.avatar}`}
                       className="img-fluid"
                       alt="avatar"
                     />

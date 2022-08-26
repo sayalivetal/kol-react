@@ -56,7 +56,7 @@ const Announcement = () => {
     imageUrl: "",
   });
 
-  const [selectedFile, setSelectedFile] = useState();
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
@@ -75,7 +75,7 @@ const Announcement = () => {
     let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
     let finalDate = [date.getFullYear(), mnth, day].join("-");
-    console.log(finalDate,dateStartTime);
+    console.log(finalDate, dateStartTime);
     setAnnouncement(() => {
       return {
         ...announcement,
@@ -83,7 +83,7 @@ const Announcement = () => {
       };
     });
   }, [startDate]);
-console.log(announcement.start_date);
+  console.log(announcement.start_date);
   useEffect(() => {
     if (!endDate) return;
     let date = new Date(endDate);
@@ -146,32 +146,28 @@ console.log(announcement.start_date);
     }
 
     const formData = new FormData();
-    if(!selectedFile){
-        // formData.append("image", selectedFile);
-        formData.append("title", announcement.title);
-        formData.append("description", announcement.description);
-        formData.append("start_date", announcement.start_date);
-        formData.append("end_date", announcement.end_date);
-        formData.append("social_platform", announcement.social_platform);
-    }else{
-        formData.append("image", selectedFile);
-        formData.append("title", announcement.title);
-        formData.append("description", announcement.description);
-        formData.append("start_date", announcement.start_date);
-        formData.append("end_date", announcement.end_date);
-        formData.append("social_platform", announcement.social_platform);
+    if (selectedFile) {
+      console.log("hello");
+      formData.append("image", selectedFile);
     }
-   
-    console.log(formData);
+    if(id){
+      formData.append("id",id);
+    }
+    
+    formData.append("title", announcement.title);
+    formData.append("description", announcement.description);
+    formData.append("start_date", announcement.start_date);
+    formData.append("end_date", announcement.end_date);
+    formData.append("social_platform", announcement.social_platform);
+ 
 
     //Submit data
-    dispatch(announceDataFormSubmission(formData)).then((data)=>{
-        console.log(data);
-        if(data.payload.statusCode == 201){
-            navigate("../../dashboard/announcement/list");
-        }
-       
-    })
+    dispatch(announceDataFormSubmission(formData)).then((data) => {
+      console.log(data);
+      if (data.payload.statusCode) {
+        navigate("../../dashboard/announcement/list");
+      }
+    });
 
     // toast.success(message)
   };
@@ -259,7 +255,7 @@ console.log(announcement.start_date);
               ) : null}
             </div>
           </div>
-       
+
           <div className="col-12 mt-3">
             <label className="form-label">
               <b>Description</b>

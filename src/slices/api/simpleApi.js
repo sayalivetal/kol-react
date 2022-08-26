@@ -149,16 +149,20 @@ export const getDealsListOfKol = async (callback,token) => {
 };
 
 
-export const getKolAllAnnouncements = async (callback,token) => {
-  const response = await fetch(`${API}/announcement/list`, {
-    method: "GET",
+export const getKolAllAnnouncements = async (callback, token, page) => {
+  const response = await fetch(
+    `${API}/announcement/list?page=${page}&limit=5`,
+    {
+      method: "GET",
 
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
+
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
   const result = await response.json();
   console.log(result);
 

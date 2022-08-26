@@ -112,7 +112,7 @@ const Header = () => {
                   <div className="header-icon-bar">
                     {role == 2 ? (
                       <>
-                        <Link to="/dashboard">
+                        <Link to="/dashboard/profileview">
                           <i className="bi bi-grid"></i>
                         </Link>
                       </>
@@ -184,19 +184,9 @@ const Header = () => {
                             </div>
                           </div>
 
-                          {role == 3 ? (
-                            <>
-                              <Link className="list-item" to="/account">
-                                Settings
-                              </Link>
-                            </>
-                          ) : (
-                            <>
-                            <Link className="list-item" to="/dashboard">
-                              Dashboard
-                            </Link>
-                          </>
-                          )}
+                          <Link className="list-item" to="/account">
+                            Settings
+                          </Link>
 
                           {role == 3 ? (
                             <>
@@ -205,7 +195,14 @@ const Header = () => {
                               </Link>
                             </>
                           ) : (
-                            ""
+                            <>
+                              <Link
+                                className="list-item"
+                                to="/dashboard/profileview"
+                              >
+                                Dashboard
+                              </Link>
+                            </>
                           )}
 
                           <div className="list-item" onClick={signOut}>
