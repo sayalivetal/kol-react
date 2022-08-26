@@ -1,4 +1,5 @@
 import React from "react";
+import { imageUrl } from "../../../common/apis";
 
 const Announcement = ({announcement}) => {
     console.log(announcement);
@@ -88,7 +89,7 @@ console.log(day);
               <div className="stream-user">
                 <div className="stream-user-circle">&nbsp;</div>
                 <img
-                  src={announcement?.image}
+                  src={`${imageUrl}${announcement?.image}`}
                   alt=""
                   className="stream-user-thumb"
                 />

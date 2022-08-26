@@ -45,6 +45,44 @@ export const createDeal = createAsyncThunk(
 
 
 
+//API Integration for deals place order
+export const PlaceOrder = createAsyncThunk(
+  "chat/message",
+  async ({ deal_id,kol_profile_id,start_date, token }, thunkAPI) => {
+   console.log(deal_id,kol_profile_id,start_date, token );
+ 
+    try {
+      const response = await fetch(`${API}/order/place-order`, {
+        method: "Post",
+
+
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({
+          deal_id,
+          kol_profile_id,
+          start_date
+          
+        }),
+      
+      });
+      let data = await response.json();
+   
+      if (response.status === 200) {
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (e) {
+      console.log("Error", e.response.data);
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
+
 
   
 

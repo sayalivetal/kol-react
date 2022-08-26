@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "./KolListing.css";
+import { imageUrl } from "../../../../common/apis";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { API } from "../../../../common/apis";
@@ -21,6 +22,8 @@ import { kolListing } from "../../../../slices/api/simpleApi";
 import { useDispatch, useSelector } from "react-redux";
 
 const KolListing = () => {
+  let role = localStorage.getItem("role");
+  console.log(role);
   const dispatch = useDispatch();
   const [searchCategory, setSearchCategory] = useState({
     name: "",
@@ -29,7 +32,6 @@ const KolListing = () => {
   let token = localStorage.getItem("token");
 
   const { kolType, name, message, isSuccess } = useSelector(kolSelector);
-
 
   const navigate = useNavigate();
 
@@ -130,7 +132,6 @@ const KolListing = () => {
     getAllStates(callback);
   }, []);
 
-
   console.log(freshposts);
 
   const handleBookmark = (profileId, e) => {
@@ -147,10 +148,7 @@ const KolListing = () => {
     <>
       <div className="row justify-content-between border-bottom pt-3 pb-4">
         <div className="col-lg-7 d-flex filter-col">
-          <select
-            className="form-select"
-            onChange={handleLanguageChange}
-          >
+          <select className="form-select" onChange={handleLanguageChange}>
             <option defaultValue>Languages</option>
             {languages &&
               Object.entries(languages).map(([key, value]) => (
@@ -160,10 +158,7 @@ const KolListing = () => {
             <option value="English">English</option>
             <option value="Hindi">Hindi</option> */}
           </select>
-          <select
-            className="form-select mx-3"
-            onChange={handleStreamChange}
-          >
+          <select className="form-select mx-3" onChange={handleStreamChange}>
             <option defaultValue>Streams</option>
             {streams &&
               Object.entries(streams).map(([key, value]) => (
@@ -178,10 +173,7 @@ const KolListing = () => {
             <option value="LinkedIn">LinkedIn &#xF472;</option> */}
           </select>
 
-          <select
-            className="form-select"
-            onChange={handleLocationChange}
-          >
+          <select className="form-select" onChange={handleLocationChange}>
             <option defaultValue>Location</option>
             {state &&
               Object.entries(state).map(([key, value]) => (
@@ -189,7 +181,7 @@ const KolListing = () => {
               ))}
           </select>
         </div>
-        <div className="col-lg-2 ml-auto">
+        {/* <div className="col-lg-2 ml-auto">
           {" "}
           <Dropdown>
             <Dropdown.Toggle variant="" className="sort" id="dropdown-basic">
@@ -201,7 +193,7 @@ const KolListing = () => {
               <Dropdown.Item> Views</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        </div>
+        </div> */}
       </div>
       <InfiniteScroll
         dataLength={freshposts.length}
@@ -225,7 +217,7 @@ const KolListing = () => {
                   <div className="kol-user-img">
                     <Link to={`/details/${item.profile_id}`}>
                       {" "}
-                      <img src={item.avatar} />
+                      <img src={`${imageUrl}${item.avatar}`} />
                     </Link>
                   </div>
                 </div>
@@ -240,9 +232,9 @@ const KolListing = () => {
                           {item.username}
                         </Link>
 
-                        <sup>
+                        {/* <sup>
                           <i className="bi bi-patch-check-fill heading-icon"></i>
-                        </sup>
+                        </sup> */}
                       </h3>
                       <p>({item.tags})</p>
                     </div>
@@ -252,16 +244,20 @@ const KolListing = () => {
                         <span>
                           {item.city} {item.state},india
                         </span>
-                        <span className="book-icon">
-                          <i
-                            className={`bi bi-bookmark mx-1 bookmark-icon ${
-                              item.bookmark ? "active" : ""
-                            }`}
-                            onClick={(e) => {
-                              handleBookmark(item.profile_id, e);
-                            }}
-                          ></i>
-                        </span>
+                        {role == 2 ? (
+                          <></>
+                        ) : (
+                          <span className="book-icon">
+                            <i
+                              className={`bi bi-bookmark mx-1 bookmark-icon ${
+                                item.bookmark ? "active" : ""
+                              }`}
+                              onClick={(e) => {
+                                handleBookmark(item.profile_id, e);
+                              }}
+                            ></i>
+                          </span>
+                        )}
                       </p>
                     </div>
                   </div>
@@ -272,16 +268,14 @@ const KolListing = () => {
                         Languages:{" "}
                         <span className="text-normal">{item.languages}</span>
                       </h5>
-                      {item.SocialMedia.map((c, i) => {
-                        return (
-                          <ul key={i} className="social-count-list">
+                   
+                          <ul className="social-count-list">
                             <li className="">
                               <span></span>
-                              <i className={c.social_icon}></i> {c.followers}k
+                              <i className={`${item.social_active_icon}`}></i> 
                             </li>
                           </ul>
-                        );
-                      })}
+                    
                     </div>
                   </div>
 
@@ -295,25 +289,29 @@ const KolListing = () => {
                   </div>
 
                   <div className="row py-1">
-                    <div className="col-lg-4 align-items-center d-flex">
+                    {/* <div className="col-lg-4 align-items-center d-flex">
                       <div className="more-button">
-                        {/* <Link to={`/details/${item.profile_id}`}>
+                        <Link to={`/details/${item.profile_id}`}>
                           Show More Detail
-                        </Link> */}
+                        </Link>
                         Mostly Active user
                         {item.social_active}
                       </div>
-                    </div>
-                    <div className="col-lg-8 text-right">
-                      <Link to={`/chat?id=${item.user_id}`}>
-                        <button className="ml-auto btn theme-btn">
-                          <span className="mx-2">
-                            <i className="bi bi-chat-dots"></i>
-                          </span>{" "}
-                          Chat with me
-                        </button>
-                      </Link>
-                    </div>
+                    </div> */}
+                    {role == 2 ? (
+                      <></>
+                    ) : (
+                      <div className="col-lg-12 text-right">
+                        <Link to={`/chat?id=${item.user_id}`}>
+                          <button className="ml-auto btn theme-btn">
+                            <span className="mx-2">
+                              <i className="bi bi-chat-dots"></i>
+                            </span>{" "}
+                            Chat with me
+                          </button>
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

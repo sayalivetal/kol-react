@@ -4,21 +4,25 @@ import Footer from "../../../components/Footer/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
-import { API,imageUrl } from "../../../common/apis";
+import { API, imageUrl } from "../../../common/apis";
 import { useParams } from "react-router-dom";
 import Announcement from "../components/Announcement";
-import {kolAddBookmark,kolDeleteBookmark} from '../../../slices/KolListing/KolSlices'
+import {
+  kolAddBookmark,
+  kolDeleteBookmark,
+} from "../../../slices/KolListing/KolSlices";
 import "./ListingDetails.css";
 import DetailSlider from "../components/DetailSlider/DetailSlider";
 import ReviewSlider from "../components/ReviewSlider/ReviewSlider";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getFeedback } from "../../../slices/api/simpleApi";
 
 const ListingDetails = () => {
   const { id } = useParams();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-  const[feedback,setFeedback]= useState([])
+  const role = localStorage.getItem("role");
+  const [feedback, setFeedback] = useState([]);
   console.log(token);
   const [kolProfile, setKolProfile] = useState(null);
 
@@ -44,10 +48,10 @@ const ListingDetails = () => {
     const callback = (data) => {
       setFeedback([...data]);
     };
-    getFeedback(callback, token,id);
+    getFeedback(callback, token, id);
   }, [id]);
- 
- // console.log("======================>",feedback);
+
+  // console.log("======================>",feedback);
   const handleBookmark = (profileId, e) => {
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
@@ -59,7 +63,7 @@ const ListingDetails = () => {
     }
   };
 
-console.log(kolProfile)
+  console.log(kolProfile);
   return (
     <>
       {kolProfile &&
@@ -72,7 +76,9 @@ console.log(kolProfile)
                   <div className="banner-container">
                     <div
                       className="col-lg-12 detail-bg"
-                      style={{ backgroundImage: `url(${imageUrl}${item.banner})` }}
+                      style={{
+                        backgroundImage: `url(${imageUrl}${item.banner})`,
+                      }}
                     ></div>
                   </div>
                   <div className="col-lg-12 px-4">
@@ -85,12 +91,7 @@ console.log(kolProfile)
                       <div className="col-lg-10  py-2">
                         <div className="row justify-content-between">
                           <div className="col-lg-8">
-                            <h3 className="text-bold">
-                              {item.get_user.name}
-                              <sup>
-                                <i className="bi bi-patch-check-fill heading-icon"></i>
-                              </sup>
-                            </h3>
+                            <h3 className="text-bold">{item.get_user.name}</h3>
                             <p>({item.tags})</p>
                           </div>
                           <div className="col-lg-4">
@@ -99,16 +100,20 @@ console.log(kolProfile)
                               <span>
                                 {item.city} {item.state},india
                               </span>
-                              <span className="book-icon">
-                                <i
-                                  className={`bi bi-bookmark mx-1 bookmark-icon ${
-                                    item.Bookmark ? "active" : ""
-                                  }`}
-                                  onClick={(e) => {
-                                    handleBookmark(item.user_id, e);
-                                  }}
-                                ></i>
-                              </span>
+                              {role == 2 ? (
+                                <></>
+                              ) : (
+                                <span className="book-icon">
+                                  <i
+                                    className={`bi bi-bookmark mx-1 bookmark-icon ${
+                                      item.Bookmark ? "active" : ""
+                                    }`}
+                                    onClick={(e) => {
+                                      handleBookmark(item.user_id, e);
+                                    }}
+                                  ></i>
+                                </span>
+                              )}
                             </p>
                           </div>
                         </div>
@@ -138,14 +143,18 @@ console.log(kolProfile)
                         <p className="kol-bio">{item.bio}</p>
                       </div>
                       <div className="col-lg-12 text-right">
-                        <Link to="/chat">
-                          <button className="ml-auto btn theme-btn">
-                            <span className="mx-2">
-                              <i className="bi bi-chat-dots"></i>
-                            </span>{" "}
-                            Chat with me
-                          </button>
-                        </Link>
+                        {role == 2 ? (
+                          <></>
+                        ) : (
+                          <Link to="/chat">
+                            <button className="ml-auto btn theme-btn">
+                              <span className="mx-2">
+                                <i className="bi bi-chat-dots"></i>
+                              </span>{" "}
+                              Chat with me
+                            </button>
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -175,7 +184,7 @@ console.log(kolProfile)
                           See What Our Clients Talk About Us
                         </h3>
                       </div>
-                      <ReviewSlider feedback={feedback}/>
+                      <ReviewSlider feedback={feedback} />
                     </div>
                   </div>
                 </div>
