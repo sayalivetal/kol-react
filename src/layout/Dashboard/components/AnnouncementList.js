@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
+
 import {
   getKolAllAnnouncements,
   deleteAnnouncement,
 } from "../../../slices/api/simpleApi";
-import Pagination from "../../../common/components/PaginationJSX";
+// import Pagination from "../../../common/components/PaginationJSX";
 import { Link, useNavigate } from "react-router-dom";
 import { announceDelete } from "../../../slices/Dashboard/dashboard";
 import { useDispatch } from "react-redux";
-
+import Pagination from "react-js-pagination";
 const AnnouncementList = () => {
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const [announcements, setAnnouncements] = useState([]);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
-
+  const limit = 10;
   useEffect(() => {
     const callback = (data) => {
       setAnnouncements([...data]);
     };
-    getKolAllAnnouncements(callback, token);
+    getKolAllAnnouncements(callback, token,page,10);
   }, []);
 
   const handleDelete = (id) => {
@@ -31,7 +33,15 @@ const AnnouncementList = () => {
       getKolAllAnnouncements(callback, token);
     });
   };
-
+  const handlePageChange = (pageNumber) => {
+    console.log(pageNumber);
+  
+    const callback = (data) => {
+      setAnnouncements([...data]);
+    };
+    getKolAllAnnouncements(callback, token, page);
+    setPage(pageNumber)
+  };
   return (
     <>
       <div className="row col-12">
@@ -82,11 +92,11 @@ const AnnouncementList = () => {
         </table>
         {announcements.length > 0 ? (
           <Pagination
-            // data={posts}
-            // RenderComponent={Post}
-            dataLength={announcements.length}
-            pageLimit={5}
-            dataLimit={5}
+            totalItemsCount={450}
+            onChange={handlePageChange}
+            activePage={page}
+            // itemsCountPerPage={}
+            pageRangeDisplayed={5}
           />
         ) : (
           <h1>No Posts to display</h1>
