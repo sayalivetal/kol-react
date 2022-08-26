@@ -25,7 +25,7 @@ const ListingDetails = () => {
   const kolListing = async (actionType = "normal") => {
     const response = await fetch(`${API}/kol-profile/view?id=${id}`, {
       method: "GET",
-   
+
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -58,6 +58,8 @@ const ListingDetails = () => {
       dispatch(kolDeleteBookmark({ profileId, token }));
     }
   };
+
+console.log(kolProfile)
   return (
     <>
       {kolProfile &&
@@ -151,14 +153,12 @@ const ListingDetails = () => {
               </div>
               <div className="card mt-3">
                 <div className="card-body">
-                  <div className="col-lg-12 px-4">
-                    <div className="row py-1">
-                      <div className="col-lg-12">
-                        <h4>KOL are promoting Products</h4>
-                      </div>
-                      <div className="col-lg-12">
-                        <DetailSlider video={item.video_links} />
-                      </div>
+                  <div className="row">
+                    <div className="col-lg-12 px-4">
+                      <h4 className="py-1">KOL are promoting Products</h4>
+                    </div>
+                    <div className="col-lg-12">
+                      <DetailSlider video={item.video_links} />
                     </div>
                   </div>
                 </div>

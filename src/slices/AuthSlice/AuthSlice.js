@@ -140,6 +140,7 @@ export const resendEmailOtp = createAsyncThunk(
         },
       });
       let data = await response.json();
+      console.log(data);
 
       return data;
     } catch (e) {
@@ -228,12 +229,13 @@ export const LoginUser = createAsyncThunk(
         }),
       });
       let data = await response.json();
-      console.log(data.data.token);
+      console.log(data);
       if (response.status === 200) {
-        if (data?.data?.token) {
-          localStorage.setItem("token", data.data.token);
-        }
-        return { ...data };
+        if(data?.data?.token){
+          localStorage.setItem('token', data.data.token);
+          localStorage.setItem('role', data.data.role_id);
+          }
+          return { ...data };
       } else {
         return thunkAPI.rejectWithValue(data);
       }

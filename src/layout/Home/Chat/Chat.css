@@ -25,6 +25,7 @@
     text-overflow: ellipsis;
 }
 .kol-user-icon { width: 72px;}
+.kol-user-icon .rounded-circle  { background: #ddd;}
 .kol-user-loc {
   display: flex;
   align-items: center;

@@ -3,14 +3,15 @@ import "./ReviewSlider.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
+import { imageUrl } from "../../../../common/apis";
 import Slider from "react-slick";
 import ReactStars from "react-rating-stars-component";
 const ReviewSlider = ({ feedback }) => {
   console.log(feedback);
-  const [settings, setSettings] = useState({
+  const settings = {
     slidesToShow: 1,
     // slidesToScroll: 1,
-  });
+  };
 
   return (
     <div>
@@ -22,7 +23,7 @@ const ReviewSlider = ({ feedback }) => {
                 <div className="row justify-content-between py-2 list-row">
                   <div className="col-lg-3 py-2">
                     <div className="kol-review-user-img">
-                      <img src={item.avatar} />
+                      <img src={`${imageUrl}${item.profile_image}`} />
                     </div>
                   </div>
                   <div className="col-lg-9  py-2">
@@ -58,7 +59,7 @@ const ReviewSlider = ({ feedback }) => {
             );
           })}
 
-        <div>
+        {/* <div>
           <div className="row justify-content-between py-2 list-row">
             <div className="col-lg-3 py-2">
               <div className="kol-review-user-img">
@@ -113,7 +114,7 @@ const ReviewSlider = ({ feedback }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </Slider>
     </div>
   );
