@@ -42,24 +42,25 @@ const ContactDealer = () => {
   const handleDealSubmit = (e) => {
     e.preventDefault();
     dispatch(createDeal(dealForm ));
-    //setDealModal(false);
+    setDealModal(false);
   }
 
-  useEffect(()=> {
-    const callback = (data) => {
-      setKolDealForUser({...data});
-      console.log()
-    };
-    getDealsListForUsers(callback, token,id);
-  },[]);
-
-
+  // kol own deals List
   useEffect(()=> {
     const callback = (data) => {
       setDealDetails({...data});
       console.log()
     };
     getDealsListOfKol(callback, token);
+  },[]);
+
+  // kol deals list for users
+  useEffect(()=> {
+    const callback = (data) => {
+      setKolDealForUser([...data]);
+      console.log()
+    };
+    getDealsListForUsers(callback, token,id);
   },[]);
 
   // console.log(dealdetail);
@@ -70,9 +71,11 @@ const ContactDealer = () => {
       <div className="col-lg-12">
             <h5>About the Creator</h5>
       </div>
-      { role === 2 ? (
+
+      
+      { role == 2 ? (
       <>
-        <div className="kol-user-card">
+      <div className="kol-user-card">
           <div className="kol-user-icon"><img className="rounded-circle  img-fluid" src={`${imageUrl}${dealdetail?.avatar}`}  alt="avatar"/></div>
           <div className="kol-user-info">
             <div className="d-flex justify-content-between">
@@ -112,25 +115,31 @@ const ContactDealer = () => {
       </>
       ) : (
       <>
-        <div className="kol-user-card">
-          <div className="kol-user-icon"><img className="rounded-circle  img-fluid" src={`${imageUrl}${dealdetail?.avatar}`}  alt="avatar"/></div>
+
+      {kolDealForUser && kolDealForUser.slice(0, 1).map((item, index)=> {
+        console.log(item)
+        return(
+      <div className="kol-user-card">
+          <div className="kol-user-icon"><img className="rounded-circle  img-fluid" src={`${imageUrl}${item?.get_kol_profile?.avatar}`}  alt="avatar"/></div>
           <div className="kol-user-info">
             <div className="d-flex justify-content-between">
-              <span className="deal-user-name">{`${dealdetail?.get_user?.name} ${dealdetail?.get_user?.last_name}`}</span>
+              {/* <span className="deal-user-name">{`${item?.get_kol_profile?.name} ${item?.get_kol_profile?.last_name}`}</span> */}
               <span className=""><i className="bi bi-instagram"></i> 456k</span>
             </div>
             <div className="kol-user-loc">
                 <i className="loc bi-geo-alt"></i>
                 <p>
-                  {dealdetail?.city} {dealdetail?.state}, india
+                  {item?.get_kol_profile?.city} {item?.get_kol_profile?.state}, india
                 </p>
               </div>
           </div>
       </div>
+        )}
+        )}
 
       <h5 className="mt-3 mb-1 theme-color d-flex">Deals </h5>
       <div className="kol-user-deals">
-        {dealdetail?.get_deal && dealdetail?.get_deal.map((item, index)=> {
+        {kolDealForUser && kolDealForUser.map((item, index)=> {
           return(
             <div key={index} className="kol-list-deal">
             <div className="kol-deal-row justify-content-between align-items-start mb-0">

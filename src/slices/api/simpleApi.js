@@ -128,7 +128,7 @@ export const getDealsListForUsers = async (callback,token,id) => {
   const result = await response.json();
   console.log(result);
 
-  callback(result);
+  callback(result.deals);
 };
 
 // Deals api for KOL
