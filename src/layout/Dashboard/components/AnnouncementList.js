@@ -44,63 +44,64 @@ const AnnouncementList = () => {
   };
   return (
     <>
-      <div className="row col-12">
-        <div className="col-6">
-          <h3 className="mt-4">Kol Announcements</h3>
+      <div className="card">
+        <div className="card-header">
+          <div className="card-title h5 justify-content-between m-0 d-flex align-items-center">
+            <span>Kol Announcements List</span> <Link className="btn theme-btn btn-sm" to={`../announcement/`}>Add Announcement</Link>
+          </div>
         </div>
-        <div className="col-6">
-          <Link to={`/dashboard/announcement/`}>Add Announcement</Link>
+        <div className="card-body px-4" >
+          <div className="">
+            <table className="table table-bordered">
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Social Platform</th>
+                <th>Status</th>
+                <th>Image</th>
+                <th>Action</th>
+              </tr>
+              {announcements &&
+                announcements.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{item.title}</td>
+
+                      <td>{item.description}</td>
+                      <td>{item.start_date}</td>
+                      <td>{item.end_date}</td>
+                      <td>{item.social_platform}</td>
+                      <td>{item.status}</td>
+                      <td>{item.image}</td>
+
+                      <td>
+                        <Link to={`/dashboard/announcement/${item.id}`}>Edit</Link>
+                        <Link to={`/dashboard/announcement/view/${item.id}`}>
+                          View
+                        </Link>
+                        <button onClick={() => handleDelete(item.id)}>
+                          <i className="fa-regular fa-trash">Delete</i>
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </table>
+            {announcements.length > 0 ? (
+              <Pagination
+                totalItemsCount={450}
+                onChange={handlePageChange}
+                activePage={page}
+                // itemsCountPerPage={}
+                pageRangeDisplayed={5}
+              />
+            ) : (
+              <h1>No Posts to display</h1>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="dashboard-main-listing">
-        <table>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Social Platform</th>
-            <th>Status</th>
-            <th>Image</th>
-            <th>Action</th>
-          </tr>
-          {announcements &&
-            announcements.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td>{item.title}</td>
-
-                  <td>{item.description}</td>
-                  <td>{item.start_date}</td>
-                  <td>{item.end_date}</td>
-                  <td>{item.social_platform}</td>
-                  <td>{item.status}</td>
-                  <td>{item.image}</td>
-
-                  <td>
-                    <Link to={`/dashboard/announcement/${item.id}`}>Edit</Link>
-                    <Link to={`/dashboard/announcement/view/${item.id}`}>
-                      View
-                    </Link>
-                    <button onClick={() => handleDelete(item.id)}>
-                      <i className="fa-regular fa-trash">Delete</i>
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-        </table>
-        {announcements.length > 0 ? (
-          <Pagination
-            totalItemsCount={450}
-            onChange={handlePageChange}
-            activePage={page}
-            // itemsCountPerPage={}
-            pageRangeDisplayed={5}
-          />
-        ) : (
-          <h1>No Posts to display</h1>
-        )}
       </div>
     </>
   );

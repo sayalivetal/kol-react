@@ -29,7 +29,7 @@ const PasswordSuccess = React.lazy(() =>
   import('./pages/PasswordUpdate/PasswordUpdate')
 );
 
-const BioData = React.lazy(() => import('./layout/Dashboard/components/BioData'))
+const ProfileAdd = React.lazy(() => import('./layout/Dashboard/components/ProfileAdd'))
 const Announcement = React.lazy(() => import('./layout/Dashboard/components/Announcement'))
 const loading = <Spinner animation='grow' />;
 
