@@ -38,7 +38,7 @@ const Chat = () => {
         <div className='col-lg-6'>
           <div className='card'>
             <div className='card-body p-0'>
-              <Conversation id={`${id}`}/>
+              <Conversation urlId={`${id}`}/>
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@ const DetailSlider = ({video}) => {
   let videoUrl = video.split(",");
   // videoUrl?.push(
   //   "https://www.youtube.com/shorts/hl0v_nuIkXU",
-  //   "https://www.youtube.com/shorts/hl0v_nuIkXU"
+  //   // "https://www.youtube.com/shorts/hl0v_nuIkXU"
   // );
   console.log(videoUrl);
   return (

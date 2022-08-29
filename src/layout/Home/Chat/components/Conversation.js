@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { API, imageUrl } from "../../../../common/apis";
 import Moment from "react-moment";
 import Dropdown from "react-bootstrap/Dropdown";
+import { conversationList } from "../../../../slices/ChatSlice/ChatSlice";
 import "../Chat.css";
 import {
   sendMessage,
@@ -9,7 +11,7 @@ import {
   messageEdit,
   messageDelete,
 } from "../../../../slices/ChatSlice/ChatSlice";
-const Conversation = ({ id }) => {
+const Conversation = ({ urlId }) => {
   const chatData = useSelector(chatSelector);
   // console.log(chatData.chatData);
   let token = localStorage.getItem("token");
@@ -17,8 +19,7 @@ const Conversation = ({ id }) => {
   const [message, setMessage] = useState("");
   const [chatList, setChatData] = useState([]);
   // const [deleteEdit, setDeleteEdit] = useState();
-  const [edit, setEdit] = useState();
-  const [editData, setEditData] = useState("");
+  const [kolProfile, setKolProfile] = useState([]);
 
   // console.log(editData);
   const handleChange = (e) => {
@@ -28,7 +29,9 @@ const Conversation = ({ id }) => {
 
   let b = JSON.parse(a);
   let localStorageData = JSON.parse(b.user);
-  //console.log(localStorageData);
+  // console.log(localStorageData);
+
+
   let { username } = localStorageData;
   useEffect(() => {
     if (!chatData.chatData.length) {
@@ -39,54 +42,15 @@ const Conversation = ({ id }) => {
   }, [chatData]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(sendMessage({ message, id, token }));
+    dispatch(sendMessage({ message, urlId, token })).then((data)=>{
+      console.log(urlId);
+      if(data.payload.statusCode == 201){
+        dispatch(conversationList({ urlId, token }));
+      }
+    });
     e.target.reset();
-    const newObj = {
-      avatar:
-        "http://8ed8-203-145-168-10.in.ngrok.io/uploads/profile/16576921762043.face-sachin.jpg",
-      message: message,
-      name: username,
-      sent_at: new Date(),
-    };
-    setChatData([...chatList, newObj]);
+  
   };
-  // const handleDeleteEdit = (id, message) => {
-  //   setDeleteEdit(id);
-
-  //   console.log(id, message);
-  // };
-  //console.log("==============>", chatList);
-
-  // const handleMouseOut = () => {
-  //   setDeleteEdit("");
-  // };
-  // const handleEditDeleteChange = (e, id) => {
-  //   if (e == "edit") {
-  //     setEdit(id);
-  //   }
-  //   if (e == "delete") {
-  //     dispatch(messageDelete({token,id}))
-  //   }
-  // };
-  // const handleSaveMessage = (id) => {
-  //   // dispatch(messageEdit({ token, editData, id }));
-
-  //   const newObj1 = {
-  //     message: chatData,
-  //     name: username,
-  //     avatar: null,
-  //     edit_at: "",
-  //     last_name: null,
-  //     message_id: null,
-  //     receiver_id: null,
-  //     sender_id: null,
-  //     sent_at: "",
-  //   };
-
-  //   setChatData([...chatList, newObj1]);
-  // };
-
-  //console.log("jhfdgfhgfdhgfjhg", edit);
 
   return (
     <>
@@ -97,7 +61,7 @@ const Conversation = ({ id }) => {
               <div className="chat-row">
                 <div className="chat-thumb-container">
                   <div className="chat-user-thumb">
-                    <img src={item.avatar}  alt="avatar" />
+                    <img src={item.avatar} alt="avatar" />
                   </div>
                   <span className="status-icon active"></span>
                 </div>

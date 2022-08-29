@@ -12,8 +12,8 @@ const initialState = {
 //API Integration with action for send message creation
 export const sendMessage = createAsyncThunk(
   "chat/message",
-  async ({ message, id, token }, thunkAPI) => {
-    console.log(id, message, token);
+  async ({ message, urlId, token }, thunkAPI) => {
+    console.log(urlId, message, token);
     try {
       const response = await fetch(`${API}/Chat/send-message`, {
         method: "POST",
@@ -25,7 +25,7 @@ export const sendMessage = createAsyncThunk(
           Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
-          receiver_id: id,
+          receiver_id: urlId,
           message,
         }),
       });
@@ -136,7 +136,6 @@ export const messageDelete = createAsyncThunk(
     }
   }
 );
-
 
 //create slice for authentication reducers
 
