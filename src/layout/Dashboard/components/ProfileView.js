@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getKolprofile } from "../../../slices/api/simpleApi";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ReactPlayer from "react-player";
+
+
 const ProfileView = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -10,9 +12,9 @@ const ProfileView = () => {
 
   useEffect(() => {
     const callback = (data) => {
-      console.log("hbjfhjfg", data);
+      //console.log("hbjfhjfg", data);
       if (data === 'Please add profile details first.') {
-        navigate("../profileupdate")
+        navigate("../profile-update")
       }
       else {
         setKolProfile(data);
@@ -21,13 +23,9 @@ const ProfileView = () => {
     getKolprofile(callback, token);
   }, []);
 
-  const openPersonalDataForm = () => {
-    // dispatch(getKolprofile());
-    // navigate("../profile")
-  };
 
-  console.log("data", kolProfile);
-
+  // console.log("data", kolProfile);
+  
   return (
     <>
       <div className="card">
@@ -36,7 +34,7 @@ const ProfileView = () => {
               <span>Kol Profile View</span> <Link className="btn theme-btn btn-sm" to={`../profile-update`}>Edit</Link>
             </div>
         </div>
-        <div className="card-body px-4" >
+        <div className="card-body px-4 dash-profile-info" >
           <div className="col-12">
             <div className="row ">
               <div className="col-6 mt-3">
@@ -103,31 +101,21 @@ const ProfileView = () => {
                 <label className="form-label">
                   <b>Social Media Info : </b>
                 </label>
-                {
-                  kolProfile?.get_social_media?.map((item, index) => {
-                    console.log(item);
-                    return (
-                      <div style={{ marginLeft: "20px" }} className="row">
-                        <div className="col">
-                          {" "}
-                          <h6>Platform :</h6>{item.name}
-                        </div>
-                        <div className="col">
-                          {" "}
-                          <h6>Username :</h6>{item.social_user_id}
-                        </div>
-                        <div className="col">
-                          {" "}
-                          <h6>Followers :</h6>{item.followers}
-                        </div>
-                        {/* <div className="col">
-                          {" "}
-                          <h6>Icon :</h6>{item.social_icon}
-                        </div> */}
-                      </div>
-                    )
-                  })
-                }
+                <span>
+                  <div className="social-cards">
+                    {
+                      kolProfile?.get_social_media?.map((item, index) => {
+                        return (
+                          <div key={index} className="card me-2 mb-2">
+                            <div className="card-body">
+                              <span className="fw-bold">{item.social_user_id}</span> <i className={item.social_icon} ></i> <span className="fw-bold">{item.followers}</span>
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </span>
               </div>
               
               
@@ -136,7 +124,18 @@ const ProfileView = () => {
                   <b>Videos : </b>
                 </label>
                 <div className="row col-12">
-                  <span>{kolProfile?.video_links}</span>
+                  {kolProfile?.video_links?.split(",").map((videoItem, index)=> {
+                    return (
+                      <div className="col-xl-3 col-lg-4 col-md-6 mb-4" key={index}>
+                          <ReactPlayer
+                            url={videoItem}
+                            width='100%'
+                            height='100%'
+                          />
+                      </div>
+                    );
+                  })}
+                  
                 </div>
               </div>
             </div>

@@ -198,7 +198,7 @@ const Header = () => {
                             <>
                               <Link
                                 className="list-item"
-                                to="/dashboard/profileview"
+                                to="/dashboard/profile-view"
                               >
                                 Dashboard
                               </Link>

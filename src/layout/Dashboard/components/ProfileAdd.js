@@ -110,7 +110,7 @@ const ProfileAdd = () => {
     formData.append("state", kolProfile.state);
 
     dispatch(bioDataFormSubmission(formData)).then(() => {
-      navigate("../profileView");
+      navigate("../profile-view");
     });
   };
   let token = localStorage.getItem("token");
@@ -292,15 +292,15 @@ const ProfileAdd = () => {
       <div className="card">
         <div className="card-header">
           <div className="card-title h5 justify-content-between m-0 d-flex align-items-center">
-            <span>Kol Profile Add</span> <Link className="btn theme-btn btn-sm" to={`../profile-view`}>Edit</Link>
+            <span>Kol Profile Add</span> <Link className="btn theme-btn btn-sm" to={`../profile-view`}>View</Link>
           </div>
         </div>
         <div className="card-body px-4" >
-          <div className="row">
+
             <form className="" onSubmit={handleSubmit}>
-              <div className="row mt-3">
-                <div className="col-6">
-                  <label htmlFor="exampleInputEmail1" className="form-label">
+              <div className="row">
+              <div className="col-lg-6 col-sm-12 mt-3">
+                  <label  className="form-label">
                     <b>Name</b>
                   </label>
                   <input
@@ -309,18 +309,16 @@ const ProfileAdd = () => {
                     name="userName"
                     value={kolProfile.userName}
                     onChange={handleChange}
-                    id="exampleInputEmail1"
                   />
                 </div>
-                <div className="col-6">
-                  <label htmlFor="exampleInputEmail1" className="form-label">
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label  className="form-label">
                     <b>Email address</b>
                   </label>
                   <input
                     type="email"
                     name="personal_email"
                     className="form-control"
-                    id="exampleInputEmail1"
                     defaultValue={kolProfile.personal_email}
                     onChange={handleChange}
                   />
@@ -328,9 +326,8 @@ const ProfileAdd = () => {
                     We'll never share your email with anyone else.
                   </div>
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-6">
+
+                <div className="col-lg-6 col-sm-12 mt-3">
                   <label className="form-label">
                     <b>Kol Type</b>
                   </label>
@@ -349,8 +346,8 @@ const ProfileAdd = () => {
                       ))}
                   </select>
                 </div>
-                <div className="col-6">
-                  <label htmlFor="exampleInputPassword1" className="form-label">
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label  className="form-label">
                     <b>City</b>
                   </label>
                   <input
@@ -358,21 +355,17 @@ const ProfileAdd = () => {
                     name="city"
                     onChange={handleChange}
                     className="form-control"
-                    id="exampleInputPassword1"
                   />
                 </div>
-              </div>
 
-              <div className="row mt-3">
-                <div className="col-6">
+                <div className="col-lg-6 col-sm-12 mt-3">
                   <label className="form-label">
                     <b>State</b>
                   </label>
                   <select
-                    className="form-select form-text"
+                    className="form-select"
                     onChange={handleChange}
                     name="state"
-                    aria-label="Default select example"
                   >
                     <option defaultValue>Select State</option>
 
@@ -382,28 +375,28 @@ const ProfileAdd = () => {
                       ))}
                   </select>
                 </div>
-                <div className="col-6">
-                  <label htmlFor="exampleInputPassword1" className=" form-label">
+
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label  className=" form-label">
                     <b>Zip code</b>
                   </label>
                   <input
                     type="text"
                     name="zip_code"
                     className="form-control"
-                    id="exampleInputPassword1"
                     onChange={handleChange}
                   />
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-6">
+
+                <div className="col-lg-6 col-sm-12 mt-3">
                   <label htmlFor="exampleInputPassword1" className=" form-label">
                     <b>Language</b>
                   </label>
 
                   <Select options={a} onChange={languageHandleChange} isMulti />
                 </div>
-                <div className=" col-6">
+
+                <div className="col-lg-6 col-sm-12 mt-3">
                   <label className=" form-label">
                     <b>Most Active Platform</b>
                   </label>
@@ -423,24 +416,76 @@ const ProfileAdd = () => {
                     })}
                   </select>
                 </div>
+
+                <div className="col-lg-6 col-sm-12 mt-3">
+                <label className="form-label">
+                  <b>Bio</b>
+                </label>
+                <textarea
+                  className="form-control"
+                  name="bio"
+                  onChange={handleChange}
+                  rows="6"
+                ></textarea>
               </div>
 
-              <div className="row mt-3">
+              <div className="col-lg-6 col-sm-12 mt-3">
+                <label className="form-label">
+                  <b>Enter Tags</b>
+                </label>
+                <input
+                  value={input}
+                  placeholder="Enter tags"
+                  onKeyDown={onKeyDown}
+                  onKeyUp={onKeyUp}
+                  name="tags"
+                  className="form-control"
+                  onChange={onChange}
+                />
+                <div className="tagDiv">
+                {tags.length > 0 && (
+                  <>
+                    {tags.map((tag, index) => (
+                      <div className="tag btn-default">
+                        {tag}
+                        <button onClick={() => deleteTag(index)}>x</button>
+                      </div>
+                    ))}
+                    </>
+                )}</div>
+              </div>
+
+              <div className="col-lg-6 col-sm-12 mt-3 ">
+                  <label className="form-label">
+                    <b>Upload Avatar</b>
+                  </label>
+                  <input type="file" className="form-control" name="userImage" onChange={handleChange} />
+              </div>
+
+              <div className="col-lg-6 col-sm-12 mt-3 ">
+                    <label className="form-label">
+                      <b>Upload Banner</b>
+                    </label>
+                    <input type="file" className="form-control" name="userBanner" onChange={handleChange} />
+              </div>
+
+              
+
+              <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
                   <b>Social Media Info</b>
                 </label>
 
                 {inputList.map((x, i) => {
                   return (
-                    <div className="row topmrgn">
-                      <div className="col-3">
+                    <div className="col d-flex mb-2">
                         <select
-                          className="form-select"
+                          className="form-select me-3"
                           name="name"
                           onChange={(e) => handleInputChange(e, i)}
                         >
                           <option defaultValue>
-                            Select Social Active platform
+                            Social Media
                           </option>
                           {Object.keys(social_active).map((keyName, keyIndex) => {
                             return (
@@ -450,105 +495,86 @@ const ProfileAdd = () => {
                             );
                           })}
                         </select>
-                      </div>
-                      <div className="col-2">
                         <input
-                          className="form-control ml10"
+                          className="form-control me-3"
                           name="social_user_id"
                           placeholder="Enter User Id"
                           value={x.social_user_id}
                           onChange={(e) => handleInputChange(e, i)}
                         />
-                      </div>
-                      <div className="col-2">
                         <input
-                          className="form-control ml10"
+                          className="form-control me-3"
                           name="followers"
                           placeholder="30k"
                           value={x.followers}
                           onChange={(e) => handleInputChange(e, i)}
                         />
-                      </div>
-                      <div className="col-2">
-                        <input
+
+                        {/* <input
                           className="form-control ml10"
                           name="social_icon"
                           placeholder="fb-btn"
                           value={x.social_icon}
                           onChange={(e) => handleInputChange(e, i)}
-                        />
-                      </div>
+                        /> */}
 
-                      <div className="col-2">
                         <div className="btn-box">
                           {inputList.length !== 1 && (
                             <button
                               className="btn sub-btn"
                               onClick={() => handleRemoveClick(i)}
-                            >
-                              {" "}
-                              -{" "}
-                            </button>
+                            > - </button>
                           )}
                           {inputList.length - 1 === i && (
                             <button
-                              className="btn custome-btn left-mrgn"
+                              className="btn custom-btn "
                               onClick={handleAddClick}
-                            >
-                              {" "}
-                              +{" "}
-                            </button>
+                            > + </button>
                           )}
                         </div>
-                      </div>
+
                     </div>
                   );
                 })}
                 {/* <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div> */}
               </div>
 
-              <div className="col-12 mt-3">
+              <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
                   <b>Video Links</b>
                 </label>
 
-                <div className="row">
-                  <div className="col-8">
+                <div className="col d-flex mb-2">
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control me-3"
                       placeholder="enter video link"
                       onChange={(e) => {
                         handleVideoChange(e, 0);
                       }}
                     />
-                  </div>
-                  <div className="col-4">
+
+                  <div className="btn-box">
                     <button
                       type="button"
                       name="video_links"
-                      className="btn custome-btn"
+                      className="btn custom-btn"
                       onClick={() => setLinkCount(linkCount + 1)}
-                    >
-                      +
-                    </button>
+                    > + </button>
                   </div>
                 </div>
 
                 {[...Array(linkCount)].map((_, i) => (
-                  <div key={i} className="linkdiv">
-                    <div className="row">
-                      <div className="col-8">
+                    <div key={i} className="col d-flex mb-2">
                         <input
                           type="text"
-                          className="form-control"
+                          className="form-control me-3"
                           onBlur={(e) => {
                             handleVideoChange(e, i + 1);
                           }}
                           placeholder="enter video link"
                         />
-                      </div>
-                      <div className="col-4">
+                        <div className="btn-box">
                         <button
                           type="button"
                           name="video_links"
@@ -557,64 +583,18 @@ const ProfileAdd = () => {
                             setLinkCount(linkCount - 1);
                             removeLastElement();
                           }}
-                        >
-                          -
-                        </button>
-                      </div>
+                        > - </button>
+                        </div>
                     </div>
-                  </div>
                 ))}
               </div>
 
-              <div className="col-12 mt-3">
-                <label className="form-label">
-                  <b>Bio</b>
-                </label>
-                <textarea
-                  className="form-control form-text"
-                  id="exampleFormControlTextarea1"
-                  name="bio"
-                  onChange={handleChange}
-                  rows="3"
-                ></textarea>
-              </div>
 
-              <div className="col-12 mt-3">
-                {tags.length > 0 && (
-                  <div className="tagDiv">
-                    {tags.map((tag, index) => (
-                      <div className="tag">
-                        {tag}
-                        <button onClick={() => deleteTag(index)}>x</button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <label className="form-label">
-                  <b>Enter Tags</b>
-                </label>
-                <input
-                  value={input}
-                  placeholder="Enter a tag"
-                  onKeyDown={onKeyDown}
-                  onKeyUp={onKeyUp}
-                  name="tags"
-                  className="form-control"
-                  onChange={onChange}
-                />
-              </div>
+              
 
-              <div className="row mt-3">
-                <label className="form-label">
-                  <b>Upload Avatar</b>
-                </label>
-                <input type="file" name="userImage" onChange={handleChange} />
-              </div>
-              <div className="row mt-3">
-                <label className="form-label">
-                  <b>Upload Banner</b>
-                </label>
-                <input type="file" name="userBanner" onChange={handleChange} />
+              
+
+              
               </div>
 
               <div className="mt-4 mx-auto d-block">
@@ -623,7 +603,7 @@ const ProfileAdd = () => {
                 </button>
               </div>
             </form>
-          </div>
+
         </div>
       </div>
      

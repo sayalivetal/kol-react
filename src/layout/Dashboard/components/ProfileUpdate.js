@@ -43,6 +43,35 @@ const ProfileUpdate = () => {
     getKolprofile(callback, token);
   }, []);
   useEffect(() => {
+    if (biodata.get_social_media) {
+      setInputList([...biodata.get_social_media]);
+    }
+    if (biodata.video_links) {
+      let str = biodata.video_links;
+      let chars = str.split(",");
+
+      setVideoList([...chars]);
+    }
+    if (biodata.tags) {
+      let str = biodata.tags;
+      let tag = str.split(",");
+      setTags([...tag]);
+    }
+    if (biodata.languages) {
+      let str = biodata.languages;
+      let language = str.split(",");
+      setSelected([...language]);
+    }
+    if (biodata.kol_type) {
+      console.log(biodata.kol_type, categoryList);
+      setKolType(
+        Object.keys(categoryList).find(
+          (key) => categoryList[key] == biodata.kol_type
+        )
+      );
+    }
+  }, [biodata]);
+  useEffect(() => {
     let a = selected.map((item, index) => {
       return {
         label: item,
@@ -71,7 +100,7 @@ const ProfileUpdate = () => {
     };
     getAllStates(callback);
   }, []);
-
+console.log(kolType);
   const dispatch = useDispatch();
   const initialArr = {};
   initialArr["name"] = "";
@@ -96,9 +125,10 @@ const ProfileUpdate = () => {
     list[index][name] = value;
     setInputList(list);
   };
-
+console.log("gfhdsghsfgsdgf",inputList);
   // handle click event of the Remove button
   const handleRemoveClick = (index) => {
+  
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
@@ -256,35 +286,7 @@ const ProfileUpdate = () => {
     getAllStreams(callback, token);
   }, []);
 
-  useEffect(() => {
-    if (biodata.get_social_media) {
-      setInputList([...biodata.get_social_media]);
-    }
-    if (biodata.video_links) {
-      let str = biodata.video_links;
-      let chars = str.split(",");
 
-      setVideoList([...chars]);
-    }
-    if (biodata.tags) {
-      let str = biodata.tags;
-      let tag = str.split(",");
-      setTags([...tag]);
-    }
-    if (biodata.languages) {
-      let str = biodata.languages;
-      let language = str.split(",");
-      setSelected([...language]);
-    }
-    if (biodata.kol_type) {
-      console.log(biodata.kol_type, categoryList);
-      setKolType(
-        Object.keys(categoryList).find(
-          (key) => categoryList[key] == biodata.kol_type
-        )
-      );
-    }
-  }, [biodata]);
   useEffect(() => {
     setKolProfile(() => {
       console.log(videoList, inputList);
@@ -311,7 +313,7 @@ const ProfileUpdate = () => {
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
-
+console.log(kolProfile.social_media);
   const languageHandleChange = (e) => {
     console.log("jghjdfhgjdghgdh", e);
     setA([...e]);
@@ -384,11 +386,11 @@ const ProfileUpdate = () => {
           </div>
         </div>
         <div className="card-body px-4" >
-          <div className="row">
+
             <form className="" onSubmit={handleSubmit}>
-              <div className="row mt-3">
-                <div className="col-6">
-                  <label htmlFor="exampleInputEmail1" className="form-label">
+              <div className="row">
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label className="form-label">
                     <b>Name</b>
                   </label>
                   <input
@@ -396,13 +398,12 @@ const ProfileUpdate = () => {
                     className="form-control"
                     name="userName"
                     onChange={handleChange}
-                    id="exampleInputEmail1"
                     defaultValue={biodata?.get_user?.name}
                     aria-describedby="emailHelp"
                   />
                 </div>
-                <div className="col-6">
-                  <label htmlFor="exampleInputEmail1" className="form-label">
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label  className="form-label">
                     <b>Email address</b>
                   </label>
                   <input
@@ -410,7 +411,6 @@ const ProfileUpdate = () => {
                     name="personal_email"
                     className="form-control"
                     id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
                     defaultValue={biodata?.personal_email}
                     onChange={handleChange}
                   />
@@ -418,9 +418,8 @@ const ProfileUpdate = () => {
                     We'll never share your email with anyone else.
                   </div>
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-6">
+              
+                <div className="col-lg-6 col-sm-12 mt-3">
                   <label className="form-label">
                     <b>Kol Type</b>
                   </label>
@@ -428,9 +427,9 @@ const ProfileUpdate = () => {
                     className="form-select"
                     name="kol_type"
                     onChange={handleChange}
-                    aria-label="Default select example"
                     defaultValue={kolType ? kolType : "hgdf"}
                   >
+                    {console.log(kolType)}
                     <option
                       value={kolType}
                     >
@@ -444,8 +443,8 @@ const ProfileUpdate = () => {
                       ))}
                   </select>
                 </div>
-                <div className="col-6">
-                  <label htmlFor="exampleInputPassword1" className="form-label">
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label  className="form-label">
                     <b>City</b>
                   </label>
                   <input
@@ -453,14 +452,11 @@ const ProfileUpdate = () => {
                     name="city"
                     onChange={handleChange}
                     className="form-control"
-                    id="exampleInputPassword1"
                     value={biodata.city}
                   />
                 </div>
-              </div>
 
-              <div className="row mt-3">
-                <div className="col-6">
+                <div className="col-lg-6 col-sm-12 mt-3">
                   <label className="form-label">
                     <b>State</b>
                   </label>
@@ -469,7 +465,6 @@ const ProfileUpdate = () => {
                     className="form-select form-text"
                     onChange={handleChange}
                     name="state"
-                    aria-label="Default select example"
                   >
                     <option value={biodata.state}>{biodata.state}</option>
 
@@ -479,39 +474,36 @@ const ProfileUpdate = () => {
                       ))}
                   </select>
                 </div>
-                <div className="col-6">
-                  <label htmlFor="exampleInputPassword1" className=" form-label">
+
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label className=" form-label">
                     <b>Zip code</b>
                   </label>
                   <input
                     type="text"
                     name="zip_code"
                     className="form-control"
-                    id="exampleInputPassword1"
                     onChange={handleChange}
                     value={biodata.zip_code}
                   />
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col-6">
-                  <label htmlFor="exampleInputPassword1" className=" form-label">
+
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label  className=" form-label">
                     <b>Language</b>
                   </label>
-
-
-                  <Select
+                 <Select
                     options={a}
                     onChange={languageHandleChange}
                     isMulti
                     value={b}
                   />
                 </div>
-                <div className=" col-6">
+
+                <div className="col-lg-6 col-sm-12 mt-3">
                   <label className=" form-label">
                     <b>Most Active Platform</b>
                   </label>
-
                   <select
                     className="form-select"
                     name="social_active"
@@ -529,160 +521,23 @@ const ProfileUpdate = () => {
                     })}
                   </select>
                 </div>
-              </div>
+              
 
-              <div className="row mt-3">
-                <label className="form-label">
-                  <b>Social Media Info</b>
-                </label>
-
-                {inputList.map((x, i) => {
-                  return (
-                    <div className="row topmrgn">
-                      <div className="col-3">
-
-                        <select
-                          className="form-select"
-                          name="name"
-                          onChange={(e) => handleInputChange(e, i)}
-                        >
-                          <option value={x.name}>
-                            {x.name}
-                          </option>
-                          {Object.keys(social_active).map((keyName, keyIndex) => {
-                            return (
-                              <option key={keyIndex} value={keyName}>
-                                {keyName}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </div>
-                      <div className="col-2">
-                        <input
-                          className="form-control ml10"
-                          name="social_user_id"
-                          placeholder="Enter User Id"
-                          value={x.social_user_id}
-                          onChange={(e) => handleInputChange(e, i)}
-                        />
-                      </div>
-                      <div className="col-2">
-                        <input
-                          className="form-control ml10"
-                          name="followers"
-                          placeholder="30k"
-                          value={x.followers}
-                          onChange={(e) => handleInputChange(e, i)}
-                        />
-                      </div>
-                      <div className="col-2">
-                        <input
-                          className="form-control ml10"
-                          name="social_icon"
-                          placeholder="fb-btn"
-                          value={x.social_icon}
-                          onChange={(e) => handleInputChange(e, i)}
-                        />
-                      </div>
-
-                      <div className="col-2">
-                        <div className="btn-box">
-                          {inputList.length !== 1 && (
-                            <button
-                              className="btn sub-btn"
-                              onClick={() => handleRemoveClick(i)}
-                            >
-                              {" "}
-                              -{" "}
-                            </button>
-                          )}
-                          {inputList.length - 1 === i && (
-                            <button
-                              className="btn custome-btn left-mrgn"
-                              onClick={handleAddClick}
-                            >
-                              {" "}
-                              +{" "}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-                {/* <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div> */}
-              </div>
-
-              <div className="col-12 mt-3">
-                <label className="form-label">
-                  <b>Video Links</b>
-                </label>
-                {videoList.map((x, i) => {
-                  return (
-                    <div className="row topmrgn">
-                      <div className="col-8">
-                        <input
-                          name="videoLink"
-                          placeholder="Video Link"
-                          className="form-control"
-                          defaultValue={x}
-                          onChange={(e) => handleInputVideoChange(e, i)}
-                        />
-                      </div>
-
-                      <div className="col-2">
-                        <div className="btn-box">
-                          {videoList.length !== 1 && (
-                            <button
-                              className="btn sub-btn"
-                              onClick={() => handleVideoRemoveClick(i)}
-                            >
-                              -
-                            </button>
-                          )}
-                          {videoList.length - 1 === i && (
-                            <button
-                              className="btn custome-btn left-mrgn"
-                              onClick={handleVideoAddClick}
-                            >
-                              +
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="col-12 mt-3">
+                <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
                   <b>Bio</b>
                 </label>
                 <textarea
-                  className="form-control form-text"
-                  id="exampleFormControlTextarea1"
+                  className="form-control"
                   name="bio"
                   onChange={handleChange}
                   defaultValue={biodata.bio}
-                  rows="3"
+                  rows="6"
                 ></textarea>
               </div>
 
-              <div className="col-12 mt-3">
-                {tags.length ? (
-                  <div className="tagDiv">
-                    {tags.map((tag, index) => (
-                      <div className="tag">
-                        {tag}
-                        <button onClick={() => deleteTag(index)}>x</button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  ""
-                )}
+              <div className="col-lg-6 col-sm-12 mt-3">
+                
                 <label className="form-label">
                   <b>Enter Tags</b>
                 </label>
@@ -696,22 +551,140 @@ const ProfileUpdate = () => {
                   onChange={onChange}
                 // defaultValue={biodata.kolProfile.video_links}
                 />
+                {tags.length ? (
+                  <div className="tagDiv">
+                    {tags.map((tag, index) => (
+                      <div className="tag btn-default">
+                        {tag}
+                        <button onClick={() => deleteTag(index)}>x</button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
 
-              <div className="row mt-3">
-                <label className="form-label">
-                  <b>Upload Avatar</b>
-                </label>
-                <input type="file" name="userImage" onChange={handleChange} />
-                <img src={`${imageUrl}${biodata.avatar}`} height={50} />
+              <div className="col-lg-6 col-sm-12 mt-3 d-flex">
+                <div className="profile-img-thumb"><img src={`${imageUrl}${biodata.avatar}`} height={50} alt="Avatar" /></div>
+                <div className="profile-img-group">
+                  <label className="form-label">
+                    <b>Upload Avatar</b>
+                  </label>
+                  <input type="file" className="form-control" name="userImage" onChange={handleChange} />
+                </div>
               </div>
-              <div className="row mt-3">
-                <label className="form-label">
-                  <b>Upload Banner</b>
-                </label>
-                <input type="file" name="userBanner" onChange={handleChange} />
-                <img src={`${imageUrl}${biodata.banner}`} height={50} width={50} />
+
+              <div className="col-lg-6 col-sm-12 mt-3 d-flex">
+                <div className="profile-img-thumb"><img src={`${imageUrl}${biodata.banner}`} height={50} width={50} alt="Banner"/></div>
+                  <div className="profile-img-group">
+                    <label className="form-label">
+                      <b>Upload Banner</b>
+                    </label>
+                    <input type="file" className="form-control" name="userBanner" onChange={handleChange} />
+                  </div>
               </div>
+
+
+                  <div className="col-lg-6 col-sm-12 mt-3">
+                    <label className="form-label">
+                      <b>Social Media Info</b>
+                    </label>
+
+                    {inputList.map((x, i) => {
+                      return (
+                          <div className="col d-flex mb-2">
+                            <select
+                              className="form-select me-3"
+                              name="name"
+                              onChange={(e) => handleInputChange(e, i)}
+                            >
+                              <option value={x.name}>
+                                {x.name}
+                              </option>
+                              {Object.keys(social_active).map((keyName, keyIndex) => {
+                                return (
+                                  <option key={keyIndex} value={keyName}>
+                                    {keyName}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                            <input
+                              className="form-control  me-3"
+                              name="social_user_id"
+                              placeholder="Enter User Id"
+                              value={x.social_user_id}
+                              onChange={(e) => handleInputChange(e, i)}
+                            />
+                            <input
+                              className="form-control  me-3"
+                              name="followers"
+                              placeholder="30k"
+                              value={x.followers}
+                              onChange={(e) => handleInputChange(e, i)}
+                            />
+
+                            <div className="btn-box">
+                              {inputList.length !== 1 && (
+                                <button
+                                  className="btn sub-btn"
+                                  onClick={() => handleRemoveClick(i)}
+                                > - </button>
+                              )}
+                              {inputList.length - 1 === i && (
+                                <button
+                                  className="btn custom-btn"
+                                  onClick={handleAddClick}
+                                > + </button>
+                              )}
+                            </div>
+                          </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="col-lg-6 col-sm-12 mt-3">
+                    <label className="form-label">
+                      <b>Video Links</b>
+                    </label>
+                    {videoList.map((x, i) => {
+                      return (
+                          <div className="col d-flex mb-2">
+                            <input
+                              name="videoLink"
+                              placeholder="Video Link"
+                              className="form-control me-3"
+                              defaultValue={x}
+                              onChange={(e) => handleInputVideoChange(e, i)}
+                            />
+
+                            <div className="btn-box">
+                              {videoList.length !== 1 && (
+                                <button
+                                  className="btn sub-btn"
+                                  onClick={() => handleVideoRemoveClick(i)}
+                                >
+                                  -
+                                </button>
+                              )}
+                              {videoList.length - 1 === i && (
+                                <button
+                                  className="btn custom-btn "
+                                  onClick={handleVideoAddClick}
+                                >
+                                  +
+                                </button>
+                              )}
+                            </div>
+                          
+                        </div>
+                      );
+                    })}
+                  </div>
+
+              </div>
+
 
               <div className="mt-4 mx-auto d-block">
                 <button type="submit" className="btn theme-btn form-text">
@@ -719,7 +692,7 @@ const ProfileUpdate = () => {
                 </button>
               </div>
             </form>
-          </div>
+
         </div>
       </div>
     </>

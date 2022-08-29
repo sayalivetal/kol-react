@@ -34,47 +34,53 @@ const AnnouncementView = () => {
             announcementData && announcementData.map((item, index) => {
               return (
                 <div className="" key={index}>
-                  <div className="row mt-3">
-                    <div className="col-6">
-                      <label className="form-label">
-                        <b>Title : </b>
-                      </label>
-                      <span> {item.title}</span>
-                    </div>
-                    <div className="col-6">
-                      <label className="form-label">
-                        <b>Start Date : </b>
-                      </label>
-                      <span> {item.start_date}</span>
-                    </div>
-                  </div>
-                  <div className="row mt-3">
-                    <div className="col-6">
-                      <label className="form-label">
-                        <b>Description : </b>
-                      </label>
-                      <span> {item.description}</span>
-                    </div>
-                    <div className="col-6">
-                      <label className="form-label">
-                        <b>End Date : </b>
-                      </label>
-                      <span> {item.end_date}</span>
-                    </div>
-                  </div>
-                  <div className="row mt-3">
-                    <div className="col-6">
-                      <label className="form-label">
-                        <b>Social Media Platform : </b>
-                      </label>
-                      <span> {item.social_platform}</span>
-                    </div>
-                    <div className="col-6">
-                      <label className="form-label">
-                        <b>Image : </b>
-                      </label>
-                      <img className='img-fluid' src={`${imageUrl}${item.image}`} />
-                    </div>
+                  <div className="row announcement-view">
+                      <div className="col-lg-3 col-sm-12 mt-3">
+                        <div className='card'>
+                          <div className="card-header">
+                            <div className="card-title h5  m-0 d-flex ">
+                              <span>Banner Thumb</span> 
+                            </div>
+                          </div>
+                          <img className='img-fluid' src={`${imageUrl}${item.image}`} />
+                        </div>
+                      </div>
+
+                      <div className="col-lg-9 col-sm-12 ">
+                        <div className="col-12 mt-3">
+                          <label className="form-label">
+                            <b>Title : </b>
+                          </label>
+                          <span> {item.title}</span>
+                        </div>
+                        <div className="col-12 mt-3">
+                          <label className="form-label">
+                            <b>Start Date : </b>
+                          </label>
+                          <span> {item.start_date}</span>
+                        </div>
+
+                        <div className="col-12 mt-3">
+                          <label className="form-label">
+                            <b>Description : </b>
+                          </label>
+                          <span> {item.description}</span>
+                        </div>
+                        <div className="col-12 mt-3">
+                          <label className="form-label">
+                            <b>End Date : </b>
+                          </label>
+                          <span> {item.end_date}</span>
+                        </div>
+
+                        <div className="col-12 mt-3">
+                          <label className="form-label">
+                            <b>Social Media Platform : </b>
+                          </label>
+                          <span> {item.social_platform}</span>
+                        </div>
+                      </div>
+                    
                   </div>
                 </div>
               )
