@@ -11,11 +11,22 @@ import {
   dashboardSelector,
 } from "../../../slices/Dashboard/dashboard";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getAnnouncement } from "../../../slices/api/simpleApi";
+import { getAnnouncement, getAllStreams } from "../../../slices/api/simpleApi";
 import { toast } from "react-toastify";
+import moment from "moment";
+
 
 const Announcement = () => {
   const dispatch = useDispatch();
+  const [announcement, setAnnouncement] = useState({
+    title: "",
+    description: "",
+    start_date: "",
+    end_date: "",
+    social_platform: "",
+    // Image: "",
+    imageUrl: "",
+  });
 
   const { id } = useParams();
   const token = localStorage.getItem("token");
@@ -45,21 +56,14 @@ const Announcement = () => {
     };
     getAnnouncement(callback, token, id);
   }, [id]);
+  console.log(announcement);
 
-  const [announcement, setAnnouncement] = useState({
-    title: "",
-    description: "",
-    start_date: "",
-    end_date: "",
-    social_platform: "",
-    Image: "",
-    imageUrl: "",
-  });
-
+ 
   const [selectedFile, setSelectedFile] = useState(null);
 
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [social_active, setSocialActive] = useState([]);
   const [error, setError] = useState({
     title: 0,
     description: 0,
@@ -75,15 +79,19 @@ const Announcement = () => {
     let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
     let finalDate = [date.getFullYear(), mnth, day].join("-");
+
     console.log(finalDate, dateStartTime);
+
+
     setAnnouncement(() => {
       return {
         ...announcement,
-        start_date: `${finalDate} ${dateStartTime}`,
+        start_date: moment(`${finalDate} ${dateStartTime}`).format('YYYY-MM-DD hh:mm:ss')
       };
     });
   }, [startDate]);
   console.log(announcement.start_date);
+
   useEffect(() => {
     if (!endDate) return;
     let date = new Date(endDate);
@@ -95,7 +103,7 @@ const Announcement = () => {
     setAnnouncement(() => {
       return {
         ...announcement,
-        end_date: finalDate + " " + dateEndTime,
+        end_date: moment(`${finalDate} ${dateEndTime}`).format('YYYY-MM-DD hh:mm:ss')
       };
     });
   }, [endDate]);
@@ -117,37 +125,32 @@ const Announcement = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // let date = new Date(startDate);
-
-    // let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
-    // let day = ("0" + date.getDate()).slice(-2);
-    // const finalDate = [date.getFullYear(), mnth, day].join("-");
-
-    // setAnnouncement({ ...announcement, start_date: finalDate });
-    let a = {};
-    for (const announcementKey in announcement) {
-      if (
-        announcement[announcementKey] == "" ||
-        announcement[announcementKey] == undefined
-      ) {
-        a[announcementKey] = 1;
-        setError({
-          ...a,
-        });
+    if(!id){
+      let a = {};
+      for (const announcementKey in announcement) {
+        if (
+          announcement[announcementKey] == "" ||
+          announcement[announcementKey] == undefined
+        ) {
+          a[announcementKey] = 1;
+          setError({
+            ...a,
+          });
+        }
+      }
+  
+      for (let key in error) {
+        if (error[key] == 0) {
+          toast.error("Please fill details");
+          return;
+        }
       }
     }
-
-    for (let key in error) {
-      if (error[key] == 0) {
-        toast.error("Please fill details");
-        return;
-      }
-    }
+ 
 
     const formData = new FormData();
     if (selectedFile) {
-      console.log("hello");
+     // console.log("hello");
       formData.append("image", selectedFile);
     }
     if(id){
@@ -164,12 +167,31 @@ const Announcement = () => {
     //Submit data
     dispatch(announceDataFormSubmission(formData)).then((data) => {
       console.log(data);
-      if (data.payload.statusCode) {
+      if (data.payload.statusCode == 201) {
+        navigate("../../dashboard/announcement/list");
+      }
+      if (data.payload.statusCode == 202) {
         navigate("../../dashboard/announcement/list");
       }
     });
 
     // toast.success(message)
+  };
+
+  useEffect(() => {
+    const callback = (data) => {
+      //console.log(data);
+      setSocialActive({ ...data });
+    };
+    getAllStreams(callback, token);
+  }, []);
+
+
+  const handleChangeSocialActive = (e) => {
+    //setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
+    setAnnouncement((prevState) => {
+      return { ...prevState, [e.target.name]: [e.target.value] };
+    });
   };
 
   return (
@@ -203,18 +225,39 @@ const Announcement = () => {
                 <label className="form-label">
                   <b>Social Media Platform</b>
                 </label>
-                <input
+                {/* <input
                   type="text"
                   className="form-control"
                   value={announcement.social_platform}
                   onChange={handleChange}
                   name="social_platform"
+                  autoComplete="off"
                 />
                 {error.social_platform == 1 ? (
                   <span className="error-show">
                     Please fill valid social Media
                   </span>
-                ) : null}
+                ) : null} */}
+
+                    <select
+                    className="form-select"
+                    name="social_platform"
+                    onChange={handleChangeSocialActive}
+                  >
+                    {/* <option defaultValue>Select Event Type</option> */}
+                    <option value={announcement?.social_platform}>
+                        {announcement.social_platform ? announcement.social_platform : "Social platform"}
+                    </option>
+
+                    {Object.keys(social_active).map((keyName, keyIndex) => {
+                      return (
+                        <option key={keyIndex} value={keyName}>
+                          {keyName}
+                        </option>
+                      );
+                    })}
+                  </select>
+
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
@@ -226,10 +269,11 @@ const Announcement = () => {
                   name="start_date_time"
                   onChange={(date) => setStartDate(date)}
                   timeInputLabel="Time:"
-                  dateFormat="yyyy-MM-dd hh:mm:ss aa"
+                  dateFormat="yyyy-MM-dd hh:mm:ss "
                   showTimeInput
                   value={announcement.start_date}
                   className="form-control"
+                  autoComplete="off"
                 />
                 {error.start_date == 1 ? (
                   <span className="error-show">Please fill valid start date</span>
@@ -243,11 +287,12 @@ const Announcement = () => {
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
                   timeInputLabel="Time:"
-                  dateFormat="yyyy-MM-dd hh:mm:ss aa"
+                  dateFormat="yyyy-MM-dd hh:mm:ss "
                   showTimeInput
                   name="end_date_time"
                   value={announcement.end_date}
                   className="form-control"
+                  autoComplete="off"
                 />
                 {error.start_date == 1 ? (
                   <span className="error-show">Please fill valid end date</span>

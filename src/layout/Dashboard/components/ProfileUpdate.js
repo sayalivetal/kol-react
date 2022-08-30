@@ -33,8 +33,24 @@ const ProfileUpdate = () => {
   const [kolType, setKolType] = useState("");
 
   const [video_links, setVideoLinks] = useState([]);
-  console.log(language);
+
   let token = localStorage.getItem("token");
+  const [kolProfile, setKolProfile] = useState({
+    userName: "",
+    personal_email: "",
+    kol_type: "",
+    city: "",
+    zip_code: "",
+    state: "",
+    userImage: "",
+    bio: "",
+    social_media: [],
+    social_active: "",
+    video_links: [],
+    languages: [],
+    tags: [],
+    avatar: "",
+  });
 
   useEffect(() => {
     const callback = (data) => {
@@ -62,7 +78,7 @@ const ProfileUpdate = () => {
       let language = str.split(",");
       setSelected([...language]);
     }
-    if (biodata.kol_type) {
+    if (biodata.kol_type && categoryList) {
       console.log(biodata.kol_type, categoryList);
       setKolType(
         Object.keys(categoryList).find(
@@ -70,7 +86,7 @@ const ProfileUpdate = () => {
         )
       );
     }
-  }, [biodata]);
+  }, [biodata, categoryList]);
   useEffect(() => {
     let a = selected.map((item, index) => {
       return {
@@ -79,9 +95,8 @@ const ProfileUpdate = () => {
       };
     });
     setA([...a]);
-    console.log(a);
   }, [selected]);
-  console.log(b);
+
   useEffect(() => {
     const callback = (data) => {
       setCategoryList({ ...data });
@@ -100,35 +115,34 @@ const ProfileUpdate = () => {
     };
     getAllStates(callback);
   }, []);
-console.log(kolType);
+
   const dispatch = useDispatch();
   const initialArr = {};
   initialArr["name"] = "";
   initialArr["social_user_id"] = "";
   initialArr["followers"] = "";
-  initialArr["social_icon"] = "";
-  //console.log(initialArr);
+
+  // initialArr["social_icon"] = "";
   const [inputList, setInputList] = useState([
     {
       name: "",
       social_user_id: "",
       followers: "",
-      social_icon: "",
+      // social_icon: "",
     },
   ]);
 
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
-    console.log(value);
+   // console.log(value);
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
   };
-console.log("gfhdsghsfgsdgf",inputList);
   // handle click event of the Remove button
-  const handleRemoveClick = (index) => {
-  
+  const handleRemoveClick = (e,index) => {
+    e.preventDefault()
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
@@ -138,7 +152,7 @@ console.log("gfhdsghsfgsdgf",inputList);
   const handleAddClick = () => {
     setInputList([
       ...inputList,
-      { name: "", social_user_id: "", followers: "", social_icon: "" },
+      { name: "", social_user_id: "", followers: "" },   //, social_icon: ""
     ]);
   };
 
@@ -161,24 +175,12 @@ console.log("gfhdsghsfgsdgf",inputList);
   const handleVideoAddClick = () => {
     setVideoList([...videoList, ""]);
   };
-  const [kolProfile, setKolProfile] = useState({
-    userName: "",
-    personal_email: "",
-    kol_type: "",
-    city: "",
-    zip_code: "",
-    state: "",
-    userImage: "",
-    bio: "",
-    social_media: [],
-    social_active: "",
-    video_links: [],
-    languages: [],
-    tags: [],
-    avatar: "",
-  });
+ 
+
+
 
   useEffect(() => {
+    console.log("fddddddddddddddddd",inputList);
     setKolProfile(() => {
       return {
         ...kolProfile,
@@ -187,11 +189,11 @@ console.log("gfhdsghsfgsdgf",inputList);
     });
   }, [inputList]);
   useEffect(() => {
-    console.log(b);
+
     let x = b.map((item, index) => {
       return item.value;
     });
-    console.log(x);
+
     setKolProfile(() => {
       return {
         ...kolProfile,
@@ -200,7 +202,7 @@ console.log("gfhdsghsfgsdgf",inputList);
     });
   }, [b]);
   useEffect(() => {
-    console.log(videoList);
+
     setKolProfile(() => {
       return {
         ...kolProfile,
@@ -289,7 +291,7 @@ console.log("gfhdsghsfgsdgf",inputList);
 
   useEffect(() => {
     setKolProfile(() => {
-      console.log(videoList, inputList);
+
       return {
         ...kolProfile,
         userName: biodata?.get_user?.name,
@@ -313,21 +315,19 @@ console.log("gfhdsghsfgsdgf",inputList);
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
-console.log(kolProfile.social_media);
+
   const languageHandleChange = (e) => {
-    console.log("jghjdfhgjdghgdh", e);
     setA([...e]);
   };
 
   const {
     biodata: { kolProfileData },
   } = useSelector(dashboardSelector);
-  console.log("fgsdhjjjj", kolProfile.languages);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    console.log(kolProfile.video_links);
     if (!selectedFile || !bannerFile) {
       formData.append("personal_email", kolProfile.personal_email);
       formData.append("kol_type", kolProfile.kol_type);
@@ -372,9 +372,9 @@ console.log(kolProfile.social_media);
       value: value,
     };
   });
-  console.log("kolProfile", kolProfile);
-  console.log("biodata", biodata);
-  // console.log("hgdfffffffffffffffffffffff", kolProfile);
+ // console.log("kolProfile", kolProfile);
+ // console.log("biodata", biodata);
+
 
   return (
     <>
@@ -429,8 +429,7 @@ console.log(kolProfile.social_media);
                     onChange={handleChange}
                     defaultValue={kolType ? kolType : "hgdf"}
                   >
-                    {console.log(kolType)}
-                    <option
+                    <option 
                       value={kolType}
                     >
                       {biodata.kol_type}
@@ -629,7 +628,7 @@ console.log(kolProfile.social_media);
                               {inputList.length !== 1 && (
                                 <button
                                   className="btn sub-btn"
-                                  onClick={() => handleRemoveClick(i)}
+                                  onClick={(e) => handleRemoveClick(e,i)}
                                 > - </button>
                               )}
                               {inputList.length - 1 === i && (
@@ -663,7 +662,7 @@ console.log(kolProfile.social_media);
                               {videoList.length !== 1 && (
                                 <button
                                   className="btn sub-btn"
-                                  onClick={() => handleVideoRemoveClick(i)}
+                                  onClick={(e) => handleVideoRemoveClick(e,i)}
                                 >
                                   -
                                 </button>

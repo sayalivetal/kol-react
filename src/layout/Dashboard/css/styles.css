@@ -46,3 +46,5 @@
 }
 .announcment-thumb { width:180px; max-width: 100%;}
 .announcement-view .form-label { min-width: 212px; }
+.btn-logout { color:#fff; background: #0d0916; margin:-8px 0; font-size: 20px;}
+.btn-logout:hover { color:#f01f4b; }

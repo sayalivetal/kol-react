@@ -3,14 +3,16 @@ import React, { useEffect, useState } from "react";
 import {  getKolAllAnnouncements,  deleteAnnouncement, } from "../../../slices/api/simpleApi";
 // import Pagination from "../../../common/components/PaginationJSX";
 import { Link, useNavigate } from "react-router-dom";
-import { announceDelete } from "../../../slices/Dashboard/dashboard";
-import { useDispatch } from "react-redux";
+import { announceDelete, dashboardSelector } from "../../../slices/Dashboard/dashboard";
+import { useDispatch, useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
 import { imageUrl } from "../../../common/apis";
 
 
 const AnnouncementList = () => {
   const dispatch = useDispatch();
+  const { announcement} = useSelector(dashboardSelector);
+
   const token = localStorage.getItem("token");
   const [announcements, setAnnouncements] = useState([]);
   const [page, setPage] = useState(1);
@@ -27,10 +29,18 @@ const AnnouncementList = () => {
     // deleteAnnouncement(token , id);
     console.log(id);
     dispatch(announceDelete(id)).then((data) => {
-      const callback = (data) => {
-        setAnnouncements([...data]);
-      };
-      getKolAllAnnouncements(callback, token);
+      //console.log(data);
+      if(data.payload.statusCode == 200){
+        const callback = (data) => {
+          setAnnouncements([...data]);
+        };
+        getKolAllAnnouncements(callback, token,page,10);
+      }
+     
+      // const callback = (data) => {
+      //   setAnnouncements([...data]);
+      // };
+      // getKolAllAnnouncements(callback, token);
     });
   };
   const handlePageChange = (pageNumber) => {

@@ -50,9 +50,13 @@ const EmailVerify = () => {
     dispatch(emailVerification({ otp, email }))
     e.target.reset();
   };
+
   const handleOtp = () => {
     dispatch(resendEmailOtp(email));
   };
+
+  console.log("otp", otp)
+  
   return (
     <section className="otp-bg">
         <div className="container">

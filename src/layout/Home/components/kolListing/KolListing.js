@@ -144,6 +144,22 @@ const KolListing = () => {
       dispatch(kolDeleteBookmark({ profileId, token }));
     }
   };
+
+
+
+
+  
+  // let a;
+  // if (freshposts.length > 0 ){
+  //   freshposts.map((item, index)=> {
+  //     item.SocialMedia.filter((socItem, index)=>{
+  //        return a = item.social_active == socItem.social_platform
+  //     })
+  //   });
+    
+  // }
+
+  // console.log(a)
   return (
     <>
       <div className="row justify-content-between border-bottom pt-3 pb-4">
@@ -154,9 +170,6 @@ const KolListing = () => {
               Object.entries(languages).map(([key, value]) => (
                 <option value={key}>{value}</option>
               ))}
-            {/* <option selected>Languages</option>
-            <option value="English">English</option>
-            <option value="Hindi">Hindi</option> */}
           </select>
           <select className="form-select mx-3" onChange={handleStreamChange}>
             <option defaultValue>Streams</option>
@@ -164,13 +177,6 @@ const KolListing = () => {
               Object.entries(streams).map(([key, value]) => (
                 <option value={key}>{value}</option>
               ))}
-            {/* <option value="Youtube">
-              youtube <span className="youtube-icon">&#xf62b;</span>
-            </option>
-            <option value="Instagram">instagram &#xf437;</option>
-            <option value="Facebook">facebook &#xF344;</option>
-            <option value="Tiktok">tiktok &#xf6cc;</option>
-            <option value="LinkedIn">LinkedIn &#xF472;</option> */}
           </select>
 
           <select className="form-select" onChange={handleLocationChange}>
@@ -216,12 +222,11 @@ const KolListing = () => {
                 <div className="col-lg-3 py-2">
                   <div className="kol-user-img">
                     <Link to={`/details/${item.profile_id}`}>
-                      {" "}
                       <img src={`${imageUrl}${item.avatar}`} />
                     </Link>
                   </div>
                 </div>
-                <div className="col-lg-8 border-bottom  py-2">
+                <div className="col-lg-9 border-bottom  py-2">
                   <div className="row justify-content-between">
                     <div className="col-lg-8">
                       <h3 className="text-bold">
@@ -273,6 +278,8 @@ const KolListing = () => {
                             <li className="">
                               <span></span>
                               <i className={`${item.social_active_icon}`}></i> 
+                              
+
                             </li>
                           </ul>
                     
