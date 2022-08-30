@@ -16,11 +16,11 @@ const Home = () => {
 
   let token = localStorage.getItem("token");
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success(errorMessage);
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     toast.success(errorMessage);
+  //   }
+  // }, [token]);
   const { username, email } = useSelector(userSelector);
  
   useEffect(() => {

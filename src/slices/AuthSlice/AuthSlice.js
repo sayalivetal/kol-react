@@ -34,12 +34,14 @@ export const signupUser = createAsyncThunk(
         },
       });
       let data = await response.json();
-      console.log(data);
-      if (response.status == 200) {
+      console.log(data.email);
+      if (data) {
         if (data?.data?.token) {
           localStorage.setItem("token", data.data.token);
           localStorage.setItem("role", data.data.role_id);
+          
         }
+        localStorage.setItem("email", data.email);
         return { ...data };
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -105,13 +107,13 @@ export const emailVerification = createAsyncThunk(
         },
       });
       let data = await response.json();
-      console.log(data.token);
-      if (response.status === 200) {
+   
+      if (data.statusCode === 200) {
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("role", data.data.role_id);
         return { ...data };
       } else {
-        return thunkAPI.rejectWithValue(data);
+        return thunkAPI.rejectWithValue({ ...data });
       }
     } catch (e) {
       console.log("Error", e.response.data);
@@ -231,11 +233,11 @@ export const LoginUser = createAsyncThunk(
       let data = await response.json();
       console.log(data);
       if (response.status === 200) {
-        if(data?.data?.token){
-          localStorage.setItem('token', data.data.token);
-          localStorage.setItem('role', data.data.role_id);
-          }
-          return { ...data };
+        if (data?.data?.token) {
+          localStorage.setItem("token", data.data.token);
+          localStorage.setItem("role", data.data.role_id);
+        }
+        return { ...data };
       } else {
         return thunkAPI.rejectWithValue(data);
       }
@@ -384,13 +386,12 @@ export const UpdateUserProfile = createAsyncThunk(
 
 //update user profile image
 
-
 export const UpdateProfileImage = createAsyncThunk(
   "users/changePassword",
   async (formData, thunkAPI) => {
     for (var pair of formData.entries()) {
-      console.log(pair); 
-  }
+      console.log(pair);
+    }
 
     try {
       const response = await fetch(`${API}/store-user-image`, {
@@ -401,7 +402,7 @@ export const UpdateProfileImage = createAsyncThunk(
           // "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body:formData 
+        body: formData,
       });
       let data = await response.json();
       console.log(data);
@@ -458,7 +459,7 @@ const authReducer = createSlice({
     [emailVerification.fulfilled]: (state, { payload }) => {
       state.isFetching = false;
       state.isSuccess = true;
-      state.email = payload.email;
+      state.email = payload?.email;
 
       // console.log(action.payload.data);
       // return { loginUser: { ...action.payload.data} };
@@ -467,9 +468,11 @@ const authReducer = createSlice({
       state.isFetching = true;
     },
     [emailVerification.rejected]: (state, { payload }) => {
-      state.isFetching = false;
-      state.isError = true;
-      state.errorMessage = payload.message;
+      console.log(payload);
+      // state.isFetching = false;
+      // state.isError = true;
+      // state.errorMessage = payload?.message;
+      return payload;
     },
     [forgotPassword.fulfilled]: (state, { payload }) => {
       state.isFetching = false;
