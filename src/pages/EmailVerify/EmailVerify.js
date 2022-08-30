@@ -47,7 +47,9 @@ const EmailVerify = () => {
     if(otp === ""){
       setError("opt required")
     }
-    dispatch(emailVerification({ otp, email }))
+    dispatch(emailVerification({ otp, email })).then((data)=>{
+      console.log(data);
+    })
     e.target.reset();
   };
   const handleOtp = () => {

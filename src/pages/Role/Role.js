@@ -34,9 +34,13 @@ const Role = () => {
   console.log(role, email);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (role) {
+    if (!role) {
+      toast.error("Please select role first");
+    } else {
       if (role && email) {
-        dispatch(updateRole({ role, email }));
+        dispatch(updateRole({ role, email })).then((data) => {
+          toast.error(data.payload.msg);
+        });
       } else {
         dispatch(addRole(role));
         navigate("/register");
@@ -48,7 +52,7 @@ const Role = () => {
     <section className="main">
       <div className="container d-flex flex-wrap justify-content-center">
         <div className="row full-width">
-          <div className="col-12 mb-4 logo-text">KOL</div>
+          <Link to="/" className="col-12 mb-4 logo-text">KOL</Link>
         </div>
 
         <div className="row full-width justify-content-center">
