@@ -33,6 +33,7 @@ const ProfileUpdate = () => {
   const [kolType, setKolType] = useState("");
 
   const [video_links, setVideoLinks] = useState([]);
+  const { message } = useSelector(dashboardSelector);
 
   let token = localStorage.getItem("token");
   const [kolProfile, setKolProfile] = useState({
@@ -324,6 +325,14 @@ const ProfileUpdate = () => {
     biodata: { kolProfileData },
   } = useSelector(dashboardSelector);
 
+
+  let a = Object.entries(language).map(([key, value]) => {
+    return {
+      label: key,
+      value: value,
+    };
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -366,12 +375,11 @@ const ProfileUpdate = () => {
       console.log("hello");
     });
   };
-  let a = Object.entries(language).map(([key, value]) => {
-    return {
-      label: key,
-      value: value,
-    };
-  });
+
+  useEffect(() => {
+    toast.success(message);
+  }, [message]);
+ 
  // console.log("kolProfile", kolProfile);
  // console.log("biodata", biodata);
 

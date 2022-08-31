@@ -32,14 +32,11 @@ const DetailSlider = ({video}) => {
               return(
                 <div className="slider-div" key={index}>
                 <div className="video-item">
-                  <div>
                     <ReactPlayer
                         url={videoItem}
                         width='100%'
                         height='100%'
                       />
-                  </div>
-
                   {/* <div className="card-body">
                     <h5 className="card-title">Nike shose</h5>
                     <div className="card-text">
@@ -52,9 +49,7 @@ const DetailSlider = ({video}) => {
             
               )
             })}
-             
-    
-        
+
       </Slider>
     </div>
   );

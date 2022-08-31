@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const KolListing = () => {
   let role = localStorage.getItem("role");
-  console.log(role);
+  //console.log(role);
   const dispatch = useDispatch();
   const [searchCategory, setSearchCategory] = useState({
     name: "",
@@ -132,8 +132,9 @@ const KolListing = () => {
     getAllStates(callback);
   }, []);
 
-  console.log(freshposts);
+  console.log("list of kols",freshposts);
 
+  
   const handleBookmark = (profileId, e) => {
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
@@ -145,21 +146,23 @@ const KolListing = () => {
     }
   };
 
+// const[socialMediaIcon,setSocialMediaState] = useState([]);
 
+//  useEffect(()=>{
+//   if (freshposts.length > 0 ){
+//     freshposts.map((item, index)=> {
+//       let a = item.SocialMedia.filter((socItem, index)=>{
+//         return socItem.social_platform == item.social_active
+//     })
+//     console.log(a);
+//     setSocialMediaState([...socialMediaIcon, ...a])
+//     });
 
+//   }
+//  },[freshposts])
 
-  
-  // let a;
-  // if (freshposts.length > 0 ){
-  //   freshposts.map((item, index)=> {
-  //     item.SocialMedia.filter((socItem, index)=>{
-  //        return a = item.social_active == socItem.social_platform
-  //     })
-  //   });
-    
-  // }
+// console.log(socialMediaIcon);
 
-  // console.log(a)
   return (
     <>
       <div className="row justify-content-between border-bottom pt-3 pb-4">
@@ -217,7 +220,7 @@ const KolListing = () => {
             return (
               <div
                 key={index}
-                className="row justify-content-between py-4 list-row"
+                className="row justify-content-between py-3 list-row"
               >
                 <div className="col-lg-3 py-2">
                   <div className="kol-user-img">
@@ -270,15 +273,23 @@ const KolListing = () => {
                   <div className="row py-1">
                     <div className="col-lg-12 d-flex">
                       <h5 className="text-bold">
-                        Languages:{" "}
-                        <span className="text-normal">{item.languages}</span>
+                        Languages:
+                        <span className="text-normal"> {item.languages}</span>
                       </h5>
                    
                           <ul className="social-count-list">
                             <li className="">
                               <span></span>
                               <i className={`${item.social_active_icon}`}></i> 
-                              
+                              {/* {item.SocialMedia.filter((socItem, index)=>{
+                                 if (socItem.social_platform == item.social_active){
+                                  return <span>{socItem?.followers}</span>
+                                 }
+                               })} */}
+
+                              {/* {socialMediaIcon && socialMediaIcon.map((c,i)=>{
+                                return <span>{c.followers}</span>
+                              })} */}
 
                             </li>
                           </ul>
@@ -308,9 +319,9 @@ const KolListing = () => {
                     {role == 2 ? (
                       <></>
                     ) : (
-                      <div className="col-lg-12 text-right">
+                      <div className="col-lg-12 ">
                         <Link to={`/chat?id=${item.user_id}`}>
-                          <button className="ml-auto btn theme-btn">
+                          <button className="ml-auto btn theme-btn mb-4">
                             <span className="mx-2">
                               <i className="bi bi-chat-dots"></i>
                             </span>{" "}

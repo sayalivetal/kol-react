@@ -53,6 +53,8 @@ const ContactList = ({ id }) => {
     getChatList(callback, token);
   }, [term]);
 
+  console.log("contatctlist",contactList)
+
   return (
     <>
       <form className="chat-user-search">

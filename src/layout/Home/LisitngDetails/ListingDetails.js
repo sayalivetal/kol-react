@@ -23,7 +23,7 @@ const ListingDetails = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const [feedback, setFeedback] = useState([]);
-  console.log(token);
+  // console.log(token);
   const [kolProfile, setKolProfile] = useState(null);
 
   const kolListing = async (actionType = "normal") => {
@@ -37,7 +37,7 @@ const ListingDetails = () => {
       },
     });
     let data = await response.json();
-    console.log(data.kolProfile);
+    console.log("kol-data",data.kolProfile);
     setKolProfile([...data?.kolProfile]);
   };
   useEffect(() => {
@@ -63,12 +63,11 @@ const ListingDetails = () => {
     }
   };
 
-  console.log(kolProfile);
+  console.log("kol-profile state", kolProfile);
   return (
     <>
       {kolProfile &&
         kolProfile?.map((item, index) => {
-          //console.log(item);
           return (
             <div className="container" key={index}>
               <div className="card">
@@ -85,7 +84,7 @@ const ListingDetails = () => {
                     <div className="row justify-content-between py-4 list-row">
                       <div className="col-lg-2 py-2">
                         <div className="kol-user-img-details">
-                          <img src={`${imageUrl}${item.avatar}`} />
+                          <img className="img-fluid" src={`${imageUrl}${item.avatar}`} alt="avatar" />
                         </div>
                       </div>
                       <div className="col-lg-10  py-2">
@@ -125,16 +124,15 @@ const ListingDetails = () => {
                           Languages:{" "}
                           <span className="text-normal">{item.languages}</span>
                         </h5>
-                        {item.get_social_media.map((c, i) => {
-                          return (
-                            <ul key={i} className="social-count-list">
-                              <li className="">
-                                <span></span>
-                                <i className={c.social_icon}></i> {c.followers}k
-                              </li>
-                            </ul>
-                          );
-                        })}
+                        <ul className="social-count-list">
+                          {item.get_social_media.map((c, i) => {
+                            return (
+                                <li className="" key={i}>
+                                  <i className={c.social_icon}></i><span className="social-text">{c.followers}k</span> 
+                                </li>
+                            );
+                          })}
+                        </ul>
                       </div>
                     </div>
                     <div className="row py-1">
@@ -146,7 +144,7 @@ const ListingDetails = () => {
                         {role == 2 ? (
                           <></>
                         ) : (
-                          <Link to="/chat">
+                          <Link to={`/chat?id=${item.user_id}`}>
                             <button className="ml-auto btn theme-btn">
                               <span className="mx-2">
                                 <i className="bi bi-chat-dots"></i>

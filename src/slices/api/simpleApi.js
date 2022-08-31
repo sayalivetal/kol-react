@@ -71,7 +71,7 @@ export const getAllBookmark = async (callback, token) => {
       Authorization: "Bearer " + token,
     },
   });
-  console.log(response);
+  //console.log(response);
   const result = await response.json();
   console.log(result);
 

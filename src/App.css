@@ -404,6 +404,7 @@ body {
   position: relative;
   display: flex;
   margin: 15px 0;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 20%);
 }
 .bookmark-delete {
   width: 32px;
@@ -797,3 +798,18 @@ h1.banner-title:first-child::nth-line(-n+2){
 }
 .fw-medium { font-weight: 500;}
 .col-form-label {color:#495057}
+
+.social-count-list {
+  display: flex;
+  list-style: none;
+}
+.social-count-list li {
+  border-left: 1px solid #b9b8b8;
+  padding: 0px 15px;
+  font-size: 24px;
+    line-height: 28px;
+    color:#f01f4b;
+}
+.social-text { font-size: 20px; margin-left: 8px; color: #342951;}
+.slick-track {  min-width: 100%; display: flex; }
+

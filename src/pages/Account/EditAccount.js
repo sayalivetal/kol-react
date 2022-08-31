@@ -89,7 +89,7 @@ const EditAccount = () => {
                       alt="avatar"
                     />
                   </div>
-                  <input type="file" onChange={onFileChange} />
+                  <input type="file" className="form-control mb-2" onChange={onFileChange} />
                   <button
                     type="button"
                     className="btn theme-btn col-12 mb-4"
@@ -236,7 +236,7 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Enter city"
+                          placeholder="Enter State"
                           name="state"
                           defaultValue={userData?.state}
                           onChange={handleChange}
@@ -251,7 +251,7 @@ const EditAccount = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Enter city"
+                          placeholder="Enter Country"
                           name="country"
                           defaultValue={userData?.country}
                           onChange={handleChange}
