@@ -320,7 +320,8 @@ const KolListing = () => {
                       <></>
                     ) : (
                       <div className="col-lg-12 ">
-                        <Link to={`/chat?id=${item.user_id}`}>
+                        <Link to={`/chat?id=${item.profile_id}`}>
+                       
                           <button className="ml-auto btn theme-btn mb-4">
                             <span className="mx-2">
                               <i className="bi bi-chat-dots"></i>

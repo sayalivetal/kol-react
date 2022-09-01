@@ -64,6 +64,7 @@ const ListingDetails = () => {
   };
 
   console.log("kol-profile state", kolProfile);
+
   return (
     <>
       {kolProfile &&
@@ -89,11 +90,11 @@ const ListingDetails = () => {
                       </div>
                       <div className="col-lg-10  py-2">
                         <div className="row justify-content-between">
-                          <div className="col-lg-8">
+                          <div className="col-lg-8 col-sm-7">
                             <h3 className="text-bold">{item.get_user.name}</h3>
                             <p>({item.tags})</p>
                           </div>
-                          <div className="col-lg-4">
+                          <div className="col-lg-4 col-sm-5">
                             <p className="text-right">
                               <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                               <span>
@@ -108,7 +109,7 @@ const ListingDetails = () => {
                                       item.Bookmark ? "active" : ""
                                     }`}
                                     onClick={(e) => {
-                                      handleBookmark(item.user_id, e);
+                                      handleBookmark(item.profile_id, e);
                                     }}
                                   ></i>
                                 </span>
@@ -144,7 +145,8 @@ const ListingDetails = () => {
                         {role == 2 ? (
                           <></>
                         ) : (
-                          <Link to={`/chat?id=${item.user_id}`}>
+                          <Link to={`/chat?id=${item.id}`}>
+
                             <button className="ml-auto btn theme-btn">
                               <span className="mx-2">
                                 <i className="bi bi-chat-dots"></i>
@@ -178,7 +180,7 @@ const ListingDetails = () => {
                   <div className="col-lg-12 px-4">
                     <div className="row py-1">
                       <div className="col-lg-12">
-                        <h3 className="theme-color weight-600">
+                        <h3 className="theme-color weight-600 mb-4">
                           See What Our Clients Talk About Us
                         </h3>
                       </div>

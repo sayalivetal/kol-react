@@ -8,12 +8,13 @@
 }
 .kol-review-user-img img{
     max-width: 100%;
+    max-height: inherit;
 }
 
 .review-block .slick-prev,
 .review-block .slick-next {
   top: auto !important;
-  bottom: 0px!important;
+  bottom: -20px!important;
   z-index: 3;
 }
 .review-block .slick-prev {

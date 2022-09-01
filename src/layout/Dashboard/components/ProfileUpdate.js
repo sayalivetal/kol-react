@@ -181,7 +181,7 @@ const ProfileUpdate = () => {
 
 
   useEffect(() => {
-    console.log("fddddddddddddddddd",inputList);
+ //   console.log("fddddddddddddddddd",inputList);
     setKolProfile(() => {
       return {
         ...kolProfile,

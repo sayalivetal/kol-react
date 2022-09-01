@@ -72,6 +72,7 @@ const ContactList = ({ id }) => {
           <div className="chat-users-block">
             {contactList &&
               contactList.map((item, index) => {
+                console.log("-------item-------",item)
                 return (
                   <div
                     key={index}

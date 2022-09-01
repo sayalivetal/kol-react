@@ -8,10 +8,13 @@ const Account = () => {
   useEffect(() => {
     const callback = (data) => {
       setUserDetails({...data});
+      localStorage.setItem("avatar", data.avatar)
     };
     getUserDetails(callback, token);
   }, []);
-  console.log(userDetails);
+
+
+ // console.log(userDetails);
   return (
     <div>
       <div className="container">

@@ -223,3 +223,20 @@ export const getUserDetails = async (callback, token) => {
   console.log("result", result);
   callback(result.user);
 };
+
+// Order Summary api
+export const getOrderSummary = async (callback, token, id) => {
+  const response = await fetch(`${API}/order/get_order_summary?id=${id}`, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+
+  callback(result.data)
+}

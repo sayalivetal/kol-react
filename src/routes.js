@@ -7,6 +7,7 @@ const Home = lazy(() => import("./layout/Home/Home"));
 const NotFound = lazy(()=>import("./pages/404page/404"))
 const Chat = lazy(()=>import('./layout/Home/Chat/Chat'))
 const Bookmark = lazy(()=>import('./pages/Bookmark/Bookmark'))
+const Order = lazy(()=> import('./pages/Order/OrderDetails'))
 const Details = lazy(() =>
   import("./layout/Home/LisitngDetails/ListingDetails")
 );
@@ -18,6 +19,7 @@ const routes = [
   { path: "/details/:id", exact: true, name: "Details", element: Details },
   { path: "/chat", exact: true, name: "Chat", element: Chat },
   { path: "/bookmark", exact: true, name: "Bookmark", element: Bookmark },
+  { path: "/order-details", exact: true, name: "Order", element: Order},
   { path: "*", exact: true, name: "NotFound", element: NotFound },
 ];
 

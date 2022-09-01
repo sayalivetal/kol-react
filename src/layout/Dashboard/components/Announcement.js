@@ -330,7 +330,7 @@ const Announcement = () => {
 
 
 
-              <div>
+              <div className="col-12 mt-3">
                 <button type="submit" className="btn theme-btn form-text">
                   Submit
                 </button>

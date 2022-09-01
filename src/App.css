@@ -95,6 +95,7 @@ body {
   margin: auto;
   height: 100%;
 }
+/* 
 .stream-user:before {
   content: '';
   position: absolute;
@@ -114,7 +115,7 @@ body {
   height: 42px;
   top: 10%;
   right: 10px;
-}
+} 
 .stream-user-circle {
   position: absolute;
   display: flex;
@@ -123,7 +124,8 @@ body {
   height: 84%;
   background-color: #fef4f6;
   border-radius: 50%;
-}
+}*/
+
 .stream-user-thumb {
   position: relative;
   z-index: 1;
@@ -138,6 +140,7 @@ body {
   margin: 10px 0;
   display: inline-block;
   text-shadow: 2px 3px black;
+  text-transform: capitalize;
 }
 .list-large-text {
   font-size: 24px;
@@ -151,6 +154,7 @@ body {
   text-decoration: none;
 }
 
+.rate-count { line-height: 1.6; padding-right: 8px;}
 /*chat css*/
 
 .chat-head-bar {
@@ -231,7 +235,7 @@ body {
   position: relative;
 }
 .user-item-text {
-  width: 100%;
+  width: calc( 100% - 50px);
   padding-left: 15px;
 }
 .user-item-row {
@@ -259,9 +263,12 @@ body {
 }
 .user-item-last-msg {
   width: 100%;
-  display: flex;
+  display: inline-block;
   font-size: 16px;
   color: #9c9fab;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .delete-edit-div{
   background-color: #ebebeb;
@@ -784,7 +791,7 @@ h1.banner-title:first-child::nth-line(-n+2){
   background-repeat: no-repeat;
   background-size: cover;
   background-color: #edecec;
-  background-position: top center;
+  background-position: center center;
 }
 .user-thumb { margin-top: -136px;}
 .kol-user-img {

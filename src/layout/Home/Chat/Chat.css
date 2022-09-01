@@ -18,7 +18,7 @@
 .kol-user-card { display: flex; align-items: center; border:1px solid #ebebeb; padding:8px 10px; border-radius: 8px; margin: 16px 0; width: 100%;}
 .kol-user-info { padding-left: 15px; font-size: 16px;  font-weight: 600; width: 100%;}
 .deal-user-name { 
-  width: 64%;
+  /* width: 64%; */
   display: inline-block;
     white-space: nowrap;
     overflow: hidden;
@@ -56,12 +56,6 @@
 .deal-icon-text i { font-size: 12px; margin-right:2px; }
 
 
-
-
-
-
-
-
 .deal-action-bar { display: block; width: 100%; /*border-top: 1px solid #ebebeb;*/}
 .deal-form-row { display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between;  width: 100%; padding-top: 1rem;}
-.deal-form-row .btn { white-space: nowrap; margin-left: 8px;}
+.deal-form-row .btn { white-space: nowrap; margin-left: 6px; font-size: 14px; padding: 0.475rem 0.75rem;}
