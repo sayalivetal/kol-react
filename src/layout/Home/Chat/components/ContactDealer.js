@@ -148,9 +148,8 @@ const [placeOrderId, setPlacedOrderId] = useState();
     e.preventDefault()
     dispatch(PlaceOrder(order)).then((data)=>{
       if(data.payload.statusCode == 201){
-        console.log("*************",data)
         showOrderModal()
-        setPlacedOrderId(data.payload.orderPlacedId)
+        setPlacedOrderId(data?.payload?.orderPlacedId)
         // navigate('/order')
       }
     })
@@ -167,7 +166,7 @@ const [placeOrderId, setPlacedOrderId] = useState();
       getOrderSummary(callback, token, placeOrderId)
     },[placeOrderId]);
   
-    console.log("--------------------",orderSummary);
+
 
 
   return (
