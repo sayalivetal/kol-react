@@ -1,29 +1,36 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { forgotPassword,userSelector } from "../../slices/AuthSlice/AuthSlice";
-import { useDispatch,useSelector } from "react-redux";
-import './EmailCheck.css'
+import { forgotPassword, userSelector } from "../../slices/AuthSlice/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import "./EmailCheck.css";
+import { toast } from "react-toastify";
 const EmailCheck = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { isFetching, isSuccess,statusCode, isError, errorMessage } = useSelector(userSelector)
- 
-  const[email,setEmail] = useState("")
-  const[user,setUser] = useState({})
-  const handleChange = (e) =>{
-    setEmail(e.target.value)
-  }
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-    dispatch(forgotPassword(email))
-  
-  }
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isFetching, isSuccess, statusCode, isError, errorMessage } =
+    useSelector(userSelector);
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState(false);
+  const [email, setEmail] = useState("");
+  const [user, setUser] = useState({});
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (email == "") {
+      setError("All fields required ");
+    } else {
+      dispatch(forgotPassword(email)).then((data) => {
+        console.log(data);
+        if(data?.payload?.data?.status){
+          toast.success(data?.payload?.data?.message)
+          navigate('/forgotPassword')
+        }
+      });
+    }
+  };
 
-
-useEffect(()=>{
-  if(isSuccess)
-  navigate('/forgotPassword')
-},[isSuccess])
   return (
     <div className="main-div">
       <section>
@@ -61,11 +68,16 @@ useEffect(()=>{
                         <input
                           type="email"
                           id="form2Example17"
-                          className="form-control"
+                          className={`form-control ${
+                            error === "" || email ? "" : "border-danger"
+                          }`}
                           placeholder="Enter email"
                           name="email"
                           onChange={handleChange}
                         />
+                        {error && email == "" && (
+                          <span className="text-danger">{error}</span>
+                        )}
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button
