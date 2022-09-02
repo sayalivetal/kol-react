@@ -13,7 +13,7 @@ import {
 } from "../../../../slices/ChatSlice/ChatSlice";
 const Conversation = ({ urlId }) => {
   const chatData = useSelector(chatSelector);
-  // console.log(chatData.chatData);
+
   let token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
@@ -21,7 +21,7 @@ const Conversation = ({ urlId }) => {
   // const [deleteEdit, setDeleteEdit] = useState();
   const [kolProfile, setKolProfile] = useState([]);
 
-  // console.log(editData);
+
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
@@ -29,7 +29,7 @@ const Conversation = ({ urlId }) => {
 
   let b = JSON.parse(a);
   let localStorageData = JSON.parse(b.user);
-  // console.log(localStorageData);
+
 
 
   let { username } = localStorageData;
@@ -43,7 +43,7 @@ const Conversation = ({ urlId }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(sendMessage({ message, urlId, token })).then((data)=>{
-      console.log(urlId);
+
       if(data.payload.statusCode == 201){
         dispatch(conversationList({ urlId, token }));
       }

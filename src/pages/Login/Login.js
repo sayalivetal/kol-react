@@ -25,7 +25,7 @@ const Login = () => {
   
   });
   let token = localStorage.getItem('token');
-  console.log(token);
+
 
   useEffect(() => {
     return () => {
@@ -116,13 +116,13 @@ const Login = () => {
         });
       })
       .catch((err) => {
-        console.log(err.message);
+     
       });
   };
   useEffect(()=>{
     if (!firebaseUser.token) return;
     dispatch(loginWithGoogle(firebaseUser)).then((data)=>{
-      console.log(data);
+   
 
       if(data.payload.statusCode == 201){
         toast.success(data.payload.message)

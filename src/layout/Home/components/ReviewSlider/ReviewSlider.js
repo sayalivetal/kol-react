@@ -4,7 +4,7 @@ import { imageUrl } from "../../../../common/apis";
 import Slider from "react-slick";
 import ReactStars from "react-rating-stars-component";
 const ReviewSlider = ({ feedback }) => {
-  console.log(feedback);
+
   const settings = {
     slidesToShow: 1,
     // slidesToScroll: 1,
@@ -15,7 +15,7 @@ const ReviewSlider = ({ feedback }) => {
       <Slider {...settings}>
         {feedback &&
           feedback.map((item, index) => {
-            console.log("hello", item);
+         
             return (
               <>
                 <div key={index} className="row justify-content-between py-2 list-row">
