@@ -11,6 +11,26 @@ const DetailSlider = ({video}) => {
   const settings = {
     slidesToShow: 4,
     slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        }
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 2,
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        }
+      }
+    ]
   };
   // const data = useSelector(
   //   (state) => state?.kolListing?.listingDetails?.kolProfile
@@ -32,14 +52,11 @@ const DetailSlider = ({video}) => {
               return(
                 <div className="slider-div" key={index}>
                 <div className="video-item">
-                  <div>
                     <ReactPlayer
                         url={videoItem}
                         width='100%'
                         height='100%'
                       />
-                  </div>
-
                   {/* <div className="card-body">
                     <h5 className="card-title">Nike shose</h5>
                     <div className="card-text">
@@ -52,9 +69,7 @@ const DetailSlider = ({video}) => {
             
               )
             })}
-             
-    
-        
+
       </Slider>
     </div>
   );

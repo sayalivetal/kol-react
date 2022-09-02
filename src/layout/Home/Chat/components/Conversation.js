@@ -61,7 +61,7 @@ const Conversation = ({ urlId }) => {
               <div className="chat-row">
                 <div className="chat-thumb-container">
                   <div className="chat-user-thumb">
-                    <img src={item.avatar} alt="avatar" />
+                    <img src={`${imageUrl}${item.avatar}`} alt="avatar" />
                   </div>
                   <span className="status-icon active"></span>
                 </div>

@@ -53,6 +53,8 @@ const ContactList = ({ id }) => {
     getChatList(callback, token);
   }, [term]);
 
+  console.log("contatctlist",contactList)
+
   return (
     <>
       <form className="chat-user-search">
@@ -70,6 +72,7 @@ const ContactList = ({ id }) => {
           <div className="chat-users-block">
             {contactList &&
               contactList.map((item, index) => {
+                console.log("-------item-------",item)
                 return (
                   <div
                     key={index}

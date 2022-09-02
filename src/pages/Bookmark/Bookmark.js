@@ -14,12 +14,15 @@ const Bookmark = () => {
 
   let token = localStorage.getItem("token");
   const bookmarkRender = useSelector(kolSelector);
+
   useEffect(() => {
     const callback = (data) => {
       setBookmark([...data]);
     };
     getAllBookmark(callback, token);
   }, [bookmarkRender]);
+
+  console.log(bookmark)
 
   const handleBookmark = (profileId) => {
     dispatch(kolDeleteBookmark({ profileId, token }));

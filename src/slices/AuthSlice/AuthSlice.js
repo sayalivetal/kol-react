@@ -317,7 +317,7 @@ export const ChangePasswordUser = createAsyncThunk(
 //Api Integration edit end user profile
 
 export const UpdateUserProfile = createAsyncThunk(
-  "users/changePassword",
+  "user/update-profile",
   async (
     {
       firstName,

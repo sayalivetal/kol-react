@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  getKolAllAnnouncements,
-  deleteAnnouncement,
-} from "../../../slices/api/simpleApi";
+import {  getKolAllAnnouncements,  deleteAnnouncement, } from "../../../slices/api/simpleApi";
 // import Pagination from "../../../common/components/PaginationJSX";
 import { Link, useNavigate } from "react-router-dom";
-import { announceDelete } from "../../../slices/Dashboard/dashboard";
-import { useDispatch } from "react-redux";
+import { announceDelete, dashboardSelector } from "../../../slices/Dashboard/dashboard";
+import { useDispatch, useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
+import { imageUrl } from "../../../common/apis";
+
+
 const AnnouncementList = () => {
   const dispatch = useDispatch();
+  const { announcement} = useSelector(dashboardSelector);
+
   const token = localStorage.getItem("token");
   const [announcements, setAnnouncements] = useState([]);
   const [page, setPage] = useState(1);
@@ -27,10 +29,18 @@ const AnnouncementList = () => {
     // deleteAnnouncement(token , id);
     console.log(id);
     dispatch(announceDelete(id)).then((data) => {
-      const callback = (data) => {
-        setAnnouncements([...data]);
-      };
-      getKolAllAnnouncements(callback, token);
+      //console.log(data);
+      if(data.payload.statusCode == 200){
+        const callback = (data) => {
+          setAnnouncements([...data]);
+        };
+        getKolAllAnnouncements(callback, token,page,10);
+      }
+     
+      // const callback = (data) => {
+      //   setAnnouncements([...data]);
+      // };
+      // getKolAllAnnouncements(callback, token);
     });
   };
   const handlePageChange = (pageNumber) => {
@@ -51,8 +61,10 @@ const AnnouncementList = () => {
           </div>
         </div>
         <div className="card-body px-4" >
+          
           <div className="">
             <table className="table table-bordered">
+            <thead>
               <tr>
                 <th>Title</th>
                 <th>Description</th>
@@ -60,34 +72,34 @@ const AnnouncementList = () => {
                 <th>End Date</th>
                 <th>Social Platform</th>
                 <th>Status</th>
-                <th>Image</th>
-                <th>Action</th>
+                <th width="180">Banner Thumb</th>
+                <th width="230">Action</th>
               </tr>
+             </thead>
+             <tbody>
               {announcements &&
                 announcements.map((item, index) => {
                   return (
                     <tr key={index}>
                       <td>{item.title}</td>
-
                       <td>{item.description}</td>
                       <td>{item.start_date}</td>
                       <td>{item.end_date}</td>
                       <td>{item.social_platform}</td>
                       <td>{item.status}</td>
-                      <td>{item.image}</td>
+                      <td><img className="announcment-thumb" src={`${imageUrl}${item.image}`} alt="avatar" /></td>
 
                       <td>
-                        <Link to={`/dashboard/announcement/${item.id}`}>Edit</Link>
-                        <Link to={`/dashboard/announcement/view/${item.id}`}>
-                          View
-                        </Link>
-                        <button onClick={() => handleDelete(item.id)}>
-                          <i className="fa-regular fa-trash">Delete</i>
+                        <Link className="btn btn-sm btn-success me-2" to={`/dashboard/announcement/view/${item.id}`}>View</Link>
+                        <Link className="btn btn-sm btn-primary me-2" to={`/dashboard/announcement/${item.id}`}>Edit</Link>
+                        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.id)}>
+                          <i className="fa fa-trash"></i> Delete
                         </button>
                       </td>
                     </tr>
                   );
                 })}
+                </tbody>
             </table>
             {announcements.length > 0 ? (
               <Pagination
@@ -96,9 +108,12 @@ const AnnouncementList = () => {
                 activePage={page}
                 // itemsCountPerPage={}
                 pageRangeDisplayed={5}
+                itemClass="page-item"
+                linkClass="page-link"
+                hideNavigation={true}
               />
             ) : (
-              <h1>No Posts to display</h1>
+              <h3>No Posts to display</h3>
             )}
           </div>
         </div>

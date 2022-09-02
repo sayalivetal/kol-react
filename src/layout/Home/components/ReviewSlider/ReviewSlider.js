@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import "./ReviewSlider.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom";
 import { imageUrl } from "../../../../common/apis";
 import Slider from "react-slick";
 import ReactStars from "react-rating-stars-component";
@@ -18,12 +15,13 @@ const ReviewSlider = ({ feedback }) => {
       <Slider {...settings}>
         {feedback &&
           feedback.map((item, index) => {
+            console.log("hello", item);
             return (
-              <div>
-                <div className="row justify-content-between py-2 list-row">
+              <>
+                <div key={index} className="row justify-content-between py-2 list-row">
                   <div className="col-lg-3 py-2">
                     <div className="kol-review-user-img">
-                      <img src={`${imageUrl}${item.profile_image}`} />
+                      <img src={`${imageUrl}${item.avatar}`} />
                     </div>
                   </div>
                   <div className="col-lg-9  py-2">
@@ -32,17 +30,17 @@ const ReviewSlider = ({ feedback }) => {
                         <h3 className="text-bold">
                           <b>{item.username}</b>
                         </h3>
-                        <p>{item.tags}</p>
+                        <p className="text-capitalize">{item.tags}</p>
                       </div>
                     </div>
 
                     <div className="row py-1">
                       <div className="col-lg-12 d-flex mb-3">
-                        <h3 className="weight-normal m-0">{item.rating}</h3>
+                        <h3 className="weight-normal m-0 rate-count">{item.rating}</h3>
                         <ReactStars
                           count={6}
                           size={24}
-                          activeColor="#ffd700"
+                          activeColor="#ff8f2e"
                           value={item.rating}
                         />
                       </div>
@@ -50,12 +48,12 @@ const ReviewSlider = ({ feedback }) => {
 
                     <div className="row py-1">
                       <div className="col-lg-12">
-                        <p className="kol-bio">{item.comment}</p>
+                        <p className="kol-bio mb-4">{item.comment}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </>
             );
           })}
 

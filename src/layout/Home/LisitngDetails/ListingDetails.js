@@ -23,7 +23,7 @@ const ListingDetails = () => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
   const [feedback, setFeedback] = useState([]);
-  console.log(token);
+  // console.log(token);
   const [kolProfile, setKolProfile] = useState(null);
 
   const kolListing = async (actionType = "normal") => {
@@ -37,7 +37,7 @@ const ListingDetails = () => {
       },
     });
     let data = await response.json();
-    console.log(data.kolProfile);
+    console.log("kol-data",data.kolProfile);
     setKolProfile([...data?.kolProfile]);
   };
   useEffect(() => {
@@ -63,12 +63,12 @@ const ListingDetails = () => {
     }
   };
 
-  console.log(kolProfile);
+  console.log("kol-profile state", kolProfile);
+
   return (
     <>
       {kolProfile &&
         kolProfile?.map((item, index) => {
-          //console.log(item);
           return (
             <div className="container" key={index}>
               <div className="card">
@@ -85,16 +85,16 @@ const ListingDetails = () => {
                     <div className="row justify-content-between py-4 list-row">
                       <div className="col-lg-2 py-2">
                         <div className="kol-user-img-details">
-                          <img src={`${imageUrl}${item.avatar}`} />
+                          <img className="img-fluid" src={`${imageUrl}${item.avatar}`} alt="avatar" />
                         </div>
                       </div>
                       <div className="col-lg-10  py-2">
                         <div className="row justify-content-between">
-                          <div className="col-lg-8">
+                          <div className="col-lg-8 col-sm-7">
                             <h3 className="text-bold">{item.get_user.name}</h3>
                             <p>({item.tags})</p>
                           </div>
-                          <div className="col-lg-4">
+                          <div className="col-lg-4 col-sm-5">
                             <p className="text-right">
                               <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                               <span>
@@ -109,7 +109,7 @@ const ListingDetails = () => {
                                       item.Bookmark ? "active" : ""
                                     }`}
                                     onClick={(e) => {
-                                      handleBookmark(item.user_id, e);
+                                      handleBookmark(item.profile_id, e);
                                     }}
                                   ></i>
                                 </span>
@@ -125,16 +125,15 @@ const ListingDetails = () => {
                           Languages:{" "}
                           <span className="text-normal">{item.languages}</span>
                         </h5>
-                        {item.get_social_media.map((c, i) => {
-                          return (
-                            <ul key={i} className="social-count-list">
-                              <li className="">
-                                <span></span>
-                                <i className={c.social_icon}></i> {c.followers}k
-                              </li>
-                            </ul>
-                          );
-                        })}
+                        <ul className="social-count-list">
+                          {item.get_social_media.map((c, i) => {
+                            return (
+                                <li className="" key={i}>
+                                  <i className={c.social_icon}></i><span className="social-text">{c.followers}k</span> 
+                                </li>
+                            );
+                          })}
+                        </ul>
                       </div>
                     </div>
                     <div className="row py-1">
@@ -146,7 +145,8 @@ const ListingDetails = () => {
                         {role == 2 ? (
                           <></>
                         ) : (
-                          <Link to="/chat">
+                          <Link to={`/chat?id=${item.id}`}>
+
                             <button className="ml-auto btn theme-btn">
                               <span className="mx-2">
                                 <i className="bi bi-chat-dots"></i>
@@ -180,7 +180,7 @@ const ListingDetails = () => {
                   <div className="col-lg-12 px-4">
                     <div className="row py-1">
                       <div className="col-lg-12">
-                        <h3 className="theme-color weight-600">
+                        <h3 className="theme-color weight-600 mb-4">
                           See What Our Clients Talk About Us
                         </h3>
                       </div>

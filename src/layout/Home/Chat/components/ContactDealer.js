@@ -6,12 +6,14 @@ import { createDeal,PlaceOrder } from "../../../../slices/DealsSlice/DealsSlice"
 import {
   getDealsListOfKol,
   getDealsListForUsers,
+  getOrderSummary,
 } from "../../../../slices/api/simpleApi";
 import { imageUrl, API } from "../../../../common/apis";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
+import moment from "moment";
 
 const ContactDealer = () => {
   const navigate = useNavigate()
@@ -22,10 +24,11 @@ const ContactDealer = () => {
   console.log(startDate);
   const search = useLocation().search;
   const id = new URLSearchParams(search).get("id");
-  // console.log(id);
+   console.log(id);
 
   const dispatch = useDispatch();
   const [dealModal, setDealModal] = useState(false);
+  const [orderModal, setOrderModal] = useState(false);
   const [kolProfile, setKolProfile] = useState([]);
   const [dealForm, setDealForm] = useState({
     title: "",
@@ -43,8 +46,14 @@ const ContactDealer = () => {
     start_date: "",
     token,
   });
+  const [orderSummary, setOrderSummary] = useState();
+
   const showDealModal = () => {
     setDealModal(!dealModal);
+  };
+
+  const showOrderModal = () => {
+    setOrderModal(!orderModal);
   };
 
   const kolList = async () => {
@@ -105,6 +114,8 @@ const ContactDealer = () => {
     };
     getDealsListForUsers(callback, token, id);
   }, [id]);
+
+ 
   const handleDeals = (e, id) => {
     setOrder({
       ...order,
@@ -123,20 +134,42 @@ const ContactDealer = () => {
     console.log(finalDate, dateStartTime);
     setOrder({
       ...order,
-      start_date: `${finalDate} ${dateStartTime}`,
+      start_date: moment(`${finalDate} ${dateStartTime}`).format('YYYY-MM-DD hh:mm:ss')
     });
   }, [startDate]);
-  console.log(dealdetail);
+
+  // console.log(dealdetail);
+
+  // console.log("usersssss",kolDealForUser);
+  
   console.log(order);
+const [placeOrderId, setPlacedOrderId] = useState();
   const handleOrder = (e) =>{
     e.preventDefault()
     dispatch(PlaceOrder(order)).then((data)=>{
       if(data.payload.statusCode == 201){
-        navigate('/order')
+        console.log("*************",data)
+        showOrderModal()
+        setPlacedOrderId(data.payload.orderPlacedId)
+        // navigate('/order')
       }
     })
     console.log(order);
   }
+
+
+    // order summary
+    useEffect(() => {
+      const callback = (data) => {
+        setOrderSummary({...data});
+        console.log(data);
+      }
+      getOrderSummary(callback, token, placeOrderId)
+    },[placeOrderId]);
+  
+    console.log("--------------------",orderSummary);
+
+
   return (
     <>
       <div className="col-lg-12">
@@ -216,7 +249,7 @@ const ContactDealer = () => {
         <>
           {kolProfile &&
             kolProfile.map((item, index) => {
-              console.log(item);
+             // console.log(item);
               return (
                 <div className="kol-user-card">
                   <div className="kol-user-icon">
@@ -290,6 +323,7 @@ const ContactDealer = () => {
             selected={startDate}
             dateFormat="yyyy-MM-dd hh:mm:ss aa"
             onChange={(date) => setStartDate(date)}
+            className="form-control"
           />
 
           <button type="submit" onClick={handleOrder} className="btn theme-btn">
@@ -297,6 +331,53 @@ const ContactDealer = () => {
           </button>
         </div>
       </div>
+      
+
+      {orderModal && (
+        <div className="modal-open overflow-hidden">
+          <div className="modal fade show" style={{ display: "block" }}>
+            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <div className="modal-content">
+                <div className="modal-header px-4">
+                  <h5 className="modal-title theme-color">OrderSummary</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={showOrderModal}
+                  ></button>
+                </div>
+
+                  <div className="modal-body px-4">
+                    <div className="row mb-3">
+                      <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
+                        Deal Id :
+                      </label>
+                      <label className="col-lg-10 col-form-label">
+                        {orderSummary.deal_id}
+                      </label>
+                    </div>
+                    <div className="row mb-3">
+                      <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
+                        End Date :
+                      </label>
+                      <label className="col-lg-10 col-form-label">
+                        {orderSummary.end_date}
+                      </label>
+                    </div>
+
+                  </div>
+                  <div className="modal-footer justify-content-start px-4 py-3">
+                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/order-detail")}>
+                      Buy Now
+                    </button>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop fade show"></div>
+        </div>
+      )}
 
       {dealModal && (
         <div className="modal-open overflow-hidden">

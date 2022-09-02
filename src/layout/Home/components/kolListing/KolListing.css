@@ -9,6 +9,7 @@
   border-radius: 20px;
   overflow: hidden;
   background-color: #e3e3e3;
+  border: 1px solid #e3e3e3;
 }
 .kol-user-img img {
   width: 100%;
@@ -26,14 +27,7 @@
 .text-normal {
   color: #8b7db2;
 }
-.social-count-list {
-  display: flex;
-  list-style: none;
-}
-.social-count-list li {
-  border-left: 2px solid #a5a5a5;
-  padding: 0px 15px;
-}
+
 .team-list {
   display: flex;
   list-style: none;
@@ -55,6 +49,7 @@
 }
 .geo-icon {
   color: #f01f4b;
+  font-size: 18px;
 }
 .bookmark-icon {
   color: #f01f4b;

@@ -6,6 +6,7 @@ import { getAllCategory, getAllLanguage } from "../../slices/api/simpleApi";
 import { userSelector, clearState } from "../../slices/AuthSlice/AuthSlice";
 import { Dropdown } from "react-bootstrap";
 import { kolType, kolName } from "../../slices/KolListing/KolSlices";
+import { imageUrl } from "../../common/apis";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const Header = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Header = () => {
   const { isFetching, isError, username, message, email } =
     useSelector(userSelector);
 
+  let avatar = localStorage.getItem("avatar");
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
 
@@ -122,7 +124,7 @@ const Header = () => {
 
                     <Link to={"/chat?id="}>
                       <i className="bi bi-chat-dots"></i>
-                      <span className="count-badge">15</span>
+                      <span className="count-badge">0</span>
                     </Link>
                     {/* <Link to={"/chat"}>
 
@@ -136,7 +138,7 @@ const Header = () => {
                         id="dropdown-notify"
                       >
                         <i className="bi bi-bell"></i>{" "}
-                        <span className="count-badge">15</span>
+                        <span className="count-badge">0</span>
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
@@ -159,7 +161,7 @@ const Header = () => {
                   </div>
                   <div className="header-profile">
                     <div className="profile-user-icon">
-                      <img src="Images/avatar.png" alt="avatar" />
+                      <img src={`${imageUrl}${avatar ? avatar : "Images/avatar.png"}`} alt="avatar" />
                     </div>
                     <Dropdown className="user-dropdown">
                       <Dropdown.Toggle
@@ -174,12 +176,12 @@ const Header = () => {
                         <div className="user-drop-list">
                           <div className="list-item-profile">
                             <div className="profile-user-icon">
-                              <img src="Images/avatar.png" />
+                              <img src={`${imageUrl}${avatar ? avatar : "Images/avatar.png"}`} alt="avatar" />
                             </div>
                             <div className="profile-user-name">
                               <div className="user-name">{username}</div>
                               <div className="user-designation">
-                                {username}{" "}
+                                Type : {role == 2 ? "Kol User" : "End User"}
                               </div>
                             </div>
                           </div>
@@ -198,7 +200,7 @@ const Header = () => {
                             <>
                               <Link
                                 className="list-item"
-                                to="/dashboard/profileview"
+                                to="/dashboard/profile-view"
                               >
                                 Dashboard
                               </Link>
