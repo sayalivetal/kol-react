@@ -19,12 +19,12 @@ const ContactDealer = () => {
   const navigate = useNavigate()
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
-
+  console.log(role);
   const [startDate, setStartDate] = useState(new Date());
-
+  console.log(startDate);
   const search = useLocation().search;
   const id = new URLSearchParams(search).get("id");
-
+   console.log(id);
 
   const dispatch = useDispatch();
   const [dealModal, setDealModal] = useState(false);
@@ -67,10 +67,10 @@ const ContactDealer = () => {
       },
     });
     let data = await response.json();
-
+    console.log(data);
     setKolProfile([...data?.kolProfile]);
   };
-
+  console.log(kolProfile);
   useEffect(() => {
     kolList();
   }, [id]);
@@ -79,17 +79,17 @@ const ContactDealer = () => {
     setDealForm((preState) => {
       return { ...preState, [e.target.name]: e.target.value };
     });
-
+    //console.log(e.target.name, e.target.value );
   };
 
   const handleDealSubmit = (e) => {
     e.preventDefault();
     dispatch(createDeal(dealForm)).then((data) => {
-
+      console.log(data);
       if (data.payload.statusCode == 201) {
         const callback = (data) => {
           setDealDetails({ ...data });
-     
+          console.log();
         };
         getDealsListOfKol(callback, token);
       }
@@ -101,7 +101,7 @@ const ContactDealer = () => {
   useEffect(() => {
     const callback = (data) => {
       setDealDetails({ ...data });
-
+      console.log();
     };
     getDealsListOfKol(callback, token);
   }, []);
@@ -110,7 +110,7 @@ const ContactDealer = () => {
   useEffect(() => {
     const callback = (data) => {
       setKolDealForUser([...data]);
-     
+      console.log();
     };
     getDealsListForUsers(callback, token, id);
   }, [id]);
@@ -131,47 +131,41 @@ const ContactDealer = () => {
     let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
     let finalDate = [date.getFullYear(), mnth, day].join("-");
-   
+    console.log(finalDate, dateStartTime);
     setOrder({
       ...order,
       start_date: moment(`${finalDate} ${dateStartTime}`).format('YYYY-MM-DD hh:mm:ss')
     });
   }, [startDate]);
 
+  // console.log(dealdetail);
 
-
-
+  // console.log("usersssss",kolDealForUser);
   
-
+  console.log(order);
 const [placeOrderId, setPlacedOrderId] = useState();
   const handleOrder = (e) =>{
     e.preventDefault()
     dispatch(PlaceOrder(order)).then((data)=>{
       if(data.payload.statusCode == 201){
-<<<<<<< HEAD
-=======
-    
->>>>>>> 89e6d37df83e6bec8ce4e1ecb89585163104a60a
-        showOrderModal()
+        showOrderModal();
         setPlacedOrderId(data?.payload?.orderPlacedId)
         // navigate('/order')
       }
     })
- 
+    console.log(order);
   }
-
 
     // order summary
     useEffect(() => {
       const callback = (data) => {
         setOrderSummary({...data});
-     
+        console.log(data);
       }
       getOrderSummary(callback, token, placeOrderId)
     },[placeOrderId]);
   
-
-
+console.log("----", orderSummary)
 
   return (
     <>
@@ -252,7 +246,7 @@ const [placeOrderId, setPlacedOrderId] = useState();
         <>
           {kolProfile &&
             kolProfile.map((item, index) => {
-        
+             // console.log(item);
               return (
                 <div className="kol-user-card">
                   <div className="kol-user-icon">
@@ -284,7 +278,7 @@ const [placeOrderId, setPlacedOrderId] = useState();
           <div className="kol-user-deals">
             {kolDealForUser &&
               kolDealForUser.map((item, index) => {
-             
+                console.log(item);
                 return (
                   <div key={index} className="kol-list-deal">
                     <div className="kol-deal-row justify-content-between align-items-start mb-0">
