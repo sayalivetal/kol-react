@@ -14,8 +14,9 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 const EmailVerify = () => {
   const navigate = useNavigate();
-  const { isFetching, isSuccess, isError, errorMessage ,email} = useSelector(userSelector);
+  const { isFetching, isSuccess, isError, errorMessage} = useSelector(userSelector);
   // const userData = useSelector((state) => state?.user?.registerUser?.data);
+  let email = localStorage.getItem("email")
   const userdata = useSelector((state) => state?.user?.loginUser);
   useEffect(() => {
     return () => {
@@ -47,12 +48,23 @@ const EmailVerify = () => {
     if(otp === ""){
       setError("opt required")
     }
-    dispatch(emailVerification({ otp, email }))
+    dispatch(emailVerification({ otp, email })).then((data)=>{
+  
+      if(data?.payload?.statusCode == 200){
+        toast.success(data?.payload?.message)
+      }
+      toast.error(data?.payload?.message)
+   
+    })
     e.target.reset();
   };
+
   const handleOtp = () => {
     dispatch(resendEmailOtp(email));
   };
+
+  console.log("otp", otp)
+  
   return (
     <section className="otp-bg">
         <div className="container">

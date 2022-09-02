@@ -8,12 +8,13 @@ import {
   conversationList,
   chatSelector,
 } from "../../../../slices/ChatSlice/ChatSlice";
+import { imageUrl } from "../../../../common/apis";
 const ContactList = ({ id }) => {
   const navigate = useNavigate();
   const [term, setTerm] = useState("");
   const { isSuccess } = useSelector(chatSelector);
   const [urlId, seturlId] = useState();
-  console.log("check", isSuccess);
+  //console.log("check", isSuccess);
   const dispatch = useDispatch();
 
   let token = localStorage.getItem("token");
@@ -21,23 +22,20 @@ const ContactList = ({ id }) => {
   useEffect(() => {
     seturlId(id);
   }, []);
-  console.log("======================================", term);
-  // useEffect(()=>{
-  //   if(term){
-  //     let a =  contactList.filter((item,index)=>{
-  //       return item.name == term
-  //  })
-  //  setContactList([...a])
-  //   }
 
-  // },[term])
   useEffect(() => {
     if (!id) return;
     handleClick(id);
   }, [id]);
   const handleClick = (id) => {
-    seturlId(id);
+    console.log(id);
+    if(id){
+      seturlId(id)
+      navigate(`/chat?id=${id}`)
+    }
+   
   };
+  console.log(urlId);
   useEffect(() => {
     dispatch(conversationList({ urlId, token }));
   }, [urlId]);
@@ -54,6 +52,8 @@ const ContactList = ({ id }) => {
     };
     getChatList(callback, token);
   }, [term]);
+
+  console.log("contatctlist",contactList)
 
   return (
     <>
@@ -72,6 +72,7 @@ const ContactList = ({ id }) => {
           <div className="chat-users-block">
             {contactList &&
               contactList.map((item, index) => {
+                console.log("-------item-------",item)
                 return (
                   <div
                     key={index}
@@ -82,7 +83,7 @@ const ContactList = ({ id }) => {
                   >
                     <div className="user-item-thumb">
                       <img
-                        src={item.avatar}
+                        src={`${imageUrl}${item.avatar}`}
                         className="profile-image rounded-circle"
                       />
                       <span className="status-icon in-active"></span>

@@ -1,4 +1,5 @@
 import React from "react";
+import { imageUrl } from "../../../common/apis";
 
 const Announcement = ({announcement}) => {
     console.log(announcement);
@@ -26,9 +27,9 @@ const Announcement = ({announcement}) => {
 
         
     let a = new Date(announcement?.start_date)
-    console.log(a);
+//    console.log(a);
     let day = days[a.getDay()]
-console.log(day);
+//console.log(day);
     let month = months[a.getMonth()]
     let date = a.getDate()
     let year = a.getFullYear()
@@ -37,7 +38,7 @@ console.log(day);
     let second = a.getSeconds()
 
     let x = (hours < 11 )?'AM':'PM'
-    console.log(x);
+    //console.log("annnnnnnnnnn",announcement);
         
   return (
     <div className="card mt-3 border-0">
@@ -50,33 +51,32 @@ console.log(day);
                   <div className="row">
                     <div className="col-lg-8">
                       <h3>Announcement</h3>
-                      <div className="live-stream">Live Stream</div>
-                      <h2>
-                        <b>A Product Launch</b>
-                      </h2>
+                      <div className="live-stream">{announcement?.title || "Event Title"}</div>
+                      <h4>
+                        <b>{announcement?.description || "A Event Launch on"}</b>
+                      </h4>
                       <ul className="date-list">
                         <li>
-                          <div>{day}</div>
+                          <div>{day || "Sun"}</div>
                           <div className="list-large-text">DAY</div>
                         </li>
                         <li className="">
-                          <div>{month}</div>
-                          <div className="list-large-text">{date}</div>
+                          <div>{month || "April"}</div>
+                          <div className="list-large-text">{date || "1"}</div>
                         </li>
                         <li className="">
-                          <div>{hours}</div>
-                          <div className="list-large-text">{x}</div>
+                          <div>{hours || "12"}</div>
+                          <div className="list-large-text">{x || "AM"}</div>
                         </li>
                       </ul>
                     </div>
 
                     <div className="col-lg-4">
                       <div className="rounded-circle roundIcon">
-                        <p className="annocement-text">Watch me on youtube</p>
+                        <p className="annocement-text">Please Join <br />us on </p>
                         <span className="icon-block">
-                          {" "}
-                          <i className="bi bi-youtube youtube-circle-icon"></i>
-                          <span className="youtube-bg"></span>
+                          <i className={`bi bi-${announcement?.social_platform || "signpost-split-fill"}`}></i>
+                          {/* <span className="youtube-bg"></span> */}
                         </span>
                       </div>
                     </div>
@@ -86,9 +86,8 @@ console.log(day);
             </div>
             <div className="col-lg-5">
               <div className="stream-user">
-                <div className="stream-user-circle">&nbsp;</div>
-                <img
-                  src={announcement?.image}
+                 <img
+                  src={`${imageUrl}${announcement?.image || "/images/no-image.png"} `}
                   alt=""
                   className="stream-user-thumb"
                 />

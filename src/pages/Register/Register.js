@@ -155,16 +155,16 @@ const Register = () => {
                         <input
                           type="text"
                           name="name"
-                          className={` ${
+                          className={`form-control ${
                              error === "" || formData.name
-                              ? "form-control"
-                              : "border-color"
+                              ? ""
+                              : "border-danger"
                           }`}
                           placeholder="First name"
                           onChange={handleChange}
                         />
                         {error && formData.name == "" && (
-                          <span className="error-color">{error}</span>
+                          <span className="text-danger">{error}</span>
                         )}
                       </div>
 
@@ -174,16 +174,16 @@ const Register = () => {
                         <input
                           type="email"
                           name="email"
-                          className={` ${
+                          className={`form-control  ${
                             error === "" || formData.email 
-                            ? "form-control"
-                            : "border-color"
+                            ? ""
+                            : "border-danger"
                           }`}
                           placeholder="Enter email"
                           onChange={handleChange}
                         />
                         {error && formData.email == "" && (
-                          <span className="error-color">{error}</span>
+                          <span className="text-danger">{error}</span>
                         )}
                       </div>
 
@@ -193,16 +193,16 @@ const Register = () => {
                         <input
                           type="password"
                           name="password"
-                          className={` ${
+                          className={`form-control  ${
                             error === "" || formData.password
-                            ? "form-control"
-                            : "border-color"
+                            ? ""
+                            : "border-danger"
                           }`}
                           placeholder="Enter password"
                           onChange={handleChange}
                         />
                         {error && formData.password == "" && (
-                          <span className="error-color">{error}</span>
+                          <span className="text-danger">{error}</span>
                         )}
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">

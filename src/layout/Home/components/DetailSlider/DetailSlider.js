@@ -3,58 +3,73 @@ import "./DetailSlider.css";
 import ReactDOM from "react-dom";
 import Slider from "react-slick";
 import { useSelector } from "react-redux";
+import ReactPlayer from "react-player";
+
+
 const DetailSlider = ({video}) => {
- console.log(video);
-  const [settings, setSettings] = useState({
+// console.log(video);
+  const settings = {
     slidesToShow: 4,
     slidesToScroll: 1,
-  });
-
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        }
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 2,
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        }
+      }
+    ]
+  };
   // const data = useSelector(
   //   (state) => state?.kolListing?.listingDetails?.kolProfile
   // );
   // useEffect(() => {
   //   setKolProfile([...data]);
   // }, [data]);
-  let a = video.split(",");
-  a?.push(
-    "https://www.youtube.com/shorts/hl0v_nuIkXU",
-    "https://www.youtube.com/shorts/hl0v_nuIkXU"
-  );
-  console.log(a);
+  let videoUrl = video.split(",");
+  // videoUrl?.push(
+  //   "https://www.youtube.com/shorts/hl0v_nuIkXU",
+  //   // "https://www.youtube.com/shorts/hl0v_nuIkXU"
+  // );
+  console.log(videoUrl);
   return (
     <div className="row detail-main">
       <Slider {...settings}>
         
-            {a && a.map((c,i)=>{
+            {videoUrl && videoUrl.map((videoItem,index)=>{
               return(
-                <div className="slider-div">
-                <div className="card">
-                  <div>
-                    <iframe
-                      src={c}
-                      frameBorder="0"
-                      allow="autoplay; encrypted-media"
-                      allowFullScreen
-                      title="video"
-                    />
-                  </div>
-
-                  <div className="card-body">
+                <div className="slider-div" key={index}>
+                <div className="video-item">
+                    <ReactPlayer
+                        url={videoItem}
+                        width='100%'
+                        height='100%'
+                      />
+                  {/* <div className="card-body">
                     <h5 className="card-title">Nike shose</h5>
                     <div className="card-text">
                       The Lorem ipsum text is derived from sections and of
                       Cicero's De Lorem ipsum text is derived 
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             
               )
             })}
-             
-    
-        
+
       </Slider>
     </div>
   );

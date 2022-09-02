@@ -9,7 +9,7 @@ const Chat = () => {
   const search = useLocation().search;
   const id = new URLSearchParams(search).get('id');
 
-  console.log(id);
+  // console.log(id);
 
   return (
     <div className='container'>
@@ -38,7 +38,7 @@ const Chat = () => {
         <div className='col-lg-6'>
           <div className='card'>
             <div className='card-body p-0'>
-              <Conversation id={`${id}`}/>
+              <Conversation urlId={`${id}`}/>
             </div>
           </div>
         </div>

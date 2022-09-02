@@ -6,9 +6,9 @@ import './css/styles.css'
 
 function index() {
   return (
-    <>
+    <body>
         <Dashboard />
-    </>
+    </body>
   )
 }
 

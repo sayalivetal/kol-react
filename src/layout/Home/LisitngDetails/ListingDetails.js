@@ -4,28 +4,32 @@ import Footer from "../../../components/Footer/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
-import { API,imageUrl } from "../../../common/apis";
+import { API, imageUrl } from "../../../common/apis";
 import { useParams } from "react-router-dom";
 import Announcement from "../components/Announcement";
-import {kolAddBookmark,kolDeleteBookmark} from '../../../slices/KolListing/KolSlices'
+import {
+  kolAddBookmark,
+  kolDeleteBookmark,
+} from "../../../slices/KolListing/KolSlices";
 import "./ListingDetails.css";
 import DetailSlider from "../components/DetailSlider/DetailSlider";
 import ReviewSlider from "../components/ReviewSlider/ReviewSlider";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getFeedback } from "../../../slices/api/simpleApi";
 
 const ListingDetails = () => {
   const { id } = useParams();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-  const[feedback,setFeedback]= useState([])
-  console.log(token);
+  const role = localStorage.getItem("role");
+  const [feedback, setFeedback] = useState([]);
+  // console.log(token);
   const [kolProfile, setKolProfile] = useState(null);
 
   const kolListing = async (actionType = "normal") => {
     const response = await fetch(`${API}/kol-profile/view?id=${id}`, {
       method: "GET",
-      mode: 'no-cors',
+
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -33,7 +37,7 @@ const ListingDetails = () => {
       },
     });
     let data = await response.json();
-    console.log(data.kolProfile);
+    console.log("kol-data",data.kolProfile);
     setKolProfile([...data?.kolProfile]);
   };
   useEffect(() => {
@@ -44,10 +48,10 @@ const ListingDetails = () => {
     const callback = (data) => {
       setFeedback([...data]);
     };
-    getFeedback(callback, token,id);
+    getFeedback(callback, token, id);
   }, [id]);
- 
-  console.log("======================>",feedback);
+
+  // console.log("======================>",feedback);
   const handleBookmark = (profileId, e) => {
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
@@ -58,55 +62,58 @@ const ListingDetails = () => {
       dispatch(kolDeleteBookmark({ profileId, token }));
     }
   };
+
+  console.log("kol-profile state", kolProfile);
+
   return (
     <>
       {kolProfile &&
         kolProfile?.map((item, index) => {
-          console.log(item);
           return (
-            <div className="container">
+            <div className="container" key={index}>
               <div className="card">
                 <div className="card-body">
                   <div className="banner-container">
                     <div
                       className="col-lg-12 detail-bg"
-                      style={{ backgroundImage: `url(${imageUrl}${item.banner})` }}
+                      style={{
+                        backgroundImage: `url(${imageUrl}${item.banner})`,
+                      }}
                     ></div>
                   </div>
                   <div className="col-lg-12 px-4">
                     <div className="row justify-content-between py-4 list-row">
                       <div className="col-lg-2 py-2">
                         <div className="kol-user-img-details">
-                          <img src={`${imageUrl}${item.avatar}`} />
+                          <img className="img-fluid" src={`${imageUrl}${item.avatar}`} alt="avatar" />
                         </div>
                       </div>
                       <div className="col-lg-10  py-2">
                         <div className="row justify-content-between">
-                          <div className="col-lg-8">
-                            <h3 className="text-bold">
-                              {item.get_user.name}
-                              <sup>
-                                <i className="bi bi-patch-check-fill heading-icon"></i>
-                              </sup>
-                            </h3>
+                          <div className="col-lg-8 col-sm-7">
+                            <h3 className="text-bold">{item.get_user.name}</h3>
                             <p>({item.tags})</p>
                           </div>
-                          <div className="col-lg-4">
+                          <div className="col-lg-4 col-sm-5">
                             <p className="text-right">
                               <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                               <span>
                                 {item.city} {item.state},india
                               </span>
-                              <span className="book-icon">
-                                <i
-                                  className={`bi bi-bookmark mx-1 bookmark-icon ${
-                                    item.Bookmark ? "active" : ""
-                                  }`}
-                                  onClick={(e) => {
-                                    handleBookmark(item.user_id, e);
-                                  }}
-                                ></i>
-                              </span>
+                              {role == 2 ? (
+                                <></>
+                              ) : (
+                                <span className="book-icon">
+                                  <i
+                                    className={`bi bi-bookmark mx-1 bookmark-icon ${
+                                      item.Bookmark ? "active" : ""
+                                    }`}
+                                    onClick={(e) => {
+                                      handleBookmark(item.profile_id, e);
+                                    }}
+                                  ></i>
+                                </span>
+                              )}
                             </p>
                           </div>
                         </div>
@@ -118,16 +125,15 @@ const ListingDetails = () => {
                           Languages:{" "}
                           <span className="text-normal">{item.languages}</span>
                         </h5>
-                        {item.get_social_media.map((c, i) => {
-                          return (
-                            <ul key={i} className="social-count-list">
-                              <li className="">
-                                <span></span>
-                                <i className={c.social_icon}></i> {c.followers}k
-                              </li>
-                            </ul>
-                          );
-                        })}
+                        <ul className="social-count-list">
+                          {item.get_social_media.map((c, i) => {
+                            return (
+                                <li className="" key={i}>
+                                  <i className={c.social_icon}></i><span className="social-text">{c.followers}k</span> 
+                                </li>
+                            );
+                          })}
+                        </ul>
                       </div>
                     </div>
                     <div className="row py-1">
@@ -136,14 +142,19 @@ const ListingDetails = () => {
                         <p className="kol-bio">{item.bio}</p>
                       </div>
                       <div className="col-lg-12 text-right">
-                        <Link to="/chat">
-                          <button className="ml-auto btn theme-btn">
-                            <span className="mx-2">
-                              <i className="bi bi-chat-dots"></i>
-                            </span>{" "}
-                            Chat with me
-                          </button>
-                        </Link>
+                        {role == 2 ? (
+                          <></>
+                        ) : (
+                          <Link to={`/chat?id=${item.id}`}>
+
+                            <button className="ml-auto btn theme-btn">
+                              <span className="mx-2">
+                                <i className="bi bi-chat-dots"></i>
+                              </span>{" "}
+                              Chat with me
+                            </button>
+                          </Link>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -151,14 +162,12 @@ const ListingDetails = () => {
               </div>
               <div className="card mt-3">
                 <div className="card-body">
-                  <div className="col-lg-12 px-4">
-                    <div className="row py-1">
-                      <div className="col-lg-12">
-                        <h4>KOL are promoting Products</h4>
-                      </div>
-                      <div className="col-lg-12">
-                        <DetailSlider video={item.video_links} />
-                      </div>
+                  <div className="row">
+                    <div className="col-lg-12 px-4">
+                      <h4 className="py-1">KOL are promoting Products</h4>
+                    </div>
+                    <div className="col-lg-12">
+                      <DetailSlider video={item.video_links} />
                     </div>
                   </div>
                 </div>
@@ -171,11 +180,11 @@ const ListingDetails = () => {
                   <div className="col-lg-12 px-4">
                     <div className="row py-1">
                       <div className="col-lg-12">
-                        <h3 className="theme-color weight-600">
+                        <h3 className="theme-color weight-600 mb-4">
                           See What Our Clients Talk About Us
                         </h3>
                       </div>
-                      <ReviewSlider feedback={feedback}/>
+                      <ReviewSlider feedback={feedback} />
                     </div>
                   </div>
                 </div>

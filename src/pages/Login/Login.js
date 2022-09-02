@@ -78,7 +78,15 @@ const Login = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(LoginUser(loginData));
+    dispatch(LoginUser(loginData)).then((data)=>{
+     
+      if(data.payload.statusCode == 200){
+        toast.success(data.payload.message)
+      }
+      else{
+        toast.error(data.payload.message)
+      }
+    });
     e.target.reset();
   };
  
@@ -113,7 +121,13 @@ const Login = () => {
   };
   useEffect(()=>{
     if (!firebaseUser.token) return;
-    dispatch(loginWithGoogle(firebaseUser))
+    dispatch(loginWithGoogle(firebaseUser)).then((data)=>{
+      console.log(data);
+
+      if(data.payload.statusCode == 201){
+        toast.success(data.payload.message)
+      }
+    })
   },[firebaseUser.token])
 
   return (
