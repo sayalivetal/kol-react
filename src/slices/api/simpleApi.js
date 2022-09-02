@@ -143,7 +143,7 @@ export const getDealsListOfKol = async (callback,token) => {
     },
   });
   const result = await response.json();
-  console.log(result);
+
 
   callback(result.kolProfile);
 };
@@ -164,7 +164,7 @@ export const getKolAllAnnouncements = async (callback, token, page) => {
     }
   );
   const result = await response.json();
-  console.log(result);
+
 
   callback(result.announcements);
 };
@@ -206,7 +206,7 @@ export const getKolprofile = async (callback, token) => {
     },
   });
   const result = await response.json();
-  console.log("result", result);
+
   callback(result.kolProfile);
 };
 
@@ -220,7 +220,7 @@ export const getUserDetails = async (callback, token) => {
     },
   });
   const result = await response.json();
-  console.log("result", result);
+
   callback(result.user);
 };
 
@@ -236,7 +236,7 @@ export const getOrderSummary = async (callback, token, id) => {
     },
   });
   const result = await response.json();
-  console.log(result);
+
 
   callback(result.orderSummary)
 }

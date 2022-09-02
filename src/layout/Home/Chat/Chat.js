@@ -9,7 +9,7 @@ const Chat = () => {
   const search = useLocation().search;
   const id = new URLSearchParams(search).get('id');
 
-  // console.log(id);
+
 
   return (
     <div className='container'>

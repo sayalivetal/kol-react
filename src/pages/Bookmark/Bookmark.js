@@ -22,7 +22,7 @@ const Bookmark = () => {
     getAllBookmark(callback, token);
   }, [bookmarkRender]);
 
-  console.log(bookmark)
+
 
   const handleBookmark = (profileId) => {
     dispatch(kolDeleteBookmark({ profileId, token }));
@@ -38,7 +38,7 @@ const Bookmark = () => {
           <div className="row my-3">
             {bookmark &&
               bookmark.map((item, index) => {
-                console.log(item.avatar);
+            
                 return (
                   <div className="col-lg-3" style={{}}>
                     <div className="bookmark-card">

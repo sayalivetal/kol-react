@@ -14,7 +14,7 @@ const initialState = {
 export const kolDetails = createAsyncThunk(
   "kol/details",
   async ({ id, token }, thunkAPI) => {
-    console.log(id, token);
+ 
     try {
       const response = await fetch(`${API}/kol-profile/view?id=${id}`, {
         method: "GET",
@@ -27,7 +27,7 @@ export const kolDetails = createAsyncThunk(
         },
       });
       let data = await response.json();
-      console.log(data);
+     
       if (response.status === 200) {
         return data;
       } else {
@@ -44,7 +44,7 @@ export const kolDetails = createAsyncThunk(
 export const kolAddBookmark = createAsyncThunk(
   "kol/bookmark",
   async ({ profileId, token }, thunkAPI) => {
-    console.log("hgjdfhg", profileId, token);
+  
     try {
       const response = await fetch(`${API}/bookmark/add`, {
         method: "Post",
@@ -59,14 +59,14 @@ export const kolAddBookmark = createAsyncThunk(
         },
       });
       let data = await response.json();
-      console.log(data);
+    
       if (response.status === 200) {
         return data;
       } else {
         return thunkAPI.rejectWithValue(data);
       }
     } catch (e) {
-      console.log("Error", e.response.data);
+  
       return thunkAPI.rejectWithValue(e.response.data);
     }
   }
@@ -77,7 +77,7 @@ export const kolAddBookmark = createAsyncThunk(
 export const kolDeleteBookmark = createAsyncThunk(
   "kol/bookmarkDelete",
   async ({ profileId, token }, thunkAPI) => {
-    console.log("hgjdfhg", profileId, token);
+  
     try {
       const response = await fetch(
         `${API}/bookmark/delete?kol_profile_id=${profileId}`,
@@ -92,14 +92,14 @@ export const kolDeleteBookmark = createAsyncThunk(
         }
       );
       let data = await response.json();
-      console.log(data);
+    
       if (response.status === 200) {
         return data;
       } else {
         return thunkAPI.rejectWithValue(data);
       }
     } catch (e) {
-      console.log("Error", e.response.data);
+     
       return thunkAPI.rejectWithValue(e.response.data);
     }
   }
@@ -112,11 +112,11 @@ const kolReducer = createSlice({
 
   reducers: {
     kolType: (action, { payload }) => {
-      console.log(payload);
+     
       return { kolType: payload };
     },
     kolName: (action, { payload }) => {
-      console.log(payload);
+   
       return { name: payload };
     },
   },

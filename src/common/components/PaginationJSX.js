@@ -2,9 +2,9 @@ import React, { useState , useEffect } from "react";
 import './pagination.css'
 
 const PaginationJSX = ({ dataLength , pageLimit, dataLimit }) => {
-console.log(dataLength , pageLimit, dataLimit);
+
     const [pages] = useState(Math.round(dataLength / dataLimit));
-    console.log(pages);
+   
     const [currentPage, setCurrentPage] = useState(1);
   
     const goToNextPage = () => {

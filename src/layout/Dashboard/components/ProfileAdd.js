@@ -29,7 +29,7 @@ const ProfileAdd = () => {
   initialArr["social_user_id"] = "";
   initialArr["followers"] = "";
   initialArr["social_icon"] = "";
-  //console.log(initialArr);
+
   const [inputList, setInputList] = useState([
     {
       name: "",
@@ -114,10 +114,10 @@ const ProfileAdd = () => {
     });
   };
   let token = localStorage.getItem("token");
-  console.log("gjhdfjhgggg", token);
+
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
+
       setCategoryList({ ...data });
     };
     getAllCategory(callback, token);
@@ -132,11 +132,11 @@ const ProfileAdd = () => {
     });
   }, [inputList]);
   useEffect(() => {
-    console.log(b);
+
     let x = b.map((item, index) => {
       return item.value;
     });
-    console.log(x);
+   
     setKolProfile(() => {
       return {
         ...kolProfile,
@@ -169,7 +169,7 @@ const ProfileAdd = () => {
     if (e.target.name == "userImage") {
       const file = e.target.files[0];
       if (file.size > 1000000) {
-        console.log("File is large");
+    
         return;
       }
       setSelectedFile(e.target.files[0]);
@@ -178,7 +178,7 @@ const ProfileAdd = () => {
     if (e.target.name == "userBanner") {
       const file = e.target.files[0];
       if (file.size > 1000000) {
-        console.log("File is large");
+       
         return;
       }
       setBannerFile(e.target.files[0]);
@@ -230,14 +230,14 @@ const ProfileAdd = () => {
     });
   };
 
-  console.log("kolProfile 1231", kolProfile);
+
 
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
 
   const handleVideoChange = (e) => {
-    console.log("=========>", e.target.value);
+
     setVideoLinks((prevState) => [...prevState, e.target.value]);
   };
 
@@ -246,7 +246,7 @@ const ProfileAdd = () => {
   };
 
   const languageHandleChange = (e) => {
-    console.log("jghjdfhgjdghgdh", e);
+  
     setA([...e]);
   };
 
@@ -257,7 +257,7 @@ const ProfileAdd = () => {
 
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
+    
       setSocialActive({ ...data });
     };
     getAllStreams(callback, token);
@@ -265,7 +265,7 @@ const ProfileAdd = () => {
 
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
+    
       setState({ ...data });
     };
     getAllStates(callback, token);
@@ -273,13 +273,12 @@ const ProfileAdd = () => {
 
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
+
       setLanguage({ ...data });
     };
     getAllLanguage(callback, token);
   }, []);
 
-  //console.log('social_active',social_active)
 
   let a = Object.entries(language).map(([key, value]) => {
     return {

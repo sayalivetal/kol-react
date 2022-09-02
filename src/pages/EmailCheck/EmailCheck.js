@@ -16,10 +16,10 @@ const EmailCheck = () => {
   const handleSubmit = (e) =>{
     e.preventDefault()
     dispatch(forgotPassword(email))
-    console.log(email);
+  
   }
 
-console.log(user);
+
 useEffect(()=>{
   if(isSuccess)
   navigate('/forgotPassword')

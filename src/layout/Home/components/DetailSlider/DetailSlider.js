@@ -7,7 +7,7 @@ import ReactPlayer from "react-player";
 
 
 const DetailSlider = ({video}) => {
-// console.log(video);
+
   const settings = {
     slidesToShow: 4,
     slidesToScroll: 1,
@@ -43,7 +43,7 @@ const DetailSlider = ({video}) => {
   //   "https://www.youtube.com/shorts/hl0v_nuIkXU",
   //   // "https://www.youtube.com/shorts/hl0v_nuIkXU"
   // );
-  console.log(videoUrl);
+
   return (
     <div className="row detail-main">
       <Slider {...settings}>

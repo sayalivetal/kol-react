@@ -24,25 +24,20 @@ const Login = () => {
     token: "",
   
   });
-  let token = localStorage.getItem('token');
-  console.log(token);
+  // let token = localStorage.getItem('token');
+
 
   useEffect(() => {
     return () => {
       dispatch(clearState());
     };
   }, []);
-  useEffect(()=>{
-    if (token) {
-    navigate('/home')
-    }
-  },[token])
-  useEffect(()=>{
-    if (statusCode == 401) {
-      navigate('/emailVerify')
-      toast.success(errorMessage)
-      }
-  },[statusCode])
+  // useEffect(()=>{
+  //   if (token) {
+  //   navigate('/home')
+  //   }
+  // },[token])
+ 
 
   useEffect(()=>{
     if(errorMessage =='Please choose roles!'){
@@ -50,41 +45,20 @@ const Login = () => {
     }
   },[])
   const [password, setpassword] = useState("password");
-  // useEffect(()=>{
-  //   if(loginUserData?.message){
-  //     toast.error(loginUserData?.message);
-  //   }
-  // },[loginUserData])
-  // useEffect(()=>{
-  //   if(errorMessage =='Please choose roles!'){
-  //     navigate('/role')
-  //   }
-  //   if(loginUserData?.data?.token){
-  //     navigate('/home')
-  //   }
-  // },[loginUserData])
-  // useEffect(()=>{
-  //   if(loginUserData?.email){
-  //     navigate('/emailVerify')
-  //   }
-  // },[loginUserData])
-  // useEffect(()=>{
-  //   if(loginUserData?.data?.token){
-  //     navigate('/home')
-  //   }
-  // },[loginUserData])
+ 
   const handleChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(LoginUser(loginData)).then((data)=>{
-     
-      if(data.payload.statusCode == 200){
-        toast.success(data.payload.message)
+     console.log(data);
+      if(data?.payload?.data?.token){
+        navigate('/home')
+        toast.success(data?.payload?.message)
       }
       else{
-        toast.error(data.payload.message)
+        toast.error(data?.payload?.message)
       }
     });
     e.target.reset();
@@ -116,16 +90,15 @@ const Login = () => {
         });
       })
       .catch((err) => {
-        console.log(err.message);
+     
       });
   };
   useEffect(()=>{
     if (!firebaseUser.token) return;
     dispatch(loginWithGoogle(firebaseUser)).then((data)=>{
-      console.log(data);
-
-      if(data.payload.statusCode == 201){
+      if(data?.payload?.data?.token){
         toast.success(data.payload.message)
+        navigate('/home')
       }
     })
   },[firebaseUser.token])

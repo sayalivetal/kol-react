@@ -11,7 +11,7 @@ const Banner = ({ bannerList }) => {
     setIndex(selectedIndex);
   };
 
-  //console.log('bannerList', bannerList)
+
   return (
     <section>
       <div className="container">

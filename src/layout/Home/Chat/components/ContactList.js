@@ -14,7 +14,7 @@ const ContactList = ({ id }) => {
   const [term, setTerm] = useState("");
   const { isSuccess } = useSelector(chatSelector);
   const [urlId, seturlId] = useState();
-  //console.log("check", isSuccess);
+
   const dispatch = useDispatch();
 
   let token = localStorage.getItem("token");
@@ -28,14 +28,14 @@ const ContactList = ({ id }) => {
     handleClick(id);
   }, [id]);
   const handleClick = (id) => {
-    console.log(id);
+  
     if(id){
       seturlId(id)
       navigate(`/chat?id=${id}`)
     }
    
   };
-  console.log(urlId);
+
   useEffect(() => {
     dispatch(conversationList({ urlId, token }));
   }, [urlId]);
@@ -53,7 +53,7 @@ const ContactList = ({ id }) => {
     getChatList(callback, token);
   }, [term]);
 
-  console.log("contatctlist",contactList)
+ 
 
   return (
     <>
@@ -72,7 +72,7 @@ const ContactList = ({ id }) => {
           <div className="chat-users-block">
             {contactList &&
               contactList.map((item, index) => {
-                console.log("-------item-------",item)
+           
                 return (
                   <div
                     key={index}

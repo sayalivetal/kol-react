@@ -56,7 +56,7 @@ const Announcement = () => {
     };
     getAnnouncement(callback, token, id);
   }, [id]);
-  console.log(announcement);
+
 
  
   const [selectedFile, setSelectedFile] = useState(null);
@@ -80,7 +80,7 @@ const Announcement = () => {
     let day = ("0" + date.getDate()).slice(-2);
     let finalDate = [date.getFullYear(), mnth, day].join("-");
 
-    console.log(finalDate, dateStartTime);
+   
 
 
     setAnnouncement(() => {
@@ -90,7 +90,7 @@ const Announcement = () => {
       };
     });
   }, [startDate]);
-  console.log(announcement.start_date);
+
 
   useEffect(() => {
     if (!endDate) return;
@@ -114,7 +114,7 @@ const Announcement = () => {
     if (e.target.name == "userImage") {
       const file = e.target.files[0];
       if (file.size > 1000000) {
-        console.log("File is large");
+      
         return;
       }
       setSelectedFile(e.target.files[0]);
@@ -150,7 +150,7 @@ const Announcement = () => {
 
     const formData = new FormData();
     if (selectedFile) {
-     // console.log("hello");
+   
       formData.append("image", selectedFile);
     }
     if(id){
@@ -166,7 +166,7 @@ const Announcement = () => {
 
     //Submit data
     dispatch(announceDataFormSubmission(formData)).then((data) => {
-      console.log(data);
+  
       if (data.payload.statusCode == 201) {
         navigate("../../dashboard/announcement/list");
       }
@@ -180,7 +180,7 @@ const Announcement = () => {
 
   useEffect(() => {
     const callback = (data) => {
-      //console.log(data);
+   
       setSocialActive({ ...data });
     };
     getAllStreams(callback, token);
