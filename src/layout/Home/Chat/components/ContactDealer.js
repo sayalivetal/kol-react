@@ -143,12 +143,14 @@ const ContactDealer = () => {
   // console.log("usersssss",kolDealForUser);
   
   console.log(order);
-
+const [placeOrderId, setPlacedOrderId] = useState();
   const handleOrder = (e) =>{
     e.preventDefault()
     dispatch(PlaceOrder(order)).then((data)=>{
       if(data.payload.statusCode == 201){
+        console.log("*************",data)
         showOrderModal()
+        setPlacedOrderId(data.payload.orderPlacedId)
         // navigate('/order')
       }
     })
@@ -162,8 +164,8 @@ const ContactDealer = () => {
         setOrderSummary({...data});
         console.log(data);
       }
-      getOrderSummary(callback, token, id)
-    },[id]);
+      getOrderSummary(callback, token, placeOrderId)
+    },[placeOrderId]);
   
     console.log("--------------------",orderSummary);
 
@@ -346,7 +348,23 @@ const ContactDealer = () => {
                 </div>
 
                   <div className="modal-body px-4">
-                  hello
+                    <div className="row mb-3">
+                      <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
+                        Deal Id :
+                      </label>
+                      <label className="col-lg-10 col-form-label">
+                        {orderSummary.deal_id}
+                      </label>
+                    </div>
+                    <div className="row mb-3">
+                      <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
+                        End Date :
+                      </label>
+                      <label className="col-lg-10 col-form-label">
+                        {orderSummary.end_date}
+                      </label>
+                    </div>
+
                   </div>
                   <div className="modal-footer justify-content-start px-4 py-3">
                     <button type="submit" className="btn theme-btn" onClick={()=> navigate("/order-detail")}>

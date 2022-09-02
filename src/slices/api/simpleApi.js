@@ -238,5 +238,5 @@ export const getOrderSummary = async (callback, token, id) => {
   const result = await response.json();
   console.log(result);
 
-  callback(result.data)
+  callback(result.orderSummary)
 }
