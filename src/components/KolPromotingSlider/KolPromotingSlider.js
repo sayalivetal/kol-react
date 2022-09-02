@@ -80,15 +80,15 @@ const KolPromotingSlider = (features) => {
                         <i className="bi bi-geo-alt"></i>
                         <p>
                           {console.log(item)}
-                          {item.Address.address +
+                          {item?.Address?.address +
                             ", " +
-                            item.Address.landmark +
+                            item?.Address?.landmark +
                             ", " +
-                            item.Address.city +
+                            item?.Address?.city +
                             " , " +
-                            item.Address.state +
+                            item?.Address?.state +
                             " , " +
-                            item.Address.zip}
+                            item?.Address?.zip}
                         </p>
                       </div>
                     </div>

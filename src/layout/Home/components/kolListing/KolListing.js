@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const KolListing = () => {
   let role = localStorage.getItem("role");
-  //console.log(role);
+
   const dispatch = useDispatch();
   const [searchCategory, setSearchCategory] = useState({
     name: "",
@@ -132,7 +132,7 @@ const KolListing = () => {
     getAllStates(callback);
   }, []);
 
-  console.log("list of kols",freshposts);
+
 
   
   const handleBookmark = (profileId, e) => {
@@ -154,7 +154,7 @@ const KolListing = () => {
 //       let a = item.SocialMedia.filter((socItem, index)=>{
 //         return socItem.social_platform == item.social_active
 //     })
-//     console.log(a);
+
 //     setSocialMediaState([...socialMediaIcon, ...a])
 //     });
 

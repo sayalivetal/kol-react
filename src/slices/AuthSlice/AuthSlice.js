@@ -17,7 +17,7 @@ const initialState = {
 export const signupUser = createAsyncThunk(
   "users/signupUser",
   async ({ name, email, token, role, password }, thunkAPI) => {
-    console.log(name, email, token, role, password);
+
     try {
       const response = await fetch(`${API}/register`, {
         method: "POST",
@@ -34,7 +34,7 @@ export const signupUser = createAsyncThunk(
         },
       });
       let data = await response.json();
-      console.log(data.email);
+    
       if (data) {
         if (data?.data?.token) {
           localStorage.setItem("token", data.data.token);
@@ -47,7 +47,7 @@ export const signupUser = createAsyncThunk(
         return thunkAPI.rejectWithValue(data);
       }
     } catch (e) {
-      console.log("Error", e.response.data);
+     
       return thunkAPI.rejectWithValue(e.response.data);
     }
   }
@@ -57,7 +57,7 @@ export const signupUser = createAsyncThunk(
 export const loginWithGoogle = createAsyncThunk(
   "users/loginWithGoogle",
   async ({ name, email, token }, thunkAPI) => {
-    console.log(name, email, token);
+   
     try {
       const response = await fetch(`${API}/login-with-google`, {
         method: "POST",
@@ -74,7 +74,7 @@ export const loginWithGoogle = createAsyncThunk(
         },
       });
       let data = await response.json();
-      console.log(data);
+    
       if (response.status === 200) {
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("role", data.data.role_id);
