@@ -1,4 +1,5 @@
 // import { useSelector } from "react-redux";
+import { async } from "@firebase/util";
 import { API } from "../../common/apis";
 
 // let token = localStorage.getItem('token')
@@ -236,7 +237,41 @@ export const getOrderSummary = async (callback, token, id) => {
     },
   });
   const result = await response.json();
-
-
   callback(result.orderSummary)
 }
+
+// Order history of user
+export const getUserOrderHistory = async (callback, token) => {
+  const response = await fetch(`${API}/order/get_user_order_history`, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  //console.log(result)
+  
+  callback(result.orderSummary)
+}
+
+// Order history of Kol
+export const getKolOrderHistory = async (callback, token) => {
+  const response = await fetch(`${API}/order/get_kol_order_history`, {
+    method: "GET",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: "Bearer " + token,
+    },
+  });
+  const result = await response.json();
+  //console.log(result)
+  
+  callback(result.orderSummary)
+}
+
+

@@ -125,7 +125,7 @@ const KolPromotingSlider = (features) => {
 
                 <div className="profile-profile-btn">
                   <div className="row">
-                    <div className="col-lg-12 text-center"><Link to={`/details/${item.profile_id}`} className="btn theme-btn px-4">View more</Link></div>
+                    {/* <div className="col-lg-12 text-center"><Link to={`/details/${item.profile_id}`} className="btn theme-btn px-4">View more</Link></div> */}
                   </div>
                 </div>
             </div>

@@ -46,6 +46,7 @@ const ContactDealer = () => {
     start_date: "",
     token,
   });
+  const [placeOrderId, setPlacedOrderId] = useState();
   const [orderSummary, setOrderSummary] = useState();
 
   const showDealModal = () => {
@@ -138,19 +139,13 @@ const ContactDealer = () => {
     });
   }, [startDate]);
 
-  // console.log(dealdetail);
-
-  // console.log("usersssss",kolDealForUser);
-  
-  console.log(order);
-const [placeOrderId, setPlacedOrderId] = useState();
+  // place order handler
   const handleOrder = (e) =>{
     e.preventDefault()
     dispatch(PlaceOrder(order)).then((data)=>{
       if(data.payload.statusCode == 201){
         showOrderModal();
         setPlacedOrderId(data?.payload?.orderPlacedId)
-        // navigate('/order')
       }
     })
     console.log(order);
@@ -160,12 +155,12 @@ const [placeOrderId, setPlacedOrderId] = useState();
     useEffect(() => {
       const callback = (data) => {
         setOrderSummary({...data});
-        console.log(data);
+       // console.log(data);
       }
       getOrderSummary(callback, token, placeOrderId)
     },[placeOrderId]);
   
-console.log("----", orderSummary)
+
 
   return (
     <>
@@ -200,13 +195,8 @@ console.log("----", orderSummary)
           </div>
 
           <h5 className="mt-3 mb-1 theme-color d-flex">
-            Deals{" "}
-            <button
-              className="btn btn-sm theme-btn ms-auto"
-              onClick={showDealModal}
-            >
-              + Deal
-            </button>
+            Deals
+            <button className="btn btn-sm theme-btn ms-auto" onClick={showDealModal}> + Deal</button>
           </h5>
           <div className="kol-user-deals">
             {dealdetail?.get_deal &&
@@ -216,7 +206,7 @@ console.log("----", orderSummary)
                     <div className="kol-deal-row justify-content-between align-items-start mb-0">
                       <div className="kol-deal-heading h6">{item.title}</div>
                       <div className="deal-price h6">
-                        ${item.price}{" "}
+                        ${item.price}
                         <input
                           className="form-check-input price-check"
                           type="radio"
@@ -225,7 +215,6 @@ console.log("----", orderSummary)
                         ></input>
                       </div>
                     </div>
-
                     <div className="kol-deal-row">
                       <span className="deal-icon-text">
                         <i className="fa fa-calendar"></i>
@@ -235,7 +224,6 @@ console.log("----", orderSummary)
                         <i className="fa fa-picture-o"></i> {item.type}
                       </span>
                     </div>
-
                     <p>{item.description}</p>
                   </div>
                 );
@@ -336,7 +324,7 @@ console.log("----", orderSummary)
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
               <div className="modal-content">
                 <div className="modal-header px-4">
-                  <h5 className="modal-title theme-color">OrderSummary</h5>
+                  <h5 className="modal-title theme-color">Order Summary</h5>
                   <button
                     type="button"
                     className="btn-close"
@@ -345,26 +333,60 @@ console.log("----", orderSummary)
                 </div>
 
                   <div className="modal-body px-4">
-                    <div className="row mb-3">
-                      <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
-                        Deal Id :
-                      </label>
-                      <label className="col-lg-10 col-form-label">
-                        {orderSummary.deal_id}
+                    <div className="col-12 mb-1">
+                      <label className="form-label ">
+                        <span className="fw-medium">Order Id :</span> {orderSummary.order_id}
                       </label>
                     </div>
-                    <div className="row mb-3">
-                      <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
-                        End Date :
-                      </label>
-                      <label className="col-lg-10 col-form-label">
-                        {orderSummary.end_date}
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                        <span className="fw-medium">Deal Id :</span> {orderSummary.deal_id}
                       </label>
                     </div>
-
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Start Date :</span> {orderSummary.start_date}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">End Date :</span> {orderSummary.end_date}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Title :</span>{orderSummary?.order_summary?.deal_title}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Type :</span> {orderSummary?.order_summary?.type}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Description :</span> {orderSummary?.order_summary?.description}
+                      </label>
+                    </div>
+                    
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Total days :</span> {orderSummary?.order_summary?.total_days} 
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Tax :</span> {orderSummary?.order_summary?.tax_percentage}%
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Price :</span> {orderSummary?.order_summary?.price} {orderSummary?.order_summary?.currency}
+                      </label>
+                    </div>
                   </div>
                   <div className="modal-footer justify-content-start px-4 py-3">
-                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/order-detail")}>
+                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/order-details")}>
                       Buy Now
                     </button>
                   </div>

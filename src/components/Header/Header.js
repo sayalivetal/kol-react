@@ -189,6 +189,7 @@ const Header = () => {
                           <Link className="list-item" to="/account">
                             Settings
                           </Link>
+                          
 
                           {role == 3 ? (
                             <>
@@ -206,7 +207,9 @@ const Header = () => {
                               </Link>
                             </>
                           )}
-
+                          <Link className="list-item" to="/order-details">
+                            Order History
+                          </Link>
                           <div className="list-item" onClick={signOut}>
                             Sign out
                           </div>
