@@ -28,6 +28,7 @@ const ForgotPassword = () => {
   const [eye1, seteye1] = useState(true);
   const [type1, settype1] = useState(false);
   const [password1, setpassword1] = useState("password");
+  const [errorSubmit, setErrorSubmit] = useState("");
   const Eye = () => {
     if (password == "password") {
       setpassword("text");
@@ -106,11 +107,20 @@ const ForgotPassword = () => {
     });
   };
   const handlSubmit = (e) => {
+ 
     e.preventDefault();
-   
-    dispatch(ResetPassword(passwordValue)).then(() => {
-      navigate("/passwordSuccess");
-    });
+    if (passwordValue.email == "" || passwordValue.otp == "" || passwordValue.newPassword == "" || passwordValue.confirmNewPassword == "") {
+      setErrorSubmit("All fields required ");
+    }else{
+      dispatch(ResetPassword(passwordValue)).then((data) => {
+        console.log(data);
+        if(data.payload.status){
+          navigate("/passwordSuccess");
+        }
+        
+      });
+    }
+ 
   };
 
   return (
@@ -145,7 +155,9 @@ const ForgotPassword = () => {
                           <input
                             type={password}
                             id="form3Example3"
-                            className="form-control"
+                            className={`form-control ${
+                              errorSubmit === "" || passwordValue.newPassword ? "" : "border-danger"
+                            }`}
                             name="newPassword"
                             onChange={handleChange}
                           />
@@ -155,10 +167,14 @@ const ForgotPassword = () => {
                               eye ? "fa-eye-slash" : "fa-eye"
                             }`}
                           ></i>
+                        
+                          {errorSubmit && passwordValue.newPassword == "" && (
+                          <span className="text-danger">{errorSubmit}</span>
+                        )}
                         </div>
                       </div>
                       {error.newPassword && (
-                        <span className="err">{error.newPassword}</span>
+                        <span className="err text-danger">{error.newPassword}</span>
                       )}
                       <div className="form-group mb-3">
                         <label>Confirm Password</label>
@@ -167,7 +183,9 @@ const ForgotPassword = () => {
                           <input
                             type={password1}
                             id="form3Example4"
-                            className="form-control"
+                            className={`form-control ${
+                              errorSubmit === "" || passwordValue.confirmNewPassword ? "" : "border-danger"
+                            }`}
                             name="confirmNewPassword"
                             onChange={handleChange}
                           />
@@ -177,10 +195,13 @@ const ForgotPassword = () => {
                               eye1 ? "fa-eye-slash" : "fa-eye"
                             }`}
                           ></i>
+                          {errorSubmit && passwordValue.confirmNewPassword == "" && (
+                          <span className="text-danger">{errorSubmit}</span>
+                        )}
                         </div>
                       </div>
                       {error.confirmNewPassword && (
-                        <span className="err">{error.confirmNewPassword}</span>
+                        <span className="err text-danger">{error.confirmNewPassword}</span>
                       )}
                       <div className="form-group mb-3">
                         <label>OTP</label>
@@ -188,10 +209,15 @@ const ForgotPassword = () => {
                         <input
                           type="text"
                           id="form3Example1"
-                          className="form-control"
+                          className={`form-control ${
+                            errorSubmit === "" || passwordValue.otp ? "" : "border-danger"
+                          }`}
                           name="otp"
                           onChange={handleChange}
                         />
+                        {errorSubmit && passwordValue.otp == "" && (
+                          <span className="text-danger">{errorSubmit}</span>
+                        )}
                       </div>
                       {error.otp && <span className="err">{error.otp}</span>}
                       <div className="d-flex justify-content-between align-items-center mb-3">

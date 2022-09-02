@@ -3,17 +3,26 @@ import GoogleButton from "react-google-button";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../Firebase";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginUser,signupUser,loginWithGoogle,clearState,userSelector } from "../../slices/AuthSlice/AuthSlice";
+import {
+  LoginUser,
+  signupUser,
+  loginWithGoogle,
+  clearState,
+  userSelector,
+} from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate= useNavigate()
-  const { isFetching, isSuccess,statusCode, isError, errorMessage } = useSelector(userSelector)
+  const navigate = useNavigate();
+  const { isFetching, isSuccess, statusCode, isError, errorMessage } =
+    useSelector(userSelector);
   const [eye, seteye] = useState(true);
   const [type, settype] = useState(false);
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState(false);
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -22,48 +31,45 @@ const Login = () => {
     name: "",
     email: "",
     token: "",
-  
   });
-  // let token = localStorage.getItem('token');
-
 
   useEffect(() => {
     return () => {
       dispatch(clearState());
     };
   }, []);
-  // useEffect(()=>{
-  //   if (token) {
-  //   navigate('/home')
-  //   }
-  // },[token])
- 
 
-  useEffect(()=>{
-    if(errorMessage =='Please choose roles!'){
-      navigate('/role')
+  useEffect(() => {
+    if (errorMessage == "Please choose roles!") {
+      navigate("/role");
     }
-  },[])
+  }, []);
   const [password, setpassword] = useState("password");
- 
+
   const handleChange = (e) => {
+    
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(LoginUser(loginData)).then((data)=>{
-     console.log(data);
-      if(data?.payload?.data?.token){
-        navigate('/home')
-        toast.success(data?.payload?.message)
-      }
-      else{
-        toast.error(data?.payload?.message)
-      }
-    });
+    if (loginData.email == "" || loginData.password == "") {
+      setError("All fields required please select all field");
+      setStatus(true);
+    }else{
+      dispatch(LoginUser(loginData)).then((data) => {
+        console.log(data);
+        if (data?.payload?.data?.token) {
+          navigate("/home");
+          toast.success(data?.payload?.message);
+        } else {
+          toast.error(data?.payload?.message);
+        }
+      });
+    }
+
     e.target.reset();
   };
- 
+
   const Eye = () => {
     if (password == "password") {
       setpassword("text");
@@ -75,11 +81,10 @@ const Login = () => {
       settype(false);
     }
   };
-   //function for response from firebase
-   const signInWithGoogle = () => {
+  //function for response from firebase
+  const signInWithGoogle = () => {
     signInWithPopup(auth, googleAuthProvider)
       .then((res) => {
-     
         setFirebaseuser((state) => {
           return {
             ...state,
@@ -89,19 +94,17 @@ const Login = () => {
           };
         });
       })
-      .catch((err) => {
-     
-      });
+      .catch((err) => {});
   };
-  useEffect(()=>{
+  useEffect(() => {
     if (!firebaseUser.token) return;
-    dispatch(loginWithGoogle(firebaseUser)).then((data)=>{
-      if(data?.payload?.data?.token){
-        toast.success(data.payload.message)
-        navigate('/home')
+    dispatch(loginWithGoogle(firebaseUser)).then((data) => {
+      if (data?.payload?.data?.token) {
+        toast.success(data.payload.message);
+        navigate("/home");
       }
-    })
-  },[firebaseUser.token])
+    });
+  }, [firebaseUser.token]);
 
   return (
     <div className="main-div">
@@ -129,34 +132,51 @@ const Login = () => {
                     <form onSubmit={handleSubmit}>
                       <h2 className="login-heading mb-3">Login</h2>
                       <div className="form-group mb-3">
-                        <label>Email</label><span className="astric-span">*</span>
+                        <label>Email</label>
+                        <span className="astric-span">*</span>
                         <input
                           type="email"
                           id="form2Example17"
-                          className="form-control"
+                          className={`form-control ${
+                            error === "" || loginData.email
+                             ? ""
+                             : "border-danger"
+                         }`}
                           placeholder="Enter email"
                           name="email"
                           onChange={handleChange}
                         />
+                        {error && loginData.email == "" && (
+                          <span className="text-danger">{error}</span>
+                        )}
                       </div>
 
                       <div className="form-group mb-3">
-                        <label>Password</label><span className="astric-span">*</span>
+                        <label>Password</label>
+                        <span className="astric-span">*</span>
                         <div className="position-relative">
                           <input
                             type={password}
                             id="form2Example27"
-                            className="form-control"
+                            className={`form-control ${
+                              error === "" || loginData.password
+                               ? ""
+                               : "border-danger"
+                           }`}
                             placeholder="Enter password"
                             name="password"
                             onChange={handleChange}
                           />
+
                           <i
                             onClick={Eye}
                             className={`eye-icon fa ${
                               eye ? "fa-eye-slash" : "fa-eye"
                             }`}
                           ></i>
+                          {error && loginData.password == "" && (
+                          <span className="text-danger">{error}</span>
+                        )}
                         </div>
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">
