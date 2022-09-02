@@ -25,7 +25,7 @@ const EditAccount = () => {
   let token = localStorage.getItem("token");
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
+   
       setUserData({
         firstName: data.name,
         lastName: data.last_name,
@@ -51,7 +51,7 @@ const EditAccount = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(UpdateUserProfile(userData)).then((data) => {
-      console.log(data);
+    
       if (data?.payload?.statusCode === 202) {
         navigate("/account");
       }
@@ -65,15 +65,15 @@ const EditAccount = () => {
     e.preventDefault()
     // Create an object of formData
     const formData = new FormData();
-    console.log(selectedFile);
+  
     // Update the formData object
     formData.append('avatar',selectedFile)
     for (var pair of formData.entries()) {
-      console.log(pair); 
+  
   }
     dispatch(UpdateProfileImage(formData))
   };
-  console.log(userData);
+
   return (
     <div>
       <div className="container">

@@ -13,13 +13,13 @@ const AnnouncementView = () => {
 
   useEffect(() => {
     const callback = (data) => {
-      console.log(data);
+
       setAnnouncementData([...data])
     };
     getAnnouncement(callback, token, id);
   }, [id]);
 
-  console.log(announcementData);
+
 
   return (
     <>

@@ -125,7 +125,7 @@ const LandingPage = () => {
 
   const handleChange = (e) => {
     setContactUsData({ ...contactUsData, [e.target.name]: e.target.value });
-    console.log("contactUsData", contactUsData);
+   
     return false;
   };
 

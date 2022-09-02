@@ -8,8 +8,8 @@ const ForgotPassword = () => {
   const { isFetching, isSuccess, statusCode, isError, errorMessage, email } =
     useSelector(userSelector);
 
-  console.log(statusCode);
-  console.log(email);
+ 
+
   const dispatch = useDispatch();
   const [passwordValue, setPasswordValue] = useState({
     otp: "",
@@ -107,7 +107,7 @@ const ForgotPassword = () => {
   };
   const handlSubmit = (e) => {
     e.preventDefault();
-    console.log(passwordValue);
+   
     dispatch(ResetPassword(passwordValue)).then(() => {
       navigate("/passwordSuccess");
     });

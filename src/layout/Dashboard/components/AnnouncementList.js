@@ -27,9 +27,9 @@ const AnnouncementList = () => {
 
   const handleDelete = (id) => {
     // deleteAnnouncement(token , id);
-    console.log(id);
+ 
     dispatch(announceDelete(id)).then((data) => {
-      //console.log(data);
+
       if(data.payload.statusCode == 200){
         const callback = (data) => {
           setAnnouncements([...data]);
@@ -44,7 +44,7 @@ const AnnouncementList = () => {
     });
   };
   const handlePageChange = (pageNumber) => {
-    console.log(pageNumber);
+  
   
     const callback = (data) => {
       setAnnouncements([...data]);

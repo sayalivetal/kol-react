@@ -10,8 +10,7 @@ const ChangePassword = () => {
   const successMessage = useSelector(
     (state) => state?.user?.loginuser?.message
   );
-  console.log(token);
-  console.log(email);
+ 
   const dispatch = useDispatch();
   const [passwordValue, setPasswordValue] = useState({
     currentPassword: "",
@@ -83,7 +82,7 @@ const ChangePassword = () => {
   };
   const handlSubmit = (e) => {
     e.preventDefault();
-    console.log(passwordValue);
+   
     dispatch(ChangePasswordUser(passwordValue));
   };
   return (

@@ -36,7 +36,7 @@ const EmailVerify = () => {
     }
   }, [isSuccess, isError]);
 
-  console.log(email);
+
   const dispatch = useDispatch();
   //state for otp change
   const [otp, setOtp] = useState("");
@@ -63,7 +63,7 @@ const EmailVerify = () => {
     dispatch(resendEmailOtp(email));
   };
 
-  console.log("otp", otp)
+
   
   return (
     <section className="otp-bg">

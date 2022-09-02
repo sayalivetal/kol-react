@@ -2,7 +2,7 @@ import React from "react";
 import { imageUrl } from "../../../common/apis";
 
 const Announcement = ({announcement}) => {
-    console.log(announcement);
+
     let days = [
         'Sun',
         'Mon',
@@ -27,9 +27,9 @@ const Announcement = ({announcement}) => {
 
         
     let a = new Date(announcement?.start_date)
-//    console.log(a);
+
     let day = days[a.getDay()]
-//console.log(day);
+
     let month = months[a.getMonth()]
     let date = a.getDate()
     let year = a.getFullYear()
@@ -38,7 +38,7 @@ const Announcement = ({announcement}) => {
     let second = a.getSeconds()
 
     let x = (hours < 11 )?'AM':'PM'
-    //console.log("annnnnnnnnnn",announcement);
+
         
   return (
     <div className="card mt-3 border-0">

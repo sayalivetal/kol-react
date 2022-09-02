@@ -15,7 +15,7 @@ const ProfileUpdate = () => {
   // const navigate = useNavigate();
 
   const [selected, setSelected] = useState([]);
-  //console.log(selected);
+
   // const { message, biodata } = useSelector(dashboardSelector);
   const [categoryList, setCategoryList] = useState({});
   const [biodata, setBiodata] = useState({});
@@ -80,7 +80,7 @@ const ProfileUpdate = () => {
       setSelected([...language]);
     }
     if (biodata.kol_type && categoryList) {
-      console.log(biodata.kol_type, categoryList);
+
       setKolType(
         Object.keys(categoryList).find(
           (key) => categoryList[key] == biodata.kol_type
@@ -136,7 +136,7 @@ const ProfileUpdate = () => {
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
-   // console.log(value);
+
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
@@ -181,7 +181,7 @@ const ProfileUpdate = () => {
 
 
   useEffect(() => {
- //   console.log("fddddddddddddddddd",inputList);
+
     setKolProfile(() => {
       return {
         ...kolProfile,
@@ -372,16 +372,14 @@ const ProfileUpdate = () => {
     }
 
     dispatch(bioDataFormSubmission(formData)).then(() => {
-      console.log("hello");
+   
     });
   };
 
   useEffect(() => {
     toast.success(message);
   }, [message]);
- 
- // console.log("kolProfile", kolProfile);
- // console.log("biodata", biodata);
+
 
 
   return (
