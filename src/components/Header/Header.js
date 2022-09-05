@@ -14,8 +14,8 @@ const Header = () => {
   const [categoryList, setCategoryList] = useState({});
   const [categoryType, setCategory] = useState("");
   const [language, setLanguage] = useState({});
-  const { isFetching, isError, username, message, email } =
-    useSelector(userSelector);
+  const { isFetching, isError, username, message, email, logged_in_user } =  useSelector(userSelector);
+
 
   let avatar = localStorage.getItem("avatar");
   let token = localStorage.getItem("token");
@@ -126,7 +126,7 @@ const Header = () => {
                       ""
                     )}
 
-                    <Link to={"/chat?id=${}"}>
+                    <Link to={`/chat?id=${logged_in_user}`}>
                       <i className="bi bi-chat-dots"></i>
                       <span className="count-badge">0</span>
                     </Link>

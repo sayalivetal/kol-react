@@ -28,6 +28,10 @@ const ContactDealer = () => {
 
   const dispatch = useDispatch();
   const [dealModal, setDealModal] = useState(false);
+  const [modalProps, setModalProps] = useState({
+    name:"",
+    btnText:"",
+  })
   const [orderModal, setOrderModal] = useState(false);
   const [kolProfile, setKolProfile] = useState([]);
   const [dealForm, setDealForm] = useState({
@@ -160,8 +164,27 @@ const ContactDealer = () => {
       getOrderSummary(callback, token, placeOrderId)
     },[placeOrderId]);
   
+
     const handleDealDelete = (dealId) => {
-      dispatch(deleteKolDeals({dealId, token}));
+      dispatch(deleteKolDeals({dealId, token})
+      // .then((data)=>{
+      //   console.log(data);
+      //   if (data.payload.statusCode == 200) {
+      //     const callback = (data) => {
+      //       setDealDetails({ ...data });
+      //       //console.log();
+      //     };
+      //     getDealsListOfKol(callback, token);
+      //   }
+      // })
+      );
+    }
+       
+
+
+    const handleDealEdit = (id) => {
+      showDealModal();
+      setModalProps({name:"Edit Deal", btnText:"Save Deal"})
     }
 
   return (
@@ -198,7 +221,10 @@ const ContactDealer = () => {
 
           <h5 className="mt-3 mb-1 theme-color d-flex">
             Deals
-            <button className="btn btn-sm theme-btn ms-auto" onClick={showDealModal}> + Deal</button>
+            <button className="btn btn-sm theme-btn ms-auto" onClick={()=> {
+              showDealModal();
+              setModalProps({name:"Add Deal", btnText:"Create Deal"})
+            }}> + Deal</button>
           </h5>
           <div className="kol-user-deals">
             {dealdetail?.get_deal &&
@@ -228,11 +254,12 @@ const ContactDealer = () => {
                     </div>
                     <p>{item.description}</p>
                     <div className="kol-deal-row">
-                      <span className="deal-delete btn btn-sm btn-default">
+                      <span className="deal-delete btn btn-sm me-2 btn-default">
                         <i className="bi bi-trash3" onClick={()=> {
                           handleDealDelete(item.id)
-                        }}></i> Delete
-                      </span>
+                        }}></i> </span>
+                        <span className="deal-edit btn btn-sm  btn-default">
+                        <i className="bi bi-pencil-fill" onClick={handleDealEdit}></i> </span>
                     </div>
                     
                   </div>
@@ -416,7 +443,7 @@ const ContactDealer = () => {
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
               <div className="modal-content">
                 <div className="modal-header px-4">
-                  <h5 className="modal-title theme-color">Add Deal</h5>
+                  <h5 className="modal-title theme-color">{modalProps.name}</h5>
                   <button
                     type="button"
                     className="btn-close"
@@ -502,7 +529,7 @@ const ContactDealer = () => {
                   </div>
                   <div className="modal-footer justify-content-start px-4 py-3">
                     <button type="submit" className="btn theme-btn">
-                      Create Deal
+                    {modalProps.btnText}
                     </button>
                   </div>
                 </form>
