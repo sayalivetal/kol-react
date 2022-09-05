@@ -16,7 +16,7 @@ const signOut = () => {
                     <Link className='btn theme-btn btn-sm' to={"/home"}>Back to Home</Link>
                 </div>
                 <div className="col-lg-6 text-right ">
-                    <button className='btn btn-sm btn-logout' onClick={signOut} ><i class="bi bi-power"></i></button>
+                    <button className='btn btn-sm btn-logout' onClick={signOut} ><i className="bi bi-power"></i></button>
                 </div>
             </div>
         </nav>

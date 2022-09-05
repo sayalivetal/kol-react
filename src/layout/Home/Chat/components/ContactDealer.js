@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../Chat.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createDeal,PlaceOrder } from "../../../../slices/DealsSlice/DealsSlice";
+import { createDeal,PlaceOrder, deleteKolDeals } from "../../../../slices/DealsSlice/DealsSlice";
 import {
   getDealsListOfKol,
   getDealsListForUsers,
@@ -19,12 +19,12 @@ const ContactDealer = () => {
   const navigate = useNavigate()
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
-
+  //console.log(role);
   const [startDate, setStartDate] = useState(new Date());
-
+ // console.log(startDate);
   const search = useLocation().search;
   const id = new URLSearchParams(search).get("id");
-
+   //console.log(id);
 
   const dispatch = useDispatch();
   const [dealModal, setDealModal] = useState(false);
@@ -46,6 +46,7 @@ const ContactDealer = () => {
     start_date: "",
     token,
   });
+  const [placeOrderId, setPlacedOrderId] = useState();
   const [orderSummary, setOrderSummary] = useState();
 
   const showDealModal = () => {
@@ -67,10 +68,10 @@ const ContactDealer = () => {
       },
     });
     let data = await response.json();
-
+   // console.log(data);
     setKolProfile([...data?.kolProfile]);
   };
-
+ // console.log(kolProfile);
   useEffect(() => {
     kolList();
   }, [id]);
@@ -79,17 +80,17 @@ const ContactDealer = () => {
     setDealForm((preState) => {
       return { ...preState, [e.target.name]: e.target.value };
     });
-
+    //console.log(e.target.name, e.target.value );
   };
 
   const handleDealSubmit = (e) => {
     e.preventDefault();
     dispatch(createDeal(dealForm)).then((data) => {
-
+     // console.log(data);
       if (data.payload.statusCode == 201) {
         const callback = (data) => {
           setDealDetails({ ...data });
-     
+          //console.log();
         };
         getDealsListOfKol(callback, token);
       }
@@ -101,7 +102,7 @@ const ContactDealer = () => {
   useEffect(() => {
     const callback = (data) => {
       setDealDetails({ ...data });
-
+      console.log();
     };
     getDealsListOfKol(callback, token);
   }, []);
@@ -110,7 +111,7 @@ const ContactDealer = () => {
   useEffect(() => {
     const callback = (data) => {
       setKolDealForUser([...data]);
-     
+      console.log();
     };
     getDealsListForUsers(callback, token, id);
   }, [id]);
@@ -131,44 +132,37 @@ const ContactDealer = () => {
     let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
     let finalDate = [date.getFullYear(), mnth, day].join("-");
-   
+   //console.log(finalDate, dateStartTime);
     setOrder({
       ...order,
       start_date: moment(`${finalDate} ${dateStartTime}`).format('YYYY-MM-DD hh:mm:ss')
     });
   }, [startDate]);
 
-
-
-
-  
-
-const [placeOrderId, setPlacedOrderId] = useState();
+  // place order handler
   const handleOrder = (e) =>{
     e.preventDefault()
     dispatch(PlaceOrder(order)).then((data)=>{
       if(data.payload.statusCode == 201){
-    
-        showOrderModal()
-        setPlacedOrderId(data.payload.orderPlacedId)
-        // navigate('/order')
+        showOrderModal();
+        setPlacedOrderId(data?.payload?.orderPlacedId)
       }
     })
- 
+    console.log(order);
   }
-
 
     // order summary
     useEffect(() => {
       const callback = (data) => {
         setOrderSummary({...data});
-     
+       // console.log(data);
       }
       getOrderSummary(callback, token, placeOrderId)
     },[placeOrderId]);
   
-
-
+    const handleDealDelete = (dealId) => {
+      dispatch(deleteKolDeals({dealId, token}));
+    }
 
   return (
     <>
@@ -203,13 +197,8 @@ const [placeOrderId, setPlacedOrderId] = useState();
           </div>
 
           <h5 className="mt-3 mb-1 theme-color d-flex">
-            Deals{" "}
-            <button
-              className="btn btn-sm theme-btn ms-auto"
-              onClick={showDealModal}
-            >
-              + Deal
-            </button>
+            Deals
+            <button className="btn btn-sm theme-btn ms-auto" onClick={showDealModal}> + Deal</button>
           </h5>
           <div className="kol-user-deals">
             {dealdetail?.get_deal &&
@@ -219,7 +208,7 @@ const [placeOrderId, setPlacedOrderId] = useState();
                     <div className="kol-deal-row justify-content-between align-items-start mb-0">
                       <div className="kol-deal-heading h6">{item.title}</div>
                       <div className="deal-price h6">
-                        ${item.price}{" "}
+                        ${item.price}
                         <input
                           className="form-check-input price-check"
                           type="radio"
@@ -228,7 +217,6 @@ const [placeOrderId, setPlacedOrderId] = useState();
                         ></input>
                       </div>
                     </div>
-
                     <div className="kol-deal-row">
                       <span className="deal-icon-text">
                         <i className="fa fa-calendar"></i>
@@ -238,8 +226,15 @@ const [placeOrderId, setPlacedOrderId] = useState();
                         <i className="fa fa-picture-o"></i> {item.type}
                       </span>
                     </div>
-
                     <p>{item.description}</p>
+                    <div className="kol-deal-row">
+                      <span className="deal-delete btn btn-sm btn-default">
+                        <i className="bi bi-trash3" onClick={()=> {
+                          handleDealDelete(item.id)
+                        }}></i> Delete
+                      </span>
+                    </div>
+                    
                   </div>
                 );
               })}
@@ -249,7 +244,7 @@ const [placeOrderId, setPlacedOrderId] = useState();
         <>
           {kolProfile &&
             kolProfile.map((item, index) => {
-        
+             // console.log(item);
               return (
                 <div className="kol-user-card">
                   <div className="kol-user-icon">
@@ -281,7 +276,7 @@ const [placeOrderId, setPlacedOrderId] = useState();
           <div className="kol-user-deals">
             {kolDealForUser &&
               kolDealForUser.map((item, index) => {
-             
+                console.log(item);
                 return (
                   <div key={index} className="kol-list-deal">
                     <div className="kol-deal-row justify-content-between align-items-start mb-0">
@@ -314,23 +309,25 @@ const [placeOrderId, setPlacedOrderId] = useState();
                 );
               })}
           </div>
+
+          <div className="deal-action-bar">
+            <div className="deal-form-row">
+              <DatePicker
+                selected={startDate}
+                dateFormat="yyyy-MM-dd hh:mm:ss aa"
+                onChange={(date) => setStartDate(date)}
+                className="form-control"
+              />
+
+              <button type="submit" onClick={handleOrder} className="btn theme-btn">
+                Place Order
+              </button>
+            </div>
+          </div>
         </>
       )}
 
-      <div className="deal-action-bar">
-        <div className="deal-form-row">
-          <DatePicker
-            selected={startDate}
-            dateFormat="yyyy-MM-dd hh:mm:ss aa"
-            onChange={(date) => setStartDate(date)}
-            className="form-control"
-          />
-
-          <button type="submit" onClick={handleOrder} className="btn theme-btn">
-            Place Order
-          </button>
-        </div>
-      </div>
+      
       
 
       {orderModal && (
@@ -339,7 +336,7 @@ const [placeOrderId, setPlacedOrderId] = useState();
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
               <div className="modal-content">
                 <div className="modal-header px-4">
-                  <h5 className="modal-title theme-color">OrderSummary</h5>
+                  <h5 className="modal-title theme-color">Order Summary</h5>
                   <button
                     type="button"
                     className="btn-close"
@@ -348,26 +345,60 @@ const [placeOrderId, setPlacedOrderId] = useState();
                 </div>
 
                   <div className="modal-body px-4">
-                    <div className="row mb-3">
-                      <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
-                        Deal Id :
-                      </label>
-                      <label className="col-lg-10 col-form-label">
-                        {orderSummary.deal_id}
+                    <div className="col-12 mb-1">
+                      <label className="form-label ">
+                        <span className="fw-medium">Order Id :</span> {orderSummary.order_id}
                       </label>
                     </div>
-                    <div className="row mb-3">
-                      <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
-                        End Date :
-                      </label>
-                      <label className="col-lg-10 col-form-label">
-                        {orderSummary.end_date}
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                        <span className="fw-medium">Deal Id :</span> {orderSummary.deal_id}
                       </label>
                     </div>
-
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Start Date :</span> {orderSummary.start_date}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">End Date :</span> {orderSummary.end_date}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Title :</span>{orderSummary?.order_summary?.deal_title}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Type :</span> {orderSummary?.order_summary?.type}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Description :</span> {orderSummary?.order_summary?.description}
+                      </label>
+                    </div>
+                    
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Total days :</span> {orderSummary?.order_summary?.total_days} 
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Tax :</span> {orderSummary?.order_summary?.tax_percentage}%
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Price :</span> {orderSummary?.order_summary?.price} {orderSummary?.order_summary?.currency}
+                      </label>
+                    </div>
                   </div>
                   <div className="modal-footer justify-content-start px-4 py-3">
-                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/order-detail")}>
+                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/order-details")}>
                       Buy Now
                     </button>
                   </div>

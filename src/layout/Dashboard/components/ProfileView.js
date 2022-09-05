@@ -12,9 +12,9 @@ const ProfileView = () => {
 
   useEffect(() => {
     const callback = (data) => {
-    
-      if (data === 'Please add profile details first.') {
-        navigate("../profile-update")
+     // console.log("new user", data);
+      if (!data) {
+        navigate("../profile-add")
       }
       else {
         setKolProfile(data);

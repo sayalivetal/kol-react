@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Store, persistStorage } from "./Store";
 import { Provider } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
 
 import { PersistGate } from "redux-persist/integration/react";
 const root = ReactDOM.createRoot(document.getElementById("root"));

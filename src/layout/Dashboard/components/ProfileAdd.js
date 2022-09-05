@@ -6,6 +6,7 @@ import {
   dashboardSelector,
   getKolprofile,
 } from "../../../slices/Dashboard/dashboard";
+import { userSelector } from "../../../slices/AuthSlice/AuthSlice";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,8 +21,11 @@ import {
 const ProfileAdd = () => {
   const navigate = useNavigate();
 
-  const { message, biodata } = useSelector(dashboardSelector);
+  const {  username } =  useSelector(userSelector);
+
   const [categoryList, setCategoryList] = useState({});
+  const [kolType, setKolType] = useState("");
+ 
 
   const dispatch = useDispatch();
   const initialArr = {};
@@ -63,7 +67,7 @@ const ProfileAdd = () => {
   };
 
   const [kolProfile, setKolProfile] = useState({
-    userName: "",
+    userName: username,
     personal_email: "",
     kol_type: "",
     city: "",
@@ -98,7 +102,7 @@ const ProfileAdd = () => {
     formData.append("avatar", selectedFile);
     formData.append("banner", bannerFile);
     formData.append("personal_email", kolProfile.personal_email);
-    formData.append("kol_type", kolProfile.kol_type);
+    formData.append("kol_type", kolType);
     formData.append("city", kolProfile.city);
     formData.append("zip_code", kolProfile.zip_code);
     formData.append("bio", kolProfile.bio);
@@ -109,8 +113,14 @@ const ProfileAdd = () => {
     formData.append("tags[]", kolProfile.tags);
     formData.append("state", kolProfile.state);
 
-    dispatch(bioDataFormSubmission(formData)).then(() => {
-      navigate("../profile-view");
+    dispatch(bioDataFormSubmission(formData)).then((data) => {
+      if(data?.payload?.status) {
+        toast.success(data?.payload?.message)
+        navigate("../profile-view");
+      }else{
+        toast.error(data?.payload?.message)
+      }
+     
     });
   };
   let token = localStorage.getItem("token");
@@ -182,6 +192,15 @@ const ProfileAdd = () => {
 
     if (e.target.name == "tags") {
       setTags(e.target.value);
+    }
+
+    if (e.target.name == "kol_type") {
+    
+      setKolType(
+        Object.keys(categoryList).find(
+          (key) => categoryList[key] == e.target.value
+        )
+      );
     }
   };
 
@@ -289,32 +308,35 @@ const ProfileAdd = () => {
           <form className="" onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-lg-6 col-sm-12 mt-3">
-                <label className="form-label">
-                  <b>Name</b>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="userName"
-                  value={kolProfile.userName}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="col-lg-6 col-sm-12 mt-3">
-                <label className="form-label">
-                  <b>Email address</b>
-                </label>
-                <input
-                  type="email"
-                  name="personal_email"
-                  className="form-control"
-                  defaultValue={kolProfile.personal_email}
-                  onChange={handleChange}
-                />
-                <div id="emailHelp" className="form-text">
-                  We'll never share your email with anyone else.
+
+                  <label  className="form-label">
+                    <b>Name</b>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="userName"
+                    defaultValue={kolProfile.userName}
+                    // onChange={handleChange}
+                  />
                 </div>
-              </div>
+                <div className="col-lg-6 col-sm-12 mt-3">
+                  <label  className="form-label">
+                    <b>Email address</b>
+                  </label>
+                  <input
+                    type="email"
+                    name="personal_email"
+                    className="form-control"
+                    defaultValue={kolProfile.personal_email}
+                    onChange={handleChange}
+                  />
+                  <div id="emailHelp" className="form-text">
+                    We'll never share your email with anyone else.
+                  </div>
+              
+                </div>
+
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
@@ -432,14 +454,15 @@ const ProfileAdd = () => {
                   onChange={onChange}
                 />
                 <div className="tagDiv">
-                  {tags.length > 0 && (
-                    <>
-                      {tags.map((tag, index) => (
-                        <div className="tag btn-default">
-                          {tag}
-                          <button onClick={() => deleteTag(index)}>x</button>
-                        </div>
-                      ))}
+                {tags.length > 0 && (
+                  <>
+                    {tags.map((tag, index) => (
+                      <div className="tag btn-default" key={index}>
+                        {tag}
+                        <button onClick={() => deleteTag(index)}>x</button>
+                      </div>
+                    ))}
+
                     </>
                   )}
                 </div>

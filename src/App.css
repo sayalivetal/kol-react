@@ -820,3 +820,6 @@ h1.banner-title:first-child::nth-line(-n+2){
 .social-text { font-size: 20px; margin-left: 8px; color: #342951;}
 .slick-track {  min-width: 100%; display: flex; }
 
+.table>:not(:first-child) {
+  border-top: 1px solid currentColor;
+}

@@ -168,14 +168,14 @@ const KolListing = () => {
       <div className="row justify-content-between border-bottom pt-3 pb-4">
         <div className="col-lg-7 d-flex filter-col">
           <select className="form-select" onChange={handleLanguageChange}>
-            <option defaultValue>Languages</option>
+            <option value="">All Languages</option>
             {languages &&
               Object.entries(languages).map(([key, value]) => (
                 <option value={key}>{value}</option>
               ))}
           </select>
           <select className="form-select mx-3" onChange={handleStreamChange}>
-            <option defaultValue>Streams</option>
+            <option value="">All Streams</option>
             {streams &&
               Object.entries(streams).map(([key, value]) => (
                 <option value={key}>{value}</option>
@@ -183,7 +183,7 @@ const KolListing = () => {
           </select>
 
           <select className="form-select" onChange={handleLocationChange}>
-            <option defaultValue>Location</option>
+            <option value="">All Location</option>
             {state &&
               Object.entries(state).map(([key, value]) => (
                 <option value={key}>{value}</option>

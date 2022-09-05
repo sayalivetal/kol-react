@@ -49,11 +49,11 @@ export const createDeal = createAsyncThunk(
 export const PlaceOrder = createAsyncThunk(
   "chat/message",
   async ({ deal_id,kol_profile_id,start_date, token }, thunkAPI) => {
-   console.log(deal_id,kol_profile_id,start_date, token );
+   //console.log(deal_id,kol_profile_id,start_date, token );
  
     try {
       const response = await fetch(`${API}/order/place-order`, {
-        method: "Post",
+        method: "POST",
 
 
         headers: {
@@ -83,7 +83,35 @@ export const PlaceOrder = createAsyncThunk(
   }
 );
 
+//Deals delete api
 
+export const deleteKolDeals = createAsyncThunk(
+  "kol/delete-kol-deal",
+  async ({ dealId, token }, thunkAPI) => {
+    try {
+      const response = await fetch(
+        `${API}/deal/delete?id=${dealId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      let data = await response.json();
+    
+      if (response.status === 200) {
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.response.data);
+    }
+  }
+);
   
 
 //create slice for DealsReducer reducers
@@ -102,6 +130,15 @@ const DealsReducer = createSlice({
     return {...action.payload}
     },
     [createDeal.rejected]: (state, action) => {
+    return {...action.payload}
+    },
+    [deleteKolDeals.fulfilled]: (state, action) => {
+      return {...action.payload}
+    },
+    [deleteKolDeals.pending]: (state, action) => {
+    return {...action.payload}
+    },
+    [deleteKolDeals.rejected]: (state, action) => {
     return {...action.payload}
     },
 

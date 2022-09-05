@@ -35,6 +35,10 @@ const Header = () => {
   }, [isError]);
   const signOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("avatar");
+    localStorage.removeItem("email")
+    localStorage.removeItem("persist:root")
     navigate("/");
   };
   const handleChange = (e) => {
@@ -122,7 +126,7 @@ const Header = () => {
                       ""
                     )}
 
-                    <Link to={"/chat?id="}>
+                    <Link to={"/chat?id=${}"}>
                       <i className="bi bi-chat-dots"></i>
                       <span className="count-badge">0</span>
                     </Link>
@@ -189,6 +193,7 @@ const Header = () => {
                           <Link className="list-item" to="/account">
                             Settings
                           </Link>
+                          
 
                           {role == 3 ? (
                             <>
@@ -206,7 +211,9 @@ const Header = () => {
                               </Link>
                             </>
                           )}
-
+                          <Link className="list-item" to="/order-details">
+                            Order History
+                          </Link>
                           <div className="list-item" onClick={signOut}>
                             Sign out
                           </div>
