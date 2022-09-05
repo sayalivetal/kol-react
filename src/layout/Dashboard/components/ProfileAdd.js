@@ -113,8 +113,14 @@ const ProfileAdd = () => {
     formData.append("tags[]", kolProfile.tags);
     formData.append("state", kolProfile.state);
 
-    dispatch(bioDataFormSubmission(formData)).then(() => {
-      navigate("../profile-view");
+    dispatch(bioDataFormSubmission(formData)).then((data) => {
+      if(data?.payload?.status) {
+        toast.success(data?.payload?.message)
+        navigate("../profile-view");
+      }else{
+        toast.error(data?.payload?.message)
+      }
+     
     });
   };
   let token = localStorage.getItem("token");
