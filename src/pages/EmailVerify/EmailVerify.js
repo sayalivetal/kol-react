@@ -50,17 +50,24 @@ const EmailVerify = () => {
     }
     dispatch(emailVerification({ otp, email })).then((data)=>{
   
-      if(data?.payload?.statusCode == 200){
+      if(data?.payload?.status){
         toast.success(data?.payload?.message)
+      }else{
+        toast.error(data?.payload?.message)
       }
-      toast.error(data?.payload?.message)
+      
    
     })
     e.target.reset();
   };
 
   const handleOtp = () => {
-    dispatch(resendEmailOtp(email));
+    dispatch(resendEmailOtp(email)).then((data)=>{
+      console.log(data);
+      if(data?.payload?.status){
+        toast.success(data?.payload?.message)
+      }
+    });
   };
 
 
