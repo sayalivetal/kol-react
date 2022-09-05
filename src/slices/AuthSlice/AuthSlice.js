@@ -75,7 +75,7 @@ export const loginWithGoogle = createAsyncThunk(
       });
       let data = await response.json();
     
-      if (response.status === 200) {
+      if (data) {
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("role", data.data.role_id);
         return { ...data };
