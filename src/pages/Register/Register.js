@@ -81,6 +81,9 @@ const Register = () => {
       console.log(formData);
       dispatch(signupUser(formData)).then((data)=>{
         console.log(data);
+        if(data.payload.status){
+          toast.success(data.payload.message)
+        }
       })
       e.target.reset();
     }
