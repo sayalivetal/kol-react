@@ -104,6 +104,9 @@ export const kolDeleteBookmark = createAsyncThunk(
     }
   }
 );
+
+
+
 //create slice for authentication reducers
 
 const kolReducer = createSlice({
@@ -132,6 +135,7 @@ const kolReducer = createSlice({
       state.message = payload.message;
       state.isSuccess = true;
     },
+
   },
 });
 export const { kolType, kolName } = kolReducer.actions;

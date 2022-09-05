@@ -127,7 +127,7 @@ export const getDealsListForUsers = async (callback,token,id) => {
     },
   });
   const result = await response.json();
-  console.log(result);
+ // console.log(result);
 
   callback(result.deals);
 };
@@ -148,6 +148,7 @@ export const getDealsListOfKol = async (callback,token) => {
 
   callback(result.kolProfile);
 };
+
 
 
 export const getKolAllAnnouncements = async (callback, token, page) => {

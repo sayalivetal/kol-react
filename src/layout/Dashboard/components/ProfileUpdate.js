@@ -88,6 +88,9 @@ const ProfileUpdate = () => {
       );
     }
   }, [biodata, categoryList]);
+
+  
+
   useEffect(() => {
     let a = selected.map((item, index) => {
       return {

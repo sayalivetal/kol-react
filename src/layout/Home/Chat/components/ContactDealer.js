@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../Chat.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createDeal,PlaceOrder } from "../../../../slices/DealsSlice/DealsSlice";
+import { createDeal,PlaceOrder, deleteKolDeals } from "../../../../slices/DealsSlice/DealsSlice";
 import {
   getDealsListOfKol,
   getDealsListForUsers,
@@ -19,12 +19,12 @@ const ContactDealer = () => {
   const navigate = useNavigate()
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
-  console.log(role);
+  //console.log(role);
   const [startDate, setStartDate] = useState(new Date());
-  console.log(startDate);
+ // console.log(startDate);
   const search = useLocation().search;
   const id = new URLSearchParams(search).get("id");
-   console.log(id);
+   //console.log(id);
 
   const dispatch = useDispatch();
   const [dealModal, setDealModal] = useState(false);
@@ -68,10 +68,10 @@ const ContactDealer = () => {
       },
     });
     let data = await response.json();
-    console.log(data);
+   // console.log(data);
     setKolProfile([...data?.kolProfile]);
   };
-  console.log(kolProfile);
+ // console.log(kolProfile);
   useEffect(() => {
     kolList();
   }, [id]);
@@ -86,11 +86,11 @@ const ContactDealer = () => {
   const handleDealSubmit = (e) => {
     e.preventDefault();
     dispatch(createDeal(dealForm)).then((data) => {
-      console.log(data);
+     // console.log(data);
       if (data.payload.statusCode == 201) {
         const callback = (data) => {
           setDealDetails({ ...data });
-          console.log();
+          //console.log();
         };
         getDealsListOfKol(callback, token);
       }
@@ -132,7 +132,7 @@ const ContactDealer = () => {
     let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
     let finalDate = [date.getFullYear(), mnth, day].join("-");
-    console.log(finalDate, dateStartTime);
+   //console.log(finalDate, dateStartTime);
     setOrder({
       ...order,
       start_date: moment(`${finalDate} ${dateStartTime}`).format('YYYY-MM-DD hh:mm:ss')
@@ -160,7 +160,9 @@ const ContactDealer = () => {
       getOrderSummary(callback, token, placeOrderId)
     },[placeOrderId]);
   
-
+    const handleDealDelete = (dealId) => {
+      dispatch(deleteKolDeals({dealId, token}));
+    }
 
   return (
     <>
@@ -225,6 +227,14 @@ const ContactDealer = () => {
                       </span>
                     </div>
                     <p>{item.description}</p>
+                    <div className="kol-deal-row">
+                      <span className="deal-delete btn btn-sm btn-default">
+                        <i className="bi bi-trash3" onClick={()=> {
+                          handleDealDelete(item.id)
+                        }}></i> Delete
+                      </span>
+                    </div>
+                    
                   </div>
                 );
               })}
@@ -299,23 +309,25 @@ const ContactDealer = () => {
                 );
               })}
           </div>
+
+          <div className="deal-action-bar">
+            <div className="deal-form-row">
+              <DatePicker
+                selected={startDate}
+                dateFormat="yyyy-MM-dd hh:mm:ss aa"
+                onChange={(date) => setStartDate(date)}
+                className="form-control"
+              />
+
+              <button type="submit" onClick={handleOrder} className="btn theme-btn">
+                Place Order
+              </button>
+            </div>
+          </div>
         </>
       )}
 
-      <div className="deal-action-bar">
-        <div className="deal-form-row">
-          <DatePicker
-            selected={startDate}
-            dateFormat="yyyy-MM-dd hh:mm:ss aa"
-            onChange={(date) => setStartDate(date)}
-            className="form-control"
-          />
-
-          <button type="submit" onClick={handleOrder} className="btn theme-btn">
-            Place Order
-          </button>
-        </div>
-      </div>
+      
       
 
       {orderModal && (
