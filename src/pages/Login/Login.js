@@ -206,7 +206,7 @@ const Login = () => {
                     <div className="col-12 d-flex justify-content-center align-items-center mt-3">
                       <span className="optionText text-center">
                         Don't have an account?{" "}
-                        <Link to="/role">Register here</Link>
+                        <Link to="/role">Sign Up</Link>
                       </span>
                     </div>
                   </div>
