@@ -19,7 +19,7 @@ const ContactDealer = () => {
   const navigate = useNavigate()
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
-  //console.log(role);
+ // console.log(token);
   const [startDate, setStartDate] = useState(new Date());
  // console.log(startDate);
   const search = useLocation().search;
@@ -34,6 +34,7 @@ const ContactDealer = () => {
   })
   const [orderModal, setOrderModal] = useState(false);
   const [kolProfile, setKolProfile] = useState([]);
+  const [editedDealId, setEditedDealId] = useState("");
   const [dealForm, setDealForm] = useState({
     title: "",
     description: "",
@@ -41,7 +42,9 @@ const ContactDealer = () => {
     total_days: "",
     type: "",
     token,
+    id:editedDealId,
   });
+
   const [dealdetail, setDealDetails] = useState();
   const [kolDealForUser, setKolDealForUser] = useState();
   const [order, setOrder] = useState({
@@ -52,7 +55,7 @@ const ContactDealer = () => {
   });
   const [placeOrderId, setPlacedOrderId] = useState();
   const [orderSummary, setOrderSummary] = useState();
-
+  
   const showDealModal = () => {
     setDealModal(!dealModal);
   };
@@ -80,18 +83,21 @@ const ContactDealer = () => {
     kolList();
   }, [id]);
 
+
+
   const handleDealChange = (e) => {
     setDealForm((preState) => {
       return { ...preState, [e.target.name]: e.target.value };
     });
-    //console.log(e.target.name, e.target.value );
+    console.log(e.target.name, e.target.value );
   };
 
   const handleDealSubmit = (e) => {
     e.preventDefault();
+    // console.log("---------",dealForm,token)
     dispatch(createDeal(dealForm)).then((data) => {
      // console.log(data);
-      if (data.payload.statusCode == 201) {
+      if (data.payload.status) {
         const callback = (data) => {
           setDealDetails({ ...data });
           //console.log();
@@ -106,7 +112,7 @@ const ContactDealer = () => {
   useEffect(() => {
     const callback = (data) => {
       setDealDetails({ ...data });
-      console.log();
+      //console.log("deals list",data);
     };
     getDealsListOfKol(callback, token);
   }, []);
@@ -152,7 +158,7 @@ const ContactDealer = () => {
         setPlacedOrderId(data?.payload?.orderPlacedId)
       }
     })
-    console.log(order);
+   // console.log(order);
   }
 
     // order summary
@@ -166,26 +172,36 @@ const ContactDealer = () => {
   
 
     const handleDealDelete = (dealId) => {
-      dispatch(deleteKolDeals({dealId, token})
-      // .then((data)=>{
-      //   console.log(data);
-      //   if (data.payload.statusCode == 200) {
-      //     const callback = (data) => {
-      //       setDealDetails({ ...data });
-      //       //console.log();
-      //     };
-      //     getDealsListOfKol(callback, token);
-      //   }
-      // })
-      );
+      dispatch(deleteKolDeals({dealId, token})).then((state)=>{
+        //console.log(state);
+        if (state.payload.statusCode == 200) {
+          const callback = (data) => {
+            setDealDetails({ ...data });
+          };
+          getDealsListOfKol(callback, token);
+        }
+      });
     }
        
 
-
-    const handleDealEdit = (id) => {
+    const handleDealEdit = (e, editedId) => {
+      setEditedDealId(editedId)
       showDealModal();
       setModalProps({name:"Edit Deal", btnText:"Save Deal"})
+      dealdetail?.get_deal.filter((item, index)=>{
+        if(item.id== editedId ){
+          setDealForm({
+              ...dealForm,
+            ...item
+          });
+        }
+      })
+     
+      
     }
+
+//console.log(dealForm);
+
 
   return (
     <>
@@ -221,14 +237,23 @@ const ContactDealer = () => {
 
           <h5 className="mt-3 mb-1 theme-color d-flex">
             Deals
-            <button className="btn btn-sm theme-btn ms-auto" onClick={()=> {
+            <button className="btn btn-sm theme-btn ms-auto" onClick={(e)=> {
               showDealModal();
+              setDealForm({
+                title: "",
+                description: "",
+                price: "",
+                total_days: "",
+                type: "",
+                token
+              })
               setModalProps({name:"Add Deal", btnText:"Create Deal"})
             }}> + Deal</button>
           </h5>
           <div className="kol-user-deals">
             {dealdetail?.get_deal &&
               dealdetail?.get_deal.map((item, index) => {
+               // console.log(item)
                 return (
                   <div key={index} className="kol-list-deal">
                     <div className="kol-deal-row justify-content-between align-items-start mb-0">
@@ -238,9 +263,11 @@ const ContactDealer = () => {
                         <input
                           className="form-check-input price-check"
                           type="radio"
-                          name="price"
+                          onChange={(e) => handleDeals(e, item.kol_profile_id)}
+                          value={item.id}
+                          name="deal"
                           id=""
-                        ></input>
+                        />
                       </div>
                     </div>
                     <div className="kol-deal-row">
@@ -249,17 +276,17 @@ const ContactDealer = () => {
                         {item.total_days} Days
                       </span>
                       <span className="deal-icon-text">
-                        <i className="fa fa-picture-o"></i> {item.type}
+                        <i className={`fa ${item.type == "video" ? "fa-video-camera"  : "fa-picture-o"}`}></i> {item.type}
                       </span>
                     </div>
                     <p>{item.description}</p>
                     <div className="kol-deal-row">
-                      <span className="deal-delete btn btn-sm me-2 btn-default">
-                        <i className="bi bi-trash3" onClick={()=> {
-                          handleDealDelete(item.id)
-                        }}></i> </span>
-                        <span className="deal-edit btn btn-sm  btn-default">
-                        <i className="bi bi-pencil-fill" onClick={handleDealEdit}></i> </span>
+                      <span className="deal-delete btn btn-sm me-2 btn-default" onClick={()=> { handleDealDelete(item.id)}}>
+                        <i className="bi bi-trash3" ></i>
+                      </span>
+                      <span className="deal-edit btn btn-sm  btn-default" onClick={(e)=>{handleDealEdit(e, item.id )}}>
+                        <i className="bi bi-pencil-fill" ></i>
+                      </span>
                     </div>
                     
                   </div>
@@ -303,7 +330,7 @@ const ContactDealer = () => {
           <div className="kol-user-deals">
             {kolDealForUser &&
               kolDealForUser.map((item, index) => {
-                console.log(item);
+                //console.log(item);
                 return (
                   <div key={index} className="kol-list-deal">
                     <div className="kol-deal-row justify-content-between align-items-start mb-0">
@@ -327,7 +354,7 @@ const ContactDealer = () => {
                         {item.total_days} Days
                       </span>
                       <span className="deal-icon-text">
-                        <i className="fa fa-picture-o"></i> {item.type}
+                        <i className={`fa ${item.type == "video" ? "fa-video-camera"  : "fa-picture-o"}`}></i> {item.type}
                       </span>
                     </div>
 
@@ -459,6 +486,7 @@ const ContactDealer = () => {
                           type="text"
                           className="form-control"
                           name="title"
+                          value={dealForm.title}
                           required
                           autoComplete="off"
                           onChange={handleDealChange}
@@ -470,6 +498,7 @@ const ContactDealer = () => {
                           type="text"
                           className="form-control"
                           name="description"
+                          value={dealForm.description}
                           rows="3"
                           autoComplete="off"
                           onChange={handleDealChange}
@@ -481,6 +510,7 @@ const ContactDealer = () => {
                           type="number"
                           className="form-control"
                           name="price"
+                          value={dealForm.price}
                           required
                           autoComplete="off"
                           onChange={handleDealChange}
@@ -492,6 +522,7 @@ const ContactDealer = () => {
                           type="number"
                           className="form-control"
                           name="total_days"
+                          value={dealForm.total_days}
                           required
                           autoComplete="off"
                           onChange={handleDealChange}
@@ -504,7 +535,8 @@ const ContactDealer = () => {
                             type="radio"
                             name="type"
                             id="video"
-                            value="video"
+                            value={dealForm.type == "video" ? dealForm.type : "video" }
+                            defaultChecked={dealForm.type == "video" }
                             onChange={handleDealChange}
                           />
                           <label className="form-check-label" htmlFor="video">
@@ -517,7 +549,8 @@ const ContactDealer = () => {
                             type="radio"
                             name="type"
                             id="image"
-                            value="image"
+                            value={dealForm.type == "image" ? dealForm.type : "image" }
+                            defaultChecked={ dealForm.type == "image"}
                             onChange={handleDealChange}
                           />
                           <label className="form-check-label" htmlFor="image">

@@ -34,7 +34,7 @@ const OrderDetails = () => {
           <div className="row my-3">
             <div className="col-lg-12">
               <div className="card">
-                {role === 3 ?
+                {role == 3 ?
                   (
                     <>
                       <div className="card-header">

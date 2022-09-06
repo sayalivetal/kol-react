@@ -165,7 +165,8 @@ const Header = () => {
                   </div>
                   <div className="header-profile">
                     <div className="profile-user-icon">
-                      <img src={`${imageUrl}${avatar ? avatar : "Images/avatar.png"}`} alt="avatar" />
+                      {avatar ? <img src={`${imageUrl}${avatar}`} alt="avatar" /> : username.split('')[0].toUpperCase() || "U" }
+                      
                     </div>
                     <Dropdown className="user-dropdown">
                       <Dropdown.Toggle
@@ -180,7 +181,7 @@ const Header = () => {
                         <div className="user-drop-list">
                           <div className="list-item-profile">
                             <div className="profile-user-icon">
-                              <img src={`${imageUrl}${avatar ? avatar : "Images/avatar.png"}`} alt="avatar" />
+                              {avatar ? <img src={`${imageUrl}${avatar}`} alt="avatar" /> : username.split('')[0].toUpperCase() || "U" }
                             </div>
                             <div className="profile-user-name">
                               <div className="user-name">{username}</div>
