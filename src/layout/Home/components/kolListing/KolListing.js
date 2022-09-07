@@ -215,7 +215,7 @@ const KolListing = () => {
           </p>
         }
       >
-        {freshposts &&
+        {freshposts.length > 0 ?
           freshposts.map((item, index) => {
             return (
               <div
@@ -320,7 +320,7 @@ const KolListing = () => {
                       <></>
                     ) : (
                       <div className="col-lg-12 ">
-                        <Link to={`/chat?id=${item.profile_id}`}>
+                        <Link to={`/chat?id=${item.user_id}`}>
                        
                           <button className="ml-auto btn theme-btn mb-4">
                             <span className="mx-2">
@@ -335,7 +335,13 @@ const KolListing = () => {
                 </div>
               </div>
             );
-          })}
+          }) : 
+          
+          (<>
+            <div className="col-12 text-center p-5 bg-light my-3 ">
+               <h2 className="p-5">Nothing Found, try Searching again.</h2>
+            </div>
+          </>)}
       </InfiniteScroll>
     </>
   );

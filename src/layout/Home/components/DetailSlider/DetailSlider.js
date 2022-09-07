@@ -39,6 +39,7 @@ const DetailSlider = ({video}) => {
   //   setKolProfile([...data]);
   // }, [data]);
   let videoUrl = video.split(",");
+
   // videoUrl?.push(
   //   "https://www.youtube.com/shorts/hl0v_nuIkXU",
   //   // "https://www.youtube.com/shorts/hl0v_nuIkXU"
@@ -49,6 +50,7 @@ const DetailSlider = ({video}) => {
       <Slider {...settings}>
         
             {videoUrl && videoUrl.map((videoItem,index)=>{
+              // console.log("askjdflksf", videoItem)
               return(
                 <div className="slider-div" key={index}>
                 <div className="video-item">

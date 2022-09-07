@@ -136,6 +136,7 @@ const ListingDetails = () => {
                         </ul>
                       </div>
                     </div>
+                   
                     <div className="row py-1">
                       <div className="col-lg-12">
                         <h5 className="text-bold">Bio</h5>
@@ -145,7 +146,7 @@ const ListingDetails = () => {
                         {role == 2 ? (
                           <></>
                         ) : (
-                          <Link to={`/chat?id=${item.id}`}>
+                          <Link to={`/chat?id=${item.user_id}`}>
 
                             <button className="ml-auto btn theme-btn">
                               <span className="mx-2">
@@ -154,6 +155,7 @@ const ListingDetails = () => {
                               Chat with me
                             </button>
                           </Link>
+                          
                         )}
                       </div>
                     </div>

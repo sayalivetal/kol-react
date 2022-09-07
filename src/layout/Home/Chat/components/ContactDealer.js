@@ -45,7 +45,7 @@ const ContactDealer = () => {
     id:editedDealId,
   });
 
-  const [dealdetail, setDealDetails] = useState();
+  const [dealdetail, setDealDetail] = useState();
   const [kolDealForUser, setKolDealForUser] = useState();
   const [order, setOrder] = useState({
     deal_id: "",
@@ -56,16 +56,10 @@ const ContactDealer = () => {
   const [placeOrderId, setPlacedOrderId] = useState();
   const [orderSummary, setOrderSummary] = useState();
   
-  const showDealModal = () => {
-    setDealModal(!dealModal);
-  };
 
-  const showOrderModal = () => {
-    setOrderModal(!orderModal);
-  };
 
   const kolList = async () => {
-    const response = await fetch(`${API}/kol-profile/view?id=${id}`, {
+    const response = await fetch(`${API}/kol-profile/list`, {
       method: "GET",
 
       headers: {
@@ -75,16 +69,40 @@ const ContactDealer = () => {
       },
     });
     let data = await response.json();
-   // console.log(data);
-    setKolProfile([...data?.kolProfile]);
+    // console.log(data.kolProfiles);
+    setKolProfile([...data.kolProfiles].filter((item, index)=>{
+      if(item.user_id == id ){
+        return item;
+       }
+    }));
   };
- // console.log(kolProfile);
+
+  console.log("aslkjflkasjflsjhello", kolProfile);
+
+
   useEffect(() => {
     kolList();
   }, [id]);
 
+  const showDealModal = () => {
+    setDealModal(!dealModal);
+  };
 
-
+   // add deal modal open handler
+  const handlerAddDeal = () => {
+    showDealModal();
+    setModalProps({name:"Add Deal", btnText:"Create Deal"})
+    setDealForm({
+      title: "",
+      description: "",
+      price: "",
+      total_days: "",
+      type: "",
+      token
+    })
+  }
+ 
+  // add/update deal onchange  handler
   const handleDealChange = (e) => {
     setDealForm((preState) => {
       return { ...preState, [e.target.name]: e.target.value };
@@ -92,6 +110,7 @@ const ContactDealer = () => {
     console.log(e.target.name, e.target.value );
   };
 
+  // add/update deal handler
   const handleDealSubmit = (e) => {
     e.preventDefault();
     // console.log("---------",dealForm,token)
@@ -99,7 +118,7 @@ const ContactDealer = () => {
      // console.log(data);
       if (data.payload.status) {
         const callback = (data) => {
-          setDealDetails({ ...data });
+          setDealDetail({ ...data });
           //console.log();
         };
         getDealsListOfKol(callback, token);
@@ -108,10 +127,37 @@ const ContactDealer = () => {
     setDealModal(false);
   };
 
+  // Edit deal 
+  const handleDealEdit = (e, editedId) => {
+    setEditedDealId(editedId)
+    showDealModal();
+    setModalProps({name:"Edit Deal", btnText:"Save Deal"})
+    dealdetail?.get_deal.filter((item, index)=>{
+      if(item.id== editedId ){
+        setDealForm({
+            ...dealForm,
+          ...item
+        });
+      }
+    })
+  }
+
+  // deal delete by id
+  const handleDealDelete = (dealId) => {
+    dispatch(deleteKolDeals({dealId, token})).then((state)=>{
+      if (state.payload.statusCode == 200) {
+        const callback = (data) => {
+          setDealDetail({ ...data });
+        };
+        getDealsListOfKol(callback, token);
+      }
+    });
+  }
+
   // kol own deals List
   useEffect(() => {
     const callback = (data) => {
-      setDealDetails({ ...data });
+      setDealDetail({ ...data });
       //console.log("deals list",data);
     };
     getDealsListOfKol(callback, token);
@@ -121,12 +167,12 @@ const ContactDealer = () => {
   useEffect(() => {
     const callback = (data) => {
       setKolDealForUser([...data]);
-      console.log();
+     // console.log("kol deal for user", data);
     };
     getDealsListForUsers(callback, token, id);
   }, [id]);
 
- 
+// select deal for order 
   const handleDeals = (e, id) => {
     setOrder({
       ...order,
@@ -135,6 +181,7 @@ const ContactDealer = () => {
     });
   };
 
+// select date for order
   useEffect(() => {
     if (!startDate) return;
     let date = new Date(startDate);
@@ -149,6 +196,11 @@ const ContactDealer = () => {
     });
   }, [startDate]);
 
+  // order summary modal
+  const showOrderModal = () => {
+    setOrderModal(!orderModal);
+  };
+
   // place order handler
   const handleOrder = (e) =>{
     e.preventDefault()
@@ -161,47 +213,15 @@ const ContactDealer = () => {
    // console.log(order);
   }
 
-    // order summary
-    useEffect(() => {
-      const callback = (data) => {
-        setOrderSummary({...data});
-       // console.log(data);
-      }
-      getOrderSummary(callback, token, placeOrderId)
-    },[placeOrderId]);
+  // order summary api call for detail
+  useEffect(() => {
+    const callback = (data) => {
+      setOrderSummary({...data});
+      // console.log(data);
+    }
+    getOrderSummary(callback, token, placeOrderId)
+  },[placeOrderId]);
   
-
-    const handleDealDelete = (dealId) => {
-      dispatch(deleteKolDeals({dealId, token})).then((state)=>{
-        //console.log(state);
-        if (state.payload.statusCode == 200) {
-          const callback = (data) => {
-            setDealDetails({ ...data });
-          };
-          getDealsListOfKol(callback, token);
-        }
-      });
-    }
-       
-
-    const handleDealEdit = (e, editedId) => {
-      setEditedDealId(editedId)
-      showDealModal();
-      setModalProps({name:"Edit Deal", btnText:"Save Deal"})
-      dealdetail?.get_deal.filter((item, index)=>{
-        if(item.id== editedId ){
-          setDealForm({
-              ...dealForm,
-            ...item
-          });
-        }
-      })
-     
-      
-    }
-
-//console.log(dealForm);
-
 
   return (
     <>
@@ -222,14 +242,14 @@ const ContactDealer = () => {
             <div className="kol-user-info">
               <div className="d-flex justify-content-between">
                 <span className="deal-user-name">{`${dealdetail?.get_user?.name} ${dealdetail?.get_user?.last_name}`}</span>
-                <span className="">
+                {/* <span className="">
                   <i className="bi bi-instagram"></i> 456k
-                </span>
+                </span> */}
               </div>
               <div className="kol-user-loc">
                 <i className="loc bi-geo-alt"></i>
                 <p>
-                  {dealdetail?.city} {dealdetail?.state}, india
+                  {dealdetail?.city}, {dealdetail?.state}, india
                 </p>
               </div>
             </div>
@@ -237,18 +257,7 @@ const ContactDealer = () => {
 
           <h5 className="mt-3 mb-1 theme-color d-flex">
             Deals
-            <button className="btn btn-sm theme-btn ms-auto" onClick={(e)=> {
-              showDealModal();
-              setDealForm({
-                title: "",
-                description: "",
-                price: "",
-                total_days: "",
-                type: "",
-                token
-              })
-              setModalProps({name:"Add Deal", btnText:"Create Deal"})
-            }}> + Deal</button>
+            <button className="btn btn-sm theme-btn ms-auto" onClick={handlerAddDeal}> + Deal</button>
           </h5>
           <div className="kol-user-deals">
             {dealdetail?.get_deal &&
@@ -296,35 +305,38 @@ const ContactDealer = () => {
         </>
       ) : (
         <>
-          {kolProfile &&
-            kolProfile.map((item, index) => {
-             // console.log(item);
-              return (
-                <div className="kol-user-card">
-                  <div className="kol-user-icon">
-                    <img
-                      className="rounded-circle  img-fluid"
-                      src={`${imageUrl}${item?.avatar}`}
-                      alt="avatar"
-                    />
-                  </div>
-                  <div className="kol-user-info">
-                    <div className="d-flex justify-content-between">
-                      <span className="deal-user-name">{`${item?.get_user?.name} ${item?.get_user?.last_name}`}</span>
-                      <span className="">
-                        <i className={`${item.social_active_icon}`}></i>
-                      </span>
+
+              {kolProfile.map((item, index)=>{
+                return (
+                  <>
+                    <div className="kol-user-card">
+                      <div className="kol-user-icon">
+                        <img
+                          className="rounded-circle  img-fluid"
+                          src={`${imageUrl}${item.avatar}`}
+                          alt="avatar"
+                        />
+                      </div>
+                      <div className="kol-user-info">
+                        <div className="d-flex justify-content-between">
+                          <span className="deal-user-name">{item.username} </span>
+                          {/* <span className="">
+                            <i className={`${item.social_active_icon}`}></i>
+                          </span> */}
+                        </div>
+                        <div className="kol-user-loc">
+                          <i className="loc bi-geo-alt"></i>
+                          <p>
+                            {item.city}, {item.state}, india
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="kol-user-loc">
-                      <i className="loc bi-geo-alt"></i>
-                      <p>
-                        {item?.city} {item?.state}, india
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                  </>
+                )
+              })}
+                
+
 
           <h5 className="mt-3 mb-1 theme-color d-flex">Deals </h5>
           <div className="kol-user-deals">
