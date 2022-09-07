@@ -17,26 +17,13 @@ const EmailVerify = () => {
   const { isFetching, isSuccess, isError, errorMessage} = useSelector(userSelector);
   // const userData = useSelector((state) => state?.user?.registerUser?.data);
   let email = localStorage.getItem("email")
+  console.log(email);
   const userdata = useSelector((state) => state?.user?.loginUser);
   useEffect(() => {
     return () => {
       dispatch(clearState());
     };
   }, []);
-
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(clearState());
-      navigate('/home');
-    }
-
-    if (isError) {
-      toast.error(errorMessage);
-      dispatch(clearState());
-    }
-  }, [isSuccess, isError]);
-
-
   const dispatch = useDispatch();
   //state for otp change
   const [otp, setOtp] = useState("");
@@ -49,9 +36,11 @@ const EmailVerify = () => {
       setError("opt required")
     }
     dispatch(emailVerification({ otp, email })).then((data)=>{
-  
-      if(data?.payload?.status){
+  console.log(data);
+      if(data?.payload?.statusCode == 200){
+        navigate('/home');
         toast.success(data?.payload?.message)
+       
       }else{
         toast.error(data?.payload?.message)
       }
@@ -64,8 +53,11 @@ const EmailVerify = () => {
   const handleOtp = () => {
     dispatch(resendEmailOtp(email)).then((data)=>{
       console.log(data);
-      if(data?.payload?.status){
+      if(data?.payload?.statusCode == 200){
         toast.success(data?.payload?.message)
+        
+      }else{
+        toast.error(data?.payload?.message)
       }
     });
   };

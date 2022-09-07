@@ -161,7 +161,7 @@ const KolListing = () => {
 //   }
 //  },[freshposts])
 
-// console.log(socialMediaIcon);
+console.log(freshposts);
 
   return (
     <>
@@ -215,7 +215,7 @@ const KolListing = () => {
           </p>
         }
       >
-        {freshposts &&
+        {freshposts.length &&
           freshposts.map((item, index) => {
             return (
               <div
