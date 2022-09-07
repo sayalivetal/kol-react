@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ResetPassword, userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
+import { toast } from "react-toastify";
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const { isFetching, isSuccess, statusCode, isError, errorMessage, email } =
@@ -114,8 +115,11 @@ const ForgotPassword = () => {
     }else{
       dispatch(ResetPassword(passwordValue)).then((data) => {
         console.log(data);
-        if(data.payload.status){
+        if(data.payload.statusCode === 201){
+          
           navigate("/passwordSuccess");
+        }else{
+          toast.error(data.payload.message)
         }
         
       });
@@ -225,7 +229,7 @@ const ForgotPassword = () => {
                           type="submit"
                           className="btn theme-btn btn-lg btn-block mt-6"
                         >
-                          Send Reset link
+                          Submit
                         </button>
                       </div>
                     </form>

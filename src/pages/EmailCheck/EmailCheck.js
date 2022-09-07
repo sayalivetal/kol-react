@@ -27,6 +27,9 @@ const EmailCheck = () => {
           toast.success(data?.payload?.data?.message)
           navigate('/forgotPassword')
         }
+        else{
+          toast.error(data?.payload?.data?.message)
+        }
       });
     }
   };
@@ -84,7 +87,7 @@ const EmailCheck = () => {
                           type="submit"
                           className="btn theme-btn btn-lg btn-block mt-6"
                         >
-                          Send Reset link
+                          Send OTP
                         </button>
                       </div>
                     </form>
