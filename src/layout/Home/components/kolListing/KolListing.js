@@ -161,7 +161,7 @@ const KolListing = () => {
 //   }
 //  },[freshposts])
 
-console.log(freshposts);
+// console.log(freshposts);
 
   return (
     <>
@@ -218,6 +218,7 @@ console.log(freshposts);
         {freshposts.length > 0 ?
 
           freshposts.map((item, index) => {
+            //console.log("--------",item)
             return (
               <div
                 key={index}
@@ -251,7 +252,7 @@ console.log(freshposts);
                       <p className="text-right">
                         <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                         <span>
-                          {item.city} {item.state},india
+                          {item.city}, {item.state},india
                         </span>
                         {role == 2 ? (
                           <></>

@@ -48,3 +48,7 @@
 .announcement-view .form-label { min-width: 212px; }
 .btn-logout { color:#fff; background: #0d0916; margin:-8px 0; font-size: 20px;}
 .btn-logout:hover { color:#f01f4b; }
+
+.profile-thumb { width:184px; display: inline-flex; }
+.thumb-block { width:100%; height: 120px; justify-content: center; text-align: center;}
+.thumb-block img {height: 100%; max-width: 100%; }

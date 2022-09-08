@@ -109,7 +109,7 @@ export const getFeedback = async (callback, token, id) => {
     }
   );
   const result = await response.json();
-  console.log(result);
+ // console.log(result);
 
   callback(result.Feedbacks);
 };

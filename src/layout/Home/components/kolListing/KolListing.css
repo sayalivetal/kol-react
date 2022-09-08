@@ -51,16 +51,7 @@
   color: #f01f4b;
   font-size: 18px;
 }
-.bookmark-icon {
-  color: #f01f4b;
-  cursor: pointer;
-}
 
-
-
-.bookmark-icon.active:before {
-  content: '\f195' !important;
-}
 .more-button a {
   text-decoration: none;
   color: #f01f4b;
@@ -68,7 +59,4 @@
 }
 .list-row {
   cursor: pointer;
-}
-select, option{
-  /*font-family: bootstrap-icons !important;*/
 }

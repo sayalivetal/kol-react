@@ -11,6 +11,8 @@ const DetailSlider = ({video}) => {
   const settings = {
     slidesToShow: 4,
     slidesToScroll: 1,
+    infinite: false,
+    initialSlide: 0,
     responsive: [
       {
         breakpoint: 1024,

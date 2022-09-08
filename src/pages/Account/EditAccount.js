@@ -68,10 +68,20 @@ const EditAccount = () => {
   
     // Update the formData object
     formData.append('avatar',selectedFile)
-    for (var pair of formData.entries()) {
+  //   for (var pair of formData.entries()) {
   
-  }
-    dispatch(UpdateProfileImage(formData))
+  // }
+    dispatch(UpdateProfileImage(formData)).then((data)=> {
+      if(data?.payload?.statusCode === 201){
+        const callback = (data) => {
+          setUserData({
+            ...userData,
+            avatar:data.avatar,
+          });
+        };
+        getUserDetails(callback, token);
+      }
+    })
   };
 
   return (

@@ -388,11 +388,11 @@ export const UpdateUserProfile = createAsyncThunk(
 //update user profile image
 
 export const UpdateProfileImage = createAsyncThunk(
-  "users/changePassword",
+  "user/update-image",
   async (formData, thunkAPI) => {
-    for (var pair of formData.entries()) {
-      console.log(pair);
-    }
+    // for (var pair of formData.entries()) {
+    //   console.log(pair);
+    // }
 
     try {
       const response = await fetch(`${API}/store-user-image`, {
@@ -406,7 +406,7 @@ export const UpdateProfileImage = createAsyncThunk(
         body: formData,
       });
       let data = await response.json();
-      console.log(data);
+     // console.log(data);
       if (response.status === 200) {
         return data;
       } else {

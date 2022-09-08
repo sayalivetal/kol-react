@@ -99,8 +99,7 @@ const Header = () => {
                       type="text"
                       className=" search-box"
                       placeholder="What are you looking for?"
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
+                      aria-label="Search"
                       onChange={handleCategoryChange}
                     />
                     <button

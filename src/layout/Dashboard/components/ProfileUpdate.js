@@ -337,24 +337,14 @@ const ProfileUpdate = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    if (!selectedFile || !bannerFile) {
-      formData.append("personal_email", kolProfile.personal_email);
-      formData.append("kol_type", kolProfile.kol_type);
-      formData.append("city", kolProfile.city);
-      formData.append("zip_code", kolProfile.zip_code);
-      formData.append("bio", kolProfile.bio);
-      formData.append(
-        "social_media[]",
-        JSON.stringify(kolProfile.social_media)
-      );
-      formData.append("social_active", kolProfile.social_active);
-      formData.append("video_links[]", kolProfile.video_links);
-      formData.append("languages[]", kolProfile.languages);
-      formData.append("tags[]", kolProfile.tags);
-      formData.append("state", kolProfile.state);
-    } else {
+    console.log("--------------", selectedFile, bannerFile)
+
+    if (selectedFile) {
       formData.append("avatar", selectedFile);
+    }
+    if (bannerFile) {
       formData.append("banner", bannerFile);
+    }
       formData.append("personal_email", kolProfile.personal_email);
       formData.append("kol_type", kolProfile.kol_type);
       formData.append("city", kolProfile.city);
@@ -369,7 +359,7 @@ const ProfileUpdate = () => {
       formData.append("languages[]", kolProfile.languages);
       formData.append("tags[]", kolProfile.tags);
       formData.append("state", kolProfile.state);
-    }
+    
 
     dispatch(bioDataFormSubmission(formData)).then((data) => {
     
@@ -405,7 +395,7 @@ const ProfileUpdate = () => {
                   className="form-control"
                   name="userName"
                   onChange={handleChange}
-                  defaultValue={biodata?.get_user?.name}
+                  value={biodata?.get_user?.name}
                   aria-describedby="emailHelp"
                 />
               </div>
@@ -486,7 +476,7 @@ const ProfileUpdate = () => {
                   name="zip_code"
                   className="form-control"
                   onChange={handleChange}
-                  value={biodata.zip_code}
+                  defaultValue={biodata.zip_code}
                 />
               </div>
 

@@ -389,6 +389,15 @@ body {
   color: #c2c2c2;
 }
 
+/*listing and detail bookmark btn*/
+.bookmark-icon {
+  color: #f01f4b;
+  cursor: pointer;
+}
+.bookmark-icon.active:before {
+  content: '\f195' !important;
+}
+
 /* bookmark css */
 
 .bookmark-bg {
