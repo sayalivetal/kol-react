@@ -8,6 +8,7 @@ const NotFound = lazy(()=>import("./pages/404page/404"))
 const Chat = lazy(()=>import('./layout/Home/Chat/Chat'))
 const Bookmark = lazy(()=>import('./pages/Bookmark/Bookmark'))
 const Order = lazy(()=> import('./pages/Order/OrderDetails'))
+const Checkout = lazy(()=> import('./pages/Payment/Checkout'))
 const Details = lazy(() =>
   import("./layout/Home/LisitngDetails/ListingDetails")
 );
@@ -20,6 +21,7 @@ const routes = [
   { path: "/chat", exact: true, name: "Chat", element: Chat },
   { path: "/bookmark", exact: true, name: "Bookmark", element: Bookmark },
   { path: "/order-details", exact: true, name: "Order", element: Order},
+  { path: "/checkout-paypal/:id", exact: true, name: "Checkout", element: Checkout },
   { path: "*", exact: true, name: "NotFound", element: NotFound },
 ];
 

@@ -206,7 +206,8 @@ const ContactDealer = () => {
     e.preventDefault()
     dispatch(PlaceOrder(order)).then((data)=>{
       if(data.payload.statusCode == 201){
-        showOrderModal();
+        // showOrderModal();
+        navigate(`/checkout-paypal/${data?.payload?.orderPlacedId}`)
         setPlacedOrderId(data?.payload?.orderPlacedId)
       }
     })
@@ -385,7 +386,7 @@ const ContactDealer = () => {
                 className="form-control"
               />
 
-              <button type="submit" onClick={handleOrder} className="btn theme-btn">
+              <button type="submit" onClick={handleOrder} placeOrderId={placeOrderId} className="btn theme-btn">
                 Place Order
               </button>
             </div>
@@ -464,7 +465,7 @@ const ContactDealer = () => {
                     </div>
                   </div>
                   <div className="modal-footer justify-content-start px-4 py-3">
-                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/order-details")}>
+                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/payment-paypal")} orderId={orderSummary.order_id} amount={orderSummary?.order_summary?.price}>
                       Buy Now
                     </button>
                   </div>
