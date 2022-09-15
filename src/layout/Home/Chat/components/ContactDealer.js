@@ -32,7 +32,7 @@ const ContactDealer = () => {
     name:"",
     btnText:"",
   })
-  const [orderModal, setOrderModal] = useState(false);
+
   const [kolProfile, setKolProfile] = useState([]);
   const [editedDealId, setEditedDealId] = useState("");
   const [dealForm, setDealForm] = useState({
@@ -53,10 +53,6 @@ const ContactDealer = () => {
     start_date: "",
     token,
   });
-  const [placeOrderId, setPlacedOrderId] = useState();
-  const [orderSummary, setOrderSummary] = useState();
-  
-
 
   const kolList = async () => {
     const response = await fetch(`${API}/kol-profile/list`, {
@@ -77,7 +73,7 @@ const ContactDealer = () => {
     }));
   };
 
-  console.log("aslkjflkasjflsjhello", kolProfile);
+ // console.log("aslkjflkasjflsjhello", kolProfile);
 
 
   useEffect(() => {
@@ -88,26 +84,14 @@ const ContactDealer = () => {
     setDealModal(!dealModal);
   };
 
-   // add deal modal open handler
-  const handlerAddDeal = () => {
-    showDealModal();
-    setModalProps({name:"Add Deal", btnText:"Create Deal"})
-    setDealForm({
-      title: "",
-      description: "",
-      price: "",
-      total_days: "",
-      type: "",
-      token
-    })
-  }
+
  
   // add/update deal onchange  handler
   const handleDealChange = (e) => {
     setDealForm((preState) => {
       return { ...preState, [e.target.name]: e.target.value };
     });
-    console.log(e.target.name, e.target.value );
+   // console.log(e.target.name, e.target.value );
   };
 
   // add/update deal handler
@@ -141,6 +125,22 @@ const ContactDealer = () => {
       }
     })
   }
+
+
+  // add deal modal open handler
+  const handlerAddDeal = () => {
+  showDealModal();
+  setModalProps({name:"Add Deal", btnText:"Create Deal"})
+  setDealForm({
+    title: "",
+    description: "",
+    price: "",
+    total_days: "",
+    type: "",
+    token,
+    //  id,
+  })
+}
 
   // deal delete by id
   const handleDealDelete = (dealId) => {
@@ -196,10 +196,6 @@ const ContactDealer = () => {
     });
   }, [startDate]);
 
-  // order summary modal
-  const showOrderModal = () => {
-    setOrderModal(!orderModal);
-  };
 
   // place order handler
   const handleOrder = (e) =>{
@@ -208,20 +204,12 @@ const ContactDealer = () => {
       if(data.payload.statusCode == 201){
         // showOrderModal();
         navigate(`/checkout-paypal/${data?.payload?.orderPlacedId}`)
-        setPlacedOrderId(data?.payload?.orderPlacedId)
       }
     })
    // console.log(order);
   }
 
-  // order summary api call for detail
-  useEffect(() => {
-    const callback = (data) => {
-      setOrderSummary({...data});
-      // console.log(data);
-    }
-    getOrderSummary(callback, token, placeOrderId)
-  },[placeOrderId]);
+
   
 
   return (
@@ -386,7 +374,7 @@ const ContactDealer = () => {
                 className="form-control"
               />
 
-              <button type="submit" onClick={handleOrder} placeOrderId={placeOrderId} className="btn theme-btn">
+              <button type="submit" onClick={handleOrder}  className="btn theme-btn">
                 Place Order
               </button>
             </div>
@@ -395,88 +383,6 @@ const ContactDealer = () => {
       )}
 
       
-      
-
-      {orderModal && (
-        <div className="modal-open overflow-hidden">
-          <div className="modal fade show" style={{ display: "block" }}>
-            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-              <div className="modal-content">
-                <div className="modal-header px-4">
-                  <h5 className="modal-title theme-color">Order Summary</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={showOrderModal}
-                  ></button>
-                </div>
-
-                  <div className="modal-body px-4">
-                    <div className="col-12 mb-1">
-                      <label className="form-label ">
-                        <span className="fw-medium">Order Id :</span> {orderSummary.order_id}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                        <span className="fw-medium">Deal Id :</span> {orderSummary.deal_id}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Start Date :</span> {orderSummary.start_date}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">End Date :</span> {orderSummary.end_date}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Deal Title :</span>{orderSummary?.order_summary?.deal_title}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Deal Type :</span> {orderSummary?.order_summary?.type}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Deal Description :</span> {orderSummary?.order_summary?.description}
-                      </label>
-                    </div>
-                    
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Total days :</span> {orderSummary?.order_summary?.total_days} 
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Tax :</span> {orderSummary?.order_summary?.tax_percentage}%
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Price :</span> {orderSummary?.order_summary?.price} {orderSummary?.order_summary?.currency}
-                      </label>
-                    </div>
-                  </div>
-                  <div className="modal-footer justify-content-start px-4 py-3">
-                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/payment-paypal")} orderId={orderSummary.order_id} amount={orderSummary?.order_summary?.price}>
-                      Buy Now
-                    </button>
-                  </div>
-
-              </div>
-            </div>
-          </div>
-          <div className="modal-backdrop fade show"></div>
-        </div>
-      )}
-
       {dealModal && (
         <div className="modal-open overflow-hidden">
           <div className="modal fade show" style={{ display: "block" }}>
@@ -585,6 +491,89 @@ const ContactDealer = () => {
           <div className="modal-backdrop fade show"></div>
         </div>
       )}
+      
+
+      {/* {orderModal && (
+        <div className="modal-open overflow-hidden">
+          <div className="modal fade show" style={{ display: "block" }}>
+            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+              <div className="modal-content">
+                <div className="modal-header px-4">
+                  <h5 className="modal-title theme-color">Order Summary</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={showOrderModal}
+                  ></button>
+                </div>
+
+                  <div className="modal-body px-4">
+                    <div className="col-12 mb-1">
+                      <label className="form-label ">
+                        <span className="fw-medium">Order Id :</span> {orderSummary.order_id}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                        <span className="fw-medium">Deal Id :</span> {orderSummary.deal_id}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Start Date :</span> {orderSummary.start_date}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">End Date :</span> {orderSummary.end_date}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Title :</span>{orderSummary?.order_summary?.deal_title}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Type :</span> {orderSummary?.order_summary?.type}
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Deal Description :</span> {orderSummary?.order_summary?.description}
+                      </label>
+                    </div>
+                    
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Total days :</span> {orderSummary?.order_summary?.total_days} 
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Tax :</span> {orderSummary?.order_summary?.tax_percentage}%
+                      </label>
+                    </div>
+                    <div className="col-12 mb-1">
+                      <label className="form-label">
+                      <span className="fw-medium">Price :</span> {orderSummary?.order_summary?.price} {orderSummary?.order_summary?.currency}
+                      </label>
+                    </div>
+                  </div>
+                  <div className="modal-footer justify-content-start px-4 py-3">
+                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/payment-paypal")} orderId={orderSummary.order_id} amount={orderSummary?.order_summary?.price}>
+                      Buy Now
+                    </button>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop fade show"></div>
+        </div>
+      )} */}
+
+      
     </>
   );
 };

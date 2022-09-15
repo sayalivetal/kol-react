@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { useNavigate } from "react-router-dom";
 
 const PaypalBtn = ({price}) => {
     
@@ -9,6 +10,7 @@ const PaypalBtn = ({price}) => {
 
     const handleApprove = (orderId) => {
         setPaidFor(true);
+        navigate("/thank-you")
     }
 
     if (paidFor) {
@@ -18,6 +20,8 @@ const PaypalBtn = ({price}) => {
         alert(error);
     }
     console.log(successDetails)
+
+    const navigate = useNavigate();
 
     return (
         <PayPalScriptProvider options={{ "client-id" : "Aa28aLeuvYG0Ys7fKCOtgAhsUWE-EKUbldAq8-QFRFPCPliJxtDhcNm3kILdwmbQ9esJKUgJ4H28RzFU" }}>
@@ -45,6 +49,9 @@ const PaypalBtn = ({price}) => {
 
                 onApprove={async (data, action) => {
                     const order = await action.order.capture();
+                    // if (order.status=== 'COMPLETED') {
+                    //     navigate("/thank-you")
+                    // }
                     console.log("order", order);
                     setSuccessDetails(order)
 
@@ -61,3 +68,7 @@ const PaypalBtn = ({price}) => {
 };
 
 export default PaypalBtn;
+
+
+// sb-84i4i20765734@personal.example.com
+// p#IQx51+

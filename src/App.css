@@ -1,6 +1,6 @@
 body {
   font-family: 'Montserrat', sans-serif !important;
-  background: #f5f5f5;
+  background: #F8F8F8;
   color:#342951;
 }
 .App {
@@ -834,3 +834,4 @@ h1.banner-title:first-child::nth-line(-n+2){
 .table>:not(:first-child) {
   border-top: 1px solid currentColor;
 }
+.labelText { display: inline-block; font-weight: 500;}

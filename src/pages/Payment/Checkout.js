@@ -24,8 +24,7 @@ const Checkout = () => {
       <>
         {orderSummary?.order_summary?.price ? (
           <div className="container">
-            <div className="card">
-              <div className="card-body">
+              <div className="">
                 <div className="row my-3">
                   <div className="col-lg-12">
                     <div className="card">
@@ -34,51 +33,52 @@ const Checkout = () => {
                       </div>
                       <div className="card-body">
                         <div className="row">
-                          <div className="col-4">
-                            <label className="form-label col-12 mb-1">
-                              <span className="fw-medium">Deal Type :</span> {orderSummary?.order_summary?.type}
+                          <div className="col-6">
+                          <label className="form-label col-12 mb-1">
+                            <span className="labelText">Order Id :</span> <span>{orderSummary?.order_id}</span>
                             </label>
                             <label className="form-label col-12 mb-1">
-                              <span className="fw-medium">Deal Title : </span>{orderSummary?.order_summary?.deal_title}
+                            <span className="labelText">Deal Id :</span> <span>{orderSummary?.deal_id}</span>
                             </label>
                             <label className="form-label col-12 mb-1">
-                              <span className="fw-medium">Deal Description : </span> {orderSummary?.order_summary?.description}
-                            </label>
-                          </div>
-
-                          <div className="col-4">
-                            <label className="form-label col-12 mb-1">
-                            <span className="fw-medium">Order Id :</span> {orderSummary?.order_id}
+                              <span className="labelText">Deal Title : </span> <span>{orderSummary?.order_summary?.deal_title}</span>
                             </label>
                             <label className="form-label col-12 mb-1">
-                            <span className="fw-medium">Deal Id :</span> {orderSummary?.deal_id}
+                              <span className="labelText">Deal Description : </span> <span>{orderSummary?.order_summary?.description}</span>
                             </label>
                             <label className="form-label col-12 mb-1">
-                              <span className="fw-medium">Date From :</span> {orderSummary?.start_date} to {orderSummary?.end_date}
+                              <span className="labelText">Date From :</span> <span>{orderSummary?.start_date} <span className="labelText">&nbsp; to &nbsp;</span>  {orderSummary?.end_date}</span>
                             </label>
                           </div>
 
-                          <div className="col-4">
-                            <label className="form-label col-12 mb-1">
-                              <span className="fw-medium">Tax :</span> {orderSummary?.order_summary?.tax_percentage}%
+
+                          <div className="col-6">
+                            <label className="form-label col-12 mb-1 text-right">
+                              <span className="labelText">Deal Type :</span> <span className="">{orderSummary?.order_summary?.type}</span>
                             </label>
-                            <label className="form-label col-12 mb-1">
-                              <span className="fw-medium">Total days :</span> {orderSummary?.order_summary?.total_days}
+                            <label className="form-label col-12 mb-1 text-right">
+                              <span className="labelText">Total days :</span> <span className="">{orderSummary?.order_summary?.total_days}</span>
                             </label>
-                            <label className="form-label col-12 mb-1">
-                            <span className="fw-medium">Price :</span> {orderSummary?.order_summary?.price} {orderSummary?.order_summary?.currency}
+                            <label className="form-label col-12 mb-1 text-right">
+                              <span className="labelText">Tax :</span> <span className="">{orderSummary?.order_summary?.tax_percentage}%</span>
+                            </label>
+                            <label className="form-label col-12 mb-1 text-right">
+                              <span className="labelText">Price {orderSummary?.order_summary?.currency} :</span> <span className="">{orderSummary?.order_summary?.price} </span>
                             </label>
                           </div>
 
                         </div>
+                          <hr style={{opacity: ".10"}}/>
+                        <div className="row text-center"> 
+                              <p>Checkout with</p>
                               <PaypalBtn price={orderSummary?.order_summary?.price} />
+                        </div>       
                       </div>
                     </div>
 
                   </div>
                 </div>
               </div>
-            </div>
           </div>
 
         ) : "" }
