@@ -6,12 +6,21 @@ const PaypalBtn = ({price}) => {
     
     const [paidFor, setPaidFor] = useState(false);
     const [error, setError] = useState(null);
-    const [successDetails, setSuccessDetails ] = useState();
+    const [paymentDetail,setPaymentDetail] = useState({});
+   
 
-    const handleApprove = (orderId) => {
+    
+    const handleApprove = (data, order) => {
         setPaidFor(true);
         navigate("/thank-you")
+        console.log("ajflksjaflksjafdlkdj",data, order)
+        //setPaymentDetail({...order})
+        // if(order) {
+        //     setPaymentDetail({...order})
+        // }
     }
+
+    console.log("---------",paymentDetail)
 
     if (paidFor) {
         alert("Thank You for purchasing from KOL");
@@ -19,7 +28,7 @@ const PaypalBtn = ({price}) => {
     if (error) {
         alert(error);
     }
-    console.log(successDetails)
+
 
     const navigate = useNavigate();
 
@@ -49,19 +58,23 @@ const PaypalBtn = ({price}) => {
 
                 onApprove={async (data, action) => {
                     const order = await action.order.capture();
-                    // if (order.status=== 'COMPLETED') {
+                    
+                    console.log("order", order);
+                     setPaymentDetail({...order})
+                    //  if (order.status=== 'COMPLETED') {
                     //     navigate("/thank-you")
                     // }
-                    console.log("order", order);
-                    setSuccessDetails(order)
-
-                    handleApprove(data.orderID);
+                     
+                    // handleApprove(data, order);
                 }}
                 onCancel={() => { }}
                 onError={(err) => {
                     setError(err);
                     console.log("PayPal Checkout onError", err);
                 }}
+
+                paymentDetail={paymentDetail}
+
             />
         </PayPalScriptProvider>
     );

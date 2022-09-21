@@ -190,7 +190,7 @@ const Header = () => {
                           </div>
 
                           <Link className="list-item" to="/account">
-                            Settings
+                            Profile
                           </Link>
                           
 

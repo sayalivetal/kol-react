@@ -14,6 +14,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 const ContactDealer = () => {
   const navigate = useNavigate()
@@ -204,6 +205,10 @@ const ContactDealer = () => {
       if(data.payload.statusCode == 201){
         // showOrderModal();
         navigate(`/checkout-paypal/${data?.payload?.orderPlacedId}`)
+        toast.success(data?.payload?.message)
+      }
+      else {
+        toast.error(data?.payload?.message)
       }
     })
    // console.log(order);
