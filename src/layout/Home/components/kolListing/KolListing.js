@@ -161,7 +161,7 @@ const KolListing = () => {
 //   }
 //  },[freshposts])
 
-console.log(freshposts);
+// console.log(freshposts);
 
   return (
     <>
@@ -215,8 +215,10 @@ console.log(freshposts);
           </p>
         }
       >
-        {freshposts.length &&
+        {freshposts.length > 0 ?
+
           freshposts.map((item, index) => {
+            //console.log("--------",item)
             return (
               <div
                 key={index}
@@ -250,7 +252,7 @@ console.log(freshposts);
                       <p className="text-right">
                         <i className="bi bi-geo-alt mx-1 geo-icon"></i>
                         <span>
-                          {item.city} {item.state},india
+                          {item.city}, {item.state},india
                         </span>
                         {role == 2 ? (
                           <></>
@@ -320,7 +322,7 @@ console.log(freshposts);
                       <></>
                     ) : (
                       <div className="col-lg-12 ">
-                        <Link to={`/chat?id=${item.profile_id}`}>
+                        <Link to={`/chat?id=${item.user_id}`}>
                        
                           <button className="ml-auto btn theme-btn mb-4">
                             <span className="mx-2">
@@ -335,7 +337,13 @@ console.log(freshposts);
                 </div>
               </div>
             );
-          })}
+          }) : 
+          
+          (<>
+            <div className="col-12 text-center p-5 bg-light my-3 ">
+               <h2 className="p-5">Nothing Found, try Searching again.</h2>
+            </div>
+          </>)}
       </InfiniteScroll>
     </>
   );

@@ -3,6 +3,7 @@ import { getKolprofile } from "../../../slices/api/simpleApi";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
+import { imageUrl } from "../../../common/apis";
 
 
 const ProfileView = () => {
@@ -12,7 +13,7 @@ const ProfileView = () => {
 
   useEffect(() => {
     const callback = (data) => {
-     // console.log("new user", data);
+      console.log("new user", data);
       if (!data) {
         navigate("../profile-add")
       }
@@ -91,6 +92,7 @@ const ProfileView = () => {
                 </label>
                 <span> {kolProfile?.tags}</span>
               </div>
+              
               <div className="col-12 mt-3">
                 <label className="form-label">
                   <b>Description : </b>
@@ -118,7 +120,34 @@ const ProfileView = () => {
                 </span>
               </div>
               
-              
+              <div className="col-12 mt-3">
+                <label className="form-label">
+                    <b>Avatar, Banner : </b>
+                  </label>
+                  <div className="col-12">
+                    <div className='card profile-thumb me-4'>
+                      <div className="card-header">
+                        <div className="card-title h6  m-0 d-flex ">
+                          <span className="">Avatar Thumb </span> 
+                        </div>
+                      </div>
+                      <div className="card-body p-1">
+                        <div className="thumb-block"> <img src={`${imageUrl}${kolProfile?.avatar}`} alt="avatar" className="img-fluid" /></div>
+                      </div>
+                    </div>
+                    <div className='card profile-thumb'>
+                      <div className="card-header">
+                      <div className="card-title h6  m-0 d-flex ">
+                          <span className="">Banner Thumb </span> 
+                        </div>
+                      </div>
+                      <div className="card-body p-1">
+                        <div className="thumb-block"> <img src={`${imageUrl}${kolProfile?.banner}`} alt="avatar" className="img-fluid" /></div>
+                      </div>
+                    </div>
+                  </div>  
+              </div>
+
               <div className="col-12 mt-3">
                 <label className="form-label">
                   <b>Videos : </b>

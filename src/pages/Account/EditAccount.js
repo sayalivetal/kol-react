@@ -4,6 +4,9 @@ import { getUserDetails } from "../../slices/api/simpleApi";
 import { UpdateUserProfile ,UpdateProfileImage} from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch } from "react-redux";
 import { imageUrl } from "../../common/apis";
+import { toast } from "react-toastify";
+
+
 const EditAccount = () => {
   // const [userDetails, setUserDetails] = useState({});
   const navigate = useNavigate();
@@ -53,7 +56,11 @@ const EditAccount = () => {
     dispatch(UpdateUserProfile(userData)).then((data) => {
     
       if (data?.payload?.statusCode === 202) {
+        toast.success(data?.payload?.message)
         navigate("/account");
+      }
+      else{
+        toast.error(data?.payload?.message)
       }
     });
   };
@@ -68,11 +75,22 @@ const EditAccount = () => {
   
     // Update the formData object
     formData.append('avatar',selectedFile)
-    for (var pair of formData.entries()) {
+  //   for (var pair of formData.entries()) {
   
-  }
-    dispatch(UpdateProfileImage(formData))
+  // }
+    dispatch(UpdateProfileImage(formData)).then((data)=> {
+      if(data?.payload?.statusCode === 201){
+        const callback = (data) => {
+          setUserData({
+            ...userData,
+            avatar:data.avatar,
+          });
+        };
+        getUserDetails(callback, token);
+      }
+    })
   };
+
 
   return (
     <div>
@@ -275,8 +293,11 @@ const EditAccount = () => {
                     </div>
                     <div className="row ">
                       <div className="col-12 mt-2">
-                        <button type="submit" className="btn theme-btn">
+                        <button type="submit" className="btn theme-btn me-3">
                           Save Profile
+                        </button>
+                        <button type="button" className="btn btn-default" onClick={()=> navigate("/account")}>
+                          View Profile
                         </button>
                       </div>
                     </div>

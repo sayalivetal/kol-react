@@ -139,6 +139,8 @@ font-weight: 400;
   align-items: center;
   display: flex;
   overflow: hidden;
+  font-weight: 600;
+    font-size: 24px;
 }
 .profile-user-icon img {
   width: 100%;

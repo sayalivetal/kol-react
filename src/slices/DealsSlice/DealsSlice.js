@@ -10,8 +10,8 @@ const initialState = {
 //API Integration of create deal
 export const createDeal = createAsyncThunk(
   "deal/create-deal",
-  async ({title, description, price, total_days, type, token }, thunkAPI) => {
-    //console.log(title, description, price, total_days, type, token);
+  async ({title, description, price, total_days, type, token,id }, thunkAPI) => {
+    console.log(title, description, price, total_days, type, token, id);
     try {
       const response = await fetch(`${API}/deal/add-update`, {
         method: "POST",
@@ -26,11 +26,12 @@ export const createDeal = createAsyncThunk(
             description, 
             price, 
             total_days, 
-            type
+            type,
+            id
         }),
       });
       let data = await response.json();
-      console.log(data);
+     // console.log(data);
       if (response.status === 200) {
         return data;
       } else {
@@ -101,8 +102,8 @@ export const deleteKolDeals = createAsyncThunk(
         }
       );
       let data = await response.json();
-    
-      if (response.status === 200) {
+      //  console.log(data)
+      if (data) {
         return data;
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -133,6 +134,7 @@ const DealsReducer = createSlice({
     return {...action.payload}
     },
     [deleteKolDeals.fulfilled]: (state, action) => {
+      //console.log("hello", action.payload)
       return {...action.payload}
     },
     [deleteKolDeals.pending]: (state, action) => {

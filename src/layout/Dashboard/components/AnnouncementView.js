@@ -26,7 +26,7 @@ const AnnouncementView = () => {
       <div className="card">
         <div className="card-header">
           <div className="card-title h5 justify-content-between m-0 d-flex align-items-center">
-            <span>Add Announcements </span> <Link className="btn theme-btn btn-sm" to={`/dashboard/announcement/${id}`}>Edit</Link>
+            <span>View Announcements </span> <Link className="btn theme-btn btn-sm" to={`/dashboard/announcement/${id}`}>Edit</Link>
           </div>
         </div>
         <div className="card-body px-4" >

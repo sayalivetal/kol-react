@@ -11,6 +11,8 @@ const KolPromotingSlider = (features) => {
   const [settings, setSettings] = useState({
     slidesToShow: 1,
     slidesToScroll: 1,
+    infinite: true,
+    speed: 500,
   });
 
   const koldata = features.features;

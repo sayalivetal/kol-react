@@ -109,7 +109,7 @@ export const getFeedback = async (callback, token, id) => {
     }
   );
   const result = await response.json();
-  console.log(result);
+ // console.log(result);
 
   callback(result.Feedbacks);
 };
@@ -117,8 +117,8 @@ export const getFeedback = async (callback, token, id) => {
 
 // Deals api for users
 export const getDealsListForUsers = async (callback,token,id) => {
-  //console.log(callback,token,id)
-  const response = await fetch(`${API}/deal/list-deals?kol_profile_id=${id}`, {
+ // console.log(callback,token,id)
+  const response = await fetch(`${API}/deal/list-kol-deals?kol_user_id=${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

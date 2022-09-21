@@ -11,6 +11,7 @@ const initialState = {
   isError: false,
   errorMessage: "",
   statusCode: "",
+  logged_in_user: "",
 };
 
 //API Integration with action for registration creation
@@ -387,11 +388,11 @@ export const UpdateUserProfile = createAsyncThunk(
 //update user profile image
 
 export const UpdateProfileImage = createAsyncThunk(
-  "users/changePassword",
+  "user/update-image",
   async (formData, thunkAPI) => {
-    for (var pair of formData.entries()) {
-      console.log(pair);
-    }
+    // for (var pair of formData.entries()) {
+    //   console.log(pair);
+    // }
 
     try {
       const response = await fetch(`${API}/store-user-image`, {
@@ -405,7 +406,7 @@ export const UpdateProfileImage = createAsyncThunk(
         body: formData,
       });
       let data = await response.json();
-      console.log(data);
+     // console.log(data);
       if (response.status === 200) {
         return data;
       } else {
@@ -480,6 +481,7 @@ const authReducer = createSlice({
       state.errorMessage = payload?.message;
       state.email = payload.data ? payload.data.email : payload.email;
       state.username = payload.data ? payload.data.user_name : "";
+      state.logged_in_user = payload.data ? payload.data.logged_in_user : "";
       state.statusCode = payload.statusCode;
     },
     [forgotPassword.pending]: (state, action) => {},
@@ -490,12 +492,13 @@ const authReducer = createSlice({
     [ResetPassword.pending]: (state, action) => {},
     [ResetPassword.rejected]: (state, action) => {},
     [LoginUser.fulfilled]: (state, { payload }) => {
-      console.log(payload);
+      console.log(payload.data);
       state.isFetching = false;
       state.isSuccess = true;
       state.errorMessage = payload?.message;
       state.email = payload.data ? payload.data.email : payload.email;
       state.username = payload.data ? payload.data.user_name : "";
+      state.logged_in_user = payload.data ? payload.data.logged_in_user : "";
       state.statusCode = payload.statusCode;
     },
     [LoginUser.pending]: (state, action) => {},
@@ -507,6 +510,7 @@ const authReducer = createSlice({
       state.errorMessage = payload?.message;
       state.email = payload.data ? payload.data.email : payload.email;
       state.username = payload.data ? payload.data.user_name : "";
+      state.logged_in_user = payload.data ? payload.data.logged_in_user : "";
       state.statusCode = payload.statusCode;
     },
     [ChangePasswordUser.pending]: (state, action) => {},
@@ -518,6 +522,7 @@ const authReducer = createSlice({
       state.errorMessage = payload?.message;
       state.email = payload.data ? payload.data.email : payload.email;
       state.username = payload.data ? payload.data.user_name : "";
+      state.logged_in_user = payload.data ? payload.data.logged_in_user : "";
       state.statusCode = payload.statusCode;
     },
     [loginWithGoogle.pending]: (state, action) => {

@@ -11,6 +11,8 @@ const DetailSlider = ({video}) => {
   const settings = {
     slidesToShow: 4,
     slidesToScroll: 1,
+    infinite: false,
+    initialSlide: 0,
     responsive: [
       {
         breakpoint: 1024,
@@ -39,6 +41,7 @@ const DetailSlider = ({video}) => {
   //   setKolProfile([...data]);
   // }, [data]);
   let videoUrl = video.split(",");
+
   // videoUrl?.push(
   //   "https://www.youtube.com/shorts/hl0v_nuIkXU",
   //   // "https://www.youtube.com/shorts/hl0v_nuIkXU"
@@ -49,6 +52,7 @@ const DetailSlider = ({video}) => {
       <Slider {...settings}>
         
             {videoUrl && videoUrl.map((videoItem,index)=>{
+              // console.log("askjdflksf", videoItem)
               return(
                 <div className="slider-div" key={index}>
                 <div className="video-item">

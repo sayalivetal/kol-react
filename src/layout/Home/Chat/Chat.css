@@ -45,7 +45,7 @@
   padding-left:0px;
 }
 
-.kol-user-deals { display: block; width: 100%; overflow-x: hidden;overflow-y: auto; max-height: 330px; border: 1px solid #ebebeb; padding: 10px; border-radius: 4px; }
+.kol-user-deals { display: block; width: 100%; overflow-x: hidden;overflow-y: auto; height: 330px; border: 1px solid #ebebeb; padding: 10px; border-radius: 4px; }
 .kol-list-deal { display: block;  border:1px solid #ebebeb; padding:12px 12px 8px 12px; border-radius: 8px; margin:0 0 8px 0; font-size: 13px; }
 
 .kol-deal-row { display: flex;  flex-wrap: wrap;    align-items: center; margin-bottom: 8px; width: 100%; }

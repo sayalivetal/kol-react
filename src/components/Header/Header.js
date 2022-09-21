@@ -14,8 +14,8 @@ const Header = () => {
   const [categoryList, setCategoryList] = useState({});
   const [categoryType, setCategory] = useState("");
   const [language, setLanguage] = useState({});
-  const { isFetching, isError, username, message, email } =
-    useSelector(userSelector);
+  const { isFetching, isError, username, message, email, logged_in_user } =  useSelector(userSelector);
+
 
   let avatar = localStorage.getItem("avatar");
   let token = localStorage.getItem("token");
@@ -99,8 +99,7 @@ const Header = () => {
                       type="text"
                       className=" search-box"
                       placeholder="What are you looking for?"
-                      aria-label="Username"
-                      aria-describedby="basic-addon1"
+                      aria-label="Search"
                       onChange={handleCategoryChange}
                     />
                     <button
@@ -126,7 +125,7 @@ const Header = () => {
                       ""
                     )}
 
-                    <Link to={"/chat?id=${}"}>
+                    <Link to={`/chat?id=${logged_in_user}`}>
                       <i className="bi bi-chat-dots"></i>
                       <span className="count-badge">0</span>
                     </Link>
@@ -165,7 +164,7 @@ const Header = () => {
                   </div>
                   <div className="header-profile">
                     <div className="profile-user-icon">
-                      <img src={`${imageUrl}${avatar ? avatar : "Images/avatar.png"}`} alt="avatar" />
+                      {avatar ? <img src={`${imageUrl}${avatar}`} alt="avatar" /> : username?.split('')[0]?.toUpperCase() || "U" } 
                     </div>
                     <Dropdown className="user-dropdown">
                       <Dropdown.Toggle
@@ -180,7 +179,7 @@ const Header = () => {
                         <div className="user-drop-list">
                           <div className="list-item-profile">
                             <div className="profile-user-icon">
-                              <img src={`${imageUrl}${avatar ? avatar : "Images/avatar.png"}`} alt="avatar" />
+                              {avatar ? <img src={`${imageUrl}${avatar}`} alt="avatar" /> : username?.split('')[0]?.toUpperCase() || "U" }
                             </div>
                             <div className="profile-user-name">
                               <div className="user-name">{username}</div>
@@ -191,7 +190,7 @@ const Header = () => {
                           </div>
 
                           <Link className="list-item" to="/account">
-                            Settings
+                            Profile
                           </Link>
                           
 

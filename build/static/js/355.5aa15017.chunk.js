@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkkol_marketplace_new=self.webpackChunkkol_marketplace_new||[]).push([[355],{5355:function(e,n,c){c.r(n);c(2791);var r=c(3504),a=c(184);n.default=function(){return(0,a.jsxs)("div",{className:"container",children:[(0,a.jsx)("h1",{children:"404 - Not Found!"}),(0,a.jsx)(r.rU,{to:"/",children:"Go Home"})]})}}}]);
-//# sourceMappingURL=355.5aa15017.chunk.js.map

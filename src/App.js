@@ -31,14 +31,19 @@ const PasswordSuccess = React.lazy(() =>
 
 const ProfileAdd = React.lazy(() => import('./layout/Dashboard/components/ProfileAdd'))
 const Announcement = React.lazy(() => import('./layout/Dashboard/components/Announcement'))
-const loading = <Spinner animation='grow' />;
+
 
 
 
 const App = () => {
+
+
   return (
+
     <div>
-      <Suspense fallback={loading}>
+
+      <Suspense fallback={<div className='spinner-container'><Spinner animation='grow' variant="light" /></div>}>
+
         <Routes>
           <Route exact path='*' name='Home' element={<PrivateRoute />} />
           <Route path='/' element={<LandingPage/>} />
@@ -56,6 +61,7 @@ const App = () => {
         <ToastContainer />
       </Suspense>
     </div>
+
   );
 };
 

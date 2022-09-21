@@ -213,7 +213,7 @@ const LandingPage = () => {
                         </h2>
                         <form className="cta-form row" onSubmit={handleSubmit}>
                           <div className="col-lg-6 mb-3">
-                            <label className="form-label">First Name</label>
+                            <label className="form-label">First Name *</label>
                             <input
                               type="text"
                               className="form-control"
@@ -223,7 +223,7 @@ const LandingPage = () => {
                             />
                           </div>
                           <div className="col-lg-6 mb-3">
-                            <label className="form-label">Last Name</label>
+                            <label className="form-label">Last Name *</label>
                             <input
                               type="text"
                               className="form-control"
@@ -234,7 +234,7 @@ const LandingPage = () => {
                           </div>
 
                           <div className="col-lg-6 mb-3">
-                            <label className="form-label">Email</label>
+                            <label className="form-label">Email *</label>
                             <input
                               type="text"
                               className="form-control"
@@ -244,7 +244,7 @@ const LandingPage = () => {
                             />
                           </div>
                           <div className="col-lg-6 mb-3">
-                            <label className="form-label">Phone No.</label>
+                            <label className="form-label">Phone No. *</label>
                             <input
                               type="text"
                               className="form-control"
@@ -254,7 +254,7 @@ const LandingPage = () => {
                             />
                           </div>
                           <div className="col-lg-12 mb-4">
-                            <label className="form-label">Message</label>
+                            <label className="form-label">Message *</label>
                             <textarea
                               type="text"
                               className="form-control"

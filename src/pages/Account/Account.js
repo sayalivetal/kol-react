@@ -13,6 +13,8 @@ const Account = () => {
     getUserDetails(callback, token);
   }, []);
 
+  console.log("user",userDetails)
+
 
  // console.log(userDetails);
   return (
@@ -46,7 +48,7 @@ const Account = () => {
                       Name
                     </label>
                     <label className="col-lg-10 col-form-label">
-                      {userDetails.name}
+                      {userDetails?.name} {userDetails?.last_name}
                     </label>
                   </div>
                   <div className="row mb-3">
@@ -84,6 +86,18 @@ const Account = () => {
                       City
                     </label>
                     <label className="col-lg-10 col-form-label">{userDetails?.get_address?.city}</label>
+                  </div>
+                  <div className="row mb-3">
+                    <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
+                      State
+                    </label>
+                    <label className="col-lg-10 col-form-label">{userDetails?.get_address?.state}</label>
+                  </div>
+                  <div className="row mb-3">
+                    <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
+                      Country
+                    </label>
+                    <label className="col-lg-10 col-form-label">{userDetails?.get_address?.country}</label>
                   </div>
                   <div className="row mb-3">
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">

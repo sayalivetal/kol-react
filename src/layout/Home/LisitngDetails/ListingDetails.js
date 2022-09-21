@@ -7,10 +7,8 @@ import { Link } from "react-router-dom";
 import { API, imageUrl } from "../../../common/apis";
 import { useParams } from "react-router-dom";
 import Announcement from "../components/Announcement";
-import {
-  kolAddBookmark,
-  kolDeleteBookmark,
-} from "../../../slices/KolListing/KolSlices";
+
+import { kolAddBookmark, kolDeleteBookmark } from "../../../slices/KolListing/KolSlices";
 import "./ListingDetails.css";
 import DetailSlider from "../components/DetailSlider/DetailSlider";
 import ReviewSlider from "../components/ReviewSlider/ReviewSlider";
@@ -37,12 +35,12 @@ const ListingDetails = () => {
       },
     });
     let data = await response.json();
-    console.log("kol-data",data.kolProfile);
+    //console.log("kol-data",data.kolProfile);
     setKolProfile([...data?.kolProfile]);
   };
   useEffect(() => {
     kolListing();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     const callback = (data) => {
@@ -53,6 +51,7 @@ const ListingDetails = () => {
 
   // console.log("======================>",feedback);
   const handleBookmark = (profileId, e) => {
+    //console.log("***********", profileId)
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
       e.target.classList.add("active");
@@ -63,12 +62,14 @@ const ListingDetails = () => {
     }
   };
 
-  console.log("kol-profile state", kolProfile);
+
+ // console.log("kol-profile state", kolProfile);
 
   return (
     <>
       {kolProfile &&
         kolProfile?.map((item, index) => {
+          console.log("",item)
           return (
             <div className="container" key={index}>
               <div className="card">
@@ -106,13 +107,15 @@ const ListingDetails = () => {
                                 <span className="book-icon">
                                   <i
                                     className={`bi bi-bookmark mx-1 bookmark-icon ${
-                                      item.Bookmark ? "active" : ""
+                                      item.bookmark ? "active" : ""
                                     }`}
                                     onClick={(e) => {
-                                      handleBookmark(item.profile_id, e);
+                                      handleBookmark(item.id, e);
                                     }}
                                   ></i>
                                 </span>
+                                
+                                
                               )}
                             </p>
                           </div>
@@ -136,6 +139,7 @@ const ListingDetails = () => {
                         </ul>
                       </div>
                     </div>
+                   
                     <div className="row py-1">
                       <div className="col-lg-12">
                         <h5 className="text-bold">Bio</h5>
@@ -145,7 +149,7 @@ const ListingDetails = () => {
                         {role == 2 ? (
                           <></>
                         ) : (
-                          <Link to={`/chat?id=${item.id}`}>
+                          <Link to={`/chat?id=${item.user_id}`}>
 
                             <button className="ml-auto btn theme-btn">
                               <span className="mx-2">
@@ -154,6 +158,7 @@ const ListingDetails = () => {
                               Chat with me
                             </button>
                           </Link>
+                          
                         )}
                       </div>
                     </div>
