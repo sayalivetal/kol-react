@@ -58,11 +58,10 @@
     min-height: 180px;
   }
   .optionText1 a{
-    color: #000000 !important;
+    color: #f01f4b !important;
     text-decoration: none;
   }
   .optionText1 a:hover{
-    color: #f01f4b !important;
     text-decoration: none;
   }
   .eye-icon {
