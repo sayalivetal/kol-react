@@ -48,7 +48,7 @@ const ChangePassword = () => {
 
         case "newPassword":
           if (!value) {
-            stateObj[name] = "Please new Password.";
+            stateObj[name] = "Please enter new Password.";
           } else if (
             passwordValue.confirmNewPassword &&
             value !== passwordValue.confirmNewPassword
@@ -97,10 +97,11 @@ const ChangePassword = () => {
               placeholder="Enter current password"
               onChange={handleChange}
             />
-          </Form.Group>
-          {error.currentPassword && (
+            {error.currentPassword && (
             <span className="err">{error.currentPassword}</span>
           )}
+          </Form.Group>
+          
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>New Password</Form.Label>
@@ -110,10 +111,11 @@ const ChangePassword = () => {
               placeholder="Enter New Password"
               onChange={handleChange}
             />
-          </Form.Group>
-          {error.newPassword && (
+            {error.newPassword && (
             <span className="err">{error.newPassword}</span>
-          )}
+            )}
+          </Form.Group>
+          
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Confirm New Password</Form.Label>
             <Form.Control
@@ -122,10 +124,11 @@ const ChangePassword = () => {
               placeholder="Confirm New Password"
               onChange={handleChange}
             />
+            {error.confirmNewPassword && (
+                <span className="err">{error.confirmNewPassword}</span>
+              )}
           </Form.Group>
-          {error.confirmNewPassword && (
-            <span className="err">{error.confirmNewPassword}</span>
-          )}
+          
           <Button variant="primary" type="submit">
             Submit
           </Button>

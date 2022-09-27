@@ -132,7 +132,7 @@ const Role = () => {
 
                   <div className="col-12 text-center mt-5">
                     <p className="optionText">
-                      Already Registered <Link to="/login">log in? </Link>
+                      Already Registered <Link to="/login">Log in? </Link>
                     </p>
                   </div>
                 </div>
