@@ -69,13 +69,13 @@ const ForgotPassword = () => {
       switch (name) {
         case "otp":
           if (!value) {
-            stateObj[name] = "please enter correct otp";
+            stateObj[name] = "Please enter correct otp";
           }
           break;
 
         case "newPassword":
           if (!value) {
-            stateObj[name] = "Please new Password.";
+            stateObj[name] = "Please enter new Password.";
           } else if (
             passwordValue.confirmNewPassword &&
             value !== passwordValue.confirmNewPassword
@@ -111,7 +111,7 @@ const ForgotPassword = () => {
  
     e.preventDefault();
     if (passwordValue.email == "" || passwordValue.otp == "" || passwordValue.newPassword == "" || passwordValue.confirmNewPassword == "") {
-      setErrorSubmit("All fields required ");
+      setErrorSubmit("All Fields Required");
     }else{
       dispatch(ResetPassword(passwordValue)).then((data) => {
         console.log(data);
@@ -172,14 +172,16 @@ const ForgotPassword = () => {
                             }`}
                           ></i>
                         
-                          {errorSubmit && passwordValue.newPassword == "" && (
+                          {/* {errorSubmit && passwordValue.newPassword == "" && (
                           <span className="text-danger">{errorSubmit}</span>
-                        )}
+                        )} */}
                         </div>
-                      </div>
-                      {error.newPassword && (
-                        <span className="err text-danger">{error.newPassword}</span>
+                        <span className="err text-danger">
+                      {error.newPassword  || errorSubmit && passwordValue.newPassword == "" && (
+                        <>{error.newPassword || errorSubmit }</>
                       )}
+                       </span>
+                      </div>
                       <div className="form-group mb-3">
                         <label>Confirm Password</label>
                         <span className="astric-span">*</span>
@@ -199,14 +201,16 @@ const ForgotPassword = () => {
                               eye1 ? "fa-eye-slash" : "fa-eye"
                             }`}
                           ></i>
-                          {errorSubmit && passwordValue.confirmNewPassword == "" && (
+                          {/* {errorSubmit && passwordValue.confirmNewPassword == "" && (
                           <span className="text-danger">{errorSubmit}</span>
-                        )}
+                        )} */}
                         </div>
+                        <span className="err text-danger">
+                          {error.confirmNewPassword  || errorSubmit && passwordValue.confirmNewPassword == "" && (
+                            <>{error.confirmNewPassword || errorSubmit }</>
+                          )}
+                        </span>  
                       </div>
-                      {error.confirmNewPassword && (
-                        <span className="err text-danger">{error.confirmNewPassword}</span>
-                      )}
                       <div className="form-group mb-3">
                         <label>OTP</label>
                         <span className="astric-span">*</span>
@@ -219,11 +223,15 @@ const ForgotPassword = () => {
                           name="otp"
                           onChange={handleChange}
                         />
-                        {errorSubmit && passwordValue.otp == "" && (
+                        {/* {errorSubmit && passwordValue.otp == "" && (
                           <span className="text-danger">{errorSubmit}</span>
-                        )}
+                        )} */}
+                      <span className="err text-danger">
+                      {error.otp || errorSubmit && passwordValue.otp == "" && (
+                        <>{error.otp || errorSubmit}</>
+                      )}
+                      </span>
                       </div>
-                      {error.otp && <span className="err">{error.otp}</span>}
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button
                           type="submit"
