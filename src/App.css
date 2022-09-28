@@ -835,3 +835,4 @@ h1.banner-title:first-child::nth-line(-n+2){
   border-top: 1px solid currentColor;
 }
 .labelText { display: inline-block; font-weight: 500;}
+.paymentInfo .labelText { min-width: 200px;}
