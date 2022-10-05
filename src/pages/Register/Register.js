@@ -15,7 +15,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
-  const { isFetching, isSuccess, statusCode, isError, errorMessage } = useSelector(userSelector);
+  const { isFetching, isSuccess, statusCode, isError, errorMessage } =
+    useSelector(userSelector);
   const role = useSelector((state) => state?.user?.role?.payload);
   //state for firebase values
   console.log(isSuccess, statusCode);
@@ -34,7 +35,13 @@ const Register = () => {
     role: role,
     password: "",
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState({
+    name: "",
+    email: "",
+    token: "",
+    role: "",
+    password: "",
+  });
   const [status, setStatus] = useState(false);
   let token = localStorage.getItem("token");
   console.log(token);
@@ -71,23 +78,37 @@ const Register = () => {
     if (
       formData.name == "" ||
       formData.email == "" ||
-      token == "" ||
       formData.password == "" ||
-      role == ""
+
+      formData.role == ""
     ) {
-      setError("All fields required please select all field");
-      setStatus(true);
+      if (formData.name == "") {
+        setError((state) => {
+          return { ...state, name: "name is required" };
+        });
+      }
+      if (formData.email == "") {
+        setError((state) => {
+          return { ...state, email: "email is required" };
+        });
+      }
+      if (formData.password == "") {
+        setError({ ...error, password: "password is required" });
+      }
+      if (formData.role == "") {
+        toast.error("something went wrong");
+      }
     } else {
-      console.log(formData);
-      dispatch(signupUser(formData)).then((data)=>{
+      dispatch(signupUser(formData)).then((data) => {
         console.log(data);
-        if(data.payload.status){
-          toast.success(data.payload.message)
+        if (data.payload.status) {
+          toast.success(data.payload.message);
         }
-      })
+      });
       e.target.reset();
     }
   };
+  console.log(error);
   //action for signInwithGoogle
   useEffect(() => {
     if (!firebaseUser.token) return;
@@ -125,7 +146,7 @@ const Register = () => {
       navigate("/home");
     }
   }, [token]);
-  console.log(status);
+
   return (
     <div className="main-div">
       <section>
@@ -159,15 +180,15 @@ const Register = () => {
                           type="text"
                           name="name"
                           className={`form-control ${
-                             error === "" || formData.name
+                            error.name === "" || formData.name
                               ? ""
                               : "border-danger"
                           }`}
                           placeholder="First name"
                           onChange={handleChange}
                         />
-                        {error && formData.name == "" && (
-                          <span className="text-danger">{error}</span>
+                        {error.name && formData.name == "" && (
+                          <span className="text-danger">{error.name}</span>
                         )}
                       </div>
 
@@ -178,15 +199,15 @@ const Register = () => {
                           type="email"
                           name="email"
                           className={`form-control  ${
-                            error === "" || formData.email 
-                            ? ""
-                            : "border-danger"
+                            error.email === "" || formData.email
+                              ? ""
+                              : "border-danger"
                           }`}
                           placeholder="Enter email"
                           onChange={handleChange}
                         />
-                        {error && formData.email == "" && (
-                          <span className="text-danger">{error}</span>
+                        {error.email && formData.email == "" && (
+                          <span className="text-danger">{error.email}</span>
                         )}
                       </div>
 
@@ -197,15 +218,15 @@ const Register = () => {
                           type="password"
                           name="password"
                           className={`form-control  ${
-                            error === "" || formData.password
-                            ? ""
-                            : "border-danger"
+                            error.password === "" || formData.password
+                              ? ""
+                              : "border-danger"
                           }`}
                           placeholder="Enter password"
                           onChange={handleChange}
                         />
-                        {error && formData.password == "" && (
-                          <span className="text-danger">{error}</span>
+                        {error.password && formData.password == "" && (
+                          <span className="text-danger">{error.password}</span>
                         )}
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">

@@ -52,6 +52,7 @@ const Header = () => {
     e.preventDefault();
     dispatch(kolName(categoryType));
   };
+  console.log(logged_in_user);
 
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
@@ -125,7 +126,7 @@ const Header = () => {
                       ""
                     )}
 
-                    <Link to={`/chat?id=${logged_in_user}`}>
+                    <Link to={`/chat/${logged_in_user}`}>
                       <i className="bi bi-chat-dots"></i>
                       <span className="count-badge">0</span>
                     </Link>

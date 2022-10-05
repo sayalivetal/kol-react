@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import './Chat.css';
-import {useLocation} from "react-router-dom";
+import {useLocation,useParams} from "react-router-dom";
 import ContactList from './components/ContactList';
 import Conversation from './components/Conversation';
 import ContactDealer from './components/ContactDealer';
 const Chat = () => {
-
-  const search = useLocation().search;
-  const id = new URLSearchParams(search).get('id');
-
-
-
+  const { id } = useParams();
   return (
     <div className='container'>
       <div className='row'>

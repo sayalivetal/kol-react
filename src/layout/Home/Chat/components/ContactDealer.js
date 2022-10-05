@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../Chat.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createDeal,PlaceOrder, deleteKolDeals } from "../../../../slices/DealsSlice/DealsSlice";
 import {
@@ -16,15 +16,14 @@ import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import { toast } from "react-toastify";
 
-const ContactDealer = () => {
+const ContactDealer = ({id}) => {
   const navigate = useNavigate()
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
  // console.log(token);
   const [startDate, setStartDate] = useState(new Date());
  // console.log(startDate);
-  const search = useLocation().search;
-  const id = new URLSearchParams(search).get("id");
+//  const { id } = useParams();
    //console.log(id);
 
   const dispatch = useDispatch();
@@ -74,7 +73,7 @@ const ContactDealer = () => {
     }));
   };
 
- // console.log("aslkjflkasjflsjhello", kolProfile);
+ console.log("aslkjflkasjflsjhello", kolProfile);
 
 
   useEffect(() => {

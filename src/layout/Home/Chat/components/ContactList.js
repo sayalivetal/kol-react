@@ -31,7 +31,7 @@ const ContactList = ({ id }) => {
   
     if(id){
       seturlId(id)
-      navigate(`/chat?id=${id}`)
+      navigate(`/chat/${id}`)
     }
    
   };
@@ -48,10 +48,13 @@ const ContactList = ({ id }) => {
       return;
     }
     const callback = (data) => {
-      setContactList([...data]);
+      if(!data)return;
+        setContactList([...data]);
+      
+     
     };
     getChatList(callback, token);
-  }, [term]);
+  }, [term,isSuccess]);
 
  
 

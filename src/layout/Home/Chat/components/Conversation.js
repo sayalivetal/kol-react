@@ -11,6 +11,7 @@ import {
   messageEdit,
   messageDelete,
 } from "../../../../slices/ChatSlice/ChatSlice";
+import { useNavigate } from "react-router-dom";
 const Conversation = ({ urlId }) => {
   const chatData = useSelector(chatSelector);
 
@@ -21,7 +22,7 @@ const Conversation = ({ urlId }) => {
   // const [deleteEdit, setDeleteEdit] = useState();
   const [kolProfile, setKolProfile] = useState([]);
 
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
@@ -29,8 +30,6 @@ const Conversation = ({ urlId }) => {
 
   let b = JSON.parse(a);
   let localStorageData = JSON.parse(b.user);
-
-
 
   let { username } = localStorageData;
   useEffect(() => {
@@ -42,14 +41,14 @@ const Conversation = ({ urlId }) => {
   }, [chatData]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(sendMessage({ message, urlId, token })).then((data)=>{
-
-      if(data.payload.statusCode == 201){
-        dispatch(conversationList({ urlId, token }));
+    dispatch(sendMessage({ message, urlId, token })).then((data) => {
+      if (data.payload.statusCode == 201) {
+        dispatch(conversationList({ urlId, token })).then((data) => {
+          navigate(`/chat/${urlId}`);
+        });
       }
     });
     e.target.reset();
-  
   };
 
   return (
