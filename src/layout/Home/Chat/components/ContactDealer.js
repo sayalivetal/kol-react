@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../Chat.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createDeal,PlaceOrder, deleteKolDeals } from "../../../../slices/DealsSlice/DealsSlice";
 import {
@@ -23,8 +23,8 @@ const ContactDealer = () => {
  // console.log(token);
   const [startDate, setStartDate] = useState(new Date());
  // console.log(startDate);
-  const search = useLocation().search;
-  const id = new URLSearchParams(search).get("id");
+
+  const {id} = useParams();
    //console.log(id);
 
   const dispatch = useDispatch();

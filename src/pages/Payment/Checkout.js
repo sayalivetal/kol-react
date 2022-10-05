@@ -3,6 +3,7 @@ import { getOrderSummary } from "../../slices/api/simpleApi";
 import { useParams } from "react-router-dom";
 import PaypalBtn from "./PaypalBtn";
 
+
 const Checkout = () => {
 
   const { id } = useParams();

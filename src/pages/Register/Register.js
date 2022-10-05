@@ -75,7 +75,7 @@ const Register = () => {
       formData.password == "" ||
       role == ""
     ) {
-      setError("All fields required please select all field");
+      setError("All fields required");
       setStatus(true);
     } else {
       console.log(formData);

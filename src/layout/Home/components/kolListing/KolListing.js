@@ -25,10 +25,10 @@ const KolListing = () => {
   let role = localStorage.getItem("role");
 
   const dispatch = useDispatch();
-  const [searchCategory, setSearchCategory] = useState({
-    name: "",
-    kolType: "",
-  });
+  // const [searchCategory, setSearchCategory] = useState({
+  //   name: "",
+  //   kolType: "",
+  // });
   let token = localStorage.getItem("token");
 
   const { kolType, name, message, isSuccess } = useSelector(kolSelector);
@@ -217,7 +217,13 @@ const KolListing = () => {
       >
         {freshposts.length > 0 ?
 
-          freshposts.map((item, index) => {
+          freshposts.filter((item)=>{
+            if(kolName == ""){
+              return item;
+            }else if (item.username.toLowerCase().includes(kolName.toLowerCase())){
+              return item;
+            }
+          }).map((item, index) => {
             //console.log("--------",item)
             return (
               <div
@@ -322,7 +328,7 @@ const KolListing = () => {
                       <></>
                     ) : (
                       <div className="col-lg-12 ">
-                        <Link to={`/chat?id=${item.user_id}`}>
+                        <Link to={`/chat/${item.user_id}`}>
                        
                           <button className="ml-auto btn theme-btn mb-4">
                             <span className="mx-2">
