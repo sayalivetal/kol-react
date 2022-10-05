@@ -31,7 +31,7 @@ const ContactList = ({ id }) => {
   
     if(id){
       seturlId(id)
-      navigate(`/chat?id=${id}`)
+      navigate(`/chat/${id}`)
     }
    
   };

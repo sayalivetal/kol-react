@@ -19,7 +19,7 @@ const routes = [
   { path: "/edit-account", exact: true, name: "Edit-Account", element: EditAccount },
   { path: "/home", exact: true, name: "Home", element: Home },
   { path: "/details/:id", exact: true, name: "Details", element: Details },
-  { path: "/chat", exact: true, name: "Chat", element: Chat },
+  { path: "/chat/:id", exact: true, name: "Chat", element: Chat },
   { path: "/bookmark", exact: true, name: "Bookmark", element: Bookmark },
   { path: "/order-details", exact: true, name: "Order", element: Order},
   { path: "/checkout-paypal/:id", exact: true, name: "Checkout", element: Checkout },

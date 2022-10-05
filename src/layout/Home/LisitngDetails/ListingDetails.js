@@ -149,7 +149,7 @@ const ListingDetails = () => {
                         {role == 2 ? (
                           <></>
                         ) : (
-                          <Link to={`/chat?id=${item.user_id}`}>
+                          <Link to={`/chat/${item.user_id}`}>
 
                             <button className="ml-auto btn theme-btn">
                               <span className="mx-2">

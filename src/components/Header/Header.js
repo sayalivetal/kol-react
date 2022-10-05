@@ -15,6 +15,7 @@ const Header = () => {
   const [categoryType, setCategory] = useState("");
   const [language, setLanguage] = useState({});
   const { isFetching, isError, username, message, email, logged_in_user } =  useSelector(userSelector);
+  console.log("---------------",logged_in_user)
 
 
   let avatar = localStorage.getItem("avatar");
@@ -46,6 +47,7 @@ const Header = () => {
   };
 
   const handleCategoryChange = (e) => {
+    dispatch(kolName(e.target.value));
     setCategory(e.target.value);
   };
   const handleSubmit = (e) => {
@@ -125,7 +127,7 @@ const Header = () => {
                       ""
                     )}
 
-                    <Link to={`/chat?id=${logged_in_user}`}>
+                    <Link to={`/chat/${logged_in_user}`}>
                       <i className="bi bi-chat-dots"></i>
                       <span className="count-badge">0</span>
                     </Link>

@@ -35,7 +35,7 @@ const PaypalBtn = ({price}) => {
                 }}
 
                 createOrder={(data, actions) => {
-                   // console.log("gggggggggggggg",price)
+                   console.log("gggggggggggggg",actions)
                     return actions.order.create({
                         purchase_units: [
                             {
