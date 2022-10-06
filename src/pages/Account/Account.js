@@ -33,7 +33,7 @@ const Account = () => {
                 <div className="col-xl-2 col-lg-3 col-md-12 py-2 align-self-start user-thumb">
                   <div className="kol-user-img">
                     <img
-                      src={`${imageUrl}${userDetails.avatar}`}
+                      src={`${imageUrl}${userDetails?.avatar}`}
                       className="img-fluid"
                       alt="avatar"
                     />

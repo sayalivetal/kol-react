@@ -1,4 +1,5 @@
 import { createReducer, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { act } from "@testing-library/react";
 import { API } from "../../common/apis";
 
 const initialState = {
@@ -6,18 +7,17 @@ const initialState = {
   message: "",
   isSuccess: false,
   bookmark: false,
-  chatData:[]
+  chatData: [],
 };
 
 //API Integration with action for send message creation
 export const sendMessage = createAsyncThunk(
-  "chat/message",
+  "chat/send",
   async ({ message, urlId, token }, thunkAPI) => {
     console.log(urlId, message, token);
     try {
       const response = await fetch(`${API}/Chat/send-message`, {
         method: "POST",
-      
 
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const sendMessage = createAsyncThunk(
       });
       let data = await response.json();
       console.log(data);
-      if (response.status === 200) {
+      if (data.statusCode == 201) {
         return data;
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -49,18 +49,20 @@ export const conversationList = createAsyncThunk(
   async ({ urlId, token }, thunkAPI) => {
     //console.log(urlId, token);
     try {
-      const response = await fetch(`${API}/Chat/chat-list?receiver_id=${urlId}`, {
-        method: "GET",
-   
+      const response = await fetch(
+        `${API}/Chat/chat-list?receiver_id=${urlId}`,
+        {
+          method: "GET",
 
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       let data = await response.json();
-   
+
       if (response.status === 200) {
         return data;
       } else {
@@ -76,12 +78,11 @@ export const conversationList = createAsyncThunk(
 //API Integration with action chat edit
 export const messageEdit = createAsyncThunk(
   "chat/message",
-  async ({  token ,editData,id}, thunkAPI) => {
+  async ({ token, editData, id }, thunkAPI) => {
     //console.log(token ,editData,id);
     try {
       const response = await fetch(`${API}/Chat/edit-msg`, {
         method: "PUT",
-      
 
         headers: {
           "Content-Type": "application/json",
@@ -89,12 +90,12 @@ export const messageEdit = createAsyncThunk(
           Authorization: "Bearer " + token,
         },
         body: JSON.stringify({
-          msg_id:id,
-          message: editData
+          msg_id: id,
+          message: editData,
         }),
       });
       let data = await response.json();
-   
+
       if (response.status === 200) {
         return data;
       } else {
@@ -109,22 +110,20 @@ export const messageEdit = createAsyncThunk(
 //API Integration with action chat delete
 export const messageDelete = createAsyncThunk(
   "chat/message",
-  async ({  token ,id}, thunkAPI) => {
-   // console.log(token ,id);
+  async ({ token, id }, thunkAPI) => {
+    // console.log(token ,id);
     try {
       const response = await fetch(`${API}/Chat/delete-msg?msg_id=${id}`, {
         method: "GET",
-
 
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: "Bearer " + token,
         },
-      
       });
       let data = await response.json();
-   
+
       if (response.status === 200) {
         return data;
       } else {
@@ -154,16 +153,14 @@ const chatReducer = createSlice({
     // },
   },
   extraReducers: {
-    [sendMessage.fulfilled]: (state, action) => {
+    [sendMessage.fulfilled]: (state, { payload }) => {
       state.isSuccess = true;
     },
-    [conversationList.fulfilled]: (state, {payload}) => {
+    [conversationList.fulfilled]: (state, { payload }) => {
       //console.log(payload);
-      if(payload?.data?.length > 0){
-        return { chatData:[...payload?.data] };
+      if (payload?.data?.length > 0) {
+        return { chatData: [...payload?.data] };
       }
-    
-   
     },
   },
 });

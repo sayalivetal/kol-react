@@ -13,6 +13,7 @@ const ContactList = ({ id }) => {
   const navigate = useNavigate();
   const [term, setTerm] = useState("");
   const { isSuccess } = useSelector(chatSelector);
+  console.log(isSuccess);
   const [urlId, seturlId] = useState();
 
   const dispatch = useDispatch();

@@ -111,7 +111,7 @@ const ForgotPassword = () => {
  
     e.preventDefault();
     if (passwordValue.email == "" || passwordValue.otp == "" || passwordValue.newPassword == "" || passwordValue.confirmNewPassword == "") {
-      setErrorSubmit("All Fields Required");
+      setErrorSubmit("Please Fill this Field");
     }else{
       dispatch(ResetPassword(passwordValue)).then((data) => {
         console.log(data);

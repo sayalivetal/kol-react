@@ -1,36 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
+import { paypalOrderResponse } from './../../slices/DealsSlice/DealsSlice'
+
+
 
 const PaypalBtn = ({price}) => {
-    
-    const [paidFor, setPaidFor] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [error, setError] = useState(null);
-    const [paymentDetail,setPaymentDetail] = useState({});
-   
 
-    
-    const handleApprove = (data, order) => {
-        setPaidFor(true);
-        navigate("/thank-you")
-        console.log("ajflksjaflksjafdlkdj",data, order)
-        //setPaymentDetail({...order})
-        // if(order) {
-        //     setPaymentDetail({...order})
-        // }
-    }
+    // const handleApprove = (data, order) => {
+    //     setPaidFor(true);
+    //     console.log("ajflksjaflksjafdlkdj",data, order)
+    // }
 
-    console.log("---------",paymentDetail)
-
-    if (paidFor) {
-        alert("Thank You for purchasing from KOL");
-    }
     if (error) {
         alert(error);
     }
 
 
-    const navigate = useNavigate();
+
 
     return (
         <PayPalScriptProvider options={{ "client-id" : "Aa28aLeuvYG0Ys7fKCOtgAhsUWE-EKUbldAq8-QFRFPCPliJxtDhcNm3kILdwmbQ9esJKUgJ4H28RzFU" }}>
@@ -44,7 +35,7 @@ const PaypalBtn = ({price}) => {
                 }}
 
                 createOrder={(data, actions) => {
-                   // console.log("gggggggggggggg",price)
+                   console.log("gggggggggggggg",actions)
                     return actions.order.create({
                         purchase_units: [
                             {
@@ -58,13 +49,11 @@ const PaypalBtn = ({price}) => {
 
                 onApprove={async (data, action) => {
                     const order = await action.order.capture();
-                    
-                    console.log("order", order);
-                     setPaymentDetail({...order})
-                    //  if (order.status=== 'COMPLETED') {
-                    //     navigate("/thank-you")
-                    // }
-                     
+                    //console.log("order", order);
+                    dispatch(paypalOrderResponse(order));
+                     if (order.status=== 'COMPLETED') {
+                        navigate("/thank-you")
+                    }
                     // handleApprove(data, order);
                 }}
                 onCancel={() => { }}
@@ -73,7 +62,6 @@ const PaypalBtn = ({price}) => {
                     console.log("PayPal Checkout onError", err);
                 }}
 
-                paymentDetail={paymentDetail}
 
             />
         </PayPalScriptProvider>
@@ -81,6 +69,9 @@ const PaypalBtn = ({price}) => {
 };
 
 export default PaypalBtn;
+
+
+
 
 
 // sb-84i4i20765734@personal.example.com

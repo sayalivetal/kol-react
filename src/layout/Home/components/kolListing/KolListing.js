@@ -25,14 +25,14 @@ const KolListing = () => {
   let role = localStorage.getItem("role");
 
   const dispatch = useDispatch();
-  const [searchCategory, setSearchCategory] = useState({
-    name: "",
-    kolType: "",
-  });
+  // const [searchCategory, setSearchCategory] = useState({
+  //   name: "",
+  //   kolType: "",
+  // });
   let token = localStorage.getItem("token");
 
   const { kolType, name, message, isSuccess } = useSelector(kolSelector);
-
+// console.log(kolType);
   const navigate = useNavigate();
 
   const [languages, setLanguages] = useState({});
@@ -85,6 +85,7 @@ const KolListing = () => {
     }
     // setIsFetching(false);
   };
+  console.log(freshposts);
   useEffect(() => {
     setKolName(name);
     setFreshposts([]);

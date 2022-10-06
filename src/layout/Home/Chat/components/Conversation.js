@@ -26,12 +26,12 @@ const Conversation = ({ urlId }) => {
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
-  let a = localStorage.getItem("persist:root");
+  // let a = localStorage.getItem("persist:root");
 
-  let b = JSON.parse(a);
-  let localStorageData = JSON.parse(b.user);
+  // let b = JSON.parse(a);
+  // let localStorageData = JSON.parse(b.user);
 
-  let { username } = localStorageData;
+  // let { username } = localStorageData;
   useEffect(() => {
     if (!chatData.chatData.length) {
       setChatData([]);
@@ -44,7 +44,7 @@ const Conversation = ({ urlId }) => {
     dispatch(sendMessage({ message, urlId, token })).then((data) => {
       if (data.payload.statusCode == 201) {
         dispatch(conversationList({ urlId, token })).then((data) => {
-          navigate(`/chat/${urlId}`);
+          // navigate(`/chat/${urlId}`);
         });
       }
     });
@@ -83,7 +83,7 @@ const Conversation = ({ urlId }) => {
             <div className="chat-row">
               <div className="chat-thumb-container">
                 <div className="chat-user-thumb">
-                  <img src="Images/3.png" alt="avatar" />
+                  {/* <img src="Images/3.png" alt="avatar" /> */}
                 </div>
                 <span className="status-icon active"></span>
               </div>

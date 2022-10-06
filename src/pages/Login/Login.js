@@ -61,13 +61,21 @@ const Login = () => {
         if (data?.payload?.data?.token) {
           navigate("/home");
           toast.success(data?.payload?.message);
-        } else {
+        } else if(data.payload.statusCode === 401){
+          navigate('/emailVerify')
+          localStorage.setItem("email",loginData.email)
+          toast.success(data?.payload?.message);
+        }else{
           toast.error(data?.payload?.message);
         }
       });
+   
     }
-
     e.target.reset();
+    return () => {
+      dispatch(clearState());
+    };
+   
   };
 
   const Eye = () => {
@@ -104,6 +112,9 @@ const Login = () => {
         navigate("/home");
       }
     });
+    return () => {
+      dispatch(clearState());
+    };
   }, [firebaseUser.token]);
 
   return (

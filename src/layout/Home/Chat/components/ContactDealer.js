@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../Chat.css";
-import { useNavigate, useLocation,useParams } from "react-router-dom";
+
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
-import { createDeal,PlaceOrder, deleteKolDeals } from "../../../../slices/DealsSlice/DealsSlice";
+import {
+  createDeal,
+  PlaceOrder,
+  deleteKolDeals,
+} from "../../../../slices/DealsSlice/DealsSlice";
 import {
   getDealsListOfKol,
   getDealsListForUsers,
@@ -16,22 +22,22 @@ import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import { toast } from "react-toastify";
 
-const ContactDealer = ({id}) => {
-  const navigate = useNavigate()
+const ContactDealer = ({ id }) => {
+  const navigate = useNavigate();
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
- // console.log(token);
+  // console.log(token);
   const [startDate, setStartDate] = useState(new Date());
- // console.log(startDate);
-//  const { id } = useParams();
-   //console.log(id);
+  // console.log(startDate);
+
+  // const {id} = useParams();
 
   const dispatch = useDispatch();
   const [dealModal, setDealModal] = useState(false);
   const [modalProps, setModalProps] = useState({
-    name:"",
-    btnText:"",
-  })
+    name: "",
+    btnText: "",
+  });
 
   const [kolProfile, setKolProfile] = useState([]);
   const [editedDealId, setEditedDealId] = useState("");
@@ -42,7 +48,7 @@ const ContactDealer = ({id}) => {
     total_days: "",
     type: "",
     token,
-    id:editedDealId,
+    id: editedDealId,
   });
 
   const [dealdetail, setDealDetail] = useState();
@@ -66,15 +72,16 @@ const ContactDealer = ({id}) => {
     });
     let data = await response.json();
     // console.log(data.kolProfiles);
-    setKolProfile([...data.kolProfiles].filter((item, index)=>{
-      if(item.user_id == id ){
-        return item;
-       }
-    }));
+    setKolProfile(
+      [...data.kolProfiles].filter((item, index) => {
+        if (item.user_id == id) {
+          return item;
+        }
+      })
+    );
   };
 
- console.log("aslkjflkasjflsjhello", kolProfile);
-
+  console.log("aslkjflkasjflsjhello", kolProfile);
 
   useEffect(() => {
     kolList();
@@ -84,14 +91,12 @@ const ContactDealer = ({id}) => {
     setDealModal(!dealModal);
   };
 
-
- 
   // add/update deal onchange  handler
   const handleDealChange = (e) => {
     setDealForm((preState) => {
       return { ...preState, [e.target.name]: e.target.value };
     });
-   // console.log(e.target.name, e.target.value );
+    // console.log(e.target.name, e.target.value );
   };
 
   // add/update deal handler
@@ -99,7 +104,7 @@ const ContactDealer = ({id}) => {
     e.preventDefault();
     // console.log("---------",dealForm,token)
     dispatch(createDeal(dealForm)).then((data) => {
-     // console.log(data);
+      // console.log(data);
       if (data.payload.status) {
         const callback = (data) => {
           setDealDetail({ ...data });
@@ -111,40 +116,39 @@ const ContactDealer = ({id}) => {
     setDealModal(false);
   };
 
-  // Edit deal 
+  // Edit deal
   const handleDealEdit = (e, editedId) => {
-    setEditedDealId(editedId)
+    setEditedDealId(editedId);
     showDealModal();
-    setModalProps({name:"Edit Deal", btnText:"Save Deal"})
-    dealdetail?.get_deal.filter((item, index)=>{
-      if(item.id== editedId ){
+    setModalProps({ name: "Edit Deal", btnText: "Save Deal" });
+    dealdetail?.get_deal.filter((item, index) => {
+      if (item.id == editedId) {
         setDealForm({
-            ...dealForm,
-          ...item
+          ...dealForm,
+          ...item,
         });
       }
-    })
-  }
-
+    });
+  };
 
   // add deal modal open handler
   const handlerAddDeal = () => {
-  showDealModal();
-  setModalProps({name:"Add Deal", btnText:"Create Deal"})
-  setDealForm({
-    title: "",
-    description: "",
-    price: "",
-    total_days: "",
-    type: "",
-    token,
-    //  id,
-  })
-}
+    showDealModal();
+    setModalProps({ name: "Add Deal", btnText: "Create Deal" });
+    setDealForm({
+      title: "",
+      description: "",
+      price: "",
+      total_days: "",
+      type: "",
+      token,
+      //  id,
+    });
+  };
 
   // deal delete by id
   const handleDealDelete = (dealId) => {
-    dispatch(deleteKolDeals({dealId, token})).then((state)=>{
+    dispatch(deleteKolDeals({ dealId, token })).then((state) => {
       if (state.payload.statusCode == 200) {
         const callback = (data) => {
           setDealDetail({ ...data });
@@ -152,7 +156,7 @@ const ContactDealer = ({id}) => {
         getDealsListOfKol(callback, token);
       }
     });
-  }
+  };
 
   // kol own deals List
   useEffect(() => {
@@ -167,12 +171,12 @@ const ContactDealer = ({id}) => {
   useEffect(() => {
     const callback = (data) => {
       setKolDealForUser([...data]);
-     // console.log("kol deal for user", data);
+      // console.log("kol deal for user", data);
     };
     getDealsListForUsers(callback, token, id);
   }, [id]);
 
-// select deal for order 
+  // select deal for order
   const handleDeals = (e, id) => {
     setOrder({
       ...order,
@@ -181,7 +185,7 @@ const ContactDealer = ({id}) => {
     });
   };
 
-// select date for order
+  // select date for order
   useEffect(() => {
     if (!startDate) return;
     let date = new Date(startDate);
@@ -189,32 +193,29 @@ const ContactDealer = ({id}) => {
     let mnth = ("0" + (date.getMonth() + 1)).slice(-2);
     let day = ("0" + date.getDate()).slice(-2);
     let finalDate = [date.getFullYear(), mnth, day].join("-");
-   //console.log(finalDate, dateStartTime);
+    //console.log(finalDate, dateStartTime);
     setOrder({
       ...order,
-      start_date: moment(`${finalDate} ${dateStartTime}`).format('YYYY-MM-DD hh:mm:ss')
+      start_date: moment(`${finalDate} ${dateStartTime}`).format(
+        "YYYY-MM-DD hh:mm:ss"
+      ),
     });
   }, [startDate]);
 
-
   // place order handler
-  const handleOrder = (e) =>{
-    e.preventDefault()
-    dispatch(PlaceOrder(order)).then((data)=>{
-      if(data.payload.statusCode == 201){
+  const handleOrder = (e) => {
+    e.preventDefault();
+    dispatch(PlaceOrder(order)).then((data) => {
+      if (data.payload.statusCode == 201) {
         // showOrderModal();
-        navigate(`/checkout-paypal/${data?.payload?.orderPlacedId}`)
-        toast.success(data?.payload?.message)
+        navigate(`/checkout-paypal/${data?.payload?.orderPlacedId}`);
+        toast.success(data?.payload?.message);
+      } else {
+        toast.error(data?.payload?.message);
       }
-      else {
-        toast.error(data?.payload?.message)
-      }
-    })
-   // console.log(order);
-  }
-
-
-  
+    });
+    // console.log(order);
+  };
 
   return (
     <>
@@ -250,12 +251,18 @@ const ContactDealer = ({id}) => {
 
           <h5 className="mt-3 mb-1 theme-color d-flex">
             Deals
-            <button className="btn btn-sm theme-btn ms-auto" onClick={handlerAddDeal}> + Deal</button>
+            <button
+              className="btn btn-sm theme-btn ms-auto"
+              onClick={handlerAddDeal}
+            >
+              {" "}
+              + Deal
+            </button>
           </h5>
           <div className="kol-user-deals">
             {dealdetail?.get_deal &&
               dealdetail?.get_deal.map((item, index) => {
-               // console.log(item)
+                // console.log(item)
                 return (
                   <div key={index} className="kol-list-deal">
                     <div className="kol-deal-row justify-content-between align-items-start mb-0">
@@ -278,19 +285,35 @@ const ContactDealer = ({id}) => {
                         {item.total_days} Days
                       </span>
                       <span className="deal-icon-text">
-                        <i className={`fa ${item.type == "video" ? "fa-video-camera"  : "fa-picture-o"}`}></i> {item.type}
+                        <i
+                          className={`fa ${
+                            item.type == "video"
+                              ? "fa-video-camera"
+                              : "fa-picture-o"
+                          }`}
+                        ></i>{" "}
+                        {item.type}
                       </span>
                     </div>
                     <p>{item.description}</p>
                     <div className="kol-deal-row">
-                      <span className="deal-delete btn btn-sm me-2 btn-default" onClick={()=> { handleDealDelete(item.id)}}>
-                        <i className="bi bi-trash3" ></i>
+                      <span
+                        className="deal-delete btn btn-sm me-2 btn-default"
+                        onClick={() => {
+                          handleDealDelete(item.id);
+                        }}
+                      >
+                        <i className="bi bi-trash3"></i>
                       </span>
-                      <span className="deal-edit btn btn-sm  btn-default" onClick={(e)=>{handleDealEdit(e, item.id )}}>
-                        <i className="bi bi-pencil-fill" ></i>
+                      <span
+                        className="deal-edit btn btn-sm  btn-default"
+                        onClick={(e) => {
+                          handleDealEdit(e, item.id);
+                        }}
+                      >
+                        <i className="bi bi-pencil-fill"></i>
                       </span>
                     </div>
-                    
                   </div>
                 );
               })}
@@ -298,38 +321,35 @@ const ContactDealer = ({id}) => {
         </>
       ) : (
         <>
-
-              {kolProfile.map((item, index)=>{
-                return (
-                  <>
-                    <div className="kol-user-card">
-                      <div className="kol-user-icon">
-                        <img
-                          className="rounded-circle  img-fluid"
-                          src={`${imageUrl}${item.avatar}`}
-                          alt="avatar"
-                        />
-                      </div>
-                      <div className="kol-user-info">
-                        <div className="d-flex justify-content-between">
-                          <span className="deal-user-name">{item.username} </span>
-                          {/* <span className="">
+          {kolProfile.map((item, index) => {
+            return (
+              <>
+                <div className="kol-user-card" key={index}>
+                  <div className="kol-user-icon">
+                    <img
+                      className="rounded-circle  img-fluid"
+                      src={`${imageUrl}${item.avatar}`}
+                      alt="avatar"
+                    />
+                  </div>
+                  <div className="kol-user-info">
+                    <div className="d-flex justify-content-between">
+                      <span className="deal-user-name">{item.username} </span>
+                      {/* <span className="">
                             <i className={`${item.social_active_icon}`}></i>
                           </span> */}
-                        </div>
-                        <div className="kol-user-loc">
-                          <i className="loc bi-geo-alt"></i>
-                          <p>
-                            {item.city}, {item.state}, india
-                          </p>
-                        </div>
-                      </div>
                     </div>
-                  </>
-                )
-              })}
-                
-
+                    <div className="kol-user-loc">
+                      <i className="loc bi-geo-alt"></i>
+                      <p>
+                        {item.city}, {item.state}, india
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })}
 
           <h5 className="mt-3 mb-1 theme-color d-flex">Deals </h5>
           <div className="kol-user-deals">
@@ -359,7 +379,14 @@ const ContactDealer = ({id}) => {
                         {item.total_days} Days
                       </span>
                       <span className="deal-icon-text">
-                        <i className={`fa ${item.type == "video" ? "fa-video-camera"  : "fa-picture-o"}`}></i> {item.type}
+                        <i
+                          className={`fa ${
+                            item.type == "video"
+                              ? "fa-video-camera"
+                              : "fa-picture-o"
+                          }`}
+                        ></i>{" "}
+                        {item.type}
                       </span>
                     </div>
 
@@ -378,7 +405,11 @@ const ContactDealer = ({id}) => {
                 className="form-control"
               />
 
-              <button type="submit" onClick={handleOrder}  className="btn theme-btn">
+              <button
+                type="submit"
+                onClick={handleOrder}
+                className="btn theme-btn"
+              >
                 Place Order
               </button>
             </div>
@@ -386,7 +417,6 @@ const ContactDealer = ({id}) => {
         </>
       )}
 
-      
       {dealModal && (
         <div className="modal-open overflow-hidden">
           <div className="modal fade show" style={{ display: "block" }}>
@@ -458,8 +488,10 @@ const ContactDealer = ({id}) => {
                             type="radio"
                             name="type"
                             id="video"
-                            value={dealForm.type == "video" ? dealForm.type : "video" }
-                            defaultChecked={dealForm.type == "video" }
+                            value={
+                              dealForm.type == "video" ? dealForm.type : "video"
+                            }
+                            defaultChecked={dealForm.type == "video"}
                             onChange={handleDealChange}
                           />
                           <label className="form-check-label" htmlFor="video">
@@ -472,8 +504,10 @@ const ContactDealer = ({id}) => {
                             type="radio"
                             name="type"
                             id="image"
-                            value={dealForm.type == "image" ? dealForm.type : "image" }
-                            defaultChecked={ dealForm.type == "image"}
+                            value={
+                              dealForm.type == "image" ? dealForm.type : "image"
+                            }
+                            defaultChecked={dealForm.type == "image"}
                             onChange={handleDealChange}
                           />
                           <label className="form-check-label" htmlFor="image">
@@ -485,7 +519,7 @@ const ContactDealer = ({id}) => {
                   </div>
                   <div className="modal-footer justify-content-start px-4 py-3">
                     <button type="submit" className="btn theme-btn">
-                    {modalProps.btnText}
+                      {modalProps.btnText}
                     </button>
                   </div>
                 </form>
@@ -495,7 +529,6 @@ const ContactDealer = ({id}) => {
           <div className="modal-backdrop fade show"></div>
         </div>
       )}
-      
 
       {/* {orderModal && (
         <div className="modal-open overflow-hidden">
@@ -576,8 +609,6 @@ const ContactDealer = ({id}) => {
           <div className="modal-backdrop fade show"></div>
         </div>
       )} */}
-
-      
     </>
   );
 };

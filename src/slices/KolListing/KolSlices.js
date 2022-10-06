@@ -115,7 +115,7 @@ const kolReducer = createSlice({
 
   reducers: {
     kolType: (action, { payload }) => {
-     
+     console.log(payload);
       return { kolType: payload };
     },
     kolName: (action, { payload }) => {

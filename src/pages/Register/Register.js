@@ -82,22 +82,10 @@ const Register = () => {
 
       formData.role == ""
     ) {
-      if (formData.name == "") {
-        setError((state) => {
-          return { ...state, name: "name is required" };
-        });
-      }
-      if (formData.email == "") {
-        setError((state) => {
-          return { ...state, email: "email is required" };
-        });
-      }
-      if (formData.password == "") {
-        setError({ ...error, password: "password is required" });
-      }
-      if (formData.role == "") {
-        toast.error("something went wrong");
-      }
+
+      setError("All fields required");
+      setStatus(true);
+
     } else {
       dispatch(signupUser(formData)).then((data) => {
         console.log(data);

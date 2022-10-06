@@ -5,6 +5,7 @@ const initialState = {
   name:"",  
   message: "",
   isSuccess: false,
+  paypalOrderDetail : {}
 };
 
 //API Integration of create deal
@@ -121,6 +122,10 @@ const DealsReducer = createSlice({
   name: "deal",
   initialState,
   reducers: {
+    paypalOrderResponse: (state, action) => {
+      // console.log(action.payload)
+      return {paypalOrderDetail:{...action.payload}}
+    }
 
   },
   extraReducers: {
@@ -148,4 +153,5 @@ const DealsReducer = createSlice({
 });
 
 export default DealsReducer.reducer;
+export const { paypalOrderResponse } = DealsReducer.actions; 
 export const DealsSelector = (state) => state?.deal;
