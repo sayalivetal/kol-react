@@ -848,3 +848,11 @@ h1.banner-title:first-child::nth-line(-n+2){
 }
 .labelText { display: inline-block; font-weight: 500;}
 .paymentInfo .labelText { min-width: 200px;}
+
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 9px;
+  color: #959595;
+}

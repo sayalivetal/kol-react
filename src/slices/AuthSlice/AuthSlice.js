@@ -42,7 +42,7 @@ export const signupUser = createAsyncThunk(
           localStorage.setItem("role", data.data.role_id);
           
         }
-        localStorage.setItem("email", data.email);
+        //localStorage.setItem("email", data.email);
         return { ...data };
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -79,6 +79,7 @@ export const loginWithGoogle = createAsyncThunk(
       if (data) {
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("role", data.data.role_id);
+        localStorage.setItem("email", data.data.email);
         return { ...data };
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -237,7 +238,7 @@ export const LoginUser = createAsyncThunk(
         if (data?.data?.token) {
           localStorage.setItem("token", data.data.token);
           localStorage.setItem("role", data.data.role_id);
-          localStorage.setItem("email", data.data.email);
+          //localStorage.setItem("email", data.data.email);
         }
         return { ...data };
       } else {
