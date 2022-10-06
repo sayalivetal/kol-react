@@ -31,7 +31,7 @@ const Account = () => {
             <div className="col-lg-12 px-4">
               <div className="row justify-content-between py-4 list-row">
                 <div className="col-xl-2 col-lg-3 col-md-12 py-2 align-self-start user-thumb">
-                  <div className="kol-user-img">
+                  <div className="kol-profile-img">
                     <img
                       src={`${imageUrl}${userDetails.avatar}`}
                       className="img-fluid"

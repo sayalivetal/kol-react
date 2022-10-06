@@ -220,11 +220,11 @@ const KolListing = () => {
           freshposts.filter((item)=>{
             if(kolName == ""){
               return item;
-            }else if (item.username.toLowerCase().includes(kolName.toLowerCase())){
+            }else if (item?.username?.toLowerCase().includes(kolName?.toLowerCase()) ){
               return item;
             }
           }).map((item, index) => {
-            //console.log("--------",item)
+            console.log("--------",item)
             return (
               <div
                 key={index}

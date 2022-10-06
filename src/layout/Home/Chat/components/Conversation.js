@@ -84,7 +84,7 @@ const Conversation = ({ urlId }) => {
             <div className="chat-row">
               <div className="chat-thumb-container">
                 <div className="chat-user-thumb">
-                  <img src="Images/3.png" alt="avatar" />
+                  {/* <img src="Images/3.png" alt="avatar" /> */}
                 </div>
                 <span className="status-icon active"></span>
               </div>

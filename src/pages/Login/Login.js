@@ -47,13 +47,21 @@ const Login = () => {
   const [password, setpassword] = useState("password");
 
   const handleChange = (e) => {
-    
-    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+    setLoginData((prevState)=>{
+       return {
+        ...prevState,
+        [e.target.name]: e.target.value 
+       }
+      });
+
   };
+
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (loginData.email == "" || loginData.password == "") {
-      setError("All fields required please select all field");
+      setError("Please Fill this Field");
       setStatus(true);
     }else{
       dispatch(LoginUser(loginData)).then((data) => {

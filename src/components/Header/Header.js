@@ -15,7 +15,7 @@ const Header = () => {
   const [categoryType, setCategory] = useState("");
   const [language, setLanguage] = useState({});
   const { isFetching, isError, username, message, email, logged_in_user } =  useSelector(userSelector);
-  console.log("---------------",logged_in_user)
+  // console.log("---------------",logged_in_user)
 
 
   let avatar = localStorage.getItem("avatar");
