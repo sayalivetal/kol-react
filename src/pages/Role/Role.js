@@ -27,6 +27,7 @@ const Role = () => {
     }
   };
 
+  console.log("--------", email)
   useEffect(() => {
     if (token) {
       navigate("/home");
@@ -37,16 +38,15 @@ const Role = () => {
     e.preventDefault();
     if (!role) {
       toast.error("Please select role first");
-    } else {
-      if (role && email) {
-        dispatch(updateRole({ role, email })).then((data) => {
-          toast.error(data.payload.msg);
-        });
+      } else if (role && email) {
+        // dispatch(updateRole({ role, email })).then((data) => {
+        //   toast.error(data.payload.msg);
+        // });
+        alert(typeof email)
       } else {
         dispatch(addRole(role));
         navigate("/register");
       }
-    }
   };
 
   return (

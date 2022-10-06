@@ -35,13 +35,17 @@ const Register = () => {
     role: role,
     password: "",
   });
-  const [error, setError] = useState({
+  const [error, setError] = useState("");
+  const [fieldError, setfieldError] = useState({
     name: "",
     email: "",
-    token: "",
-    role: "",
     password: "",
-  });
+  })
+
+  const [regPassword, setRegPassword] = useState("password");
+  const [eye, seteye] = useState(true);
+  const [type, settype] = useState(false);
+
   const [status, setStatus] = useState(false);
   let token = localStorage.getItem("token");
   console.log(token);
@@ -68,24 +72,62 @@ const Register = () => {
         console.log(err.message);
       });
   };
+
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
+
   //function for handleChange
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prevState) => {
+       return { 
+        ...prevState,
+        [e.target.name]: e.target.value 
+        }
+      });
+      validateInput(e);
   };
+
+  const validateInput = (e) => {
+    let { name, value } = e.target;
+    setfieldError((prev) => {
+      const stateObj = { ...prev, [name]: "" };
+
+      switch (name) {
+        case "name":
+          if (!value) {
+            stateObj[name] = "Please enter name";
+          }
+          break;
+          case "email":
+            if (!value) {
+              stateObj[name] = "Please enter email id";
+            }else if (!isValidEmail(value)){
+                stateObj[name] = "Please enter correct email id";
+              }
+            break;
+          case "password":
+            if (!value) {
+              stateObj[name] = "Please enter password";
+            }else if (value.length < 8){
+              stateObj[name] = "Password must be atleast 8 characters";
+            }
+            break;
+        default:
+          break;
+      }
+
+      return stateObj;
+    });
+  };
+
   //function for handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      formData.name == "" ||
-      formData.email == "" ||
-      formData.password == "" ||
-
-      formData.role == ""
-    ) {
-
-      setError("All fields required");
+    
+    if (formData.name == "" || formData.email == "" || formData.password == "") {
+      setError("Please fill the mandatory filed");
       setStatus(true);
-
     } else {
       dispatch(signupUser(formData)).then((data) => {
         console.log(data);
@@ -96,7 +138,7 @@ const Register = () => {
       e.target.reset();
     }
   };
-  console.log(error);
+  // console.log(error);
   //action for signInwithGoogle
   useEffect(() => {
     if (!firebaseUser.token) return;
@@ -135,6 +177,19 @@ const Register = () => {
     }
   }, [token]);
 
+
+  const Eye = () => {
+    if (regPassword == "password") {
+      setRegPassword("text");
+      seteye(false);
+      // settype(true);
+    } else {
+      setRegPassword("password");
+      seteye(true);
+      // settype(false);
+    }
+  };
+
   return (
     <div className="main-div">
       <section>
@@ -168,54 +223,76 @@ const Register = () => {
                           type="text"
                           name="name"
                           className={`form-control ${
-                            error.name === "" || formData.name
+                            error === "" || formData.name
                               ? ""
                               : "border-danger"
                           }`}
                           placeholder="First name"
                           onChange={handleChange}
+                          autocomplete="off"
                         />
-                        {error.name && formData.name == "" && (
-                          <span className="text-danger">{error.name}</span>
+                        <span className="err text-danger">
+                        {fieldError.name ||  error && formData.name == "" && (
+                          <>{error || fieldError.name}</>
                         )}
+                        </span>
                       </div>
 
                       <div className="form-group  mb-3">
                         <label>Email</label>
                         <span className="astric-span">*</span>
                         <input
-                          type="email"
+                          type="text"
                           name="email"
                           className={`form-control  ${
-                            error.email === "" || formData.email
+                            error === "" || formData.email
                               ? ""
                               : "border-danger"
                           }`}
                           placeholder="Enter email"
                           onChange={handleChange}
+                          autocomplete="off"
                         />
-                        {error.email && formData.email == "" && (
-                          <span className="text-danger">{error.email}</span>
+                        <span className="err text-danger">
+                        {fieldError.email || error && formData.email == "" && (
+                          <>{error || fieldError.email  }</>
                         )}
+                        </span>
+
                       </div>
 
                       <div className="form-group  mb-3">
                         <label>Password</label>
                         <span className="astric-span">*</span>
+                        <div className="position-relative">
                         <input
-                          type="password"
+                          type={regPassword}
                           name="password"
                           className={`form-control  ${
-                            error.password === "" || formData.password
+                            error === "" || formData.password
                               ? ""
                               : "border-danger"
                           }`}
                           placeholder="Enter password"
                           onChange={handleChange}
+                          autocomplete="off"
                         />
-                        {error.password && formData.password == "" && (
-                          <span className="text-danger">{error.password}</span>
+                        <i
+                            onClick={Eye}
+                            className={`eye-icon fa ${
+                              eye ? "fa-eye-slash" : "fa-eye"
+                            }`}
+                          ></i>
+                         </div> 
+                         <span className="err text-danger">
+
+                          
+                        {fieldError.password || error && formData.password == "" && (
+                          <>{error || fieldError.password}</>
                         )}
+                        </span>
+
+
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button

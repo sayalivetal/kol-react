@@ -807,13 +807,25 @@ h1.banner-title:first-child::nth-line(-n+2){
 .user-thumb { margin-top: -136px;}
 .kol-user-img {
   max-height: 182px;
+  min-height: 180px;
   border-radius: 20px;
   overflow: hidden;
   background-color: #e3e3e3;
-  width: auto;
+  width: 100%;
   display: inline-table;
   margin-bottom: 30px;
 }
+.kol-profile-img {
+  max-height: 280px;
+  min-height: 180px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #e3e3e3;
+  width: 100%;
+  display: inline-table;
+  margin-bottom: 30px;
+}
+
 .fw-medium { font-weight: 500;}
 .col-form-label {color:#495057}
 
@@ -836,3 +848,11 @@ h1.banner-title:first-child::nth-line(-n+2){
 }
 .labelText { display: inline-block; font-weight: 500;}
 .paymentInfo .labelText { min-width: 200px;}
+
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 9px;
+  color: #959595;
+}

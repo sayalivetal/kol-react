@@ -220,6 +220,7 @@ const KolListing = () => {
 
           freshposts.map((item, index) => {
             //console.log("--------",item)
+
             return (
               <div
                 key={index}

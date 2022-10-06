@@ -61,13 +61,7 @@
     color: #000000 !important;
     text-decoration: none;
   }
-  .eye-icon {
-    position: absolute;
-    right: 12px;
-    top: 9px;
-    color: #959595;
-  }
-  
+
   @media (max-width: 767px) {
     .main-div {
       padding: 30px 0;
