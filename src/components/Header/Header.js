@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllCategory, getAllLanguage } from "../../slices/api/simpleApi";
+import {
+  getAllCategory,
+  getAllLanguage,
+  getUserDetails,
+} from "../../slices/api/simpleApi";
 import { userSelector, clearState } from "../../slices/AuthSlice/AuthSlice";
 import { Dropdown } from "react-bootstrap";
 import { kolType, kolName } from "../../slices/KolListing/KolSlices";
 import { imageUrl } from "../../common/apis";
+
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const Header = () => {
   const navigate = useNavigate();
@@ -14,13 +19,32 @@ const Header = () => {
   const [categoryList, setCategoryList] = useState({});
   const [categoryType, setCategory] = useState("");
   const [language, setLanguage] = useState({});
-  const { isFetching, isError, username, message, email, logged_in_user } =  useSelector(userSelector);
-  // console.log("---------------",logged_in_user)
-
+  const {
+    isFetching,
+    isError,
+    username,
+    message,
+    email,
+    logged_in_user,
+    isSuccess,
+  } = useSelector(userSelector);
+  console.log("---------------", isSuccess);
 
   let avatar = localStorage.getItem("avatar");
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
+  const [userDetails, setUserDetails] = useState({});
+
+  useEffect(() => {
+    const callback = (data) => {
+      setUserDetails({ ...data });
+      localStorage.setItem("avatar", data?.avatar);
+    };
+    getUserDetails(callback, token);
+    return () => {
+      dispatch(clearState());
+    };
+  }, [isSuccess]);
 
   useEffect(() => {
     const callback = (data) => {
@@ -34,15 +58,23 @@ const Header = () => {
       navigate("/login");
     }
   }, [isError]);
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
   const signOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("avatar");
-    localStorage.removeItem("email")
-    localStorage.removeItem("persist:root")
+    localStorage.removeItem("email");
+    localStorage.removeItem("persist:root");
     navigate("/");
   };
   const handleChange = (e) => {
+    if (e.target.value == "Select Category") {
+      return;
+    }
     dispatch(kolType(e.target.value));
   };
 
@@ -54,6 +86,7 @@ const Header = () => {
     e.preventDefault();
     dispatch(kolName(categoryType));
   };
+  console.log(logged_in_user);
 
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
@@ -127,7 +160,7 @@ const Header = () => {
                       ""
                     )}
 
-                    <Link to={`/chat/${logged_in_user}`}>
+                    <Link to={`/chat/${userDetails?.id}`}>
                       <i className="bi bi-chat-dots"></i>
                       <span className="count-badge">0</span>
                     </Link>
@@ -166,7 +199,14 @@ const Header = () => {
                   </div>
                   <div className="header-profile">
                     <div className="profile-user-icon">
-                      {avatar ? <img src={`${imageUrl}${avatar}`} alt="avatar" /> : username?.split('')[0]?.toUpperCase() || "U" } 
+                      {userDetails?.avatar ? (
+                        <img
+                          src={`${imageUrl}${userDetails.avatar}`}
+                          alt="avatar"
+                        />
+                      ) : (
+                        userDetails?.name?.split("")[0]?.toUpperCase() || "U"
+                      )}
                     </div>
                     <Dropdown className="user-dropdown">
                       <Dropdown.Toggle
@@ -174,17 +214,30 @@ const Header = () => {
                         className="profile-btn"
                         id="dropdown-basic"
                       >
-                        <span className="profile-btn-user">{username}</span>
+                        <span className="profile-btn-user">
+                          {userDetails?.name}
+                        </span>
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
                         <div className="user-drop-list">
                           <div className="list-item-profile">
                             <div className="profile-user-icon">
-                              {avatar ? <img src={`${imageUrl}${avatar}`} alt="avatar" /> : username?.split('')[0]?.toUpperCase() || "U" }
+                              {userDetails?.avatar ? (
+                                <img
+                                  src={`${imageUrl}${userDetails?.avatar}`}
+                                  alt="avatar"
+                                />
+                              ) : (
+                                userDetails?.name
+                                  ?.split("")[0]
+                                  ?.toUpperCase() || "U"
+                              )}
                             </div>
                             <div className="profile-user-name">
-                              <div className="user-name">{username}</div>
+                              <div className="user-name">
+                                {userDetails?.name}
+                              </div>
                               <div className="user-designation">
                                 Type : {role == 2 ? "Kol User" : "End User"}
                               </div>
@@ -194,7 +247,6 @@ const Header = () => {
                           <Link className="list-item" to="/account">
                             Profile
                           </Link>
-                          
 
                           {role == 3 ? (
                             <>

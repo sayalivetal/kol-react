@@ -233,10 +233,11 @@ export const LoginUser = createAsyncThunk(
       });
       let data = await response.json();
       console.log(data);
-      if (response.status === 200) {
+      if (data.statusCode === 200) {
         if (data?.data?.token) {
           localStorage.setItem("token", data.data.token);
           localStorage.setItem("role", data.data.role_id);
+          localStorage.setItem("email", data.data.email);
         }
         return { ...data };
       } else {
@@ -335,19 +336,7 @@ export const UpdateUserProfile = createAsyncThunk(
     },
     thunkAPI
   ) => {
-    console.log(
-      firstName,
-      lastName,
-      phone,
-      gender,
-      address,
-      landmark,
-      city,
-      zip,
-      token,
-      country,
-      state
-    );
+ 
     try {
       const response = await fetch(`${API}/user/add-user-address`, {
         method: "POST",
@@ -372,8 +361,8 @@ export const UpdateUserProfile = createAsyncThunk(
         }),
       });
       let data = await response.json();
-      console.log(data);
-      if (response.status === 200) {
+    
+      if (data.statusCode === 202) {
         return data;
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -406,8 +395,8 @@ export const UpdateProfileImage = createAsyncThunk(
         body: formData,
       });
       let data = await response.json();
-     // console.log(data);
-      if (response.status === 200) {
+     console.log(data);
+      if (data.statusCode === 201) {
         return data;
       } else {
         return thunkAPI.rejectWithValue(data);
@@ -433,7 +422,7 @@ const authReducer = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.isFetching = false;
-
+      state.email = ""
       return state;
     },
   },
@@ -537,6 +526,12 @@ const authReducer = createSlice({
     },
     [updateRole.pending]: (state, action) => {},
     [updateRole.rejected]: (state, action) => {},
+    [UpdateProfileImage.fulfilled]:(state,action)=>{
+      state.isSuccess = true;
+    },
+    [UpdateUserProfile.fulfilled]:(state,action) =>{
+      state.isSuccess = true
+    }
   },
 });
 export const { addRole, clearState } = authReducer.actions;

@@ -13,6 +13,7 @@ const ContactList = ({ id }) => {
   const navigate = useNavigate();
   const [term, setTerm] = useState("");
   const { isSuccess } = useSelector(chatSelector);
+  console.log(isSuccess);
   const [urlId, seturlId] = useState();
 
   const dispatch = useDispatch();
@@ -48,10 +49,13 @@ const ContactList = ({ id }) => {
       return;
     }
     const callback = (data) => {
-      setContactList([...data]);
+      if(!data)return;
+        setContactList([...data]);
+      
+     
     };
     getChatList(callback, token);
-  }, [term]);
+  }, [term,isSuccess]);
 
  
 

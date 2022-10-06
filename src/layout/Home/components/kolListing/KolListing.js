@@ -32,7 +32,7 @@ const KolListing = () => {
   let token = localStorage.getItem("token");
 
   const { kolType, name, message, isSuccess } = useSelector(kolSelector);
-
+// console.log(kolType);
   const navigate = useNavigate();
 
   const [languages, setLanguages] = useState({});
@@ -85,6 +85,7 @@ const KolListing = () => {
     }
     // setIsFetching(false);
   };
+  console.log(freshposts);
   useEffect(() => {
     setKolName(name);
     setFreshposts([]);
@@ -217,14 +218,9 @@ const KolListing = () => {
       >
         {freshposts.length > 0 ?
 
-          freshposts.filter((item)=>{
-            if(kolName == ""){
-              return item;
-            }else if (item?.username?.toLowerCase().includes(kolName?.toLowerCase()) ){
-              return item;
-            }
-          }).map((item, index) => {
-            console.log("--------",item)
+          freshposts.map((item, index) => {
+            //console.log("--------",item)
+
             return (
               <div
                 key={index}
