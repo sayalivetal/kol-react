@@ -19,7 +19,7 @@ const EmailCheck = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email == "") {
-      setError("All fields required ");
+      setError("Please fill the mandatory filed");
     } else {
       dispatch(forgotPassword(email)).then((data) => {
         console.log(data);

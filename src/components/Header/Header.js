@@ -88,18 +88,22 @@ const Header = () => {
   };
   console.log(logged_in_user);
 
+  const handleClick = () => {
+    window.location.href = '/home';
+  }
+
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
         <div className="row justify-content-between align-items-center">
           {token ? (
             <div className="col-sm-2 col-lg-2 col-4">
-              <Link
+              {/* <Link
                 to="/home"
                 className="d-flex align-items-center mb-2 mb-md-0 text-dark text-decoration-none logo"
-              >
-                KOL
-              </Link>
+              > */}
+                <div onClick={handleClick} style={{cursor: 'pointer'}} className="d-flex align-items-center mb-2 mb-md-0 text-dark text-decoration-none logo">KOL</div>
+              {/* </Link> */}
             </div>
           ) : (
             <div className="col-sm-2 col-lg-2 col-4">

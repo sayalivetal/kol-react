@@ -80,8 +80,8 @@ const Login = () => {
           }
           break;
           case "password":
-            if (!value) {
-              stateObj[name] = "Please enter password";
+            if (!value || value.length < 8) {
+              stateObj[name] = "Please enter correct password";
             }
             break;
         default:

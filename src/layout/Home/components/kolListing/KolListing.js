@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { API } from "../../../../common/apis";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import Loader from "react-js-loader";
 import { Button, Dropdown } from "react-bootstrap";
 import {
   kolDetails,
@@ -32,7 +33,7 @@ const KolListing = () => {
   let token = localStorage.getItem("token");
 
   const { kolType, name, message, isSuccess } = useSelector(kolSelector);
-// console.log(kolType);
+  // console.log(kolType);
   const navigate = useNavigate();
 
   const [languages, setLanguages] = useState({});
@@ -76,6 +77,7 @@ const KolListing = () => {
       navigate("/login");
     }
     // setKolProfile([...result.kolProfiles]);
+    // setLoadingData(false)
     setFreshposts([...freshposts, ...result.kolProfiles]);
 
     setPage((page) => page + 1);
@@ -85,6 +87,7 @@ const KolListing = () => {
     }
     // setIsFetching(false);
   };
+  console.log(language);
   console.log(freshposts);
   useEffect(() => {
     setKolName(name);
@@ -133,9 +136,6 @@ const KolListing = () => {
     getAllStates(callback);
   }, []);
 
-
-
-  
   const handleBookmark = (profileId, e) => {
     let operationType = e.target.classList.contains("active");
     if (!operationType) {
@@ -147,39 +147,28 @@ const KolListing = () => {
     }
   };
 
-// const[socialMediaIcon,setSocialMediaState] = useState([]);
-
-//  useEffect(()=>{
-//   if (freshposts.length > 0 ){
-//     freshposts.map((item, index)=> {
-//       let a = item.SocialMedia.filter((socItem, index)=>{
-//         return socItem.social_platform == item.social_active
-//     })
-
-//     setSocialMediaState([...socialMediaIcon, ...a])
-//     });
-
-//   }
-//  },[freshposts])
-
-// console.log(freshposts);
-
   return (
     <>
+      {console.log("------------------------------------")}
       <div className="row justify-content-between border-bottom pt-3 pb-4">
         <div className="col-lg-7 d-flex filter-col">
           <select className="form-select" onChange={handleLanguageChange}>
             <option value="">All Languages</option>
+
             {languages &&
               Object.entries(languages).map(([key, value]) => (
-                <option value={key}>{value}</option>
+                <option value={key}>{`${value[0].toUpperCase()}${value.slice(
+                  1
+                )}`}</option>
               ))}
           </select>
           <select className="form-select mx-3" onChange={handleStreamChange}>
             <option value="">All Streams</option>
             {streams &&
               Object.entries(streams).map(([key, value]) => (
-                <option value={key}>{value}</option>
+                <option value={key}>{`${value[0].toUpperCase()}${value.slice(
+                  1
+                )}`}</option>
               ))}
           </select>
 
@@ -216,8 +205,7 @@ const KolListing = () => {
           </p>
         }
       >
-        {freshposts.length > 0 ?
-
+        {freshposts.length > 0 ? (
           freshposts.map((item, index) => {
             //console.log("--------",item)
 
@@ -280,24 +268,22 @@ const KolListing = () => {
                         Languages:
                         <span className="text-normal"> {item.languages}</span>
                       </h5>
-                   
-                          <ul className="social-count-list">
-                            <li className="">
-                              <span></span>
-                              <i className={`${item.social_active_icon}`}></i> 
-                              {/* {item.SocialMedia.filter((socItem, index)=>{
+
+                      <ul className="social-count-list">
+                        <li className="">
+                          <span></span>
+                          <i className={`${item.social_active_icon}`}></i>
+                          {/* {item.SocialMedia.filter((socItem, index)=>{
                                  if (socItem.social_platform == item.social_active){
                                   return <span>{socItem?.followers}</span>
                                  }
                                })} */}
 
-                              {/* {socialMediaIcon && socialMediaIcon.map((c,i)=>{
+                          {/* {socialMediaIcon && socialMediaIcon.map((c,i)=>{
                                 return <span>{c.followers}</span>
                               })} */}
-
-                            </li>
-                          </ul>
-                    
+                        </li>
+                      </ul>
                     </div>
                   </div>
 
@@ -325,7 +311,6 @@ const KolListing = () => {
                     ) : (
                       <div className="col-lg-12 ">
                         <Link to={`/chat/${item.user_id}`}>
-                       
                           <button className="ml-auto btn theme-btn mb-4">
                             <span className="mx-2">
                               <i className="bi bi-chat-dots"></i>
@@ -339,13 +324,21 @@ const KolListing = () => {
                 </div>
               </div>
             );
-          }) : 
-          
-          (<>
+          })
+        ) : (
+          <>
             <div className="col-12 text-center p-5 bg-light my-3 ">
-               <h2 className="p-5">Nothing Found, try Searching again.</h2>
+              {/* <h2 className="p-5">Nothing Found, try Searching again.</h2> */}
+              <Loader
+                type="spinner-cub"
+                title={"Loading"}
+                bgColor="#342951"
+                color="#342951"
+                size={100}
+              />
             </div>
-          </>)}
+          </>
+        )}
       </InfiniteScroll>
     </>
   );

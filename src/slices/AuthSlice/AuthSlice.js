@@ -241,7 +241,7 @@ export const LoginUser = createAsyncThunk(
           //localStorage.setItem("email", data.data.email);
         }
         return { ...data };
-      } else {
+      } else { 
         return thunkAPI.rejectWithValue(data);
       }
     } catch (e) {

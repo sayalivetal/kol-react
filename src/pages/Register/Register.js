@@ -3,6 +3,7 @@ import GoogleButton from "react-google-button";
 import "./Register.css";
 import { useDispatch, useSelector } from "react-redux";
 import { signInWithPopup } from "firebase/auth";
+import Loader from "react-js-loader";
 import { auth, googleAuthProvider } from "../../Firebase";
 //import { Container, Row, Col } from "react-bootstrap";
 import {
@@ -120,19 +121,21 @@ const Register = () => {
       return stateObj;
     });
   };
-
+const[loaderRegister,setLoader] = useState(false)
   //function for handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    setLoader(true)
     if (formData.name == "" || formData.email == "" || formData.password == "") {
       setError("Please fill the mandatory filed");
       setStatus(true);
+      setLoader(false)
     } else {
       dispatch(signupUser(formData)).then((data) => {
         console.log(data);
         if (data.payload.status) {
           toast.success(data.payload.message);
+          setLoader(false)
         }
       });
       e.target.reset();
@@ -229,7 +232,7 @@ const Register = () => {
                           }`}
                           placeholder="First name"
                           onChange={handleChange}
-                          autocomplete="off"
+                          autoComplete="off"
                         />
                         <span className="err text-danger">
                         {fieldError.name ||  error && formData.name == "" && (
@@ -251,7 +254,7 @@ const Register = () => {
                           }`}
                           placeholder="Enter email"
                           onChange={handleChange}
-                          autocomplete="off"
+                          autoComplete="off"
                         />
                         <span className="err text-danger">
                         {fieldError.email || error && formData.email == "" && (
@@ -275,7 +278,7 @@ const Register = () => {
                           }`}
                           placeholder="Enter password"
                           onChange={handleChange}
-                          autocomplete="off"
+                          autoComplete="off"
                         />
                         <i
                             onClick={Eye}
@@ -299,7 +302,7 @@ const Register = () => {
                           type="submit"
                           className="btn theme-btn btn-lg btn-block"
                         >
-                          Register
+                         {loaderRegister ? <Loader type="spinner-cub"  title={"Register"} size={20} />:'Register'} 
                         </button>
                         <span className="optionText text-right">
                           Already registered <Link to="/login">Login</Link>
