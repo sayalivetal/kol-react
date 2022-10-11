@@ -71,7 +71,7 @@ const ForgotPassword = () => {
       switch (name) {
         case "otp":
           if (!value) {
-            stateObj[name] = "Please enter correct otp";
+            stateObj[name] = "Please enter otp";
           }
           break;
 
