@@ -4,6 +4,8 @@ import { forgotPassword, userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import "./EmailCheck.css";
 import { toast } from "react-toastify";
+import Loader from "react-js-loader";
+
 const EmailCheck = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,22 +15,27 @@ const EmailCheck = () => {
   const [status, setStatus] = useState(false);
   const [email, setEmail] = useState("");
   const [user, setUser] = useState({});
+  const[btnLoader,setBtnLoader] = useState(false);
   const handleChange = (e) => {
     setEmail(e.target.value);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setBtnLoader(true);
     if (email == "") {
       setError("Please fill the mandatory filed");
+      setBtnLoader(false);
     } else {
       dispatch(forgotPassword(email)).then((data) => {
         console.log(data);
         if(data?.payload?.data?.status){
           toast.success(data?.payload?.data?.message)
           navigate('/forgotPassword')
+          setBtnLoader(false);
         }
         else{
           toast.error(data?.payload?.data?.message)
+          setBtnLoader(false);
         }
       });
     }
@@ -85,9 +92,9 @@ const EmailCheck = () => {
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button
                           type="submit"
-                          className="btn theme-btn btn-lg btn-block mt-6"
+                          className="btn theme-btn btn-lg btn-block mt-6 spiner-btn"
                         >
-                          Send OTP
+                          {btnLoader ? <Loader type="spinner-cub"  title={"Send OTP"} size={20} />:'Send OTP'}
                         </button>
                       </div>
                     </form>

@@ -3,6 +3,7 @@ import { Container, Form, Row, Button, Alert } from "react-bootstrap";
 import { ChangePasswordUser } from "../../slices/AuthSlice/AuthSlice";
 import { useSelector, useDispatch } from "react-redux";
 import "./ChangePassword.css";
+import Loader from "react-js-loader";
 
 const ChangePassword = () => {
   const email = useSelector((state) => state?.user?.loginuser?.email);
@@ -12,6 +13,7 @@ const ChangePassword = () => {
   );
  
   const dispatch = useDispatch();
+  const[btnLoader,setBtnLoader] = useState(false);
   const [passwordValue, setPasswordValue] = useState({
     currentPassword: "",
     newPassword: "",
@@ -82,8 +84,10 @@ const ChangePassword = () => {
   };
   const handlSubmit = (e) => {
     e.preventDefault();
+    setBtnLoader(true)
    
     dispatch(ChangePasswordUser(passwordValue));
+    setBtnLoader(false)
   };
   return (
     <Container>
@@ -129,8 +133,8 @@ const ChangePassword = () => {
               )}
           </Form.Group>
           
-          <Button variant="primary" type="submit">
-            Submit
+          <Button variant="primary" type="submit" className="spiner-btn">
+            {btnLoader ? <Loader type="spinner-cub"  title={"Submit"} size={20} />:'Submit'}
           </Button>
         </Form>
         {successMessage && (
