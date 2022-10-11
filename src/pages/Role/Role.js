@@ -42,7 +42,7 @@ const Role = () => {
         // dispatch(updateRole({ role, email })).then((data) => {
         //   toast.error(data.payload.msg);
         // });
-        alert(typeof email)
+        // alert(typeof email)
       } else {
         dispatch(addRole(role));
         navigate("/register");

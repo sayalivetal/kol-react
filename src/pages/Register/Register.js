@@ -121,21 +121,23 @@ const Register = () => {
       return stateObj;
     });
   };
-const[loaderRegister,setLoader] = useState(false)
+
+const[btnLoader,setBtnLoader] = useState(false);
   //function for handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoader(true)
+    setBtnLoader(true)
     if (formData.name == "" || formData.email == "" || formData.password == "") {
       setError("Please fill the mandatory filed");
       setStatus(true);
-      setLoader(false)
+      setBtnLoader(false)
     } else {
       dispatch(signupUser(formData)).then((data) => {
         console.log(data);
-        if (data.payload.status) {
+        if (data.payload.statusCode==201) {
           toast.success(data.payload.message);
-          setLoader(false)
+          setBtnLoader(false)
+          localStorage.setItem("email", data.payload.email)
         }
       });
       e.target.reset();
@@ -300,10 +302,11 @@ const[loaderRegister,setLoader] = useState(false)
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button
                           type="submit"
-                          className="btn theme-btn btn-lg btn-block"
+                          className="btn theme-btn btn-lg btn-block spiner-btn"
                         >
-                         {loaderRegister ? <Loader type="spinner-cub"  title={"Register"} size={20} />:'Register'} 
+                         {btnLoader ? <Loader type="spinner-cub"  title={"Register"} size={20} />:'Register'} 
                         </button>
+
                         <span className="optionText text-right">
                           Already registered <Link to="/login">Login</Link>
                         </span>

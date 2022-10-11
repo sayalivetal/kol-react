@@ -12,6 +12,7 @@ import {
 } from "../../slices/AuthSlice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "react-js-loader";
 import "react-toastify/dist/ReactToastify.css";
 import "./Login.css";
 const Login = () => {
@@ -23,6 +24,7 @@ const Login = () => {
   const [type, settype] = useState(false);
   const [error, setError] = useState("");
   const [status, setStatus] = useState(false);
+  const[btnLoader,setBtnLoader] = useState(false);
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -80,8 +82,8 @@ const Login = () => {
           }
           break;
           case "password":
-            if (!value || value.length < 8) {
-              stateObj[name] = "Please enter correct password";
+            if (!value) {
+              stateObj[name] = "Please enter password";
             }
             break;
         default:
@@ -95,21 +97,26 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setBtnLoader(true)
     if (loginData.email == "" || loginData.password == "") {
       setError("Please fill the mandatory filed");
       setStatus(true);
+      setBtnLoader(false)
     }else{
       dispatch(LoginUser(loginData)).then((data) => {
         console.log(data);
         if (data?.payload?.data?.token) {
           navigate("/home");
           toast.success(data?.payload?.message);
+          setBtnLoader(false)
         } else if(data.payload.statusCode === 401){
           navigate('/emailVerify')
           //localStorage.setItem("email",loginData.email)
           toast.success(data?.payload?.message);
+          setBtnLoader(false)
         }else{
           toast.error(data?.payload?.message);
+          setBtnLoader(false)
         }
       });
    
@@ -241,9 +248,9 @@ const Login = () => {
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button
                           type="submit"
-                          className="btn theme-btn btn-lg btn-block"
+                          className="btn theme-btn btn-lg btn-block spiner-btn"
                         >
-                          Login
+                          {btnLoader ? <Loader type="spinner-cub"  title={"Login"} size={20} />:'Login'}
                         </button>
                         <span className="optionText1 text-right">
                           <Link to="/emailCheck">Forgot password ?</Link>

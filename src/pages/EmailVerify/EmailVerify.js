@@ -12,6 +12,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Loader from "react-js-loader";
+
 const EmailVerify = () => {
   const navigate = useNavigate();
   const { isFetching, isSuccess, isError, errorMessage} = useSelector(userSelector);
@@ -29,20 +31,24 @@ const EmailVerify = () => {
   const [otp, setOtp] = useState("");
   //function for otp change
   const [error,setError] = useState("")
+  const [btnLoader, setBtnLoader] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(otp === ""){
-      setError("opt required")
+    setBtnLoader(true)
+    console.log("otp", otp)
+    if(otp.length < 6 ){
+      setError("Please fill the mandatory filed")
+      setBtnLoader(false)
     }
     dispatch(emailVerification({ otp, email })).then((data)=>{
-  console.log(data);
       if(data?.payload?.statusCode == 200){
         navigate('/home');
         toast.success(data?.payload?.message)
-       
+        setBtnLoader(false)
       }else{
         toast.error(data?.payload?.message)
+        setBtnLoader(false)
       }
       
    
@@ -51,18 +57,23 @@ const EmailVerify = () => {
   };
 
   const handleOtp = () => {
+    
     dispatch(resendEmailOtp(email)).then((data)=>{
       console.log(data);
       if(data?.payload?.statusCode == 200){
         toast.success(data?.payload?.message)
-        
+        setOtp("");
       }else{
         toast.error(data?.payload?.message)
       }
     });
   };
 
-
+useEffect(()=>{
+  if(otp.length == 6 ) {
+    setError("")
+  }
+},[otp])
   
   return (
     <section className="otp-bg">
@@ -87,11 +98,15 @@ const EmailVerify = () => {
                           numInputs={6}
                           separator={<span>&nbsp;</span>}
                         />
-                        {error && <span className="error-color">{error}</span>}
+                        
+                      </div>
+                      <div className="err text-danger">
+                        {console.log("---------",otp.length)}
+                        {error ? (<>{error}</>) : "" }
                       </div>
                       
-                      <button className="btn theme-btn btn-lg btn-block my-3" type="submit">
-                        Verify &amp; Proceed
+                      <button className="btn theme-btn btn-lg btn-block my-3 spiner-btn" type="submit">
+                        {btnLoader ? <Loader type="spinner-cub"  title={"Verify & Proceed"} size={20} />:'Verify & Proceed'} 
                       </button>
                     </form>
                   </div>
@@ -103,7 +118,7 @@ const EmailVerify = () => {
                         className="resend-button"
                         onClick={handleOtp}
                       >
-                        RESEND OTP
+                         {btnLoader ? <Loader type="spinner-cub"  title={"RESEND OTP"} size={20} />:'RESEND OTP'} 
                       </button>
                     </p>
                     <p className="font-weight-bold">OTP Will be expire in 1 mintue</p>

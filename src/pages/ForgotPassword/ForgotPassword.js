@@ -4,6 +4,7 @@ import { ResetPassword, userSelector } from "../../slices/AuthSlice/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
 import { toast } from "react-toastify";
+import Loader from "react-js-loader";
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const { isFetching, isSuccess, statusCode, isError, errorMessage, email } =
@@ -30,6 +31,7 @@ const ForgotPassword = () => {
   const [type1, settype1] = useState(false);
   const [password1, setpassword1] = useState("password");
   const [errorSubmit, setErrorSubmit] = useState("");
+  const [btnLoader, setBtnLoader] = useState(false);
   const Eye = () => {
     if (password == "password") {
       setpassword("text");
@@ -110,16 +112,20 @@ const ForgotPassword = () => {
   const handlSubmit = (e) => {
  
     e.preventDefault();
+    setBtnLoader(true);
     if (passwordValue.email == "" || passwordValue.otp == "" || passwordValue.newPassword == "" || passwordValue.confirmNewPassword == "") {
       setErrorSubmit("Please Fill this Field");
+      setBtnLoader(false);
     }else{
       dispatch(ResetPassword(passwordValue)).then((data) => {
         console.log(data);
         if(data.payload.statusCode === 201){
           
           navigate("/passwordSuccess");
+          setBtnLoader(false);
         }else{
-          toast.error(data.payload.message)
+          toast.error(data.payload.message);
+          setBtnLoader(false);
         }
         
       });
@@ -235,9 +241,9 @@ const ForgotPassword = () => {
                       <div className="d-flex justify-content-between align-items-center mb-3">
                         <button
                           type="submit"
-                          className="btn theme-btn btn-lg btn-block mt-6"
+                          className="btn theme-btn btn-lg btn-block mt-6 spiner-btn"
                         >
-                          Submit
+                         {btnLoader ? <Loader type="spinner-cub"  title={"Submit"} size={20} />:'Submit'} 
                         </button>
                       </div>
                     </form>
