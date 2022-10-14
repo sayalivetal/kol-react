@@ -76,9 +76,9 @@ const Login = () => {
       switch (name) {
         case "email":
           if (!value) {
-            stateObj[name] = "Please enter email id";
+            stateObj[name] = "Please enter email";
           }else if (!isValidEmail(value)){
-            stateObj[name] = "Please enter correct email id";
+            stateObj[name] = "Please enter correct email";
           }
           break;
           case "password":
@@ -206,6 +206,7 @@ const Login = () => {
                           placeholder="Enter email"
                           name="email"
                           onChange={handleChange}
+                          autoComplete="off"
                         />
                         <span className="err text-danger">
                         {fieldError.email || error && loginData.email == "" && (
@@ -230,6 +231,7 @@ const Login = () => {
                             placeholder="Enter password"
                             name="password"
                             onChange={handleChange}
+                            autoComplete="off"
                           />
 
                           <i

@@ -81,12 +81,12 @@ const Register = () => {
   //function for handleChange
   const handleChange = (e) => {
     setFormData((prevState) => {
-       return { 
+      return {
         ...prevState,
-        [e.target.name]: e.target.value 
-        }
-      });
-      validateInput(e);
+        [e.target.name]: e.target.value
+      }
+    });
+    validateInput(e);
   };
 
   const validateInput = (e) => {
@@ -100,20 +100,20 @@ const Register = () => {
             stateObj[name] = "Please enter name";
           }
           break;
-          case "email":
-            if (!value) {
-              stateObj[name] = "Please enter email id";
-            }else if (!isValidEmail(value)){
-                stateObj[name] = "Please enter correct email id";
-              }
-            break;
-          case "password":
-            if (!value) {
-              stateObj[name] = "Please enter password";
-            }else if (value.length < 8){
-              stateObj[name] = "Password must be atleast 8 characters";
-            }
-            break;
+        case "email":
+          if (!value) {
+            stateObj[name] = "Please enter email";
+          } else if (!isValidEmail(value)) {
+            stateObj[name] = "Please enter correct email";
+          }
+          break;
+        case "password":
+          if (!value) {
+            stateObj[name] = "Please enter password";
+          } else if (value.length < 8) {
+            stateObj[name] = "Password must be atleast 8 characters";
+          }
+          break;
         default:
           break;
       }
@@ -122,7 +122,7 @@ const Register = () => {
     });
   };
 
-const[btnLoader,setBtnLoader] = useState(false);
+  const [btnLoader, setBtnLoader] = useState(false);
   //function for handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -134,10 +134,10 @@ const[btnLoader,setBtnLoader] = useState(false);
     } else {
       dispatch(signupUser(formData)).then((data) => {
         console.log(data);
-        if (data.payload.statusCode==201) {
+        if (data.payload.statusCode == 201) {
           toast.success(data.payload.message);
           setBtnLoader(false)
-          localStorage.setItem("email", data.payload.email)
+          //localStorage.setItem("email", data.payload.email)
         }
       });
       e.target.reset();
@@ -148,7 +148,14 @@ const[btnLoader,setBtnLoader] = useState(false);
   useEffect(() => {
     if (!firebaseUser.token) return;
     console.log(firebaseUser);
-    dispatch(signupUser(firebaseUser));
+    localStorage.setItem('email',firebaseUser.email)
+    dispatch(signupUser(firebaseUser)).then((data) => {
+      console.log(data);
+      if (data.payload.statusCode === 422) {
+        navigate('/role')
+        
+      }
+    });
   }, [firebaseUser.token]);
 
   //new Changes
@@ -198,7 +205,7 @@ const[btnLoader,setBtnLoader] = useState(false);
   return (
     <div className="main-div">
       <section>
-        <div className="container">
+        <div className="container reg-container">
           <div className="card register-card">
             <div className="card-body register-card-body">
               <div className="row">
@@ -227,19 +234,18 @@ const[btnLoader,setBtnLoader] = useState(false);
                         <input
                           type="text"
                           name="name"
-                          className={`form-control ${
-                            error === "" || formData.name
+                          className={`form-control ${error === "" || formData.name
                               ? ""
                               : "border-danger"
-                          }`}
-                          placeholder="First name"
+                            }`}
+                          placeholder="Enter name"
                           onChange={handleChange}
                           autoComplete="off"
                         />
                         <span className="err text-danger">
-                        {fieldError.name ||  error && formData.name == "" && (
-                          <>{error || fieldError.name}</>
-                        )}
+                          {fieldError.name || error && formData.name == "" && (
+                            <>{error || fieldError.name}</>
+                          )}
                         </span>
                       </div>
 
@@ -249,19 +255,18 @@ const[btnLoader,setBtnLoader] = useState(false);
                         <input
                           type="text"
                           name="email"
-                          className={`form-control  ${
-                            error === "" || formData.email
+                          className={`form-control  ${error === "" || formData.email
                               ? ""
                               : "border-danger"
-                          }`}
+                            }`}
                           placeholder="Enter email"
                           onChange={handleChange}
                           autoComplete="off"
                         />
                         <span className="err text-danger">
-                        {fieldError.email || error && formData.email == "" && (
-                          <>{error || fieldError.email  }</>
-                        )}
+                          {fieldError.email || error && formData.email == "" && (
+                            <>{error || fieldError.email}</>
+                          )}
                         </span>
 
                       </div>
@@ -270,31 +275,30 @@ const[btnLoader,setBtnLoader] = useState(false);
                         <label>Password</label>
                         <span className="astric-span">*</span>
                         <div className="position-relative">
-                        <input
-                          type={regPassword}
-                          name="password"
-                          className={`form-control  ${
-                            error === "" || formData.password
-                              ? ""
-                              : "border-danger"
-                          }`}
-                          placeholder="Enter password"
-                          onChange={handleChange}
-                          autoComplete="off"
-                        />
-                        <i
+                          <input
+                            type={regPassword}
+                            name="password"
+                            className={`form-control  ${error === "" || formData.password
+                                ? ""
+                                : "border-danger"
+                              }`}
+                            placeholder="Enter password"
+                            onChange={handleChange}
+                            autoComplete="off"
+                            minLength={8}
+                          />
+                          <i
                             onClick={Eye}
-                            className={`eye-icon fa ${
-                              eye ? "fa-eye-slash" : "fa-eye"
-                            }`}
+                            className={`eye-icon fa ${eye ? "fa-eye-slash" : "fa-eye"
+                              }`}
                           ></i>
-                         </div> 
-                         <span className="err text-danger">
+                        </div>
+                        <span className="err text-danger">
 
-                          
-                        {fieldError.password || error && formData.password == "" && (
-                          <>{error || fieldError.password}</>
-                        )}
+
+                          {fieldError.password || error && formData.password == "" && (
+                            <>{error || fieldError.password}</>
+                          )}
                         </span>
 
 
@@ -304,7 +308,7 @@ const[btnLoader,setBtnLoader] = useState(false);
                           type="submit"
                           className="btn theme-btn btn-lg btn-block spiner-btn"
                         >
-                         {btnLoader ? <Loader type="spinner-cub"  title={"Register"} size={20} />:'Register'} 
+                          {btnLoader ? <Loader type="spinner-cub" title={"Register"} size={20} /> : 'Register'}
                         </button>
 
                         <span className="optionText text-right">

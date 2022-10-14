@@ -489,6 +489,7 @@ const ProfileUpdate = () => {
                   onChange={languageHandleChange}
                   isMulti
                   value={b}
+                  className="text-capitalize"
                 />
               </div>
 

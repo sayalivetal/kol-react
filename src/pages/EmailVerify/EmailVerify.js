@@ -16,9 +16,9 @@ import Loader from "react-js-loader";
 
 const EmailVerify = () => {
   const navigate = useNavigate();
-  const { isFetching, isSuccess, isError, errorMessage} = useSelector(userSelector);
+  const { isFetching, isSuccess, isError, errorMessage,email} = useSelector(userSelector);
   // const userData = useSelector((state) => state?.user?.registerUser?.data);
-  let email = localStorage.getItem("email")
+  // let email = localStorage.getItem("email")
   console.log(email);
   const userdata = useSelector((state) => state?.user?.loginUser);
   useEffect(() => {

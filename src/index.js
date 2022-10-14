@@ -9,11 +9,17 @@ import { Provider } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 
 import { PersistGate } from "redux-persist/integration/react";
+
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory();
+
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={Store}>
     <PersistGate loading={null} persistor={persistStorage}>
-      <Router>
+      <Router history={history}>
         <App />
       </Router>
     </PersistGate>

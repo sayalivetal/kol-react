@@ -27,7 +27,7 @@ const Role = () => {
     }
   };
 
-  console.log("--------", email)
+  console.log("--------", renderButton, email)
   useEffect(() => {
     if (token) {
       navigate("/home");
@@ -39,9 +39,10 @@ const Role = () => {
     if (!role) {
       toast.error("Please select role first");
       } else if (role && email) {
-        // dispatch(updateRole({ role, email })).then((data) => {
-        //   toast.error(data.payload.msg);
-        // });
+        dispatch(updateRole({ role, email })).then((data) => {
+          
+          toast.error(data.payload.msg);
+        });
         // alert(typeof email)
       } else {
         dispatch(addRole(role));
