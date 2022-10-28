@@ -149,7 +149,7 @@ const KolListing = () => {
 
   return (
     <>
-      {console.log("------------------------------------")}
+  
       <div className="row justify-content-between border-bottom pt-3 pb-4">
         <div className="col-lg-7 d-flex filter-col">
           <select className="form-select" onChange={handleLanguageChange}>
