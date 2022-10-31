@@ -423,7 +423,7 @@ const authReducer = createSlice({
       state.isError = false;
       state.isSuccess = false;
       state.isFetching = false;
-      state.email = ""
+      // state.email = ""
       return state;
     },
   },

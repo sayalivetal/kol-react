@@ -85,6 +85,10 @@ const ChangePassword = () => {
   const handlSubmit = (e) => {
     e.preventDefault();
     setBtnLoader(true)
+    if(error.currentPassword.length > 0 || error.newPassword.length > 0 || error.confirmNewPassword.length > 0 ) {
+      setBtnLoader(false) ;
+      return; 
+    }
    
     dispatch(ChangePasswordUser(passwordValue));
     setBtnLoader(false)

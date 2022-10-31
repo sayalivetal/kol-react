@@ -78,7 +78,7 @@ const ProfileView = () => {
                 <label className="form-label">
                   <b>Langauge : </b>
                 </label>
-                <span> {kolProfile?.languages}</span>
+                <span className="text-capitalize"> {kolProfile?.languages}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">

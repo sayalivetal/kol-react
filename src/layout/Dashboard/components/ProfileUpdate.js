@@ -427,10 +427,11 @@ const ProfileUpdate = () => {
                   defaultValue={kolType ? kolType : "hgdf"}
                 >
                   <option value={kolType}>{biodata.kol_type}</option>
+                  {console.log(categoryList)}
                   {categoryList &&
                     Object.entries(categoryList).map(([key, value]) => (
                       <option key={key} value={key}>
-                        {categoryList[key] ? "select" : value}
+                        {categoryList[key] ? value  : "Select" }
                       </option>
                     ))}
                 </select>
@@ -489,6 +490,7 @@ const ProfileUpdate = () => {
                   onChange={languageHandleChange}
                   isMulti
                   value={b}
+                  className="text-capitalize"
                 />
               </div>
 

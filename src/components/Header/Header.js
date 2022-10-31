@@ -28,7 +28,7 @@ const Header = () => {
     logged_in_user,
     isSuccess,
   } = useSelector(userSelector);
-  console.log("---------------", isSuccess);
+  //console.log("---------------", isSuccess);
 
   let avatar = localStorage.getItem("avatar");
   let token = localStorage.getItem("token");
@@ -86,12 +86,14 @@ const Header = () => {
     e.preventDefault();
     dispatch(kolName(categoryType));
   };
-  console.log(logged_in_user);
+  //console.log(logged_in_user);
 
   const handleClick = () => {
     window.location.href = '/home';
   }
 
+
+  
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">
       <div className="container">
@@ -212,18 +214,22 @@ const Header = () => {
                         userDetails?.name?.split("")[0]?.toUpperCase() || "U"
                       )}
                     </div>
-                    <Dropdown className="user-dropdown">
+
+
+       
+
+
+                    <Dropdown className="user-dropdown" autoClose={true} >
                       <Dropdown.Toggle
-                        variant=""
                         className="profile-btn"
-                        id="dropdown-basic"
+                        variant=""
                       >
                         <span className="profile-btn-user">
                           {userDetails?.name}
                         </span>
                       </Dropdown.Toggle>
 
-                      <Dropdown.Menu>
+                      <Dropdown.Menu >
                         <div className="user-drop-list">
                           <div className="list-item-profile">
                             <div className="profile-user-icon">
@@ -248,10 +254,12 @@ const Header = () => {
                             </div>
                           </div>
 
-                          <Link className="list-item" to="/account">
-                            Profile
-                          </Link>
+                          
+                          <Dropdown.Item as="div">
+                            <Link className="list-item" to="/account"> Profile </Link>
+                          </Dropdown.Item>
 
+                          <Dropdown.Item as="div">
                           {role == 3 ? (
                             <>
                               <Link className="list-item" to="/bookmark">
@@ -268,12 +276,13 @@ const Header = () => {
                               </Link>
                             </>
                           )}
-                          <Link className="list-item" to="/order-details">
-                            Order History
-                          </Link>
-                          <div className="list-item" onClick={signOut}>
-                            Sign out
-                          </div>
+                          </Dropdown.Item>
+                          <Dropdown.Item as="div">
+                            <Link className="list-item" to="/order-details">Order History</Link>
+                          </Dropdown.Item>
+                          <Dropdown.Item as="div">
+                            <div className="list-item" onClick={signOut}> Sign out</div>
+                          </Dropdown.Item>
                         </div>
                       </Dropdown.Menu>
                     </Dropdown>

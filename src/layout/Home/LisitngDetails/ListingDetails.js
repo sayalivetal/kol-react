@@ -126,7 +126,7 @@ const ListingDetails = () => {
                       <div className="col-lg-12 d-flex">
                         <h5 className="text-bold">
                           Languages:{" "}
-                          <span className="text-normal">{item.languages}</span>
+                          <span className="text-normal text-capitalize">{item.languages}</span>
                         </h5>
                         <ul className="social-count-list">
                           {item.get_social_media.map((c, i) => {

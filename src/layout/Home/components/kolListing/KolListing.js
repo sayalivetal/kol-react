@@ -46,6 +46,7 @@ const KolListing = () => {
   const [kolCategory, setKolCategory] = useState("");
   const [freshposts, setFreshposts] = useState([]);
   const [bookmark, setBookmark] = useState([]);
+  const [dataLoad, setDataLoad] = useState(true);
 
   const [page, setPage] = useState(1);
   const limit = 2;
@@ -72,6 +73,11 @@ const KolListing = () => {
 
     const result = await response.json();
 
+//console.log("fsgdffffff",result);
+    if(result.statusCode==200) {
+      setDataLoad(false)
+    }
+    
     if (result.statusCode === 401) {
       localStorage.removeItem("token");
       navigate("/login");
@@ -87,8 +93,8 @@ const KolListing = () => {
     }
     // setIsFetching(false);
   };
-  console.log(language);
-  console.log(freshposts);
+ // console.log(language);
+//  console.log(freshposts);
   useEffect(() => {
     setKolName(name);
     setFreshposts([]);
@@ -146,10 +152,9 @@ const KolListing = () => {
       dispatch(kolDeleteBookmark({ profileId, token }));
     }
   };
-
+//console.log(dataLoad);
   return (
     <>
-  
       <div className="row justify-content-between border-bottom pt-3 pb-4">
         <div className="col-lg-7 d-flex filter-col">
           <select className="form-select" onChange={handleLanguageChange}>
@@ -205,140 +210,138 @@ const KolListing = () => {
           </p>
         }
       >
-        {freshposts.length > 0 ? (
-          freshposts.map((item, index) => {
-            //console.log("--------",item)
+        {dataLoad ?  ( <Loader type="spinner-cub"  title={"Loading"}  bgColor="#342951" color="#342951" size={100} /> ):
+       
+       
+       (freshposts.length > 0 ? (
+            freshposts.map((item, index) => {
+              //console.log("--------",item)
 
-            return (
-              <div
-                key={index}
-                className="row justify-content-between py-3 list-row"
-              >
-                <div className="col-lg-3 py-2">
-                  <div className="kol-user-img">
-                    <Link to={`/details/${item.profile_id}`}>
-                      <img src={`${imageUrl}${item.avatar}`} />
-                    </Link>
-                  </div>
-                </div>
-                <div className="col-lg-9 border-bottom  py-2">
-                  <div className="row justify-content-between">
-                    <div className="col-lg-8">
-                      <h3 className="text-bold">
-                        <Link
-                          className="headText"
-                          to={`/details/${item.profile_id}`}
-                        >
-                          {item.username}
-                        </Link>
-
-                        {/* <sup>
-                          <i className="bi bi-patch-check-fill heading-icon"></i>
-                        </sup> */}
-                      </h3>
-                      <p>({item.tags})</p>
+              return (
+                <div
+                  key={index}
+                  className="row justify-content-between py-3 list-row"
+                >
+                  <div className="col-lg-3 py-2">
+                    <div className="kol-user-img">
+                      <Link to={`/details/${item.profile_id}`}>
+                        <img src={`${imageUrl}${item.avatar}`} />
+                      </Link>
                     </div>
-                    <div className="col-lg-4">
-                      <p className="text-right">
-                        <i className="bi bi-geo-alt mx-1 geo-icon"></i>
-                        <span>
-                          {item.city}, {item.state},india
-                        </span>
-                        {role == 2 ? (
-                          <></>
-                        ) : (
-                          <span className="book-icon">
-                            <i
-                              className={`bi bi-bookmark mx-1 bookmark-icon ${
-                                item.bookmark ? "active" : ""
-                              }`}
-                              onClick={(e) => {
-                                handleBookmark(item.profile_id, e);
-                              }}
-                            ></i>
+                  </div>
+                  <div className="col-lg-9 border-bottom  py-2">
+                    <div className="row justify-content-between">
+                      <div className="col-lg-8">
+                        <h3 className="text-bold">
+                          <Link
+                            className="headText"
+                            to={`/details/${item.profile_id}`}
+                          >
+                            {item.username}
+                          </Link>
+
+                          {/* <sup>
+                            <i className="bi bi-patch-check-fill heading-icon"></i>
+                          </sup> */}
+                        </h3>
+                        <p>({item.tags})</p>
+                      </div>
+                      <div className="col-lg-4">
+                        <p className="text-right">
+                          <i className="bi bi-geo-alt mx-1 geo-icon"></i>
+                          <span>
+                            {item.city}, {item.state},india
                           </span>
-                        )}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="row py-1">
-                    <div className="col-lg-12 d-flex">
-                      <h5 className="text-bold">
-                        Languages:
-                        <span className="text-normal"> {item.languages}</span>
-                      </h5>
-
-                      <ul className="social-count-list">
-                        <li className="">
-                          <span></span>
-                          <i className={`${item.social_active_icon}`}></i>
-                          {/* {item.SocialMedia.filter((socItem, index)=>{
-                                 if (socItem.social_platform == item.social_active){
-                                  return <span>{socItem?.followers}</span>
-                                 }
-                               })} */}
-
-                          {/* {socialMediaIcon && socialMediaIcon.map((c,i)=>{
-                                return <span>{c.followers}</span>
-                              })} */}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="row py-1">
-                    <div className="col-lg-12">
-                      <h5 className="text-bold">Bio</h5>
-                      <div className="kol-bio">
-                        <p>{item.bio}</p>
+                          {role == 2 ? (
+                            <></>
+                          ) : (
+                            <span className="book-icon">
+                              <i
+                                className={`bi bi-bookmark mx-1 bookmark-icon ${
+                                  item.bookmark ? "active" : ""
+                                }`}
+                                onClick={(e) => {
+                                  handleBookmark(item.profile_id, e);
+                                }}
+                              ></i>
+                            </span>
+                          )}
+                        </p>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="row py-1">
-                    {/* <div className="col-lg-4 align-items-center d-flex">
-                      <div className="more-button">
-                        <Link to={`/details/${item.profile_id}`}>
-                          Show More Detail
-                        </Link>
-                        Mostly Active user
-                        {item.social_active}
+                    <div className="row py-1">
+                      <div className="col-lg-12 d-flex">
+                        <h5 className="text-bold">
+                          Languages:
+                          <span className="text-normal text-capitalize"> {item.languages}</span>
+                        </h5>
+
+                        <ul className="social-count-list">
+                          <li className="">
+                            <span></span>
+                            <i className={`${item.social_active_icon}`}></i>
+                            {/* {item.SocialMedia.filter((socItem, index)=>{
+                                  if (socItem.social_platform == item.social_active){
+                                    return <span>{socItem?.followers}</span>
+                                  }
+                                })} */}
+
+                            {/* {socialMediaIcon && socialMediaIcon.map((c,i)=>{
+                                  return <span>{c.followers}</span>
+                                })} */}
+                          </li>
+                        </ul>
                       </div>
-                    </div> */}
-                    {role == 2 ? (
-                      <></>
-                    ) : (
-                      <div className="col-lg-12 ">
-                        <Link to={`/chat/${item.user_id}`}>
-                          <button className="ml-auto btn theme-btn mb-4">
-                            <span className="mx-2">
-                              <i className="bi bi-chat-dots"></i>
-                            </span>{" "}
-                            Chat with me
-                          </button>
-                        </Link>
+                    </div>
+
+                    <div className="row py-1">
+                      <div className="col-lg-12">
+                        <h5 className="text-bold">Bio</h5>
+                        <div className="kol-bio">
+                          <p>{item.bio}</p>
+                        </div>
                       </div>
-                    )}
+                    </div>
+
+                    <div className="row py-1">
+                      {/* <div className="col-lg-4 align-items-center d-flex">
+                        <div className="more-button">
+                          <Link to={`/details/${item.profile_id}`}>
+                            Show More Detail
+                          </Link>
+                          Mostly Active user
+                          {item.social_active}
+                        </div>
+                      </div> */}
+                      {role == 2 ? (
+                        <></>
+                      ) : (
+                        <div className="col-lg-12 ">
+                          <div onClick={()=> navigate(`/chat/${item.user_id}`)}>
+                            <button className="ml-auto btn theme-btn mb-4">
+                              <span className="mx-2">
+                                <i className="bi bi-chat-dots"></i>
+                              </span>{" "}
+                              Chat with me
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
+              );
+            })
+          ) : (
+            <>
+              <div className="col-12 text-center p-5 bg-light my-3 ">
+                <h2 className="p-5">Nothing Found, try Searching again.</h2>
               </div>
-            );
-          })
-        ) : (
-          <>
-            <div className="col-12 text-center p-5 bg-light my-3 ">
-              {/* <h2 className="p-5">Nothing Found, try Searching again.</h2> */}
-              <Loader
-                type="spinner-cub"
-                title={"Loading"}
-                bgColor="#342951"
-                color="#342951"
-                size={100}
-              />
-            </div>
-          </>
-        )}
+            </>
+          ))
+      }
+
       </InfiniteScroll>
     </>
   );

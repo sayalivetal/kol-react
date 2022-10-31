@@ -76,28 +76,25 @@ const ForgotPassword = () => {
           break;
 
         case "newPassword":
+          console.log("asjdflksjfk", value.length)
           if (!value) {
             stateObj[name] = "Please enter new Password.";
-          } else if (
-            passwordValue.confirmNewPassword &&
-            value !== passwordValue.confirmNewPassword
-          ) {
-            stateObj["confirmNewPassword"] =
-              "Password and Confirm Password does not match.";
-          } else {
-            stateObj["confirmNewPassword"] = passwordValue.confirmNewPassword
-              ? ""
-              : error.confirmNewPassword;
+          } 
+          // else if (passwordValue.confirmNewPassword && value !== passwordValue.confirmNewPassword ) {
+          //   stateObj["confirmNewPassword"] = "Password and Confirm Password does not match.";
+          // } 
+          else if (value.length < 8) {
+            stateObj[name] = "Password must be atleast 8 characters";
+          }
+          else {
+            stateObj["confirmNewPassword"] = passwordValue.confirmNewPassword ? "" : error.confirmNewPassword;
           }
           break;
 
         case "confirmNewPassword":
           if (!value) {
             stateObj[name] = "Please enter Confirm Password.";
-          } else if (
-            passwordValue.newPassword &&
-            value !== passwordValue.newPassword
-          ) {
+          } else if (passwordValue.newPassword && value !== passwordValue.newPassword) {
             stateObj[name] = "Password and Confirm Password does not match.";
           }
           break;
@@ -113,6 +110,10 @@ const ForgotPassword = () => {
  
     e.preventDefault();
     setBtnLoader(true);
+    if(error.newPassword.length > 0 || error.confirmNewPassword.length > 0 || error.otp.length > 0 ) {
+      setBtnLoader(false) ;
+      return; 
+    }
     if (passwordValue.email == "" || passwordValue.otp == "" || passwordValue.newPassword == "" || passwordValue.confirmNewPassword == "") {
       setErrorSubmit("Please Fill this Field");
       setBtnLoader(false);

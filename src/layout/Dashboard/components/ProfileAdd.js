@@ -349,6 +349,7 @@ const ProfileAdd = () => {
                   onChange={handleChange}
                 >
                   <option defaultValue>Select Type</option>
+                  {console.log(categoryList)}
                   {categoryList &&
                     Object.entries(categoryList).map(([key, value]) => (
                       <option key={key} value={value}>
@@ -404,7 +405,7 @@ const ProfileAdd = () => {
                   <b>Language</b>
                 </label>
 
-                <Select options={a} onChange={languageHandleChange} isMulti />
+                <Select className="text-capitalize" options={a} onChange={languageHandleChange} isMulti />
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">

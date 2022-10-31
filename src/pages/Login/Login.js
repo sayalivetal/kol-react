@@ -18,8 +18,8 @@ import "./Login.css";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isFetching, isSuccess, statusCode, isError, errorMessage } =
-    useSelector(userSelector);
+  // const { isFetching, isSuccess, statusCode, isError, errorMessage } =
+  //   useSelector(userSelector);
   const [eye, seteye] = useState(true);
   const [type, settype] = useState(false);
   const [error, setError] = useState("");
@@ -41,11 +41,11 @@ const Login = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (errorMessage == "Please choose roles!") {
-      navigate("/role");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (errorMessage == "Please choose roles!") {
+  //     navigate("/role");
+  //   }
+  // }, []);
   const [password, setpassword] = useState("password");
 
   const [fieldError, setfieldError] = useState({
@@ -54,7 +54,7 @@ const Login = () => {
   });
 
   function isValidEmail(email) {
-    return /\S+@\S+\.\S+/.test(email);
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
   }
 
   const handleChange = (e) => {
@@ -76,9 +76,9 @@ const Login = () => {
       switch (name) {
         case "email":
           if (!value) {
-            stateObj[name] = "Please enter email id";
+            stateObj[name] = "Please enter email";
           }else if (!isValidEmail(value)){
-            stateObj[name] = "Please enter correct email id";
+            stateObj[name] = "Please enter correct email";
           }
           break;
           case "password":
@@ -98,6 +98,10 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setBtnLoader(true)
+    if ( fieldError.email.length > 0 || fieldError.password.length > 0) {
+      setBtnLoader(false)
+      return;
+    }
     if (loginData.email == "" || loginData.password == "") {
       setError("Please fill the mandatory filed");
       setStatus(true);
@@ -157,6 +161,11 @@ const Login = () => {
   useEffect(() => {
     if (!firebaseUser.token) return;
     dispatch(loginWithGoogle(firebaseUser)).then((data) => {
+      console.log(data);
+      if(data.payload.statusCode === 201){
+        // toast.error(data.payload.message)
+        navigate('/role')
+      }
       if (data?.payload?.data?.token) {
         toast.success(data.payload.message);
         navigate("/home");
@@ -169,8 +178,8 @@ const Login = () => {
 
   return (
     <div className="main-div">
-      <section>
-        <div className="container">
+      <section className="container d-flex flex-wrap justify-content-center align-items-center">
+        <div className=" login-container">
           <div className="card login-card">
             <div className="card-body login-card-body">
               <div className="row">
@@ -206,6 +215,7 @@ const Login = () => {
                           placeholder="Enter email"
                           name="email"
                           onChange={handleChange}
+                          // autoComplete="off"
                         />
                         <span className="err text-danger">
                         {fieldError.email || error && loginData.email == "" && (
@@ -230,6 +240,7 @@ const Login = () => {
                             placeholder="Enter password"
                             name="password"
                             onChange={handleChange}
+                            autoComplete="off"
                           />
 
                           <i
