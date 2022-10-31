@@ -75,7 +75,7 @@ const Register = () => {
   };
 
   function isValidEmail(email) {
-    return /\S+@\S+\.\S+/.test(email);
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);;
   }
 
   //function for handleChange
@@ -127,7 +127,11 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setBtnLoader(true)
-    if (formData.name == "" || formData.email == "" || formData.password == "") {
+    if (fieldError.name.length > 0 || fieldError.email.length > 0 || fieldError.password.length > 0 ){ 
+      setBtnLoader(false)
+      return;
+    }
+    if (formData.name == "" || formData.email == "" || formData.password == "" ) {
       setError("Please fill the mandatory filed");
       setStatus(true);
       setBtnLoader(false)
@@ -204,8 +208,8 @@ const Register = () => {
 
   return (
     <div className="main-div">
-      <section>
-        <div className="container reg-container">
+      <section className="container d-flex flex-wrap justify-content-center align-items-center">
+        <div className=" reg-container">
           <div className="card register-card">
             <div className="card-body register-card-body">
               <div className="row">
@@ -285,7 +289,7 @@ const Register = () => {
                             placeholder="Enter password"
                             onChange={handleChange}
                             autoComplete="off"
-                            minLength={8}
+                            // minLength={8}
                           />
                           <i
                             onClick={Eye}
@@ -294,8 +298,6 @@ const Register = () => {
                           ></i>
                         </div>
                         <span className="err text-danger">
-
-
                           {fieldError.password || error && formData.password == "" && (
                             <>{error || fieldError.password}</>
                           )}

@@ -319,14 +319,14 @@ const KolListing = () => {
                         <></>
                       ) : (
                         <div className="col-lg-12 ">
-                          <Link to={`/chat/${item.user_id}`}>
+                          <div onClick={()=> navigate(`/chat/${item.user_id}`)}>
                             <button className="ml-auto btn theme-btn mb-4">
                               <span className="mx-2">
                                 <i className="bi bi-chat-dots"></i>
                               </span>{" "}
                               Chat with me
                             </button>
-                          </Link>
+                          </div>
                         </div>
                       )}
                     </div>

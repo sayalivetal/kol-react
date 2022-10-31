@@ -349,6 +349,7 @@ const ProfileAdd = () => {
                   onChange={handleChange}
                 >
                   <option defaultValue>Select Type</option>
+                  {console.log(categoryList)}
                   {categoryList &&
                     Object.entries(categoryList).map(([key, value]) => (
                       <option key={key} value={value}>

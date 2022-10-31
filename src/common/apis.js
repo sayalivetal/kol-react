@@ -2,8 +2,8 @@
 // export const API = "http://kol.bootesnull.com/api";
 // export const imageUrl = "http://kol.bootesnull.com";
 
-export const API = 'https://4220-203-145-168-10.in.ngrok.io/api';
-export const imageUrl = 'https://4220-203-145-168-10.in.ngrok.io';
+export const API = 'https://0d8f-203-145-168-10.in.ngrok.io/api';
+export const imageUrl = 'https://0d8f-203-145-168-10.in.ngrok.io';
 
 
 

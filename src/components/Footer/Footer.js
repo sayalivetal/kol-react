@@ -58,7 +58,7 @@ const Footer = () => {
                 <h5 className="footer-menu-head">CONTACT US</h5>
                   <ul className="footer-menu">
                     <li>Address : Painted Auto Body parts 2525 Unlimited Lane Elk Grove Village, IL 60007</li>
-                    <li>Mobnday through Friday :<br /> 8am-5pm CST</li>
+                    <li>Monday through Friday :<br /> 8am-5pm CST</li>
                     <li>Email: test@test.com</li>
                     <li>Phone: (+65) 66653 8060</li>
                   </ul>
@@ -69,7 +69,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-cp">
-        <div className="container cp-text">Copyright &copy; 2010-2022 KOL Company S.L. All rights reserved.</div>
+        <div className="container cp-text">Copyright &copy; 2010-2022 Bootesnull All rights reserved.</div>
       </div>
     </footer>
   );
