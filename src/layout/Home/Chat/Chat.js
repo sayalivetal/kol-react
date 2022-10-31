@@ -8,19 +8,20 @@ import Conversation from "./components/Conversation";
 import ContactDealer from "./components/ContactDealer";
 const Chat = () => {
   let navigate = useNavigate();
-  // const onBackButtonEvent = (e) => {
-  //   navigate("/home");
-  // };
-
-  // useEffect(() => {
-  //   window.history.pushState(null, null, window.location.pathname);
-  //   window.addEventListener("popstate", onBackButtonEvent);
-  //   return () => {
-  //     window.removeEventListener("popstate", onBackButtonEvent);
-  //   };
-  // }, []);
-
   const { id } = useParams();
+  const [finishStatus, setFinishStatus] = useState(false);
+  const onBackButtonEvent = (e) => {
+    navigate(-1);
+  };
+
+  useEffect(() => {
+    window.history.pushState(null, null, window.location.pathname);
+    window.addEventListener("popstate", onBackButtonEvent);
+    return () => {
+      window.removeEventListener("popstate", onBackButtonEvent);
+    };
+  }, [id]);
+
 
   return (
     <div className="container">
