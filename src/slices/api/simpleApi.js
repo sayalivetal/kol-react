@@ -276,3 +276,19 @@ export const getKolOrderHistory = async (callback, token) => {
 }
 
 
+// landing page banner list
+export const getDashboardBannerList = async (callback) => {
+  const response = await fetch(`${API}/dashboard/banner-list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  console.log(result)
+  
+  callback(result?.banners)
+}
+
+

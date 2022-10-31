@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import Loader from "react-js-loader";
 import KolPromotingSlider from "../../components/KolPromotingSlider/KolPromotingSlider";
 import Banner from "../../components/Banner/Banner";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { API } from "../../common/apis";
+import { createHelpForm } from "../../slices/AuthSlice/AuthSlice";
+import { getDashboardBannerList } from "../../slices/api/simpleApi";
 import { toast } from "react-toastify";
 import ReactPlayer from "react-player";
 
@@ -15,13 +19,15 @@ const LandingPage = () => {
   const [howItWorkVideo, setHowItWorkVideo] = useState([]);
   const [features, setFeatures] = useState([]);
   const [faqsList, setFaqsList] = useState([]);
+  const dispatch = useDispatch();
+  const [btnLoader, setBtnLoader] = useState(false);
 
   const [contactUsData, setContactUsData] = useState({
     first_name: "",
     last_name: "",
     email: "",
     mobile: "",
-    message: "",
+    messsage: "",
   });
 
   let token = localStorage.getItem("token");
@@ -29,14 +35,14 @@ const LandingPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${API}/dashboard/banner-list`, {
-        method: "GET",
+      // const response = await fetch(`${API}/dashboard/banner-list`, {
+      //   method: "GET",
       
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }).then((response) => response.json());
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: "application/json",
+      //   },
+      // }).then((response) => response.json());
 
       //Start of totalCounts API
       const totalCounts = await fetch(`${API}/dashboard/get-total-count`, {
@@ -92,42 +98,56 @@ const LandingPage = () => {
       //Start of Faq API
       const faqs = await fetch(`${API}/dashboard/faq-list`, {
         method: "GET",
-      
       }).then((faqs) => faqs.json());
       //End of FAQ Api
 
-      setBannerList(response.banners);
+      // setBannerList(response.banners);
       setTotalUsers(totalCounts.InformativeVideos);
       setKolVideoLists(videoLists.InformativeVideos);
       setFeatures(featuredList.kolProfiles);
       setHowItWorkVideo(videoHowKolWorks.InformativeVideos);
-       setFaqsList(faqs.banners);
+      setFaqsList(faqs.banners);
     };
 
     fetchData();
   },[]);
 
+
+
+  useEffect(() => {
+    const callback = (data) => {
+      setBannerList([ ...data ]);
+      //console.log("----------",data);
+    };
+    getDashboardBannerList(callback);
+  }, []);
+
+  //console.log("*****", bannerList)
+
+
   //console.log('faqsList123',faqsList);
+
+  const handleChange = (e) => {
+    setContactUsData((prevState) => { 
+      return {...prevState, [e.target.name]: e.target.value }
+    });
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const contactUsResponse = fetch(`${API}/dashboard/contactUs`, {
-      method: "POST",
-      body: JSON.stringify(contactUsData),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }).then(toast.success("Contact Us form submitted successfully"));
+    setBtnLoader(true)
+    // console.log("---------",contactUsData)
+    dispatch(createHelpForm(contactUsData)).then((data)=>{
+        if(data?.payload?.statusCode == 201){
+          toast.success(data?.payload?.message);
+          setBtnLoader(false)
+        }else{
+          toast.error(data?.payload?.message);
+          setBtnLoader(false)
+        }
+    });  
   };
 
-  const handleChange = (e) => {
-    setContactUsData({ ...contactUsData, [e.target.name]: e.target.value });
-   
-    return false;
-  };
 
   return (
     <>
@@ -259,13 +279,15 @@ const LandingPage = () => {
                               type="text"
                               className="form-control"
                               onChange={handleChange}
-                              name="message"
+                              name="messsage"
                               placeholder=""
                               rows="3"
                             ></textarea>
                           </div>
                           <div className="col-lg-12 mb-2 text-center">
-                            <button type="submit" className="btn theme-btn send-btn">Send Message</button>
+                            <button type="submit" className="btn theme-btn send-btn spiner-btn">
+                              {btnLoader ? <Loader type="spinner-cub" title={"Send Message"} size={20} /> : 'Send Message'}
+                            </button>
                           </div>
                         </form>
                       </div>
