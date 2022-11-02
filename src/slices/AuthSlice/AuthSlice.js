@@ -234,13 +234,13 @@ export const LoginUser = createAsyncThunk(
       });
       let data = await response.json();
       console.log(data);
-      if (data.statusCode === 200) {
+      if (data) {
         if (data?.data?.token) {
           localStorage.setItem("token", data.data.token);
           localStorage.setItem("role", data.data.role_id);
           //localStorage.setItem("email", data.data.email);
         }
-        return { ...data };
+        return data ;
       } else { 
         return thunkAPI.rejectWithValue(data);
       }

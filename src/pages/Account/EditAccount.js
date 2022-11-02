@@ -105,7 +105,7 @@ const EditAccount = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(firstName && lastName && phone && gender && address &&city && zip && state && country && avatar){
+    if(firstName && lastName && phone && gender && address &&city && zip && state && country){
       if(phone.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/) && 
       zip.match(/(^\d{6}$)|(^\d{6}-\d{6}$)/)){
     dispatch(UpdateUserProfile(userData)).then((data) => {
@@ -267,6 +267,9 @@ const EditAccount = () => {
                           </label>
                         </div>
                       </div>
+                      <span className="err text-danger">
+                        {!gender && fieldError}
+                        </span>
                     </div>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">

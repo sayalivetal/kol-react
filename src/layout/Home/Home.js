@@ -23,12 +23,12 @@ const Home = () => {
   // }, [token]);
   const { username, email } = useSelector(userSelector);
  
-  useEffect(() => {
-    if (isError) {
-      dispatch(clearState());
-      navigate("/login");
-    }
-  }, [isError]);
+  // useEffect(() => {
+  //   if (isError) {
+  //     dispatch(clearState());
+  //     navigate("/login");
+  //   }
+  // }, [isError]);
 
   return (
     <>
