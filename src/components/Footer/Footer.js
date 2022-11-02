@@ -69,7 +69,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-cp">
-        <div className="container cp-text">Copyright &copy; 2010-2022 Bootesnull All rights reserved.</div>
+        <div className="container cp-text">Copyright &copy; 2010-2022 KOL Company S.L. All rights reserved.</div>
       </div>
     </footer>
   );
