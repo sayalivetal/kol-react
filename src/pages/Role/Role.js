@@ -17,7 +17,7 @@ const Role = () => {
   const [renderButton, setRenderButton] = useState("");
   const [role, setUserRole] = useState("");
 
-  let token = localStorage.getItem("token");
+  // let token = localStorage.getItem("token");
   const onChangeValue = (e) => {
     setUserRole(e.target.value);
     if (e.target.value === "3") {
@@ -28,11 +28,11 @@ const Role = () => {
   };
 
   console.log("--------", renderButton, email)
-  useEffect(() => {
-    if (token) {
-      navigate("/home");
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     navigate("/home");
+  //   }
+  // }, [token]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,7 +40,7 @@ const Role = () => {
       toast.error("Please select role first");
       } else if (role && email) {
         dispatch(updateRole({ role, email })).then((data) => {
-      
+      console.log(data)
           if(data?.payload?.data?.token){
             toast.success(data.payload.message)
             navigate('/home')

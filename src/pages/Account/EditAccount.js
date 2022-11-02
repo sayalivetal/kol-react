@@ -5,6 +5,8 @@ import { UpdateUserProfile ,UpdateProfileImage} from "../../slices/AuthSlice/Aut
 import { useDispatch } from "react-redux";
 import { imageUrl } from "../../common/apis";
 import { toast } from "react-toastify";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 
 const EditAccount = () => {
@@ -12,6 +14,11 @@ const EditAccount = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedFile,setSelectedFile] = useState(null)
+  const [fieldError,setfieldError] = useState(null)
+  const [formError,setFormError] = useState({
+    phoneError : "",
+    zipError : ""
+  })
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -23,8 +30,9 @@ const EditAccount = () => {
     zip: "",
     state: "",
     country: "",
-   avatar: "",
+    avatar: "",
   });
+  let {firstName, lastName,phone,gender,address,landmark,city,zip,state,country,avatar} = userData
   let token = localStorage.getItem("token");
   useEffect(() => {
     const callback = (data) => {
@@ -47,14 +55,60 @@ const EditAccount = () => {
     };
     getUserDetails(callback, token);
   }, []);
-
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
+    if(e.target.name == "phone" && e.target.value.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)){
+      setFormError(state => {
+        return{
+          ...state,
+          phoneError : ""
+        }
+      })
+    }else if (e.target.name == "phone" && e.target.value.length == 0){
+      setFormError(state => {
+        return{
+          ...state,
+          phoneError : ""
+        }
+      })
+    }else if (e.target.name == "phone"){
+      setFormError(state => {
+        return{
+          ...state,
+          phoneError : "please check your phone"
+        }
+      })
+    }
+    if(e.target.name == "zip" && e.target.value.match(/(^\d{6}$)|(^\d{6}-\d{6}$)/)){
+      setFormError(state => {
+        return{
+          ...state,
+          zipError : ""
+        }
+      })
+    }else if (e.target.name == "zip" && e.target.value.length == 0){
+      setFormError(state => {
+        return{
+          ...state,
+          zipError : ""
+        }
+      })
+    }else if (e.target.name == "zip"){
+      setFormError(state => {
+        return{
+          ...state,
+          zipError : "please check your zip code"
+        }
+      })
+    }
   };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(firstName && lastName && phone && gender && address &&city && zip && state && country){
+      if(phone.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/) && 
+      zip.match(/(^\d{6}$)|(^\d{6}-\d{6}$)/)){
     dispatch(UpdateUserProfile(userData)).then((data) => {
-    
       if (data?.payload?.statusCode === 202) {
         toast.success(data?.payload?.message)
         navigate("/account");
@@ -63,7 +117,12 @@ const EditAccount = () => {
         toast.error(data?.payload?.message)
       }
     });
+  }
+    }else{
+      setfieldError("Please fill the mandatory filed")
+    }
   };
+
   const onFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
 
@@ -90,7 +149,6 @@ const EditAccount = () => {
       }
     })
   };
-
 
   return (
     <div>
@@ -128,12 +186,15 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${(!firstName && fieldError)? "border-danger": ""}`}
                           placeholder="Enter First name"
                           name="firstName"
-                          defaultValue={userData.firstName}
+                          value={userData.firstName}
                           onChange={handleChange}
                         />
+                        <span className="err text-danger">
+                        {!firstName && fieldError}
+                        </span> 
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -143,12 +204,15 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${(!lastName && fieldError)? "border-danger": ""}`}
                           placeholder="Enter Last name"
                           name="lastName"
-                          defaultValue={userData.lastName}
+                          value={userData.lastName}
                           onChange={handleChange}
                         />
+                        <span className="err text-danger">
+                        {!lastName && fieldError}
+                        </span>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -158,12 +222,15 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className="form-control"
-                          placeholder="Emter Mobile number"
+                          className={`form-control ${((!phone && fieldError) || formError.phoneError)? "border-danger": ""}`}
+                          placeholder="Enter Mobile number"
                           name="phone"
-                          defaultValue={userData.phone}
+                          value={userData.phone}
                           onChange={handleChange}
                         />
+                        <span className="err text-danger">
+                        {(!phone && fieldError) || formError.phoneError}
+                        </span>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -200,6 +267,9 @@ const EditAccount = () => {
                           </label>
                         </div>
                       </div>
+                      <span className="err text-danger">
+                        {!gender && fieldError}
+                        </span>
                     </div>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
@@ -208,12 +278,15 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${(!address && fieldError)? "border-danger": ""}`}
                           placeholder="Enter Address"
                           name="address"
                           onChange={handleChange}
-                          defaultValue={userData?.address}
+                          value={userData?.address}
                         />
+                        <span className="err text-danger">
+                        {!address && fieldError}
+                        </span>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -226,7 +299,7 @@ const EditAccount = () => {
                           className="form-control"
                           placeholder="Enter Landmark"
                           name="landmark"
-                          defaultValue={userData?.landmark}
+                          value={userData?.landmark}
                           onChange={handleChange}
                         />
                       </div>
@@ -238,12 +311,15 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${(!city && fieldError)? "border-danger": ""}`}
                           placeholder="Enter city"
                           name="city"
-                          defaultValue={userData?.city}
+                          value={userData?.city}
                           onChange={handleChange}
                         />
+                        <span className="err text-danger">
+                        {!city && fieldError}
+                        </span>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -253,12 +329,15 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${(!state && fieldError)? "border-danger": ""}`}
                           placeholder="Enter State"
                           name="state"
-                          defaultValue={userData?.state}
+                          value={userData?.state}
                           onChange={handleChange}
                         />
+                        <span className="err text-danger">
+                        {!state && fieldError}
+                        </span>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -268,12 +347,15 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${(!country && fieldError)? "border-danger": ""}`}
                           placeholder="Enter Country"
                           name="country"
-                          defaultValue={userData?.country}
+                          value={userData?.country}
                           onChange={handleChange}
                         />
+                        <span className="err text-danger">
+                        {!country && fieldError}
+                        </span>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -283,12 +365,15 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${((!zip && fieldError) || formError.zipError)? "border-danger": ""}`}
                           placeholder="Enter Zip code"
                           name="zip"
-                          defaultValue={userData?.zip}
+                          value={userData?.zip}
                           onChange={handleChange}
                         />
+                        <span className="err text-danger">
+                        {(!zip && fieldError) || formError.zipError}
+                        </span>
                       </div>
                     </div>
                     <div className="row ">
@@ -299,7 +384,7 @@ const EditAccount = () => {
                         <button type="button" className="btn btn-default" onClick={()=> navigate("/account")}>
                           View Profile
                         </button>
-                      </div>
+                       </div>
                     </div>
                   </form>
                 </div>
