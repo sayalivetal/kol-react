@@ -42,6 +42,7 @@ const Register = () => {
     email: "",
     password: "",
   })
+  const [btnLoader, setBtnLoader] = useState(false);
 
   const [regPassword, setRegPassword] = useState("password");
   const [eye, seteye] = useState(true);
@@ -122,7 +123,7 @@ const Register = () => {
     });
   };
 
-  const [btnLoader, setBtnLoader] = useState(false);
+ 
   //function for handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();

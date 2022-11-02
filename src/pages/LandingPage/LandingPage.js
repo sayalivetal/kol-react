@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import Loader from "react-js-loader";
 import KolPromotingSlider from "../../components/KolPromotingSlider/KolPromotingSlider";
 import Banner from "../../components/Banner/Banner";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import { API } from "../../common/apis";
+import { createHelpForm } from "../../slices/AuthSlice/AuthSlice";
+import { getDashboardBannerList, getfeaturedList, getfaqList, getHowItWorkVideoList, getfeatVideoList, getTotalCounts } from "../../slices/api/simpleApi";
 import { toast } from "react-toastify";
 import ReactPlayer from "react-player";
 
@@ -15,119 +19,168 @@ const LandingPage = () => {
   const [howItWorkVideo, setHowItWorkVideo] = useState([]);
   const [features, setFeatures] = useState([]);
   const [faqsList, setFaqsList] = useState([]);
+  const dispatch = useDispatch();
+  const [btnLoader, setBtnLoader] = useState(false);
 
-  const [contactUsData, setContactUsData] = useState({
+  const [contactForm, setContactForm] = useState({
     first_name: "",
     last_name: "",
     email: "",
     mobile: "",
-    message: "",
+    messsage: "",
   });
+
+  const [fieldError, setfieldError] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    mobile: "",
+    messsage: "",
+  })
+
+  const [error, setError] = useState("");
 
   let token = localStorage.getItem("token");
  
-
+// banner list api
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`${API}/dashboard/banner-list`, {
-        method: "GET",
-      
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      }).then((response) => response.json());
-
-      //Start of totalCounts API
-      const totalCounts = await fetch(`${API}/dashboard/get-total-count`, {
-        method: "GET",
-       
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }).then((totalCounts) => totalCounts.json());
-      //End of totalCounts API
-
-      ////Start of VideosList API
-      const videoLists = await fetch(`${API}/dashboard/information-list`, {
-        method: "GET",
-      
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          //Authorization: "Bearer " + token,
-        },
-      }).then((videoLists) => videoLists.json());
-      //End of VideosList API
-
-      //Start Featured List API
-      const featuredList = await fetch(`${API}/kol-profile/featured-list`, {
-        method: "GET",
-       
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          //Authorization: "Bearer " + token,
-        },
-      }).then((featuredList) => featuredList.json());
-     // console.log(featuredList)
-      //End Featured List API
-
-      //Start How KOL Works API
-      const videoHowKolWorks = await fetch(`${API}/dashboard/information-list`, {
-        method: "GET",
-    
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          //Authorization: "Bearer " + token,
-        },
-      }).then((videoHowKolWorks) => videoHowKolWorks.json());
-     // console.log(videoHowKolWorks.InformativeVideos)
-      //Ends How KOL Works API
-
-
-      //Start of Faq API
-      const faqs = await fetch(`${API}/dashboard/faq-list`, {
-        method: "GET",
-      
-      }).then((faqs) => faqs.json());
-      //End of FAQ Api
-
-      setBannerList(response.banners);
-      setTotalUsers(totalCounts.InformativeVideos);
-      setKolVideoLists(videoLists.InformativeVideos);
-      setFeatures(featuredList.kolProfiles);
-      setHowItWorkVideo(videoHowKolWorks.InformativeVideos);
-       setFaqsList(faqs.banners);
+    const callback = (data) => {
+      setBannerList([ ...data ]);
+      //console.log("----------",data);
     };
+    getDashboardBannerList(callback);
+  }, []);
 
-    fetchData();
-  },[]);
+// featured list api
+  useEffect(() => {
+    const callback = (data) => {
+      setFeatures([ ...data ]);
+      //console.log("----------",data);
+    };
+    getfeaturedList(callback);
+  }, []);
 
-  //console.log('faqsList123',faqsList);
+// informative videos list api
+  useEffect(() => {
+    const callback = (data) => {
+      setKolVideoLists([ ...data ]);
+      //console.log("----------",data);
+    };
+    getfeatVideoList(callback);
+  }, []);
+
+
+// how it works video list api
+  useEffect(() => {
+    const callback = (data) => {
+      setHowItWorkVideo([ ...data ]);
+      //console.log("----------",data);
+    };
+    getHowItWorkVideoList(callback);
+  }, []);
+
+  // users count api
+  useEffect(() => {
+    const callback = (data) => {
+      setTotalUsers([ ...data ]);
+      //console.log("----------",data);
+    };
+    getTotalCounts(callback);
+  }, []);
+
+// faq list api
+  useEffect(() => {
+    const callback = (data) => {
+      setFaqsList([ ...data ]);
+      //console.log("----------",data);
+    };
+    getfaqList(callback);
+  }, []);  
+
+// validate email regex
+  function isValidEmail(email) {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);;
+  }
+  function isValidNum(mobNum) {
+    return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(mobNum);;
+  }
+  
+
+  const validateInput = (e) => {
+    let { name, value } = e.target;
+    setfieldError((prev) => {
+    const stateObj = { ...prev, [name]: "" };
+      switch (name) {
+        case "first_name":
+          if (!value) {
+          stateObj[name] = "Please enter First name";
+          }
+        break;
+        case "last_name":
+          if (!value) {
+          stateObj[name] = "Please enter Last name";
+          }
+        break;
+        case "email":
+          if (!value) {
+          stateObj[name] = "Please enter email";
+          }
+          else if (!isValidEmail(value)) {
+          stateObj[name] = "Please enter correct email";
+          }
+        break;
+        case "mobile":
+          if (!value) {
+          stateObj[name] = "Please enter mobile no.";
+          }
+          else if (!isValidNum(value)) {
+          stateObj[name] = "Please enter digit only.";
+          }
+        break;
+        case "messsage":
+          if (!value) {
+          stateObj[name] = "Please enter message";
+          }
+        break;
+        default:
+        break;
+      }
+       return stateObj;
+    });
+  };
+
+// How can we help You? form 
+  const handleChange = (e) => {
+    setContactForm((prevState) => { 
+      return {...prevState, [e.target.name]: e.target.value }
+    });
+    validateInput(e);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const contactUsResponse = fetch(`${API}/dashboard/contactUs`, {
-      method: "POST",
-      body: JSON.stringify(contactUsData),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }).then(toast.success("Contact Us form submitted successfully"));
+    setBtnLoader(true)
+    if (fieldError.first_name.length > 0 || fieldError.last_name.length > 0 || fieldError.email.length > 0 || fieldError.mobile.length > 0 || fieldError.messsage.length > 0 ) { 
+      setBtnLoader(false)
+      return;
+    }
+    if (contactForm.first_name == "" || contactForm.last_name == "" || contactForm.email == "" || contactForm.mobile == "" || contactForm.messsage == ""){
+      setError("Please fill the mandatory filed");
+      setBtnLoader(false)
+    }else{
+      // console.log("---------",contactForm)
+        dispatch(createHelpForm(contactForm)).then((data)=>{
+          if(data?.payload?.statusCode == 201){
+            toast.success(data?.payload?.message);
+            setBtnLoader(false)
+          }else{
+            toast.error(data?.payload?.message);
+            setBtnLoader(false)
+          }
+      });  
+    }
   };
 
-  const handleChange = (e) => {
-    setContactUsData({ ...contactUsData, [e.target.name]: e.target.value });
-   
-    return false;
-  };
 
   return (
     <>
@@ -216,56 +269,84 @@ const LandingPage = () => {
                             <label className="form-label">First Name *</label>
                             <input
                               type="text"
-                              className="form-control"
+                              className={`form-control ${error === "" || contactForm.first_name ? "" : "border-danger" }`}
                               onChange={handleChange}
                               name="first_name"
                               placeholder=""
                             />
+                            <span className="err text-danger">
+                              {fieldError.first_name ||  error && contactForm.first_name == "" && (
+                                <>{error || fieldError.first_name}</>
+                              )}
+                            </span>
                           </div>
                           <div className="col-lg-6 mb-3">
                             <label className="form-label">Last Name *</label>
                             <input
                               type="text"
-                              className="form-control"
+                              className={`form-control ${error === "" || contactForm.last_name ? "" : "border-danger" }`}
                               onChange={handleChange}
                               name="last_name"
                               placeholder=""
                             />
+                            <span className="err text-danger">
+                              {fieldError.last_name ||  error && contactForm.last_name == "" && (
+                                <>{error || fieldError.last_name}</>
+                              )}
+                            </span>
                           </div>
 
                           <div className="col-lg-6 mb-3">
                             <label className="form-label">Email *</label>
                             <input
                               type="text"
-                              className="form-control"
+                              className={`form-control ${error === "" || contactForm.email ? "" : "border-danger" }`}
                               onChange={handleChange}
                               name="email"
                               placeholder=""
                             />
+                            <span className="err text-danger">
+                              {fieldError.email ||  error && contactForm.email == "" && (
+                                <>{error || fieldError.email}</>
+                              )}
+                            </span>
+
                           </div>
                           <div className="col-lg-6 mb-3">
                             <label className="form-label">Phone No. *</label>
                             <input
                               type="text"
-                              className="form-control"
+                              className={`form-control ${error === "" || contactForm.mobile ? "" : "border-danger" }`}
                               onChange={handleChange}
                               name="mobile"
                               placeholder=""
                             />
+                            <span className="err text-danger">
+                              {fieldError.mobile ||  error && contactForm.mobile == "" && (
+                                <>{error || fieldError.mobile}</>
+                              )}
+                            </span>
                           </div>
                           <div className="col-lg-12 mb-4">
                             <label className="form-label">Message *</label>
                             <textarea
                               type="text"
-                              className="form-control"
+                              className={`form-control ${error === "" || contactForm.messsage ? "" : "border-danger" }`}
                               onChange={handleChange}
-                              name="message"
+                              name="messsage"
                               placeholder=""
                               rows="3"
                             ></textarea>
+                            <span className="err text-danger">
+                              {fieldError.messsage ||  error && contactForm.messsage == "" && (
+                                <>{error || fieldError.messsage}</>
+                              )}
+                            </span>
                           </div>
                           <div className="col-lg-12 mb-2 text-center">
-                            <button type="submit" className="btn theme-btn send-btn">Send Message</button>
+                            <button type="submit" className="btn theme-btn send-btn spiner-btn">
+                              {btnLoader ? <Loader type="spinner-cub" title={"Send Message"} size={20} /> : 'Send Message'}
+                            </button>
                           </div>
                         </form>
                       </div>

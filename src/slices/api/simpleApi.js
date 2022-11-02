@@ -276,3 +276,94 @@ export const getKolOrderHistory = async (callback, token) => {
 }
 
 
+// landing page banner list
+export const getDashboardBannerList = async (callback) => {
+  const response = await fetch(`${API}/dashboard/banner-list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+ // console.log(result)
+  
+  callback(result.banners)
+}
+
+// landing page featuredlist
+export const getfeaturedList = async (callback) => {
+  const response = await fetch(`${API}/kol-profile/featured-list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+ // console.log(result)
+  
+  callback(result.kolProfiles)
+}
+
+
+// landing page faq list
+export const getfaqList = async (callback) => {
+  const response = await fetch(`${API}/dashboard/faq-list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+ // console.log(result)
+  
+  callback(result.banners)
+}
+
+// landing page How It Work Video List
+export const getHowItWorkVideoList = async (callback) => {
+  const response = await fetch(`${API}/dashboard/information-list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+ // console.log(result)
+  
+  callback(result.InformativeVideos)
+}
+
+
+// landing page get feat Video List
+export const getfeatVideoList = async (callback) => {
+  const response = await fetch(`${API}/dashboard/information-list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+ // console.log(result)
+  
+  callback(result.InformativeVideos)
+}
+
+// landing page get total user count
+export const getTotalCounts = async (callback) => {
+  const response = await fetch(`${API}/dashboard/get-total-count`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const result = await response.json();
+ // console.log(result)
+  
+  callback(result.InformativeVideos)
+}

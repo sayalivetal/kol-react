@@ -71,7 +71,7 @@
 
 
 
-input[type="radio"] {
+.joiner-option input[type="radio"] {
     display: none;
   }
   
