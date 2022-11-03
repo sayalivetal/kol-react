@@ -318,6 +318,8 @@ const ProfileAdd = () => {
                     name="userName"
                     defaultValue={kolProfile.userName}
                     // onChange={handleChange}
+                    placeholder="Enter Name"
+                    disabled
                   />
                 </div>
                 <div className="col-lg-6 col-sm-12 mt-3">
@@ -330,6 +332,7 @@ const ProfileAdd = () => {
                     className="form-control"
                     defaultValue={kolProfile.personal_email}
                     onChange={handleChange}
+                    placeholder="Enter Email"
                   />
                   <div id="emailHelp" className="form-text">
                     We'll never share your email with anyone else.
@@ -367,6 +370,7 @@ const ProfileAdd = () => {
                   name="city"
                   onChange={handleChange}
                   className="form-control"
+                  placeholder="Enter City"
                 />
               </div>
 
@@ -397,6 +401,7 @@ const ProfileAdd = () => {
                   name="zip_code"
                   className="form-control"
                   onChange={handleChange}
+                  placeholder="Enter Zip code"
                 />
               </div>
 
@@ -438,6 +443,7 @@ const ProfileAdd = () => {
                   name="bio"
                   onChange={handleChange}
                   rows="6"
+                  placeholder="Enter Bio"
                 ></textarea>
               </div>
 
@@ -573,7 +579,7 @@ const ProfileAdd = () => {
                   <input
                     type="text"
                     className="form-control me-3"
-                    placeholder="enter video link"
+                    placeholder="Enter Video Link"
                     onChange={(e) => {
                       handleVideoChange(e, 0);
                     }}
@@ -600,7 +606,7 @@ const ProfileAdd = () => {
                       onBlur={(e) => {
                         handleVideoChange(e, i + 1);
                       }}
-                      placeholder="enter video link"
+                      placeholder="Enter Video Link"
                     />
                     <div className="btn-box">
                       <button

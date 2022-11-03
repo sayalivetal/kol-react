@@ -396,7 +396,8 @@ const ProfileUpdate = () => {
                   name="userName"
                   onChange={handleChange}
                   value={biodata?.get_user?.name}
-                  aria-describedby="emailHelp"
+                 // placeholder="Enter Name"
+                 disabled
                 />
               </div>
               <div className="col-lg-6 col-sm-12 mt-3">
@@ -407,9 +408,9 @@ const ProfileUpdate = () => {
                   type="email"
                   name="personal_email"
                   className="form-control"
-                  id="exampleInputEmail1"
                   defaultValue={biodata?.personal_email}
                   onChange={handleChange}
+                  placeholder="Enter Email"
                 />
                 <div id="emailHelp" className="form-text">
                   We'll never share your email with anyone else.
@@ -446,6 +447,7 @@ const ProfileUpdate = () => {
                   onChange={handleChange}
                   className="form-control"
                   defaultValue={biodata.city}
+                  placeholder="Enter City"
                 />
               </div>
 
@@ -478,6 +480,7 @@ const ProfileUpdate = () => {
                   className="form-control"
                   onChange={handleChange}
                   defaultValue={biodata.zip_code}
+                  placeholder="Enter Zip code"
                 />
               </div>
 
@@ -526,6 +529,7 @@ const ProfileUpdate = () => {
                   onChange={handleChange}
                   defaultValue={biodata.bio}
                   rows="6"
+                  placeholder="Enter Bio"
                 ></textarea>
               </div>
 
@@ -535,7 +539,7 @@ const ProfileUpdate = () => {
                 </label>
                 <input
                   value={input}
-                  placeholder="Enter a tag"
+                  placeholder="Enter tags"
                   onKeyDown={onKeyDown}
                   onKeyUp={onKeyUp}
                   name="tags"
@@ -671,7 +675,7 @@ const ProfileUpdate = () => {
                     <div className="col d-flex mb-2">
                       <input
                         name="videoLink"
-                        placeholder="Video Link"
+                        placeholder="Enter Video Link"
                         className="form-control me-3"
                         defaultValue={x}
                         onChange={(e) => handleInputVideoChange(e, i)}

@@ -234,7 +234,7 @@ const KolListing = () => {
                       <div className="col-lg-8">
                         <h3 className="text-bold">
                           <Link
-                            className="headText"
+                            className="headText text-capitalize"
                             to={`/details/${item.profile_id}`}
                           >
                             {item.username}
@@ -244,7 +244,7 @@ const KolListing = () => {
                             <i className="bi bi-patch-check-fill heading-icon"></i>
                           </sup> */}
                         </h3>
-                        <p>({item.tags})</p>
+                        <p className="text-capitalize">({item.tags})</p>
                       </div>
                       <div className="col-lg-4">
                         <p className="text-right">

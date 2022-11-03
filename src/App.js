@@ -58,7 +58,7 @@ const App = () => {
           <Route exact path='/emailCheck' element={<EmailCheck />} />
           <Route  exact path='/passwordSuccess' element={<PasswordSuccess />} />
         </Routes>
-        <ToastContainer />
+        <ToastContainer autoClose={800} />
       </Suspense>
     </div>
 
