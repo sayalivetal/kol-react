@@ -18,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Register = () => {
   const { isFetching, isSuccess, statusCode, isError, errorMessage } =
     useSelector(userSelector);
-  const role = useSelector((state) => state?.user?.role?.payload);
+  const role = useSelector((state) => state?.user?.role?.payload);                                                                                                 
   //state for firebase values
   console.log(isSuccess, statusCode);
   const [firebaseUser, setFirebaseuser] = useState({
