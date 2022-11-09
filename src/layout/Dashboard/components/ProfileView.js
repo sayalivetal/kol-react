@@ -54,13 +54,13 @@ const ProfileView = () => {
                 <label className="form-label">
                   <b>Kol Type : </b>
                 </label>
-                <span> {kolProfile?.kol_type}</span>
+                <span className="text-capitalize"> {kolProfile?.kol_type}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>City : </b>
                 </label>
-                <span> {kolProfile?.city}</span>
+                <span className="text-capitalize"> {kolProfile?.city}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
@@ -72,7 +72,7 @@ const ProfileView = () => {
                 <label className="form-label">
                   <b>State : </b>
                 </label>
-                <span> {kolProfile?.state}</span>
+                <span className="text-capitalize"> {kolProfile?.state}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
@@ -84,7 +84,7 @@ const ProfileView = () => {
                 <label className="form-label">
                   <b>Most Active Platform : </b>
                 </label>
-                <span>{kolProfile.social_active}</span>
+                <span className="text-capitalize"> {kolProfile.social_active}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">

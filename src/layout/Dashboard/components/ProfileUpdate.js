@@ -50,13 +50,13 @@ const ProfileUpdate = () => {
     city: "",
     zip_code: "",
     state: "",
-    userImage: "",
     bio: "",
     social_media: [],
     social_active: "",
     video_links: [],
     languages: [],
     tags: [],
+    userImage: "",
     avatar: "",
   });
 
@@ -281,9 +281,9 @@ const ProfileUpdate = () => {
     setIsKeyReleased(true);
   };
 
-  const handleChangeSocialActive = (e) => {
-    // setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
-  };
+  // const handleChangeSocialActive = (e) => {
+  //    setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
+  // };
 
   useEffect(() => {
     const callback = (data) => {
@@ -302,7 +302,6 @@ const ProfileUpdate = () => {
         city: biodata.city,
         zip_code: biodata.zip_code,
         state: biodata.state,
-        userImage: biodata.banner,
         bio: biodata.bio,
         social_media: [...inputList],
         social_active: biodata.social_active,
@@ -310,6 +309,7 @@ const ProfileUpdate = () => {
         languages: biodata.languages,
         tags: [...tags],
         avatar: biodata.avatar,
+        userImage: biodata.banner,
       };
     });
   }, [tags, inputList, videoList, biodata, kolType]);
@@ -337,7 +337,7 @@ const ProfileUpdate = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    console.log("--------------", selectedFile, bannerFile)
+   // console.log("--------------", selectedFile, bannerFile)
 
     if (selectedFile) {
       formData.append("avatar", selectedFile);
@@ -372,6 +372,7 @@ const ProfileUpdate = () => {
     });
   };
 
+
   return (
     <>
       <div className="card">
@@ -395,7 +396,7 @@ const ProfileUpdate = () => {
                   className="form-control"
                   name="userName"
                   onChange={handleChange}
-                  value={biodata?.get_user?.name}
+                  value={kolProfile?.userName}
                  // placeholder="Enter Name"
                  disabled
                 />
@@ -408,27 +409,27 @@ const ProfileUpdate = () => {
                   type="email"
                   name="personal_email"
                   className="form-control"
-                  defaultValue={biodata?.personal_email}
+                  value={kolProfile?.personal_email}
                   onChange={handleChange}
                   placeholder="Enter Email"
                 />
                 <div id="emailHelp" className="form-text">
-                  We'll never share your email with anyone else.
+                  This is Secondary email. We'll never share your email with anyone else.
                 </div>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Kol Type</b>
+                  <b>Kol Type <span className="text-danger">*</span></b>
                 </label>
                 <select
                   className="form-select"
                   name="kol_type"
                   onChange={handleChange}
-                  defaultValue={kolType ? kolType : "hgdf"}
+                  value={kolProfile?.kol_type ? kolProfile?.kol_type : "No Type"}
                 >
-                  <option value={kolType}>{biodata.kol_type}</option>
-                  {console.log(categoryList)}
+                  {/* <option value={kolType}>{biodata.kol_type}</option> */}
+
                   {categoryList &&
                     Object.entries(categoryList).map(([key, value]) => (
                       <option key={key} value={key}>
@@ -439,30 +440,30 @@ const ProfileUpdate = () => {
               </div>
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>City</b>
+                  <b>City <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="text"
                   name="city"
                   onChange={handleChange}
                   className="form-control"
-                  defaultValue={biodata.city}
+                  value={kolProfile?.city}
                   placeholder="Enter City"
                 />
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>State</b>
+                  <b>State <span className="text-danger">*</span></b>
                 </label>
 
                 <select
-                  className="form-select form-text"
+                  className="form-select"
                   onChange={handleChange}
                   name="state"
+                  value={kolProfile?.state}
                 >
-                  <option value={biodata.state}>{biodata.state}</option>
-
+                  {/* <option value={biodata.state}>{biodata.state}</option> */}
                   {state &&
                     Object.entries(state).map(([key, value]) => (
                       <option value={key}>{value}</option>
@@ -472,14 +473,14 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className=" form-label">
-                  <b>Zip code</b>
+                  <b>Zip code <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="text"
                   name="zip_code"
                   className="form-control"
                   onChange={handleChange}
-                  defaultValue={biodata.zip_code}
+                  value={kolProfile?.zip_code}
                   placeholder="Enter Zip code"
                 />
               </div>
@@ -490,6 +491,7 @@ const ProfileUpdate = () => {
                 </label>
                 <Select
                   options={a}
+                  name="languages"
                   onChange={languageHandleChange}
                   isMulti
                   value={b}
@@ -499,16 +501,18 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className=" form-label">
-                  <b>Most Active Platform</b>
+                  <b>Most Social Active Platform <span className="text-danger">*</span></b>
                 </label>
                 <select
                   className="form-select"
                   name="social_active"
-                  onChange={handleChangeSocialActive}
+                  onChange={handleChange}
+                  value={kolProfile?.social_active}
+                 
                 >
-                  <option value={biodata?.social_active}>
+                  {/* <option value={biodata?.social_active}>
                     {biodata?.social_active}
-                  </option>
+                  </option> */}
                   {Object.keys(social_active).map((keyName, keyIndex) => {
                     return (
                       <option key={keyIndex} value={keyName}>
@@ -521,13 +525,13 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Bio</b>
+                  <b>Bio <span className="text-danger">*</span></b>
                 </label>
                 <textarea
                   className="form-control"
                   name="bio"
                   onChange={handleChange}
-                  defaultValue={biodata.bio}
+                  value={kolProfile?.bio}
                   rows="6"
                   placeholder="Enter Bio"
                 ></textarea>
@@ -535,7 +539,7 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Enter Tags</b>
+                  <b>Enter Tags <span className="text-danger">*</span></b>
                 </label>
                 <input
                   value={input}
@@ -549,7 +553,7 @@ const ProfileUpdate = () => {
                 />
                 {tags.length ? (
                   <div className="tagDiv">
-                    {tags.map((tag, index) => (
+                    {kolProfile?.tags.map((tag, index) => (
                       <div className="tag btn-default">
                         {tag}
                         <button onClick={() => deleteTag(index)}>x</button>
@@ -564,7 +568,7 @@ const ProfileUpdate = () => {
               <div className="col-lg-6 col-sm-12 mt-3 d-flex">
                 <div className="profile-img-thumb">
                   <img
-                    src={`${imageUrl}${biodata.avatar}`}
+                    src={`${imageUrl}${kolProfile?.avatar}`}
                     height={50}
                     alt="Avatar"
                   />
@@ -585,7 +589,7 @@ const ProfileUpdate = () => {
               <div className="col-lg-6 col-sm-12 mt-3 d-flex">
                 <div className="profile-img-thumb">
                   <img
-                    src={`${imageUrl}${biodata.banner}`}
+                    src={`${imageUrl}${kolProfile?.userImage}`}
                     height={50}
                     width={50}
                     alt="Banner"
@@ -606,7 +610,7 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Social Media Info</b>
+                  <b>Social Media Info <span className="text-danger">*</span></b>
                 </label>
 
                 {inputList.map((x, i) => {
@@ -616,8 +620,9 @@ const ProfileUpdate = () => {
                         className="form-select me-3"
                         name="name"
                         onChange={(e) => handleInputChange(e, i)}
+                        value={x.name}
                       >
-                        <option value={x.name}>{x.name}</option>
+                        {/* <option value={x.name}>{x.name}</option> */}
                         {Object.keys(social_active).map((keyName, keyIndex) => {
                           return (
                             <option key={keyIndex} value={keyName}>
@@ -636,7 +641,7 @@ const ProfileUpdate = () => {
                       <input
                         className="form-control  me-3"
                         name="followers"
-                        placeholder="30k"
+                        placeholder="30"
                         value={x.followers}
                         onChange={(e) => handleInputChange(e, i)}
                       />
@@ -668,7 +673,7 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Video Links</b>
+                  <b>Video Links <span className="text-danger">*</span></b>
                 </label>
                 {videoList.map((x, i) => {
                   return (

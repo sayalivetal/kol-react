@@ -106,18 +106,19 @@ const EditAccount = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if(firstName && lastName && phone && gender && address &&city && zip && state && country){
-      if(phone.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/) && 
-      zip.match(/(^\d{6}$)|(^\d{6}-\d{6}$)/)){
-    dispatch(UpdateUserProfile(userData)).then((data) => {
-      if (data?.payload?.statusCode === 202) {
-        toast.success(data?.payload?.message)
-        navigate("/account");
+
+      if(phone.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/) &&  zip.match(/(^\d{6}$)|(^\d{6}-\d{6}$)/)){
+
+        dispatch(UpdateUserProfile(userData)).then((data) => {
+          if (data?.payload?.statusCode === 202) {
+            toast.success(data?.payload?.message)
+            navigate("/account");
+          }
+          else{
+            toast.error(data?.payload?.message)
+          }
+        });
       }
-      else{
-        toast.error(data?.payload?.message)
-      }
-    });
-  }
     }else{
       setfieldError("Please fill the mandatory filed")
     }
@@ -125,7 +126,6 @@ const EditAccount = () => {
 
   const onFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
-
   };
   const onFileUpload = (e) => {
     e.preventDefault()
@@ -181,7 +181,7 @@ const EditAccount = () => {
                   <form onSubmit={handleSubmit}>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
-                        First Name
+                        User Name
                       </label>
                       <div className="col-12">
                         <input
@@ -191,13 +191,14 @@ const EditAccount = () => {
                           name="firstName"
                           value={userData.firstName}
                           onChange={handleChange}
+                          disabled
                         />
                         <span className="err text-danger">
                         {!firstName && fieldError}
                         </span> 
                       </div>
                     </div>
-                    <div className="row mb-3">
+                    {/* <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
                         Last Name
                       </label>
@@ -214,10 +215,10 @@ const EditAccount = () => {
                         {!lastName && fieldError}
                         </span>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
-                        Mobile
+                        Mobile <span className="text-danger">*</span>
                       </label>
                       <div className="col-12">
                         <input
@@ -235,7 +236,7 @@ const EditAccount = () => {
                     </div>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
-                        Gender
+                        Gender <span className="text-danger">*</span>
                       </label>
                       <div className="col-12">
                         <div className="form-check d-inline-block me-3">
@@ -249,7 +250,7 @@ const EditAccount = () => {
                             onChange={handleChange}
                           />
                           <label className="form-check-label" htmlFor="male">
-                            Male
+                            Male 
                           </label>
                         </div>
                         <div className="form-check d-inline-block">
@@ -273,7 +274,7 @@ const EditAccount = () => {
                     </div>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
-                        Address
+                        Address <span className="text-danger">*</span>
                       </label>
                       <div className="col-12">
                         <input
@@ -306,7 +307,7 @@ const EditAccount = () => {
                     </div>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
-                        City
+                        City <span className="text-danger">*</span>
                       </label>
                       <div className="col-12">
                         <input
@@ -324,7 +325,7 @@ const EditAccount = () => {
                     </div>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
-                        State
+                        State <span className="text-danger">*</span>
                       </label>
                       <div className="col-12">
                         <input
@@ -342,7 +343,7 @@ const EditAccount = () => {
                     </div>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
-                        Country
+                        Country <span className="text-danger">*</span>
                       </label>
                       <div className="col-12">
                         <input
@@ -360,7 +361,7 @@ const EditAccount = () => {
                     </div>
                     <div className="row mb-3">
                       <label className="col-12 col-form-label fw-medium">
-                        Zip Code
+                        Zip Code <span className="text-danger">*</span>
                       </label>
                       <div className="col-12">
                         <input

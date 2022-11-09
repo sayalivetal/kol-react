@@ -140,11 +140,12 @@ const ProfileAdd = () => {
       };
     });
   }, [inputList]);
+
+
   useEffect(() => {
     let x = b.map((item, index) => {
       return item.value;
     });
-
     setKolProfile(() => {
       return {
         ...kolProfile,
@@ -163,6 +164,7 @@ const ProfileAdd = () => {
     });
   }, [video_links]);
 
+// For creating tags 
   useEffect(() => {
     setKolProfile(() => {
       return {
@@ -195,7 +197,6 @@ const ProfileAdd = () => {
     }
 
     if (e.target.name == "kol_type") {
-    
       setKolType(
         Object.keys(categoryList).find(
           (key) => categoryList[key] == e.target.value
@@ -213,11 +214,7 @@ const ProfileAdd = () => {
     const { key } = e;
     const trimmedInput = input.trim();
 
-    if (
-      key === "Enter" &&
-      trimmedInput.length &&
-      !tags.includes(trimmedInput)
-    ) {
+    if ( key === "Enter" && trimmedInput.length && !tags.includes(trimmedInput) ) {
       e.preventDefault();
       setTags((prevState) => [...prevState, trimmedInput]);
       setInput("");
@@ -227,7 +224,6 @@ const ProfileAdd = () => {
       e.preventDefault();
       const tagsCopy = [...tags];
       const poppedTag = tagsCopy.pop();
-
       setTags(tagsCopy);
       setInput(poppedTag);
     }
@@ -261,11 +257,6 @@ const ProfileAdd = () => {
     setA([...e]);
   };
 
-  const handleViewClick = (e) => {
-    dispatch(getKolprofile());
-    navigate("../profile");
-  };
-
   useEffect(() => {
     const callback = (data) => {
       setSocialActive({ ...data });
@@ -293,6 +284,8 @@ const ProfileAdd = () => {
       value: value,
     };
   });
+
+
   return (
     <>
       <div className="card">
@@ -316,7 +309,7 @@ const ProfileAdd = () => {
                     type="text"
                     className="form-control"
                     name="userName"
-                    defaultValue={kolProfile.userName}
+                    value={kolProfile.userName}
                     // onChange={handleChange}
                     placeholder="Enter Name"
                     disabled
@@ -335,7 +328,7 @@ const ProfileAdd = () => {
                     placeholder="Enter Email"
                   />
                   <div id="emailHelp" className="form-text">
-                    We'll never share your email with anyone else.
+                    This is Secondary email. We'll never share your email with anyone else.
                   </div>
               
                 </div>
@@ -343,7 +336,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Kol Type</b>
+                  <b>Kol Type <span className="text-danger">*</span></b>
                 </label>
 
                 <select
@@ -352,7 +345,7 @@ const ProfileAdd = () => {
                   onChange={handleChange}
                 >
                   <option defaultValue>Select Type</option>
-                  {console.log(categoryList)}
+                  {/* {console.log(categoryList)} */}
                   {categoryList &&
                     Object.entries(categoryList).map(([key, value]) => (
                       <option key={key} value={value}>
@@ -363,7 +356,7 @@ const ProfileAdd = () => {
               </div>
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>City</b>
+                  <b>City <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="text"
@@ -376,7 +369,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>State</b>
+                  <b>State <span className="text-danger">*</span></b>
                 </label>
                 <select
                   className="form-select"
@@ -394,7 +387,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className=" form-label">
-                  <b>Zip code</b>
+                  <b>Zip code <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="text"
@@ -407,7 +400,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label htmlFor="exampleInputPassword1" className=" form-label">
-                  <b>Language</b>
+                  <b>Language <span className="text-danger">*</span></b>
                 </label>
 
                 <Select className="text-capitalize" options={a} onChange={languageHandleChange} isMulti />
@@ -415,7 +408,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className=" form-label">
-                  <b>Most Active Platform</b>
+                  <b>Most Social Active Platform <span className="text-danger">*</span></b>
                 </label>
 
                 <select
@@ -436,7 +429,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Bio</b>
+                  <b>Bio <span className="text-danger">*</span></b>
                 </label>
                 <textarea
                   className="form-control"
@@ -449,7 +442,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Enter Tags</b>
+                  <b>Enter Tags <span className="text-danger">*</span></b>
                 </label>
                 <input
                   value={input}
@@ -477,7 +470,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3 ">
                 <label className="form-label">
-                  <b>Upload Avatar</b>
+                  <b>Upload Avatar <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="file"
@@ -489,7 +482,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3 ">
                 <label className="form-label">
-                  <b>Upload Banner</b>
+                  <b>Upload Banner <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="file"
@@ -501,7 +494,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Social Media Info</b>
+                  <b>Social Media Info <span className="text-danger">*</span></b>
                 </label>
 
                 {inputList.map((x, i) => {
@@ -531,7 +524,7 @@ const ProfileAdd = () => {
                       <input
                         className="form-control me-3"
                         name="followers"
-                        placeholder="30k"
+                        placeholder="30"
                         value={x.followers}
                         onChange={(e) => handleInputChange(e, i)}
                       />
@@ -572,7 +565,7 @@ const ProfileAdd = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Video Links</b>
+                  <b>Video Links <span className="text-danger">*</span></b>
                 </label>
 
                 <div className="col d-flex mb-2">

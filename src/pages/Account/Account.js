@@ -48,7 +48,8 @@ const Account = () => {
                       Name
                     </label>
                     <label className="col-lg-10 col-form-label text-capitalize">
-                      {userDetails?.name} {userDetails?.last_name}
+                      {userDetails?.name} 
+                      {/* {userDetails?.last_name} */}
                     </label>
                   </div>
                   <div className="row mb-3">

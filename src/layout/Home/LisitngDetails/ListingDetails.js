@@ -132,7 +132,7 @@ const ListingDetails = () => {
                           {item.get_social_media.map((c, i) => {
                             return (
                                 <li className="" key={i}>
-                                  <i className={c.social_icon}></i><span className="social-text">{c.followers}k</span> 
+                                  <i className={c.social_icon}></i><span className="social-text">{c.followers}</span> 
                                 </li>
                             );
                           })}
