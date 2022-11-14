@@ -42,7 +42,7 @@ const AnnouncementList = () => {
     };
     getKolAllAnnouncements(callback, token, page);
     setPage(pageNumber);
-    alert(pageNumber)
+
   };
 
   console.log(announcements)
@@ -93,18 +93,8 @@ const AnnouncementList = () => {
               </tbody>
             </table>
 
-            <Pagination
-                totalItemsCount={450}
-                onChange={handlePageChange}
-                activePage={page}
-                itemsCountPerPage={5}
-                pageRangeDisplayed={1}
-                itemClass="page-item"
-                linkClass="page-link"
-                // hideNavigation={true}
-              />
             
-            {/* {announcements.length > 0 ? (
+            {announcements.length > 0 ? (
    
               <Pagination
                 totalItemsCount={450}
@@ -114,21 +104,23 @@ const AnnouncementList = () => {
                 pageRangeDisplayed={3}
                 itemClass="page-item"
                 linkClass="page-link"
-                hideNavigation={true}
+                hideNavigation={false}
               />
             ) : (
-                "hi"
-                // <Pagination
-                //   totalItemsCount={450}
-                //   onChange={handlePageChange}
-                //   activePage={page}
-                //   // itemsCountPerPage={}
-                //   pageRangeDisplayed={3}
-                //   itemClass="page-item"
-                //   linkClass="page-link"
-                //   hideNavigation={true}
-                // />
-            )} */}
+                <>
+                <h4>No more records</h4>
+                <Pagination
+                  totalItemsCount={450}
+                  onChange={handlePageChange}
+                  activePage={page}
+                  // itemsCountPerPage={}
+                  pageRangeDisplayed={3}
+                  itemClass="page-item"
+                  linkClass="page-link"
+                  hideNavigation={false}
+                />
+              </>  
+            )}
           </div>
         </div>
       </div>
