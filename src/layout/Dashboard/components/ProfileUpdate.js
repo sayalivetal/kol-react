@@ -40,6 +40,8 @@ const ProfileUpdate = () => {
   const [isKeyReleased, setIsKeyReleased] = useState(false);
   const [video_links, setVideoLinks] = useState([]);
   const [error, setError] = useState("");
+  const [fieldError, setFieldError] = useState("");
+  
   const [btnLoader, setBtnLoader] = useState(false);
 
   let token = localStorage.getItem("token");
@@ -60,6 +62,23 @@ const ProfileUpdate = () => {
     video_links: [],
   });
 
+
+  const dispatch = useDispatch();
+  const initialArr = {};
+  initialArr["name"] = "";
+  initialArr["social_user_id"] = "";
+  initialArr["followers"] = "";
+
+  // initialArr["social_icon"] = "";
+  const [inputList, setInputList] = useState([
+    {
+      name: "",
+      social_user_id: "",
+      followers: "",
+      // social_icon: "",
+    },
+  ]);
+
   useEffect(() => {
     const callback = (data) => {
       setBiodata(data);
@@ -68,9 +87,12 @@ const ProfileUpdate = () => {
   }, []);
 
   useEffect(() => {
-    if (biodata.get_social_media) {
+    if (biodata?.get_social_media?.length > 0) {
       setInputList([...biodata.get_social_media]);
+    }else {
+      setInputList([...inputList]);
     }
+
     if (biodata.video_links) {
       let str = biodata.video_links;
       let chars = str.split(",");
@@ -127,21 +149,7 @@ const ProfileUpdate = () => {
     getAllStates(callback);
   }, []);
 
-  const dispatch = useDispatch();
-  const initialArr = {};
-  initialArr["name"] = "";
-  initialArr["social_user_id"] = "";
-  initialArr["followers"] = "";
 
-  // initialArr["social_icon"] = "";
-  const [inputList, setInputList] = useState([
-    {
-      name: "",
-      social_user_id: "",
-      followers: "",
-      // social_icon: "",
-    },
-  ]);
 
   // handle input change
   const handleInputChange = (e, index) => {
@@ -225,6 +233,10 @@ const ProfileUpdate = () => {
     });
   }, [tags]);
 
+  function isValidEmail(email) {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);;
+  }
+
   const handleChange = (e) => {
     setKolProfile({ ...kolProfile, [e.target.name]: e.target.value });
     if (e.target.name == "userImage") {
@@ -246,7 +258,17 @@ const ProfileUpdate = () => {
     if (e.target.name == "tags") {
       setTags(e.target.value);
     }
+    if (e.target.name == "personal_email") {
+      if (!e.target.value) {
+        setFieldError("Please fill the mandatory filed")
+      } else if (!isValidEmail(e.target.value)) {
+        setFieldError("Please enter correct email")
+      }else {
+        setFieldError("");
+      }
+    }
   };
+
 
   const onChange = (e) => {
     const { value } = e.target;
@@ -313,7 +335,9 @@ const ProfileUpdate = () => {
         video_links: [...videoList],
       };
     });
-  }, [tags, inputList, videoList, biodata, kolType]);
+  }, [tags, inputList, videoList, biodata, kolType ]);
+
+
 
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
@@ -376,6 +400,10 @@ const ProfileUpdate = () => {
                 if(data?.payload?.status){
                   toast.success(data?.payload?.message)
                   setBtnLoader(false)
+                  const callback = (data) => {
+                    setBiodata(data);
+                  };
+                  getKolprofile(callback, token);
                 }
                 else{
                   toast.error(data?.payload?.message)
@@ -429,7 +457,7 @@ const ProfileUpdate = () => {
                   This is Secondary email. We'll never share your email with anyone else.
                 </div>
                 <span className="err text-danger">
-                  {error && kolProfile.personal_email == "" && ( <>{error}</>)}
+                  {fieldError || error && kolProfile.personal_email == "" && ( <>{fieldError || error }</>)}
                 </span>
               </div>
 
@@ -602,7 +630,7 @@ const ProfileUpdate = () => {
               <div className="col-lg-6 col-sm-12 mt-3 d-flex">
                 <div className="profile-img-thumb">
                   <img
-                    src={`${imageUrl}${kolProfile?.userImage}`}
+                    src={`${imageUrl}${biodata?.avatar}`}
                     height={50}
                     alt="Avatar"
                   />
@@ -623,7 +651,7 @@ const ProfileUpdate = () => {
               <div className="col-lg-6 col-sm-12 mt-3 d-flex">
                 <div className="profile-img-thumb">
                   <img
-                    src={`${imageUrl}${kolProfile?.userBanner}`}
+                    src={`${imageUrl}${biodata?.banner}`}
                     height={50}
                     width={50}
                     alt="Banner"
@@ -646,7 +674,7 @@ const ProfileUpdate = () => {
                 <label className="form-label">
                   <b>Social Media Info <span className="text-danger">*</span></b>
                 </label>
-
+                {console.log(inputList)}
                 {inputList.map((x, i) => {
                   return (
                     <div className="col d-flex mb-2">
@@ -700,13 +728,10 @@ const ProfileUpdate = () => {
                       <input
                         name="videoLink"
                         placeholder="Enter Video Link"
-                        className={`form-control me-3 ${error === "" || kolProfile.videoLink ? "" : "border-danger" }`}
+                        className="form-control me-3"
                         defaultValue={x}
                         onChange={(e) => handleInputVideoChange(e, i)}
                       />
-                      <span className="err text-danger">
-                        {error && kolProfile.videoLink == "" && ( <>{error}</>)}
-                      </span>
                       <div className="btn-box">
                         {videoList.length !== 1 && (
                           <button className="btn sub-btn" onClick={(e) => handleVideoRemoveClick(e, i)}> - </button>

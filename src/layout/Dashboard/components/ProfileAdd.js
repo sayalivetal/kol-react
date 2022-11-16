@@ -27,6 +27,7 @@ const ProfileAdd = () => {
   const [categoryList, setCategoryList] = useState({});
   const [kolType, setKolType] = useState("");
   const [error, setError] = useState("");
+  const [fieldError, setFieldError] = useState("");
   const [btnLoader, setBtnLoader] = useState(false);
   const [state, setState] = useState({});
   const [language, setLanguage] = useState([]);
@@ -153,6 +154,10 @@ const ProfileAdd = () => {
     });
   }, [tags]);
 
+  function isValidEmail(email) {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);;
+  }
+
   const handleChange = (e) => {
     setKolProfile({ ...kolProfile, [e.target.name]: e.target.value });
     if (e.target.name == "userImage") {
@@ -182,6 +187,16 @@ const ProfileAdd = () => {
         )
       );
     }
+    if (e.target.name == "personal_email") {
+      if (!e.target.value) {
+        setFieldError("Please fill the mandatory filed")
+      } else if (!isValidEmail(e.target.value)) {
+        setFieldError("Please enter correct email")
+      }else {
+        setFieldError("");
+      }
+    }
+
   };
 
   const onChange = (e) => {
@@ -292,8 +307,9 @@ const ProfileAdd = () => {
         kolProfile.bio == "" ||
         kolProfile.tags == "" ||
         kolProfile.userImage == "" ||
-        kolProfile.userBanner == "" ||
-        kolProfile.video_links == "" ) {
+        kolProfile.userBanner == "" 
+        //kolProfile.video_links == ""
+      ) {
         setError("Please fill the mandatory filed");
         setBtnLoader(false)
     }else {
@@ -350,12 +366,13 @@ const ProfileAdd = () => {
                     defaultValue={kolProfile.personal_email}
                     onChange={handleChange}
                     placeholder="Enter Email"
+                    
                   />
                   <div id="emailHelp" className="form-text">
                     This is Secondary email. We'll never share your email with anyone else.
                   </div>
                   <span className="err text-danger">
-                    {error && kolProfile.personal_email == "" && ( <>{error}</>)}
+                    {fieldError || error && kolProfile.personal_email == "" && ( <>{fieldError || error }</>)}
                   </span>
               
                 </div>
@@ -450,7 +467,7 @@ const ProfileAdd = () => {
                   <span className="err text-danger">
                     {error && kolProfile.languages == "" && (<>{error}</>)}
                   </span>
-                  {console.log("---------------",kolProfile.languages)}
+                  
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
@@ -563,7 +580,7 @@ const ProfileAdd = () => {
                   return (
                     <div className="col d-flex mb-2">
                       <select
-                        className={`form-select me-3 ${error === "" || kolProfile.name ? "" : "border-danger"}`}
+                        className="form-select me-3"
                         name="name"
                         onChange={(e) => handleInputChange(e, i)}
                       >
@@ -576,9 +593,6 @@ const ProfileAdd = () => {
                           );
                         })}
                       </select>
-                      <span className="err text-danger">
-                        {error && kolProfile.name == "" && (<>{error}</>)}
-                      </span>
                       <input
                         className="form-control me-3"
                         name="social_user_id"
