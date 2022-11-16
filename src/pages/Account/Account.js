@@ -47,15 +47,16 @@ const Account = () => {
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
                       Name
                     </label>
-                    <label className="col-lg-10 col-form-label">
-                      {userDetails?.name} {userDetails?.last_name}
+                    <label className="col-lg-10 col-form-label text-capitalize">
+                      {userDetails?.name} 
+                      {/* {userDetails?.last_name} */}
                     </label>
                   </div>
                   <div className="row mb-3">
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
                       Mobile
                     </label>
-                    <label className="col-lg-10 col-form-label">
+                    <label className="col-lg-10 col-form-label text-capitalize">
                      {userDetails?.phone}
                     </label>
                   </div>
@@ -63,13 +64,13 @@ const Account = () => {
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
                       Gender
                     </label>
-                    <label className="col-lg-10 col-form-label">{userDetails?.gender}</label>
+                    <label className="col-lg-10 col-form-label text-capitalize">{userDetails?.gender}</label>
                   </div>
                   <div className="row mb-3">
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
                       Address
                     </label>
-                    <label className="col-lg-10 col-form-label">
+                    <label className="col-lg-10 col-form-label text-capitalize">
                       {userDetails?.get_address?.address}
                     </label>
                   </div>
@@ -77,7 +78,7 @@ const Account = () => {
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium ">
                       Landmark
                     </label>
-                    <label className="col-lg-10 col-form-label">
+                    <label className="col-lg-10 col-form-label text-capitalize">
                     {userDetails?.get_address?.landmark}
                     </label>
                   </div>
@@ -85,25 +86,25 @@ const Account = () => {
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
                       City
                     </label>
-                    <label className="col-lg-10 col-form-label">{userDetails?.get_address?.city}</label>
+                    <label className="col-lg-10 col-form-label text-capitalize">{userDetails?.get_address?.city}</label>
                   </div>
                   <div className="row mb-3">
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
                       State
                     </label>
-                    <label className="col-lg-10 col-form-label">{userDetails?.get_address?.state}</label>
+                    <label className="col-lg-10 col-form-label text-capitalize">{userDetails?.get_address?.state}</label>
                   </div>
                   <div className="row mb-3">
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
                       Country
                     </label>
-                    <label className="col-lg-10 col-form-label">{userDetails?.get_address?.country}</label>
+                    <label className="col-lg-10 col-form-label text-capitalize">{userDetails?.get_address?.country}</label>
                   </div>
                   <div className="row mb-3">
                     <label className="col-lg-2 col-sm-12 col-form-label fw-medium">
                       Zip Code
                     </label>
-                    <label className="col-lg-10 col-form-label">{userDetails?.get_address?.zip}</label>
+                    <label className="col-lg-10 col-form-label text-capitalize">{userDetails?.get_address?.zip}</label>
                   </div>
                   <div className="row ">
                     <div className="col-lg-12 mt-4">

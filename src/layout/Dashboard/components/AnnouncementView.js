@@ -5,15 +5,12 @@ import { imageUrl } from '../../../common/apis'
 import { Link } from "react-router-dom";
 
 const AnnouncementView = () => {
-
   const { id } = useParams();
   const token = localStorage.getItem("token");
-
   const [announcementData, setAnnouncementData] = useState([]);
 
   useEffect(() => {
     const callback = (data) => {
-
       setAnnouncementData([...data])
     };
     getAnnouncement(callback, token, id);
@@ -30,11 +27,11 @@ const AnnouncementView = () => {
           </div>
         </div>
         <div className="card-body px-4" >
-          {
-            announcementData && announcementData.map((item, index) => {
+          {announcementData && announcementData.map((item, index) => {
               return (
                 <div className="" key={index}>
                   <div className="row announcement-view">
+
                       <div className="col-lg-3 col-sm-12 mt-3">
                         <div className='card'>
                           <div className="card-header">
@@ -42,45 +39,32 @@ const AnnouncementView = () => {
                               <span>Banner Thumb</span> 
                             </div>
                           </div>
-                          <img className='img-fluid' src={`${imageUrl}${item.image}`} />
+                          {item.image == null ? (<span className="no-image">No Image</span>) : (<img className="img-fluid" src={`${imageUrl}${item.image}`} alt="Banner Thumb" />) }
                         </div>
                       </div>
 
                       <div className="col-lg-9 col-sm-12 ">
                         <div className="col-12 mt-3">
-                          <label className="form-label">
-                            <b>Title : </b>
-                          </label>
+                          <label className="form-label"><b>Title : </b></label>
                           <span> {item.title}</span>
                         </div>
                         <div className="col-12 mt-3">
-                          <label className="form-label">
-                            <b>Start Date : </b>
-                          </label>
+                          <label className="form-label"><b>Start Date : </b></label>
                           <span> {item.start_date}</span>
                         </div>
-
                         <div className="col-12 mt-3">
-                          <label className="form-label">
-                            <b>Description : </b>
-                          </label>
+                          <label className="form-label"><b>Description : </b></label>
                           <span> {item.description}</span>
                         </div>
                         <div className="col-12 mt-3">
-                          <label className="form-label">
-                            <b>End Date : </b>
-                          </label>
+                          <label className="form-label"><b>End Date : </b></label>
                           <span> {item.end_date}</span>
                         </div>
-
                         <div className="col-12 mt-3">
-                          <label className="form-label">
-                            <b>Social Media Platform : </b>
-                          </label>
+                          <label className="form-label"><b>Social Media Platform : </b></label>
                           <span> {item.social_platform}</span>
                         </div>
                       </div>
-                    
                   </div>
                 </div>
               )
@@ -88,9 +72,6 @@ const AnnouncementView = () => {
           }
         </div>
       </div>
-
-
-
     </>
   )
 }

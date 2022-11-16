@@ -42,55 +42,55 @@ const ProfileView = () => {
                 <label className="form-label">
                   <b>Name : </b>
                 </label>
-                <span> {kolProfile?.get_user?.name}</span>
+                <span>{kolProfile?.get_user?.name}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>Email : </b>
                 </label>
-                <span> {kolProfile?.personal_email}</span>
+                <span>{kolProfile?.personal_email}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>Kol Type : </b>
                 </label>
-                <span> {kolProfile?.kol_type}</span>
+                <span className="text-capitalize">{kolProfile?.kol_type}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>City : </b>
                 </label>
-                <span> {kolProfile?.city}</span>
+                <span className="text-capitalize">{kolProfile?.city}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>Zip Code : </b>
                 </label>
-                <span> {kolProfile?.zip_code}</span>
+                <span>{kolProfile?.zip_code}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>State : </b>
                 </label>
-                <span> {kolProfile?.state}</span>
+                <span className="text-capitalize">{kolProfile?.state}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>Langauge : </b>
                 </label>
-                <span className="text-capitalize"> {kolProfile?.languages}</span>
+                <span className="text-capitalize">{kolProfile?.languages}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>Most Active Platform : </b>
                 </label>
-                <span>{kolProfile.social_active}</span>
+                <span className="text-capitalize">{kolProfile.social_active}</span>
               </div>
               <div className="col-6 mt-3">
                 <label className="form-label">
                   <b>Tags : </b>
                 </label>
-                <span> {kolProfile?.tags}</span>
+                <span>{kolProfile?.tags}</span>
               </div>
               
               <div className="col-12 mt-3">

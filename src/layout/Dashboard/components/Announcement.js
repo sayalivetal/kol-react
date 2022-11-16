@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-
 import "../css/styles.css";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { imageUrl } from "../../../common/apis";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  announceDataFormSubmission,
-  dashboardSelector,
-} from "../../../slices/Dashboard/dashboard";
+import { announceDataFormSubmission, } from "../../../slices/Dashboard/dashboard";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getAnnouncement, getAllStreams } from "../../../slices/api/simpleApi";
 import { toast } from "react-toastify";
 import moment from "moment";
+import Loader from "react-js-loader";
 
 
 const Announcement = () => {
+
   const dispatch = useDispatch();
   const [announcement, setAnnouncement] = useState({
     title: "",
@@ -24,19 +21,19 @@ const Announcement = () => {
     start_date: "",
     end_date: "",
     social_platform: "",
-    // Image: "",
     imageUrl: "",
   });
 
   const { id } = useParams();
   const token = localStorage.getItem("token");
 
-  const { message } = useSelector(dashboardSelector);
   let navigate = useNavigate();
-
-  useEffect(() => {
-    toast.success(message);
-  }, [message]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [social_active, setSocialActive] = useState([]);
+  const [btnLoader, setBtnLoader] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const callback = (data) => {
@@ -56,21 +53,7 @@ const Announcement = () => {
     };
     getAnnouncement(callback, token, id);
   }, [id]);
-
-
  
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [social_active, setSocialActive] = useState([]);
-  const [error, setError] = useState({
-    title: 0,
-    description: 0,
-    start_date: 0,
-    end_date: 0,
-    social_platform: 0,
-  });
 
   useEffect(() => {
     if (!startDate) return;
@@ -80,10 +63,7 @@ const Announcement = () => {
     let day = ("0" + date.getDate()).slice(-2);
     let finalDate = [date.getFullYear(), mnth, day].join("-");
 
-   
-
-
-    setAnnouncement(() => {
+  setAnnouncement(() => {
       return {
         ...announcement,
         start_date: moment(`${finalDate} ${dateStartTime}`).format('YYYY-MM-DD hh:mm:ss')
@@ -108,95 +88,92 @@ const Announcement = () => {
     });
   }, [endDate]);
 
-  const handleChange = (e) => {
-    setAnnouncement({ ...announcement, [e.target.name]: e.target.value });
-
-    if (e.target.name == "userImage") {
-      const file = e.target.files[0];
-      if (file.size > 1000000) {
-      
-        return;
-      }
-      setSelectedFile(e.target.files[0]);
-    }
-
-    return false;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if(!id){
-      let a = {};
-      for (const announcementKey in announcement) {
-        if (
-          announcement[announcementKey] == "" ||
-          announcement[announcementKey] == undefined
-        ) {
-          a[announcementKey] = 1;
-          setError({
-            ...a,
-          });
-        }
-      }
-  
-      for (let key in error) {
-        if (error[key] == 0) {
-          toast.error("Please fill details");
-          return;
-        }
-      }
-    }
- 
-
-    const formData = new FormData();
-    if (selectedFile) {
-   
-      formData.append("image", selectedFile);
-    }
-    if(id){
-      formData.append("id",id);
-    }
-    
-    formData.append("title", announcement.title);
-    formData.append("description", announcement.description);
-    formData.append("start_date", announcement.start_date);
-    formData.append("end_date", announcement.end_date);
-    formData.append("social_platform", announcement.social_platform);
- 
-
-    //Submit data
-    dispatch(announceDataFormSubmission(formData)).then((data) => {
-  
-      if (data.payload.statusCode == 201) {
-        navigate("../../dashboard/announcement/list");
-      }
-      if (data.payload.statusCode == 202) {
-        navigate("../../dashboard/announcement/list");
-      }
-    });
-
-    // toast.success(message)
-  };
-
   useEffect(() => {
     const callback = (data) => {
-   
       setSocialActive({ ...data });
     };
     getAllStreams(callback, token);
   }, []);
 
+  const handleChange = (e) => {
+    setAnnouncement({ ...announcement, [e.target.name]: e.target.value });
+    //setError({});
+    if (e.target.name == "userImage") {
+      const file = e.target.files[0];
+      if (file.size > 1000000) {
+        return;
+      }
+      setSelectedFile(e.target.files[0]);
+    }
+    return false;
 
-  const handleChangeSocialActive = (e) => {
-    //setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
-    setAnnouncement((prevState) => {
-      return { ...prevState, [e.target.name]: [e.target.value] };
-    });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setBtnLoader(true)
+
+    // if(!id){
+    //   let a = {};
+    //   setBtnLoader(false)
+    //   for (const announcementKey in announcement) {
+    //     if (announcement[announcementKey] == "" || announcement[announcementKey] == undefined) {
+    //       a[announcementKey] = 1;
+    //       setError({
+    //         ...a,
+    //       });
+    //     }
+    //   }
+    //   for (let key in error) {
+    //     if (error[key] == 0) {
+    //       toast.error("Please fill details");
+    //       return;
+    //     }
+    //   }
+    // }
+ 
+    const formData = new FormData();
+    if (selectedFile) {
+      formData.append("image", selectedFile);
+    }
+    if(id){
+      formData.append("id",id);
+    }
+
+    formData.append("title", announcement.title);
+    formData.append("social_platform", announcement.social_platform);
+    formData.append("start_date", announcement.start_date);
+    formData.append("end_date", announcement.end_date);
+    formData.append("description", announcement.description);
+
+    if (announcement.title == "" || announcement.social_platform == "" || announcement.start_date_time == "" || announcement.end_date_time == "" || announcement.description == "" ) {
+      setError("Please fill the mandatory filed");
+      setBtnLoader(false)
+    }else {
+      dispatch(announceDataFormSubmission(formData)).then((data) => {
+        if (data.payload.statusCode === 201 || data.payload.statusCode === 202 ) {
+          toast.success(data?.payload?.message)
+          navigate("../../dashboard/announcement/list");
+          setBtnLoader(false)
+        }
+        else{
+          toast.error(data?.payload?.message)
+          setBtnLoader(false)
+        }
+      });
+    }
+  };
+
+  // const handleChangeSocialActive = (e) => {
+  //   //setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
+  //   setAnnouncement((prevState) => {
+  //     return { ...prevState, [e.target.name]: [e.target.value] };
+  //   });
+  // };
+console.log(error);
   return (
     <>
-      <div className="card">
+      <div className="card mb-5">
         <div className="card-header">
           <div className="card-title h5 justify-content-between m-0 d-flex align-items-center">
             <span>Announcements </span> {id && <Link className="btn theme-btn btn-sm" to={`/dashboard/announcement/view/${id}`}>View</Link>}
@@ -207,47 +184,41 @@ const Announcement = () => {
           <form className="" onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-lg-6 col-sm-12 mt-3">
-                <label className="form-label">
-                  <b>Title</b>
-                </label>
+                <label className="form-label"><b>Title <span className="text-danger">*</span></b></label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${error === "" || announcement.title
+                      ? ""
+                      : "border-danger"
+                    }`}
                   value={announcement.title}
                   onChange={handleChange}
                   name="title"
+                  placeholder="Enter Announcement Title"
                 />
-                {error.title == 1 ? (
-                  <span className="error-show">Please fill valid title</span>
-                ) : null}
+                <span className="err text-danger">
+                  {error && announcement.title == "" && (
+                    <>{error}</>
+                  )}
+                </span>
               </div>
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Social Media Platform</b>
+                  <b>Social Media Platform <span className="text-danger">*</span></b>
                 </label>
-                {/* <input
-                  type="text"
-                  className="form-control"
-                  value={announcement.social_platform}
-                  onChange={handleChange}
-                  name="social_platform"
-                  autoComplete="off"
-                />
-                {error.social_platform == 1 ? (
-                  <span className="error-show">
-                    Please fill valid social Media
-                  </span>
-                ) : null} */}
-
                     <select
-                    className="form-select"
+                    className={`form-select ${error === "" || announcement.social_platform
+                        ? ""
+                        : "border-danger"
+                      }`}
                     name="social_platform"
-                    onChange={handleChangeSocialActive}
+                    onChange={handleChange}
+                    value={announcement.social_platform ? announcement.social_platform : "Select Social platform"}
                   >
-                    {/* <option defaultValue>Select Event Type</option> */}
-                    <option value={announcement?.social_platform}>
+                    <option defaultValue>Select Social platform</option>
+                    {/* <option value={announcement?.social_platform}>
                         {announcement.social_platform ? announcement.social_platform : "Social platform"}
-                    </option>
+                    </option> */}
 
                     {Object.keys(social_active).map((keyName, keyIndex) => {
                       return (
@@ -258,11 +229,17 @@ const Announcement = () => {
                     })}
                   </select>
 
+                  <span className="err text-danger">
+                    {error && announcement.social_platform == "" && (
+                      <>{error}</>
+                    )}
+                  </span>
+
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Start Date</b>
+                  <b>Start Date <span className="text-danger">*</span></b>
                 </label>
                 <DatePicker
                   selected={startDate}
@@ -272,16 +249,23 @@ const Announcement = () => {
                   dateFormat="yyyy-MM-dd hh:mm:ss "
                   showTimeInput
                   value={announcement.start_date}
-                  className="form-control"
+                  className={`form-control ${error === "" || announcement.start_date
+                      ? ""
+                      : "border-danger"
+                    }`}
                   autoComplete="off"
+                  placeholderText="Select Date"
                 />
-                {error.start_date == 1 ? (
-                  <span className="error-show">Please fill valid start date</span>
-                ) : null}
+                <span className="err text-danger">
+                    {error && announcement.start_date == "" && (
+                      <>{error}</>
+                    )}
+                </span>
               </div>
+
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>End Date</b>
+                  <b>End Date <span className="text-danger">*</span></b>
                 </label>
                 <DatePicker
                   selected={endDate}
@@ -291,29 +275,43 @@ const Announcement = () => {
                   showTimeInput
                   name="end_date_time"
                   value={announcement.end_date}
-                  className="form-control"
+                  className={`form-control ${error === "" || announcement.end_date
+                      ? ""
+                      : "border-danger"
+                    }`}
                   autoComplete="off"
+                  placeholderText="Select Date"
                 />
-                {error.start_date == 1 ? (
-                  <span className="error-show">Please fill valid end date</span>
-                ) : null}
+                <span className="err text-danger">
+                    {error && announcement.end_date == "" && (
+                      <>{error}</>
+                    )}
+                </span>
+
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Description</b>
+                  <b>Description <span className="text-danger">*</span></b>
                 </label>
                 <textarea
-                  className="form-control "
+                  className={`form-control ${error === "" || announcement.description
+                      ? ""
+                      : "border-danger"
+                    }`}
                   name="description"
                   onChange={handleChange}
                   rows="6"
                   value={announcement.description}
+                  placeholder="Enter Description"
                 ></textarea>
-                {error.description == 1 ? (
-                  <span className="error-show">Please fill description</span>
-                ) : null}
+                <span className="err text-danger">
+                    {error && announcement.description == "" && (
+                      <>{error}</>
+                    )}
+                </span>
               </div>
+
               <div className="col-lg-6 col-sm-12 mt-3 d-flex">
                 <div className="profile-img-thumb mt-1" style={{width:"24%"}}> 
                   {announcement.imageUrl && (
@@ -328,11 +326,9 @@ const Announcement = () => {
                 </div>
               </div>
 
-
-
               <div className="col-12 mt-3">
-                <button type="submit" className="btn theme-btn form-text">
-                  Submit
+                <button type="submit" className="btn theme-btn form-text spiner-btn">
+                  {btnLoader ? <Loader type="spinner-cub" title={"Submit"} size={16} /> : 'Submit'}
                 </button>
               </div>
             </div>

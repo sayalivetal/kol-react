@@ -65,7 +65,7 @@ export const getKolprofile = createAsyncThunk(
 export const announceDataFormSubmission = createAsyncThunk(
   "dashboard/announcement/submit",
   async (formData, thunkAPI) => {
-    console.log(formData);
+   // console.log(formData);
     try {
       const response = await fetch(`${API}/announcement/add-update`, {
         method: "POST",

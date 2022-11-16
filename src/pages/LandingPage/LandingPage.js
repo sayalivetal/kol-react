@@ -378,7 +378,7 @@ const LandingPage = () => {
                                     alt="Settings"
                                   />
                                   <div className="icon-info">
-                                    <h3>Easy Setup</h3>
+                                    <h3>Easy Setups</h3>
                                     <p>
                                       In publishing and graphic design, Lorem
                                       ipsum is a placeholder
@@ -394,7 +394,7 @@ const LandingPage = () => {
                                     alt="Settings"
                                   />
                                   <div className="icon-info">
-                                    <h3>Multi Platform support</h3>
+                                    <h3>Multiplatform support</h3>
                                     <p>
                                       In publishing and graphic design, Lorem
                                       ipsum is a placeholder

@@ -17,6 +17,7 @@ import {
   getAllStreams,
 } from "../../../slices/api/simpleApi";
 import { getKolprofile } from "../../../slices/api/simpleApi";
+import Loader from "react-js-loader";
 
 const ProfileUpdate = () => {
   // const navigate = useNavigate();
@@ -24,23 +25,24 @@ const ProfileUpdate = () => {
   const [selected, setSelected] = useState([]);
 
   // const { message, biodata } = useSelector(dashboardSelector);
+  const [kolType, setKolType] = useState("");
   const [categoryList, setCategoryList] = useState({});
-  const [biodata, setBiodata] = useState({});
   const [state, setStates] = useState({});
   const [language, setLanguages] = useState([]);
-  const [videoList, setVideoList] = useState([]);
-  const [b, setA] = useState([]);
   const [social_active, setSocialActive] = useState([]);
-
+  const [biodata, setBiodata] = useState({});
+  const [tags, setTags] = useState([]);
   const [selectedFile, setSelectedFile] = useState();
   const [bannerFile, setBannerFile] = useState();
-  const [tags, setTags] = useState([]);
+  const [videoList, setVideoList] = useState([]);
+  const [b, setA] = useState([]);
   const [input, setInput] = useState("");
   const [isKeyReleased, setIsKeyReleased] = useState(false);
-  const [kolType, setKolType] = useState("");
-
   const [video_links, setVideoLinks] = useState([]);
-  const { message } = useSelector(dashboardSelector);
+  const [error, setError] = useState("");
+  const [fieldError, setFieldError] = useState("");
+  
+  const [btnLoader, setBtnLoader] = useState(false);
 
   let token = localStorage.getItem("token");
   const [kolProfile, setKolProfile] = useState({
@@ -48,17 +50,34 @@ const ProfileUpdate = () => {
     personal_email: "",
     kol_type: "",
     city: "",
-    zip_code: "",
     state: "",
-    userImage: "",
-    bio: "",
-    social_media: [],
-    social_active: "",
-    video_links: [],
+    zip_code: "",
     languages: [],
+    social_active: "",
+    bio: "",
     tags: [],
-    avatar: "",
+    userImage: "",
+    userBanner: "",
+    social_media: [],
+    video_links: [],
   });
+
+
+  const dispatch = useDispatch();
+  const initialArr = {};
+  initialArr["name"] = "";
+  initialArr["social_user_id"] = "";
+  initialArr["followers"] = "";
+
+  // initialArr["social_icon"] = "";
+  const [inputList, setInputList] = useState([
+    {
+      name: "",
+      social_user_id: "",
+      followers: "",
+      // social_icon: "",
+    },
+  ]);
 
   useEffect(() => {
     const callback = (data) => {
@@ -66,10 +85,14 @@ const ProfileUpdate = () => {
     };
     getKolprofile(callback, token);
   }, []);
+
   useEffect(() => {
-    if (biodata.get_social_media) {
+    if (biodata?.get_social_media?.length > 0) {
       setInputList([...biodata.get_social_media]);
+    }else {
+      setInputList([...inputList]);
     }
+
     if (biodata.video_links) {
       let str = biodata.video_links;
       let chars = str.split(",");
@@ -126,21 +149,7 @@ const ProfileUpdate = () => {
     getAllStates(callback);
   }, []);
 
-  const dispatch = useDispatch();
-  const initialArr = {};
-  initialArr["name"] = "";
-  initialArr["social_user_id"] = "";
-  initialArr["followers"] = "";
 
-  // initialArr["social_icon"] = "";
-  const [inputList, setInputList] = useState([
-    {
-      name: "",
-      social_user_id: "",
-      followers: "",
-      // social_icon: "",
-    },
-  ]);
 
   // handle input change
   const handleInputChange = (e, index) => {
@@ -224,6 +233,10 @@ const ProfileUpdate = () => {
     });
   }, [tags]);
 
+  function isValidEmail(email) {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);;
+  }
+
   const handleChange = (e) => {
     setKolProfile({ ...kolProfile, [e.target.name]: e.target.value });
     if (e.target.name == "userImage") {
@@ -245,7 +258,17 @@ const ProfileUpdate = () => {
     if (e.target.name == "tags") {
       setTags(e.target.value);
     }
+    if (e.target.name == "personal_email") {
+      if (!e.target.value) {
+        setFieldError("Please fill the mandatory filed")
+      } else if (!isValidEmail(e.target.value)) {
+        setFieldError("Please enter correct email")
+      }else {
+        setFieldError("");
+      }
+    }
   };
+
 
   const onChange = (e) => {
     const { value } = e.target;
@@ -281,9 +304,9 @@ const ProfileUpdate = () => {
     setIsKeyReleased(true);
   };
 
-  const handleChangeSocialActive = (e) => {
-    // setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
-  };
+  // const handleChangeSocialActive = (e) => {
+  //    setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
+  // };
 
   useEffect(() => {
     const callback = (data) => {
@@ -300,19 +323,21 @@ const ProfileUpdate = () => {
         personal_email: biodata.personal_email,
         kol_type: kolType,
         city: biodata.city,
-        zip_code: biodata.zip_code,
         state: biodata.state,
-        userImage: biodata.banner,
-        bio: biodata.bio,
-        social_media: [...inputList],
-        social_active: biodata.social_active,
-        video_links: [...videoList],
+        zip_code: biodata.zip_code,
         languages: biodata.languages,
+        social_active: biodata.social_active,
+        bio: biodata.bio,
         tags: [...tags],
-        avatar: biodata.avatar,
+        userImage: biodata.avatar,
+        userBanner: biodata.banner,
+        social_media: [...inputList],
+        video_links: [...videoList],
       };
     });
-  }, [tags, inputList, videoList, biodata, kolType]);
+  }, [tags, inputList, videoList, biodata, kolType ]);
+
+
 
   const deleteTag = (index) => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
@@ -337,40 +362,57 @@ const ProfileUpdate = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    console.log("--------------", selectedFile, bannerFile)
 
-    if (selectedFile) {
-      formData.append("avatar", selectedFile);
-    }
-    if (bannerFile) {
-      formData.append("banner", bannerFile);
-    }
       formData.append("personal_email", kolProfile.personal_email);
       formData.append("kol_type", kolProfile.kol_type);
       formData.append("city", kolProfile.city);
-      formData.append("zip_code", kolProfile.zip_code);
-      formData.append("bio", kolProfile.bio);
-      formData.append(
-        "social_media[]",
-        JSON.stringify(kolProfile.social_media)
-      );
-      formData.append("social_active", kolProfile.social_active);
-      formData.append("video_links[]", kolProfile.video_links);
-      formData.append("languages[]", kolProfile.languages);
-      formData.append("tags[]", kolProfile.tags);
       formData.append("state", kolProfile.state);
-    
+      formData.append("zip_code", kolProfile.zip_code);
+      formData.append("languages[]", kolProfile.languages);
+      formData.append("social_active", kolProfile.social_active);
+      formData.append("bio", kolProfile.bio);
+      formData.append("tags[]", kolProfile.tags);
 
-    dispatch(bioDataFormSubmission(formData)).then((data) => {
+      if (selectedFile) {
+        formData.append("avatar", selectedFile);
+      }
+      if (bannerFile) {
+        formData.append("banner", bannerFile);
+      }
+
+      formData.append("social_media[]", JSON.stringify(kolProfile.social_media) );
+      formData.append("video_links[]", kolProfile.video_links);
     
-      if(data?.payload?.status){
-        toast.success(data?.payload?.message)
-      }
-      else{
-        toast.error(data?.payload?.message)
-      }
-    });
+      if( kolProfile.personal_email == "" || 
+          kolProfile.kol_type == "" || 
+          kolProfile.city == "" || 
+          kolProfile.state == "" ||
+          kolProfile.zip_code == "" || 
+          kolProfile.languages == "" || 
+          kolProfile.social_active == "" || 
+          kolProfile.bio == "" || 
+          kolProfile.tags == "" || 
+          kolProfile.video_links == ""  ) {
+          setError("Please fill the mandatory filed");
+          setBtnLoader(false)
+      } else {
+              dispatch(bioDataFormSubmission(formData)).then((data) => {
+                if(data?.payload?.status){
+                  toast.success(data?.payload?.message)
+                  setBtnLoader(false)
+                  const callback = (data) => {
+                    setBiodata(data);
+                  };
+                  getKolprofile(callback, token);
+                }
+                else{
+                  toast.error(data?.payload?.message)
+                  setBtnLoader(false)
+                }
+              });
+            }
   };
+
 
   return (
     <>
@@ -395,39 +437,41 @@ const ProfileUpdate = () => {
                   className="form-control"
                   name="userName"
                   onChange={handleChange}
-                  value={biodata?.get_user?.name}
-                  aria-describedby="emailHelp"
+                  value={kolProfile?.userName}
+                  disabled
                 />
               </div>
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Email address</b>
+                  <b>Email address <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="email"
                   name="personal_email"
-                  className="form-control"
-                  id="exampleInputEmail1"
-                  defaultValue={biodata?.personal_email}
+                  className={`form-control ${error === "" || kolProfile.personal_email ? "" : "border-danger" }`}
+                  value={kolProfile?.personal_email}
                   onChange={handleChange}
+                  placeholder="Enter Email"
                 />
                 <div id="emailHelp" className="form-text">
-                  We'll never share your email with anyone else.
+                  This is Secondary email. We'll never share your email with anyone else.
                 </div>
+                <span className="err text-danger">
+                  {fieldError || error && kolProfile.personal_email == "" && ( <>{fieldError || error }</>)}
+                </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Kol Type</b>
+                  <b>Kol Type <span className="text-danger">*</span></b>
                 </label>
                 <select
-                  className="form-select"
+                  className={`form-select ${error === "" || kolProfile.kol_type ? "" : "border-danger" }`}
                   name="kol_type"
                   onChange={handleChange}
-                  defaultValue={kolType ? kolType : "hgdf"}
+                  value={kolProfile?.kol_type ? kolProfile?.kol_type : "No Type"}
                 >
-                  <option value={kolType}>{biodata.kol_type}</option>
-                  {console.log(categoryList)}
+                  <option defaultValue>Select Kol Type</option>
                   {categoryList &&
                     Object.entries(categoryList).map(([key, value]) => (
                       <option key={key} value={key}>
@@ -435,50 +479,63 @@ const ProfileUpdate = () => {
                       </option>
                     ))}
                 </select>
+                <span className="err text-danger">
+                  {error && kolProfile.kol_type == "" && ( <>{error}</>)}
+                </span>
               </div>
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>City</b>
+                  <b>City <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="text"
                   name="city"
                   onChange={handleChange}
-                  className="form-control"
-                  defaultValue={biodata.city}
+                  className={`form-control ${error === "" || kolProfile.city ? "" : "border-danger" }`}
+                  value={kolProfile?.city}
+                  placeholder="Enter City"
                 />
+                <span className="err text-danger">
+                  {error && kolProfile.city == "" && ( <>{error}</>)}
+                </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>State</b>
+                  <b>State <span className="text-danger">*</span></b>
                 </label>
-
                 <select
-                  className="form-select form-text"
+                  className={`form-select ${error === "" || kolProfile.state ? "" : "border-danger" }`}
                   onChange={handleChange}
                   name="state"
+                  value={kolProfile?.state}
                 >
-                  <option value={biodata.state}>{biodata.state}</option>
-
+                  <option defaultValue>Select State</option>
                   {state &&
                     Object.entries(state).map(([key, value]) => (
                       <option value={key}>{value}</option>
                     ))}
                 </select>
+                <span className="err text-danger">
+                  {error && kolProfile.state == "" && ( <>{error}</>)}
+                </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className=" form-label">
-                  <b>Zip code</b>
+                  <b>Zip code <span className="text-danger">*</span></b>
                 </label>
                 <input
                   type="text"
                   name="zip_code"
-                  className="form-control"
+                  className={`form-control ${error === "" || kolProfile.zip_code ? "" : "border-danger" }`}
                   onChange={handleChange}
-                  defaultValue={biodata.zip_code}
+                  value={kolProfile?.zip_code}
+                  placeholder="Enter Zip code"
                 />
+                <span className="err text-danger">
+                  {error && kolProfile.zip_code == "" && ( <>{error}</>)}
+                </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
@@ -487,25 +544,28 @@ const ProfileUpdate = () => {
                 </label>
                 <Select
                   options={a}
+                  name="languages"
                   onChange={languageHandleChange}
                   isMulti
                   value={b}
-                  className="text-capitalize"
+                  className={`text-capitalize ${error === "" || kolProfile.languages ? "" : "border-danger" }`}
                 />
+                <span className="err text-danger">
+                  {error && kolProfile.languages == "" && ( <>{error}</>)}
+                </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className=" form-label">
-                  <b>Most Active Platform</b>
+                  <b>Most Social Active Platform <span className="text-danger">*</span></b>
                 </label>
                 <select
-                  className="form-select"
+                  className={`form-select ${error === "" || kolProfile.social_active ? "" : "border-danger" }`}
                   name="social_active"
-                  onChange={handleChangeSocialActive}
+                  onChange={handleChange}
+                  value={kolProfile?.social_active}
                 >
-                  <option value={biodata?.social_active}>
-                    {biodata?.social_active}
-                  </option>
+                  <option defaultValue>Select Social Platform</option>
                   {Object.keys(social_active).map((keyName, keyIndex) => {
                     return (
                       <option key={keyIndex} value={keyName}>
@@ -514,38 +574,48 @@ const ProfileUpdate = () => {
                     );
                   })}
                 </select>
+                <span className="err text-danger">
+                  {error && kolProfile.social_active == "" && ( <>{error}</>)}
+                </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Bio</b>
+                  <b>Bio <span className="text-danger">*</span></b>
                 </label>
                 <textarea
-                  className="form-control"
+                  className={`form-control ${error === "" || kolProfile.bio ? "" : "border-danger" }`}
                   name="bio"
                   onChange={handleChange}
-                  defaultValue={biodata.bio}
+                  value={kolProfile?.bio}
                   rows="6"
+                  placeholder="Enter Bio"
                 ></textarea>
+                <span className="err text-danger">
+                  {error && kolProfile.bio == "" && ( <>{error}</>)}
+                </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Enter Tags</b>
+                  <b>Enter Tags <span className="text-danger">*</span></b>
                 </label>
                 <input
                   value={input}
-                  placeholder="Enter a tag"
+                  placeholder="Enter tags"
                   onKeyDown={onKeyDown}
                   onKeyUp={onKeyUp}
                   name="tags"
-                  className="form-control"
+                  className={`form-control ${error === "" || kolProfile.tags ? "" : "border-danger" }`}
                   onChange={onChange}
                   // defaultValue={biodata.kolProfile.video_links}
                 />
+                <span className="err text-danger">
+                  {error && kolProfile.tags == "" && ( <>{error}</>)}
+                </span>
                 {tags.length ? (
                   <div className="tagDiv">
-                    {tags.map((tag, index) => (
+                    {kolProfile?.tags.map((tag, index) => (
                       <div className="tag btn-default">
                         {tag}
                         <button onClick={() => deleteTag(index)}>x</button>
@@ -560,7 +630,7 @@ const ProfileUpdate = () => {
               <div className="col-lg-6 col-sm-12 mt-3 d-flex">
                 <div className="profile-img-thumb">
                   <img
-                    src={`${imageUrl}${biodata.avatar}`}
+                    src={`${imageUrl}${biodata?.avatar}`}
                     height={50}
                     alt="Avatar"
                   />
@@ -581,7 +651,7 @@ const ProfileUpdate = () => {
               <div className="col-lg-6 col-sm-12 mt-3 d-flex">
                 <div className="profile-img-thumb">
                   <img
-                    src={`${imageUrl}${biodata.banner}`}
+                    src={`${imageUrl}${biodata?.banner}`}
                     height={50}
                     width={50}
                     alt="Banner"
@@ -602,9 +672,9 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Social Media Info</b>
+                  <b>Social Media Info <span className="text-danger">*</span></b>
                 </label>
-
+                {console.log(inputList)}
                 {inputList.map((x, i) => {
                   return (
                     <div className="col d-flex mb-2">
@@ -612,13 +682,12 @@ const ProfileUpdate = () => {
                         className="form-select me-3"
                         name="name"
                         onChange={(e) => handleInputChange(e, i)}
+                        value={x.name}
                       >
-                        <option value={x.name}>{x.name}</option>
+                        <option defaultValue>Social Media</option>
                         {Object.keys(social_active).map((keyName, keyIndex) => {
                           return (
-                            <option key={keyIndex} value={keyName}>
-                              {keyName}
-                            </option>
+                            <option key={keyIndex} value={keyName}>   {keyName} </option>
                           );
                         })}
                       </select>
@@ -632,29 +701,16 @@ const ProfileUpdate = () => {
                       <input
                         className="form-control  me-3"
                         name="followers"
-                        placeholder="30k"
+                        placeholder="30"
                         value={x.followers}
                         onChange={(e) => handleInputChange(e, i)}
                       />
-
                       <div className="btn-box">
                         {inputList.length !== 1 && (
-                          <button
-                            className="btn sub-btn"
-                            onClick={(e) => handleRemoveClick(e, i)}
-                          >
-                            {" "}
-                            -{" "}
-                          </button>
+                          <button className="btn sub-btn" onClick={(e) => handleRemoveClick(e, i)}>-</button>
                         )}
                         {inputList.length - 1 === i && (
-                          <button
-                            className="btn custom-btn"
-                            onClick={handleAddClick}
-                          >
-                            {" "}
-                            +{" "}
-                          </button>
+                          <button className="btn custom-btn" onClick={handleAddClick}>+</button>
                         )}
                       </div>
                     </div>
@@ -664,35 +720,24 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Video Links</b>
+                  <b>Video Links <span className="text-danger">*</span></b>
                 </label>
                 {videoList.map((x, i) => {
                   return (
                     <div className="col d-flex mb-2">
                       <input
                         name="videoLink"
-                        placeholder="Video Link"
+                        placeholder="Enter Video Link"
                         className="form-control me-3"
                         defaultValue={x}
                         onChange={(e) => handleInputVideoChange(e, i)}
                       />
-
                       <div className="btn-box">
                         {videoList.length !== 1 && (
-                          <button
-                            className="btn sub-btn"
-                            onClick={(e) => handleVideoRemoveClick(e, i)}
-                          >
-                            -
-                          </button>
+                          <button className="btn sub-btn" onClick={(e) => handleVideoRemoveClick(e, i)}> - </button>
                         )}
                         {videoList.length - 1 === i && (
-                          <button
-                            className="btn custom-btn "
-                            onClick={handleVideoAddClick}
-                          >
-                            +
-                          </button>
+                          <button className="btn custom-btn" onClick={handleVideoAddClick}>+</button>
                         )}
                       </div>
                     </div>
@@ -702,8 +747,8 @@ const ProfileUpdate = () => {
             </div>
 
             <div className="mt-4 mx-auto d-block">
-              <button type="submit" className="btn theme-btn form-text">
-                Submit
+              <button type="submit" className="btn theme-btn form-text spiner-btn">
+                {btnLoader ? <Loader type="spinner-cub" title={"Submit"} size={16} /> : 'Submit'}
               </button>
             </div>
           </form>

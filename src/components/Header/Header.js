@@ -255,9 +255,17 @@ const Header = () => {
                           </div>
 
                           
-                          <Dropdown.Item as="div">
-                            <Link className="list-item" to="/account"> Profile </Link>
-                          </Dropdown.Item>
+                          {role == 3 ? (
+                            <>
+                              <Dropdown.Item as="div">
+                                <Link className="list-item" to="/account"> Profile </Link>
+                              </Dropdown.Item>
+                            </>
+                          ) : (
+                            ""
+                          )}
+
+                          
 
                           <Dropdown.Item as="div">
                           {role == 3 ? (

@@ -862,3 +862,4 @@ h1.banner-title:first-child::nth-line(-n+2){
 .spiner-btn .sl-spinner1 .sl-loader { width: 28px; height: 28px; margin-top: -5px; }
 .spiner-btn .sl-spinner1 .sl-loader-title { font-weight: 500; font-size: 1.25rem;  line-height: 1.5;}
 
+.form-select { text-transform: capitalize;}

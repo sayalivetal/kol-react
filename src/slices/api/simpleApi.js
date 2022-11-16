@@ -154,10 +154,8 @@ export const getDealsListOfKol = async (callback,token) => {
 export const getKolAllAnnouncements = async (callback, token, page) => {
   const response = await fetch(
     `${API}/announcement/list?page=${page}&limit=5`,
-    {
+      {
       method: "GET",
-
-
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
