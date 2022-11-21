@@ -73,7 +73,7 @@ const KolListing = () => {
 
     const result = await response.json();
 
-//console.log("fsgdffffff",result);
+console.log("fsgdffffff",result);
     if(result.statusCode==200) {
       setDataLoad(false)
     }
@@ -89,7 +89,7 @@ const KolListing = () => {
     setPage((page) => page + 1);
     if (result.statusCode == 401) {
       localStorage.removeItem("token");
-      navigate("/login");
+     navigate("/login");
     }
     // setIsFetching(false);
   };

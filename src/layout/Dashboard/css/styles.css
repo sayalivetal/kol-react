@@ -58,3 +58,5 @@
 .spiner-btn .sl-spinner1 { flex-direction: row; align-items: flex-start; }
 .spiner-btn .sl-spinner1 .sl-loader { width: 28px; height: 28px; margin-top: -5px; }
 .spiner-btn .sl-spinner1 .sl-loader-title { font-weight: 500; font-size: 1rem;  line-height: 1.5;}
+
+.border-danger .css-1s2u09g-control { border-color: #dc3545!important;}

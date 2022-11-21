@@ -54,8 +54,10 @@ const LandingPage = () => {
 // featured list api
   useEffect(() => {
     const callback = (data) => {
+      if (data.length > 0) {
       setFeatures([ ...data ]);
-      //console.log("----------",data);
+      console.log("----------",data);
+     }
     };
     getfeaturedList(callback);
   }, []);
