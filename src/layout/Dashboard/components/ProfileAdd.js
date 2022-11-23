@@ -307,8 +307,8 @@ const ProfileAdd = () => {
         kolProfile.bio == "" ||
         kolProfile.tags == "" ||
         kolProfile.userImage == "" ||
-        kolProfile.userBanner == "" 
-        //kolProfile.video_links == ""
+        kolProfile.userBanner == "" ||
+        kolProfile.video_links == ""
       ) {
         setError("Please fill the mandatory filed");
         setBtnLoader(false);
@@ -640,7 +640,7 @@ const ProfileAdd = () => {
                     onChange={(e) => {
                       handleVideoChange(e, 0);
                     }}
-                    name={video_links}
+                    name="video_links"
 
                   />
                   <div className="btn-box">

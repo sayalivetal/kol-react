@@ -156,8 +156,11 @@ const Announcement = () => {
           toast.success(data?.payload?.message)
           navigate("../../dashboard/announcement/list");
           setBtnLoader(false)
-        }
-        else{
+        }else if (data.payload.statusCode === 500 ) {
+          toast.warning(data?.payload?.message)
+          navigate("../../dashboard/profile-add");
+          setBtnLoader(false)
+        }else{
           toast.error(data?.payload?.message)
           setBtnLoader(false)
         }

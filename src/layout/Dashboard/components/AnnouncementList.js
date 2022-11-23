@@ -15,7 +15,7 @@ const AnnouncementList = () => {
   const [page, setPage] = useState(1);
   const limit = 4;
 
-  console.log(page)
+ // console.log(page)
 
   useEffect(() => {
     const callback = (data) => {
@@ -40,8 +40,9 @@ const AnnouncementList = () => {
     const callback = (data) => {
       setAnnouncements([...data]);
     };
-    getKolAllAnnouncements(callback, token, page);
+    getKolAllAnnouncements(callback, token);
     setPage(pageNumber);
+    
 
   };
 
@@ -94,14 +95,15 @@ const AnnouncementList = () => {
             </table>
 
             
-            {announcements.length > 0 ? (
+            {announcements?.length > 0 ? (
    
               <Pagination
-                totalItemsCount={450}
-                onChange={handlePageChange}
+                
                 activePage={page}
-                // itemsCountPerPage={}
+                itemsCountPerPage={3}
+                totalItemsCount={announcements.length}
                 pageRangeDisplayed={3}
+                onChange={handlePageChange}
                 itemClass="page-item"
                 linkClass="page-link"
                 hideNavigation={false}
@@ -109,7 +111,7 @@ const AnnouncementList = () => {
             ) : (
                 <>
                 <h4>No more records</h4>
-                <Pagination
+                {/* <Pagination
                   totalItemsCount={450}
                   onChange={handlePageChange}
                   activePage={page}
@@ -118,7 +120,7 @@ const AnnouncementList = () => {
                   itemClass="page-item"
                   linkClass="page-link"
                   hideNavigation={false}
-                />
+                /> */}
               </>  
             )}
           </div>

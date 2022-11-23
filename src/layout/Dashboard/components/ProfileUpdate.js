@@ -154,7 +154,6 @@ const ProfileUpdate = () => {
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
-
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
@@ -171,7 +170,7 @@ const ProfileUpdate = () => {
   const handleAddClick = () => {
     setInputList([
       ...inputList,
-      { name: "", social_user_id: "", followers: "" }, //, social_icon: ""
+      { name: "", social_user_id: "", followers: "" },
     ]);
   };
 
@@ -203,6 +202,7 @@ const ProfileUpdate = () => {
       };
     });
   }, [inputList]);
+
   useEffect(() => {
     let x = lang.map((item, index) => {
       return item.value;
@@ -215,6 +215,7 @@ const ProfileUpdate = () => {
       };
     });
   }, [lang]);
+
   useEffect(() => {
     setKolProfile(() => {
       return {
@@ -360,6 +361,7 @@ const ProfileUpdate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setBtnLoader(true);
 
     const formData = new FormData();
 
@@ -392,7 +394,8 @@ const ProfileUpdate = () => {
           kolProfile.social_active == "" || 
           kolProfile.bio == "" || 
           kolProfile.tags == "" || 
-          kolProfile.video_links == ""  ) {
+          kolProfile.video_links == "" ||
+          kolProfile.social_media == "" ) {
           setError("Please fill the mandatory filed");
           setBtnLoader(false);
           return;
@@ -679,7 +682,7 @@ const ProfileUpdate = () => {
                   <b>Social Media Info <span className="text-danger">*</span></b>
                 </label>
 
-                {inputList.map((x, i) => {
+                {inputList.length > 0 && inputList.map((x, i) => {
                   return (
                     <div className="col d-flex mb-2">
                       <select
@@ -688,7 +691,7 @@ const ProfileUpdate = () => {
                         onChange={(e) => handleInputChange(e, i)}
                         value={x.name}
                       >
-                        <option defaultValue>Social Media</option>
+                        <option value="">Social Media</option>
                         {Object.keys(social_active).map((keyName, keyIndex) => {
                           return (
                             <option key={keyIndex} value={keyName}>   {keyName} </option>
@@ -708,6 +711,7 @@ const ProfileUpdate = () => {
                         placeholder="30"
                         value={x.followers}
                         onChange={(e) => handleInputChange(e, i)}
+                        
                       />
                       <div className="btn-box">
                         {inputList.length !== 1 && (
@@ -720,6 +724,10 @@ const ProfileUpdate = () => {
                     </div>
                   );
                 })}
+
+                    <span className="err text-danger">
+                      {error && inputList?.length == "" && ( <>{error}</>)}
+                    </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
