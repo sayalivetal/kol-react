@@ -146,17 +146,21 @@ const Announcement = () => {
     formData.append("end_date", announcement.end_date);
     formData.append("description", announcement.description);
 
-    if (announcement.title == "" || announcement.social_platform == "" || announcement.start_date_time == "" || announcement.end_date_time == "" || announcement.description == "" ) {
+    if (announcement.title == "" || announcement.social_platform == "" || announcement.start_date == "" || announcement.end_date_time == "" || announcement.description == "" ) {
       setError("Please fill the mandatory filed");
-      setBtnLoader(false)
+      setBtnLoader(false);
+      return;
     }else {
       dispatch(announceDataFormSubmission(formData)).then((data) => {
         if (data.payload.statusCode === 201 || data.payload.statusCode === 202 ) {
           toast.success(data?.payload?.message)
           navigate("../../dashboard/announcement/list");
           setBtnLoader(false)
-        }
-        else{
+        }else if (data.payload.statusCode === 500 ) {
+          toast.warning(data?.payload?.message)
+          navigate("../../dashboard/profile-add");
+          setBtnLoader(false)
+        }else{
           toast.error(data?.payload?.message)
           setBtnLoader(false)
         }
@@ -215,7 +219,7 @@ console.log(error);
                     onChange={handleChange}
                     value={announcement.social_platform ? announcement.social_platform : "Select Social platform"}
                   >
-                    <option defaultValue>Select Social platform</option>
+                    <option value="">Select Social platform</option>
                     {/* <option value={announcement?.social_platform}>
                         {announcement.social_platform ? announcement.social_platform : "Social platform"}
                     </option> */}
@@ -243,12 +247,13 @@ console.log(error);
                 </label>
                 <DatePicker
                   selected={startDate}
-                  name="start_date_time"
+                  name="start_date"
                   onChange={(date) => setStartDate(date)}
                   timeInputLabel="Time:"
                   dateFormat="yyyy-MM-dd hh:mm:ss "
                   showTimeInput
                   value={announcement.start_date}
+                  minDate={moment().toDate()}
                   className={`form-control ${error === "" || announcement.start_date
                       ? ""
                       : "border-danger"
@@ -274,6 +279,7 @@ console.log(error);
                   dateFormat="yyyy-MM-dd hh:mm:ss "
                   showTimeInput
                   name="end_date_time"
+                  minDate={moment().toDate()}
                   value={announcement.end_date}
                   className={`form-control ${error === "" || announcement.end_date
                       ? ""

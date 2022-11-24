@@ -151,9 +151,9 @@ export const getDealsListOfKol = async (callback,token) => {
 
 
 
-export const getKolAllAnnouncements = async (callback, token, page) => {
+export const getKolAllAnnouncements = async (callback, token, ) => {
   const response = await fetch(
-    `${API}/announcement/list?page=${page}&limit=5`,
+    `${API}/announcement/list`,
       {
       method: "GET",
       headers: {

@@ -96,17 +96,20 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setBtnLoader(true);
-    if (fieldError.email.length > 0 || fieldError.password.length > 0) {
+    if (fieldError?.email?.length > 0 || fieldError?.password?.length > 0) {
       setBtnLoader(false);
+  
       return;
     }
     if (loginData.email == "" || loginData.password == "") {
       setError("Please fill the mandatory filed");
-      setStatus(true);
+      //setStatus(true);
       setBtnLoader(false);
+      return;
     } else {
       dispatch(LoginUser(loginData)).then((data) => {
         console.log(data);
+        
         if (data?.payload?.data?.token) {
           navigate("/home");
           toast.success(data?.payload?.message);
@@ -116,10 +119,18 @@ const Login = () => {
           //localStorage.setItem("email",loginData.email)
           toast.success(data?.payload?.message);
           setBtnLoader(false);
+        } else if (data?.payload?.statusCode === 404) {
+          toast.error(data?.payload?.message);
+          setBtnLoader(false);
+          setLoginData({
+            email: "",
+            password: "",
+          })
         } else {
           toast.error(data?.payload?.message);
           setBtnLoader(false);
         }
+        
       });
     }
     e.target.reset();
@@ -163,6 +174,7 @@ const Login = () => {
           navigate("/home");
         } else {
           navigate("/role");
+          toast.success(data.payload.message)
         }
       }
       // if (data?.payload?.data?.token) {
@@ -214,7 +226,7 @@ const Login = () => {
                           placeholder="Enter email"
                           name="email"
                           onChange={handleChange}
-                          // autoComplete="off"
+                          autoComplete="off"
                         />
                         <span className="err text-danger">
                           {fieldError.email ||

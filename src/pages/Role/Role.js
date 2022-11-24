@@ -40,10 +40,11 @@ const Role = () => {
       toast.error("Please select role first");
       } else if (role && email) {
         dispatch(updateRole({ role, email })).then((data) => {
-      console.log(data)
-          if(data?.payload?.data?.token){
+     
+          if(data?.payload?.statusCode === 200){
+            localStorage.setItem("token",data.payload.data.token)
             toast.success(data.payload.message)
-            navigate('/home')
+            navigate("/home");
           }
           toast.error(data.payload.msg);
         });

@@ -52,12 +52,12 @@ const Header = () => {
     };
     getAllCategory(callback, token);
   }, []);
-  useEffect(() => {
-    if (isError) {
-      dispatch(clearState());
-      navigate("/login");
-    }
-  }, [isError]);
+  // useEffect(() => {
+  //   if (isError) {
+  //     dispatch(clearState());
+  //     navigate("/login");
+  //   }
+  // }, [isError]);
   useEffect(() => {
     return () => {
       dispatch(clearState());

@@ -35,7 +35,7 @@ const ProfileUpdate = () => {
   const [selectedFile, setSelectedFile] = useState();
   const [bannerFile, setBannerFile] = useState();
   const [videoList, setVideoList] = useState([]);
-  const [b, setA] = useState([]);
+  const [lang, setLang] = useState([]);
   const [input, setInput] = useState("");
   const [isKeyReleased, setIsKeyReleased] = useState(false);
   const [video_links, setVideoLinks] = useState([]);
@@ -127,7 +127,7 @@ const ProfileUpdate = () => {
         value: item,
       };
     });
-    setA([...a]);
+    setLang([...a]);
   }, [selected]);
 
   useEffect(() => {
@@ -154,7 +154,6 @@ const ProfileUpdate = () => {
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
-
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
@@ -171,7 +170,7 @@ const ProfileUpdate = () => {
   const handleAddClick = () => {
     setInputList([
       ...inputList,
-      { name: "", social_user_id: "", followers: "" }, //, social_icon: ""
+      { name: "", social_user_id: "", followers: "" },
     ]);
   };
 
@@ -203,8 +202,9 @@ const ProfileUpdate = () => {
       };
     });
   }, [inputList]);
+
   useEffect(() => {
-    let x = b.map((item, index) => {
+    let x = lang.map((item, index) => {
       return item.value;
     });
 
@@ -214,7 +214,8 @@ const ProfileUpdate = () => {
         languages: [...x],
       };
     });
-  }, [b]);
+  }, [lang]);
+
   useEffect(() => {
     setKolProfile(() => {
       return {
@@ -335,7 +336,7 @@ const ProfileUpdate = () => {
         video_links: [...videoList],
       };
     });
-  }, [tags, inputList, videoList, biodata, kolType ]);
+  }, [   biodata, kolType ]);
 
 
 
@@ -344,14 +345,14 @@ const ProfileUpdate = () => {
   };
 
   const languageHandleChange = (e) => {
-    setA([...e]);
+    setLang([...e]);
   };
 
   const {
     biodata: { kolProfileData },
   } = useSelector(dashboardSelector);
 
-  let a = Object.entries(language).map(([key, value]) => {
+  let langList = Object.entries(language).map(([key, value]) => {
     return {
       label: key,
       value: value,
@@ -360,6 +361,7 @@ const ProfileUpdate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setBtnLoader(true);
 
     const formData = new FormData();
 
@@ -392,10 +394,16 @@ const ProfileUpdate = () => {
           kolProfile.social_active == "" || 
           kolProfile.bio == "" || 
           kolProfile.tags == "" || 
-          kolProfile.video_links == ""  ) {
+          kolProfile.video_links == "" ||
+          kolProfile.social_media == "" ) {
           setError("Please fill the mandatory filed");
-          setBtnLoader(false)
-      } else {
+          setBtnLoader(false);
+          return;
+      } if (fieldError.length > 0 ){ 
+        setBtnLoader(false)
+        return;
+      }
+      else {
               dispatch(bioDataFormSubmission(formData)).then((data) => {
                 if(data?.payload?.status){
                   toast.success(data?.payload?.message)
@@ -471,7 +479,7 @@ const ProfileUpdate = () => {
                   onChange={handleChange}
                   value={kolProfile?.kol_type ? kolProfile?.kol_type : "No Type"}
                 >
-                  <option defaultValue>Select Kol Type</option>
+                  <option value="">Select Kol Type</option>
                   {categoryList &&
                     Object.entries(categoryList).map(([key, value]) => (
                       <option key={key} value={key}>
@@ -510,7 +518,7 @@ const ProfileUpdate = () => {
                   name="state"
                   value={kolProfile?.state}
                 >
-                  <option defaultValue>Select State</option>
+                  <option value="">Select State</option>
                   {state &&
                     Object.entries(state).map(([key, value]) => (
                       <option value={key}>{value}</option>
@@ -540,15 +548,15 @@ const ProfileUpdate = () => {
 
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className=" form-label">
-                  <b>Language</b>
+                  <b>Language <span className="text-danger">*</span></b>
                 </label>
                 <Select
-                  options={a}
+                  options={langList}
                   name="languages"
                   onChange={languageHandleChange}
                   isMulti
-                  value={b}
-                  className={`text-capitalize ${error === "" || kolProfile.languages ? "" : "border-danger" }`}
+                  value={lang}
+                  className={`text-capitalize ${error === "" || kolProfile?.languages?.length  ? "" : "border-danger" }`}
                 />
                 <span className="err text-danger">
                   {error && kolProfile.languages == "" && ( <>{error}</>)}
@@ -565,7 +573,7 @@ const ProfileUpdate = () => {
                   onChange={handleChange}
                   value={kolProfile?.social_active}
                 >
-                  <option defaultValue>Select Social Platform</option>
+                  <option value="">Select Social Platform</option>
                   {Object.keys(social_active).map((keyName, keyIndex) => {
                     return (
                       <option key={keyIndex} value={keyName}>
@@ -606,9 +614,8 @@ const ProfileUpdate = () => {
                   onKeyDown={onKeyDown}
                   onKeyUp={onKeyUp}
                   name="tags"
-                  className={`form-control ${error === "" || kolProfile.tags ? "" : "border-danger" }`}
+                  className={`form-control ${error === "" || kolProfile?.tags?.length ? "" : "border-danger" }`}
                   onChange={onChange}
-                  // defaultValue={biodata.kolProfile.video_links}
                 />
                 <span className="err text-danger">
                   {error && kolProfile.tags == "" && ( <>{error}</>)}
@@ -674,8 +681,8 @@ const ProfileUpdate = () => {
                 <label className="form-label">
                   <b>Social Media Info <span className="text-danger">*</span></b>
                 </label>
-                {console.log(inputList)}
-                {inputList.map((x, i) => {
+
+                {inputList.length > 0 && inputList.map((x, i) => {
                   return (
                     <div className="col d-flex mb-2">
                       <select
@@ -684,7 +691,7 @@ const ProfileUpdate = () => {
                         onChange={(e) => handleInputChange(e, i)}
                         value={x.name}
                       >
-                        <option defaultValue>Social Media</option>
+                        <option value="">Social Media</option>
                         {Object.keys(social_active).map((keyName, keyIndex) => {
                           return (
                             <option key={keyIndex} value={keyName}>   {keyName} </option>
@@ -692,18 +699,19 @@ const ProfileUpdate = () => {
                         })}
                       </select>
                       <input
-                        className="form-control  me-3"
+                        className="form-control  me-3 w-50"
                         name="social_user_id"
                         placeholder="Enter User Id"
                         value={x.social_user_id}
                         onChange={(e) => handleInputChange(e, i)}
                       />
                       <input
-                        className="form-control  me-3"
+                        className="form-control  me-3 w-50"
                         name="followers"
                         placeholder="30"
                         value={x.followers}
                         onChange={(e) => handleInputChange(e, i)}
+                        
                       />
                       <div className="btn-box">
                         {inputList.length !== 1 && (
@@ -716,6 +724,10 @@ const ProfileUpdate = () => {
                     </div>
                   );
                 })}
+
+                    <span className="err text-danger">
+                      {error && inputList?.length == "" && ( <>{error}</>)}
+                    </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
@@ -724,12 +736,13 @@ const ProfileUpdate = () => {
                 </label>
                 {videoList.map((x, i) => {
                   return (
+                    <>
                     <div className="col d-flex mb-2">
                       <input
-                        name="videoLink"
+                        name="video_links"
                         placeholder="Enter Video Link"
-                        className="form-control me-3"
-                        defaultValue={x}
+                        className={`form-control me-3 ${error === "" || kolProfile?.video_links?.length ? "" : "border-danger" }`}
+                        value={x}
                         onChange={(e) => handleInputVideoChange(e, i)}
                       />
                       <div className="btn-box">
@@ -741,6 +754,10 @@ const ProfileUpdate = () => {
                         )}
                       </div>
                     </div>
+                    <span className="err text-danger">
+                    {error && kolProfile.video_links == "" && ( <>{error}</>)}
+                  </span>
+                  </>
                   );
                 })}
               </div>

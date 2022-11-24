@@ -40,7 +40,7 @@ const ProfileAdd = () => {
   const [count, setCount] = useState(0);
   const [linkCount, setLinkCount] = useState(0);
   const [video_links, setVideoLinks] = useState([]);
-  const [b, setA] = useState([]);
+  const [lang, setLang] = useState([]);
  
   let token = localStorage.getItem("token");
  
@@ -123,7 +123,7 @@ const ProfileAdd = () => {
 
 
   useEffect(() => {
-    let x = b.map((item, index) => {
+    let x = lang.map((item, index) => {
       return item.value;
     });
     setKolProfile(() => {
@@ -132,7 +132,7 @@ const ProfileAdd = () => {
         languages: [...x],
       };
     });
-  }, [b]);
+  }, [lang]);
 
   // For Social Media video link
   useEffect(() => {
@@ -248,7 +248,7 @@ const ProfileAdd = () => {
   };
 
   const languageHandleChange = (e) => {
-    setA([...e]);
+    setLang([...e]);
   };
 
   useEffect(() => {
@@ -272,7 +272,7 @@ const ProfileAdd = () => {
     getAllLanguage(callback, token);
   }, []);
 
-  let a = Object.entries(language).map(([key, value]) => {
+  let langList = Object.entries(language).map(([key, value]) => {
     return {
       label: key,
       value: value,
@@ -307,12 +307,17 @@ const ProfileAdd = () => {
         kolProfile.bio == "" ||
         kolProfile.tags == "" ||
         kolProfile.userImage == "" ||
-        kolProfile.userBanner == "" 
-        //kolProfile.video_links == ""
+        kolProfile.userBanner == "" ||
+        kolProfile.video_links == ""
       ) {
         setError("Please fill the mandatory filed");
-        setBtnLoader(false)
-    }else {
+        setBtnLoader(false);
+        return;
+    }if (fieldError.length > 0 ){ 
+      setBtnLoader(false)
+      return;
+    }
+    else {
             dispatch(bioDataFormSubmission(formData)).then((data) => {
             if(data?.payload?.status) {
               toast.success(data?.payload?.message)
@@ -388,7 +393,7 @@ const ProfileAdd = () => {
                   name="kol_type"
                   onChange={handleChange}
                 >
-                  <option defaultValue>Select Type</option>
+                  <option value="">Select Type</option>
                   {/* {console.log(categoryList)} */}
                   {categoryList &&
                     Object.entries(categoryList).map(([key, value]) => (
@@ -426,7 +431,7 @@ const ProfileAdd = () => {
                   onChange={handleChange}
                   name="state"
                 >
-                  <option defaultValue>Select State</option>
+                  <option value="">Select State</option>
                   {state &&
                     Object.entries(state).map(([key, value]) => (
                       <option value={key}>{value}</option>
@@ -459,9 +464,9 @@ const ProfileAdd = () => {
                 </label>
 
                 <Select
-                  className={`text-capitalize ${error === "" || kolProfile.languages ? "" : "border-danger"}`}
+                  className={`text-capitalize ${error === "" || kolProfile?.languages?.length ? "" : "border-danger"}`}
                   name="languages"
-                  options={a}
+                  options={langList}
                   onChange={languageHandleChange}
                   isMulti />
                   <span className="err text-danger">
@@ -479,7 +484,7 @@ const ProfileAdd = () => {
                   name="social_active"
                   onChange={handleChangeSocialActive}
                 >
-                  <option defaultValue>Select Social Platform</option>
+                  <option value="">Select Social Platform</option>
                   {Object.keys(social_active).map((keyName, keyIndex) => {
                     return (
                       <option key={keyIndex} value={keyName}>
@@ -514,7 +519,7 @@ const ProfileAdd = () => {
                   <b>Enter Tags <span className="text-danger">*</span></b>
                 </label>
                 <input
-                  className={`form-control ${error === "" || kolProfile.tags ? "" : "border-danger"}`}  
+                  className={`form-control ${error === "" || kolProfile?.tags?.length ? "" : "border-danger"}`}  
                   name="tags"
                   type="text"
                   value={input}
@@ -584,7 +589,7 @@ const ProfileAdd = () => {
                         name="name"
                         onChange={(e) => handleInputChange(e, i)}
                       >
-                        <option defaultValue>Social Media</option>
+                        <option value="">Social Media</option>
                         {Object.keys(social_active).map((keyName, keyIndex) => {
                           return (
                             <option key={keyIndex} value={keyName}>
@@ -593,15 +598,16 @@ const ProfileAdd = () => {
                           );
                         })}
                       </select>
+
                       <input
-                        className="form-control me-3"
+                        className="form-control me-3 w-50"
                         name="social_user_id"
                         placeholder="Enter User Id"
                         value={x.social_user_id}
                         onChange={(e) => handleInputChange(e, i)}
                       />
                       <input
-                        className="form-control me-3"
+                        className="form-control me-3 w-50"
                         name="followers"
                         placeholder="30"
                         value={x.followers}
@@ -629,16 +635,22 @@ const ProfileAdd = () => {
                 <div className="col d-flex mb-2">
                   <input
                     type="text"
-                    className="form-control me-3"
+                    className={`form-control me-3 ${error === "" || kolProfile?.video_links?.length ? "" : "border-danger" }`}
                     placeholder="Enter Video Link"
                     onChange={(e) => {
                       handleVideoChange(e, 0);
                     }}
+                    name="video_links"
+
                   />
                   <div className="btn-box">
                     <button type="button" name="video_links" className="btn custom-btn" onClick={() => setLinkCount(linkCount + 1)} > + </button>
                   </div>
+                  
                 </div>
+                <span className="err text-danger">
+                  {error && kolProfile.video_links == "" && ( <>{error}</>)}
+                </span>
 
                 {[...Array(linkCount)].map((_, i) => (
                   <div key={i} className="col d-flex mb-2">
