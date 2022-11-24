@@ -84,7 +84,10 @@ const LandingPage = () => {
   // users count api
   useEffect(() => {
     const callback = (data) => {
-      setTotalUsers([ ...data ]);
+      if(data.length > 0){
+        setTotalUsers([ ...data ]);
+      }
+
       //console.log("----------",data);
     };
     getTotalCounts(callback);
