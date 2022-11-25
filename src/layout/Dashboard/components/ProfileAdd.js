@@ -319,7 +319,8 @@ const ProfileAdd = () => {
     }
     else {
             dispatch(bioDataFormSubmission(formData)).then((data) => {
-            if(data?.payload?.status) {
+            if(data?.payload?.statusCode === 200) {
+              console.log("------------",data?.payload?.statusCode)
               toast.success(data?.payload?.message)
               navigate("../profile-view");
               setBtnLoader(false)
@@ -645,6 +646,14 @@ const ProfileAdd = () => {
                   />
                   <div className="btn-box">
                     <button type="button" name="video_links" className="btn custom-btn" onClick={() => setLinkCount(linkCount + 1)} > + </button>
+                  </div>
+                  <div className="btn-box">
+                      <button type="button" name="video_links" className="btn sub-btn"
+                        onClick={() => {
+                          setLinkCount(linkCount - 1);
+                          removeLastElement();
+                        }}
+                      > - </button>
                   </div>
                   
                 </div>

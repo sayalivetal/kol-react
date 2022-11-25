@@ -20,7 +20,7 @@ import { getKolprofile } from "../../../slices/api/simpleApi";
 import Loader from "react-js-loader";
 
 const ProfileUpdate = () => {
-  // const navigate = useNavigate();
+   const navigate = useNavigate();
 
   const [selected, setSelected] = useState([]);
 
@@ -405,13 +405,14 @@ const ProfileUpdate = () => {
       }
       else {
               dispatch(bioDataFormSubmission(formData)).then((data) => {
-                if(data?.payload?.status){
+                if(data?.payload?.statusCode === 200){
                   toast.success(data?.payload?.message)
                   setBtnLoader(false)
-                  const callback = (data) => {
-                    setBiodata(data);
-                  };
-                  getKolprofile(callback, token);
+                  navigate("../profile-view");
+                  // const callback = (data) => {
+                  //   setBiodata(data);
+                  // };
+                  // getKolprofile(callback, token);
                 }
                 else{
                   toast.error(data?.payload?.message)
