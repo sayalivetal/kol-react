@@ -143,6 +143,9 @@ const Register = () => {
           toast.success(data.payload.message);
           setBtnLoader(false)
           //localStorage.setItem("email", data.payload.email)
+        }else {
+          toast.error(data?.payload?.message)
+          setBtnLoader(false)
         }
       });
       e.target.reset();

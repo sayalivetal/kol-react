@@ -282,7 +282,7 @@ const ProfileAdd = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    
+   // formData.append("userName", kolProfile.userName);
     formData.append("personal_email", kolProfile.personal_email);
     formData.append("kol_type", kolType);
     formData.append("city", kolProfile.city);
@@ -647,14 +647,7 @@ const ProfileAdd = () => {
                   <div className="btn-box">
                     <button type="button" name="video_links" className="btn custom-btn" onClick={() => setLinkCount(linkCount + 1)} > + </button>
                   </div>
-                  <div className="btn-box">
-                      <button type="button" name="video_links" className="btn sub-btn"
-                        onClick={() => {
-                          setLinkCount(linkCount - 1);
-                          removeLastElement();
-                        }}
-                      > - </button>
-                  </div>
+
                   
                 </div>
                 <span className="err text-danger">

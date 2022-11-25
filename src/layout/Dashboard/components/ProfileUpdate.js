@@ -159,10 +159,10 @@ const ProfileUpdate = () => {
     setInputList(list);
   };
   // handle click event of the Remove button
-  const handleRemoveClick = (e, index) => {
+  const handleRemoveClick = (e, i) => {
     e.preventDefault();
     const list = [...inputList];
-    list.splice(index, 1);
+    list.splice(i, 1);
     setInputList(list);
   };
 
@@ -174,6 +174,18 @@ const ProfileUpdate = () => {
     ]);
   };
 
+  useEffect(() => {
+    setKolProfile(() => {
+      return {
+        ...kolProfile,
+        social_media: [...inputList],
+      };
+    });
+  }, [inputList]);
+
+  console.log("---------", inputList)
+
+
   // handle input change
   const handleInputVideoChange = (e, index) => {
     const { value } = e.target;
@@ -183,9 +195,10 @@ const ProfileUpdate = () => {
   };
 
   // handle click event of the Remove button
-  const handleVideoRemoveClick = (index) => {
+  const handleVideoRemoveClick = (e, i ) => {
+   // console.log("-------------", e, i)
     const list = [...videoList];
-    list.splice(index, 1);
+    list.splice(i, 1);
     setVideoList(list);
   };
 
@@ -193,15 +206,16 @@ const ProfileUpdate = () => {
   const handleVideoAddClick = () => {
     setVideoList([...videoList, ""]);
   };
-
+ 
   useEffect(() => {
     setKolProfile(() => {
       return {
         ...kolProfile,
-        social_media: [...inputList],
+        video_links: [...videoList],
       };
     });
-  }, [inputList]);
+  }, [videoList]);
+
 
   useEffect(() => {
     let x = lang.map((item, index) => {
@@ -215,15 +229,6 @@ const ProfileUpdate = () => {
       };
     });
   }, [lang]);
-
-  useEffect(() => {
-    setKolProfile(() => {
-      return {
-        ...kolProfile,
-        video_links: [...videoList],
-      };
-    });
-  }, [videoList]);
 
   useEffect(() => {
     setKolProfile(() => {
@@ -304,10 +309,6 @@ const ProfileUpdate = () => {
   const onKeyUp = () => {
     setIsKeyReleased(true);
   };
-
-  // const handleChangeSocialActive = (e) => {
-  //    setSocialActive(Array.isArray(e) ? e.map((x) => x.value) : []);
-  // };
 
   useEffect(() => {
     const callback = (data) => {
@@ -394,8 +395,8 @@ const ProfileUpdate = () => {
           kolProfile.social_active == "" || 
           kolProfile.bio == "" || 
           kolProfile.tags == "" || 
-          kolProfile.video_links == "" ||
-          kolProfile.social_media == "" ) {
+          kolProfile.social_media == "" ||
+          kolProfile.video_links == "" ) {
           setError("Please fill the mandatory filed");
           setBtnLoader(false);
           return;
@@ -408,7 +409,7 @@ const ProfileUpdate = () => {
                 if(data?.payload?.statusCode === 200){
                   toast.success(data?.payload?.message)
                   setBtnLoader(false)
-                  navigate("../profile-view");
+                  //navigate("../profile-view");
                   // const callback = (data) => {
                   //   setBiodata(data);
                   // };
@@ -437,6 +438,7 @@ const ProfileUpdate = () => {
         <div className="card-body px-4">
           <form className="" onSubmit={handleSubmit}>
             <div className="row">
+
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
                   <b>Name</b>
@@ -731,7 +733,8 @@ const ProfileUpdate = () => {
                     </span>
               </div>
 
-              <div className="col-lg-6 col-sm-12 mt-3">
+
+            <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
                   <b>Video Links <span className="text-danger">*</span></b>
                 </label>
@@ -762,6 +765,10 @@ const ProfileUpdate = () => {
                   );
                 })}
               </div>
+
+              
+
+              
             </div>
 
             <div className="mt-4 mx-auto d-block">
