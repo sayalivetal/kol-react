@@ -49,6 +49,7 @@ const EmailVerify = () => {
       }else{
         toast.error(data?.payload?.message)
         setBtnLoader(false)
+        e.target.reset();
       }
       
    

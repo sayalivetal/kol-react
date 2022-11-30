@@ -5,8 +5,8 @@ import { UpdateUserProfile ,UpdateProfileImage} from "../../slices/AuthSlice/Aut
 import { useDispatch } from "react-redux";
 import { imageUrl } from "../../common/apis";
 import { toast } from "react-toastify";
-import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import { getAllStates } from "../../slices/api/simpleApi";
 
 
 const EditAccount = () => {
@@ -15,13 +15,14 @@ const EditAccount = () => {
   const dispatch = useDispatch();
   const [selectedFile,setSelectedFile] = useState(null)
   const [fieldError,setfieldError] = useState(null)
+  const [states, setStates] = useState({});
   const [formError,setFormError] = useState({
     phoneError : "",
     zipError : ""
   })
   const [userData, setUserData] = useState({
     firstName: "",
-    lastName: "",
+  //  lastName: "",
     phone: "",
     gender: "",
     address: "",
@@ -39,7 +40,7 @@ const EditAccount = () => {
    
       setUserData({
         firstName: data.name,
-        lastName: data.last_name,
+     //   lastName: data.last_name,
         phone: data.phone,
         gender: data.gender,
         address: data?.get_address?.address,
@@ -55,6 +56,21 @@ const EditAccount = () => {
     };
     getUserDetails(callback, token);
   }, []);
+
+
+  useEffect(() => {
+    const callback = (data) => {
+      setStates({ ...data });
+    };
+    getAllStates(callback);
+  }, []);
+
+
+
+
+
+
+
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
     if(e.target.name == "phone" && e.target.value.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)){
@@ -102,14 +118,16 @@ const EditAccount = () => {
       })
     }
   };
+
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(firstName && lastName && phone && gender && address &&city && zip && state && country){
+    if(firstName && phone && gender && address &&city && zip && state && country){
 
       if(phone.match(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/) &&  zip.match(/(^\d{6}$)|(^\d{6}-\d{6}$)/)){
 
         dispatch(UpdateUserProfile(userData)).then((data) => {
+          //console.log("-------------------->>>>>>>>",data)
           if (data?.payload?.statusCode === 202) {
             toast.success(data?.payload?.message)
             navigate("/account");
@@ -312,7 +330,7 @@ const EditAccount = () => {
                       <div className="col-12">
                         <input
                           type="text"
-                          className={`form-control ${(!city && fieldError)? "border-danger": ""}`}
+                          className={` form-control ${(!city && fieldError)? "border-danger": ""}`}
                           placeholder="Enter city"
                           name="city"
                           value={userData?.city}
@@ -327,7 +345,7 @@ const EditAccount = () => {
                       <label className="col-12 col-form-label fw-medium">
                         State <span className="text-danger">*</span>
                       </label>
-                      <div className="col-12">
+                      {/* <div className="col-12">
                         <input
                           type="text"
                           className={`form-control ${(!state && fieldError)? "border-danger": ""}`}
@@ -338,6 +356,23 @@ const EditAccount = () => {
                         />
                         <span className="err text-danger">
                         {!state && fieldError}
+                        </span>
+                      </div> */}
+                      <div className="col-12">
+                        <select
+                          className={`form-select ${(!state && fieldError)? "border-danger": ""}`}
+                          onChange={handleChange}
+                          name="state"
+                          value={userData?.state}
+                        >
+                          <option value="">Select State</option>
+                          {states &&
+                            Object.entries(states).map(([key, value]) => (
+                              <option value={key}>{value}</option>
+                            ))}
+                        </select>
+                        <span className="err text-danger">
+                          {!state && fieldError}
                         </span>
                       </div>
                     </div>

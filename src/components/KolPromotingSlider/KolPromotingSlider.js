@@ -68,7 +68,7 @@ const KolPromotingSlider = (features) => {
                             <h3 className="kol-user-name">{item.username}</h3>
                             <p>{item.bio}</p>
                             <div className="rating py-1">
-                              <h3 className="rating-count">{finalRating}</h3>
+                              <h3 className="rating-count">{finalRating.length > 0}</h3>
                               <ReactStars
                                 count={6}
                                 size={24}
@@ -81,16 +81,18 @@ const KolPromotingSlider = (features) => {
                       <div className="info py-2">
                         <i className="bi bi-geo-alt"></i>
                         <p>
-                          
-                          {item?.Address?.address +
-                            ", " +
-                            item?.Address?.landmark +
-                            ", " +
-                            item?.Address?.city +
+                          {console.log("----------------",item)}
+                          {
+                          // item?.address +
+                          //   ", " +
+                          //   item?.landmark +
+                          //   ", " +
+                            item?.city +
                             " , " +
-                            item?.Address?.state +
+                            item?.state +
                             " , " +
-                            item?.Address?.zip}
+                            item?.zip_code 
+                            }, Inida
                         </p>
                       </div>
                     </div>
