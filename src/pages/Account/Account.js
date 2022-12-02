@@ -32,11 +32,14 @@ const Account = () => {
               <div className="row justify-content-between py-4 list-row">
                 <div className="col-xl-2 col-lg-3 col-md-12 py-2 align-self-start user-thumb">
                   <div className="kol-profile-img">
-                    <img
+                    {userDetails?.avatar ? (
+                      <img
                       src={`${imageUrl}${userDetails?.avatar}`}
                       className="img-fluid"
                       alt="avatar"
                     />
+                    ) : "Avatar"}
+                    
                   </div>
                 </div>
                 <div className="col-xl-10 col-lg-9 col-md-12  px-4">

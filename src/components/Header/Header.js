@@ -92,7 +92,7 @@ const Header = () => {
     window.location.href = '/home';
   }
 
-
+//console.log("userDetails",userDetails.avatar)
   
   return (
     <header className="d-flex flex-wrap py-1 mb-4 header head-back-color">

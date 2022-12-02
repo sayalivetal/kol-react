@@ -22,14 +22,6 @@ const PaginatedItems = ({ itemsPerPage }) => {
         getKolAllAnnouncements(callback, token);
     }, []);
 
-    useEffect(() => {
-        const callback = (data) => {
-         //   console.log(data);
-            setAnnouncements([...data]);
-        };
-        getKolAllAnnouncements(callback, token);
-    }, []);
-
 
     // We start with an empty list of items.
     const [currentItems, setCurrentItems] = useState(null);

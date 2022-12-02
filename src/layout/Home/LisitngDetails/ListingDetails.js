@@ -63,8 +63,6 @@ const ListingDetails = () => {
   };
 
 
- // console.log("kol-profile state", kolProfile);
-
   return (
     <>
       {kolProfile &&
@@ -86,7 +84,7 @@ const ListingDetails = () => {
                     <div className="row justify-content-between py-4 list-row">
                       <div className="col-lg-2 py-2">
                         <div className="kol-user-img-details">
-                          <img className="img-fluid" src={`${imageUrl}${item.avatar}`} alt="avatar" />
+                          {item?.avatar ? (<img className="img-fluid" src={`${imageUrl}${item.avatar}`} alt="Avatar" />) : "Avatar" }
                         </div>
                       </div>
                       <div className="col-lg-10  py-2">

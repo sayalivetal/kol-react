@@ -6,6 +6,10 @@ const Navbar = () => {
 const navigate = useNavigate();    
 const signOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("avatar");
+    localStorage.removeItem("email");
+    localStorage.removeItem("persist:root");
     navigate("/");
 }
   return (

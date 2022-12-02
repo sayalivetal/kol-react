@@ -813,8 +813,10 @@ h1.banner-title:first-child::nth-line(-n+2){
   overflow: hidden;
   background-color: #e3e3e3;
   width: 100%;
-  display: inline-table;
+  display: flex;
   margin-bottom: 30px;
+  align-items: center;
+  justify-content: center;
 }
 .kol-profile-img {
   max-height: 280px;
@@ -823,8 +825,10 @@ h1.banner-title:first-child::nth-line(-n+2){
   overflow: hidden;
   background-color: #e3e3e3;
   width: 100%;
-  display: inline-table;
+  display: flex;
   margin-bottom: 30px;
+  align-items: center;
+  justify-content: center;
 }
 
 .fw-medium { font-weight: 500;}
