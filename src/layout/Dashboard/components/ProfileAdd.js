@@ -582,6 +582,7 @@ const ProfileAdd = () => {
                   <b>Social Media Info <span className="text-danger">*</span></b>
                 </label>
 
+
                 {inputList.map((x, i) => {
                   return (
                     <div className="col d-flex mb-2">
@@ -593,12 +594,13 @@ const ProfileAdd = () => {
                         <option value="">Social Media</option>
                         {Object.keys(social_active).map((keyName, keyIndex) => {
                           return (
-                            <option key={keyIndex} value={keyName}>
+                            <option key={keyIndex} value={keyName}  >
                               {keyName}
                             </option>
                           );
                         })}
                       </select>
+                      
 
                       <input
                         className="form-control me-3 w-50"
@@ -609,6 +611,7 @@ const ProfileAdd = () => {
                       />
                       <input
                         className="form-control me-3 w-50"
+                        type="number"
                         name="followers"
                         placeholder="30"
                         value={x.followers}

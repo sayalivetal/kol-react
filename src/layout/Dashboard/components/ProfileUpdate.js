@@ -158,10 +158,10 @@ console.log(inputList);
     const list = [...inputList];
     list[index][name] = value;
     setInputList(list);
-    if(e.target.name == "name"){
+    // if(e.target.name == "name"){
 
-      console.log("ggggggggggggggggggggggg",value)
-    }
+    //   console.log("ggggggggggggggggggggggg",value)
+    // }
   };
 
 
@@ -479,14 +479,14 @@ console.log(socialError);
     }
     else {
       dispatch(bioDataFormSubmission(formData)).then((data) => {
-        if (data?.payload?.statusCode === 200) {
+        if (data?.payload?.statusCode === 202) {
           toast.success(data?.payload?.message)
           setBtnLoader(false)
-          //navigate("../profile-view");
-          // const callback = (data) => {
-          //   setBiodata(data);
-          // };
-          // getKolprofile(callback, token);
+          navigate("../profile-view");
+          const callback = (data) => {
+            setBiodata(data);
+          };
+          getKolprofile(callback, token);
         }
         else {
           toast.error(data?.payload?.message)
@@ -640,7 +640,7 @@ console.log(socialError);
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
-                {/* <label className=" form-label">
+                <label className=" form-label">
                   <b>Most Social Active Platform <span className="text-danger">*</span></b>
                 </label>
                 <select
@@ -660,7 +660,7 @@ console.log(socialError);
                 </select>
                 <span className="err text-danger">
                   {error && kolProfile.social_active == "" && (<>{error}</>)}
-                </span> */}
+                </span>
               </div>
 
               <div className="col-lg-6 col-sm-12 mt-3">
@@ -761,12 +761,12 @@ console.log(socialError);
                 {inputList.length > 0 && inputList.map((x, i) => {
                   return (<>
                     <div className="col d-flex mb-2">
-                      <div className="form-control w-auto w-nowrap me-3">
+                      {/* <div className="form-control w-auto w-nowrap me-3">
                         <label>
                           <input name="social_active" type="checkbox" value="" className="form-checkbox me-1 " />
                           <span>Most Active</span>
                         </label>
-                      </div>
+                      </div> */}
                       
                       
                       <select
@@ -793,6 +793,7 @@ console.log(socialError);
                       />
                       <input
                         className="form-control  me-3 w-50"
+                        type="number"
                         name="followers"
                         placeholder="30"
                         value={x.followers}
