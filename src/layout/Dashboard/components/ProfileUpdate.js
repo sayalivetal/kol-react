@@ -298,8 +298,8 @@ console.log(socialError);
   };
 
   const handleVideoRemoveClick = (e,i) => {
-    console.log("-------------", i);
-    //e.preventDefault();
+  //  console.log("-------------", i);
+    e.preventDefault();
     const list = [...videoList];
     list.splice(i, 1);
     setVideoList(list);
@@ -927,7 +927,7 @@ console.log(socialError);
                           {videoList.length - 1 === i && (
                             <button
                               className="btn custom-btn"
-                              onClick={handleVideoAddClick}
+                              onClick={(e) => handleVideoAddClick(e, i)}
                             >
                               +
                             </button>

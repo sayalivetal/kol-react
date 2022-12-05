@@ -51,10 +51,12 @@ const ProfileAdd = () => {
   initialArr["social_user_id"] = "";
   initialArr["followers"] = "";
   initialArr["social_icon"] = "";
+
+
   const handleVideoRemoveClick = (e, i) => {
-    console.log("-------------", i);
+   // console.log("-------------", i);
     e.preventDefault();
-     e.stopPropagation();
+    //  e.stopPropagation();
     const list = [...videoList];
     list.splice(i, 1);
     setVideoList(list);
