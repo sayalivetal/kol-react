@@ -53,7 +53,8 @@ const ProfileAdd = () => {
   initialArr["social_icon"] = "";
   const handleVideoRemoveClick = (e, i) => {
     console.log("-------------", i);
-    //e.preventDefault();
+    e.preventDefault();
+     e.stopPropagation();
     const list = [...videoList];
     list.splice(i, 1);
     setVideoList(list);
