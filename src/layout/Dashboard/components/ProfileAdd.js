@@ -99,7 +99,7 @@ const ProfileAdd = () => {
     // setVideoList([...videoList, ""]);
     setInputList([
       ...inputList,
-      { name: "", social_user_id: "", followers: "", social_icon: "" },
+      { name: "", social_user_id: "", followers: "" },
     ]);
   };
   const onKeyDownVideo = (e) => {
@@ -146,6 +146,7 @@ const ProfileAdd = () => {
   }, []);
   const [socialNameError, setSocialNameError] = useState(false);
   console.log(social_active);
+
   useEffect(() => {
     inputList.map((item, index) => {
       if (
@@ -293,13 +294,13 @@ const ProfileAdd = () => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
 
-  const handleVideoChange = (e) => {
-    setVideoLinks((prevState) => [...prevState, e.target.value]);
-  };
+  // const handleVideoChange = (e) => {
+  //   setVideoLinks((prevState) => [...prevState, e.target.value]);
+  // };
 
-  const removeLastElement = () => {
-    return kolProfile.video_links.pop();
-  };
+  // const removeLastElement = () => {
+  //   return kolProfile.video_links.pop();
+  // };
 
   const languageHandleChange = (e) => {
     setLang([...e]);
@@ -738,14 +739,11 @@ const ProfileAdd = () => {
                             -
                           </button>
                         )}
-                        {inputList.length - 1 === i && (
+                        {inputList.length - 1 === i && inputList.length < 5 &&  (
                           <button
                             className="btn custom-btn"
-                            onClick={handleAddClick}
-                          >
-                            {" "}
-                            +
-                          </button>
+                            onClick={(e) => handleAddClick(e, i)}
+                          >  + </button>
                         )}
                       </div>
                     </div>
@@ -757,6 +755,7 @@ const ProfileAdd = () => {
                 {/* <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div> */}
               </div>
               {/* {console.log(kolProfile?.social_active.length, inputList)} */}
+
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
                   <b>

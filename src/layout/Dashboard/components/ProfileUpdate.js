@@ -34,13 +34,16 @@ const ProfileUpdate = () => {
   const [tags, setTags] = useState([]);
   const [selectedFile, setSelectedFile] = useState();
   const [bannerFile, setBannerFile] = useState();
-  const [videoList, setVideoList] = useState([]);
+  const [videoList, setVideoList] = useState([""]);
   const [lang, setLang] = useState([]);
   const [input, setInput] = useState("");
+  const [socialNameError, setSocialNameError] = useState(false);
   const [isKeyReleased, setIsKeyReleased] = useState(false);
   const [video_links, setVideoLinks] = useState([]);
   const [error, setError] = useState("");
   const [fieldError, setFieldError] = useState("");
+  const [videoError, setVideoError] = useState(false);
+  
 
   const [socialError, setSocialError] = useState({
     name: "",
@@ -121,6 +124,18 @@ const ProfileUpdate = () => {
 
 
 console.log(inputList);
+
+
+const onKeyDownVideo = (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+};
+
+
+
+
   useEffect(() => {
     let a = selected.map((item, index) => {
       return {
@@ -187,16 +202,37 @@ console.log(inputList);
   };
 
 
-  console.log("gdshgfdhfghdfghdfg", socialError.name);
+  // useEffect(() => {
+  //   setKolProfile(() => {
+  //     return {
+  //       ...kolProfile,
+  //       social_media: [...inputList],
+  //     };
+  //   });
+  // }, [inputList]);
+
 
   useEffect(() => {
-    setKolProfile(() => {
-      return {
-        ...kolProfile,
-        social_media: [...inputList],
-      };
+    inputList.map((item, index) => {
+      if (
+        item.name == "" ||
+        item.social_user_id == "" ||
+        item.followers == ""
+      ) {
+        setSocialNameError(true);
+      } else {
+        setSocialNameError(false);
+        setKolProfile(() => {
+          return {
+            ...kolProfile,
+            social_media: [...inputList],
+          };
+        });
+      }
     });
-  }, [inputList]);
+  }, [inputList, social_active]);
+
+
 
   useEffect(()=>{
     
@@ -254,34 +290,49 @@ console.log(inputList);
 
 
 console.log(socialError);
-  // handle input change
-  const handleInputVideoChange = (e, index) => {
+   const handleInputVideoChange = (e, index) => {
     const { value } = e.target;
     const list = [...videoList];
     list[index] = value;
     setVideoList(list);
   };
 
-  // handle click event of the Remove button
-  const handleVideoRemoveClick = (e, i) => {
-    // console.log("-------------", e, i)
+  const handleVideoRemoveClick = (e,i) => {
+    console.log("-------------", i);
+    //e.preventDefault();
     const list = [...videoList];
     list.splice(i, 1);
     setVideoList(list);
   };
-
-  // handle click event of the Add button
   const handleVideoAddClick = (e, i) => {
-    e.preventDefault();
+    //e.preventDefault();
+    // e.stopPropagation();
     setVideoList([...videoList, ""]);
   };
 
+
+  // useEffect(() => {
+  //   setKolProfile(() => {
+  //     return {
+  //       ...kolProfile,
+  //       video_links: [...videoList],
+  //     };
+  //   });
+  // }, [videoList]);
+
   useEffect(() => {
-    setKolProfile(() => {
-      return {
-        ...kolProfile,
-        video_links: [...videoList],
-      };
+    videoList.map((item, index) => {
+      if (item == "") {
+        setVideoError(true);
+      } else {
+        setVideoError(false);
+        setKolProfile(() => {
+          return {
+            ...kolProfile,
+            video_links: [...videoList],
+          };
+        });
+      }
     });
   }, [videoList]);
 
@@ -465,7 +516,9 @@ console.log(socialError);
       kolProfile.bio == "" ||
       kolProfile.tags == "" ||
       kolProfile.social_media == "" ||
-      kolProfile.video_links == "") {
+      //kolProfile.video_links == "" ||
+      socialNameError ||
+      videoError ) {
       setError("Please fill the mandatory filed");
       setBtnLoader(false);
       return;
@@ -757,77 +810,95 @@ console.log(socialError);
                 <label className="form-label">
                   <b>Social Media Info <span className="text-danger">*</span></b>
                 </label>
-                {console.log(inputList, socialError.name ,socialError.social_user_id ,socialError.followers)}
-                {inputList.length > 0 && inputList.map((x, i) => {
-                  return (<>
+
+
+                {inputList.map((x, i, array) => {
+                  //console.log(inputList);
+
+                  return (
                     <div className="col d-flex mb-2">
-                      {/* <div className="form-control w-auto w-nowrap me-3">
-                        <label>
-                          <input name="social_active" type="checkbox" value="" className="form-checkbox me-1 " />
-                          <span>Most Active</span>
-                        </label>
-                      </div> */}
-                      
-                      
                       <select
                         className="form-select me-3"
                         name="name"
                         onChange={(e) => handleInputChange(e, i)}
+                        onKeyDown={onKeyDownVideo}
                         value={x.name}
                       >
                         <option value="">Social Media</option>
                         {Object.keys(social_active).map((keyName, keyIndex) => {
                           return (
-                            <option key={keyIndex} value={keyName}>   {keyName} </option>
+                            <option
+                              key={keyIndex}
+                              value={keyName}
+                              disabled={
+                                keyName == inputList[0]?.name ||
+                                keyName == inputList[1]?.name ||
+                                keyName == inputList[2]?.name ||
+                                keyName == inputList[3]?.name ||
+                                keyName == inputList[4]?.name
+                              }
+                            >
+
+                              {keyName}
+                            </option>
                           );
                         })}
                       </select>
-                      {console.log("-------",social_active, x.name)}
 
                       <input
-                        className="form-control  me-3 w-50"
+                        className="form-control me-3 w-50"
                         name="social_user_id"
                         placeholder="Enter User Id"
                         value={x.social_user_id}
                         onChange={(e) => handleInputChange(e, i)}
+                        onKeyDown={onKeyDownVideo}
                       />
                       <input
-                        className="form-control  me-3 w-50"
+                        className="form-control me-3 w-50"
                         type="number"
                         name="followers"
                         placeholder="30"
                         value={x.followers}
                         onChange={(e) => handleInputChange(e, i)}
-
+                        onKeyDown={onKeyDownVideo}
                       />
                       <div className="btn-box">
                         {inputList.length !== 1 && (
-                          <button className="btn sub-btn" onClick={(e) => handleRemoveClick(e, i)}>-</button>
+                          <button
+                            className="btn sub-btn"
+                            onClick={(e) => handleRemoveClick(e, i)}
+                          >
+                            -
+                          </button>
                         )}
-                        {inputList.length - 1 === i && inputList.length < 5  && (
-                          <button className="btn custom-btn" onClick={(e) => handleAddClick(e, i)}>+</button>
+                        {inputList.length - 1 === i && inputList.length < 5 &&  (
+                          <button
+                            className="btn custom-btn"
+                            onClick={(e) => handleAddClick(e, i)}
+                          >  + </button>
                         )}
                       </div>
                     </div>
-
-                    <span className="err text-danger">
-                      {!x.name ? (<>{socialError.name}</>) : ""}
-                      {!x.social_user_id ? (<>{socialError.social_user_id}</>) : ""}
-                      {!x.followers ? (<>{socialError.followers}</>) : ""}
-                    </span>
-
-                  </>
                   );
                 })}
+                <span className="err text-danger">
+                  {error && socialNameError && <>{error}</>}
+                </span>
 
 
               </div>
 
 
+              
+
+
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
-                  <b>Video Links <span className="text-danger">*</span></b>
+                  <b>
+                    Video Links <span className="text-danger">*</span>
+                  </b>
                 </label>
+                {/* {console.log(kolProfile.video_links)} */}
                 {videoList.map((x, i) => {
                   return (
                     <>
@@ -835,25 +906,42 @@ console.log(socialError);
                         <input
                           name="video_links"
                           placeholder="Enter Video Link"
-                          className={`form-control me-3 ${error === "" || kolProfile?.video_links?.length ? "" : "border-danger"}`}
+                          className={`form-control me-3 ${error === "" || kolProfile?.video_links?.length
+                              ? ""
+                              : "border-danger"
+                            }`}
                           value={x}
                           onChange={(e) => handleInputVideoChange(e, i)}
+                          onKeyDown={onKeyDownVideo}
                         />
                         <div className="btn-box">
                           {videoList.length !== 1 && (
-                            <button className="btn sub-btn" onClick={(e) => handleVideoRemoveClick(e, i)}> - </button>
+                            <button
+                              className="btn sub-btn"
+                              onClick={(e) => handleVideoRemoveClick(e, i)}
+                            >
+                              {" "}
+                              -{" "}
+                            </button>
                           )}
                           {videoList.length - 1 === i && (
-                            <button className="btn custom-btn" onClick={(e) => handleVideoAddClick(e, i)}>+</button>
+                            <button
+                              className="btn custom-btn"
+                              onClick={handleVideoAddClick}
+                            >
+                              +
+                            </button>
                           )}
                         </div>
                       </div>
-                      <span className="err text-danger">
-                        {error && kolProfile.video_links == "" && (<>{error}</>)}
-                      </span>
                     </>
                   );
                 })}
+                {console.log(videoList)}
+                <span className="err text-danger">
+                  {error && videoError ? <>{error}</> : ""}
+                </span>
+               
               </div>
 
 
