@@ -6,13 +6,13 @@ import ConfirmModal from "./ConfirmModal";
 const AnnouncementsItems=({ currentItems, handleDelete})=> {
  // console.log(currentItems);
 
- const [modalHeading, setModalHeading] = useState("");
- const [showModal, setshowModal] = useState(false);
+//  const [modalHeading, setModalHeading] = useState("");
+//  const [showModal, setshowModal] = useState(false);
 
- const handleDeleteModal = () => {
-  setModalHeading("Confirmation box");
-  setshowModal(!showModal);
- }
+//  const handleDeleteModal = () => {
+//   setModalHeading("Confirmation box");
+//   setshowModal(!showModal);
+//  }
 
 
   return (
@@ -45,7 +45,7 @@ const AnnouncementsItems=({ currentItems, handleDelete})=> {
               <td>
                 <Link className="btn btn-sm btn-success me-2" to={`/dashboard/announcement/view/${item.id}`} >View</Link>
                 <Link className="btn btn-sm btn-primary me-2" to={`/dashboard/announcement/${item.id}`} >Edit</Link>
-                <button className="btn btn-sm btn-danger" onClick={() => handleDeleteModal(item.id)}> <i className="fa fa-trash"></i> Delete </button>
+                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.id)}> <i className="fa fa-trash"></i> Delete </button>
               </td>
             </tr>
           );
