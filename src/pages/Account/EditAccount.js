@@ -128,7 +128,7 @@ const EditAccount = () => {
 
         dispatch(UpdateUserProfile(userData)).then((data) => {
           //console.log("-------------------->>>>>>>>",data)
-          if (data?.payload?.statusCode === 202) {
+          if (data?.payload?.statusCode === 201 || data?.payload?.statusCode === 202) {
             toast.success(data?.payload?.message)
             navigate("/account");
           }
@@ -177,11 +177,14 @@ const EditAccount = () => {
               <div className="row justify-content-between p-md-5">
                 <div className="col-xl-3 col-lg-3 col-12 py-2 align-self-start text-center">
                   <div className="kol-profile-img">
-                    <img
+                    {userData?.avatar ? (
+                      <img
                       src={`${imageUrl}${userData.avatar}`}
                       className="img-fluid"
                       alt="avatar"
                     />
+                    ) : "Avatar"}
+                    
                   </div>
                   <input type="file" className="form-control mb-2" onChange={onFileChange} />
                   <button

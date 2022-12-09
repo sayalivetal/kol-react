@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { imageUrl } from "../../../common/apis";
+import ConfirmModal from "./ConfirmModal";
 
 const AnnouncementsItems=({ currentItems, handleDelete})=> {
  // console.log(currentItems);
 
+//  const [modalHeading, setModalHeading] = useState("");
+//  const [showModal, setshowModal] = useState(false);
+
+//  const handleDeleteModal = () => {
+//   setModalHeading("Confirmation box");
+//   setshowModal(!showModal);
+//  }
+
+
   return (
+    <>
     <table className="table table-bordered">
     <thead>
       <tr>
@@ -41,6 +52,16 @@ const AnnouncementsItems=({ currentItems, handleDelete})=> {
         })}
     </tbody>
   </table>
+
+    {/* <ConfirmModal 
+      modalName={modalHeading}
+      showModalProp={showModal}
+    >
+
+
+    </ConfirmModal> */}
+
+  </>
   );
 }
 export default AnnouncementsItems;

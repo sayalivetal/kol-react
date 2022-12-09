@@ -51,9 +51,12 @@ const ProfileAdd = () => {
   initialArr["social_user_id"] = "";
   initialArr["followers"] = "";
   initialArr["social_icon"] = "";
+
+
   const handleVideoRemoveClick = (e, i) => {
-    console.log("-------------", i);
-    //e.preventDefault();
+   // console.log("-------------", i);
+    e.preventDefault();
+    //  e.stopPropagation();
     const list = [...videoList];
     list.splice(i, 1);
     setVideoList(list);
@@ -99,7 +102,7 @@ const ProfileAdd = () => {
     // setVideoList([...videoList, ""]);
     setInputList([
       ...inputList,
-      { name: "", social_user_id: "", followers: "", social_icon: "" },
+      { name: "", social_user_id: "", followers: "" },
     ]);
   };
   const onKeyDownVideo = (e) => {
@@ -146,6 +149,7 @@ const ProfileAdd = () => {
   }, []);
   const [socialNameError, setSocialNameError] = useState(false);
   console.log(social_active);
+
   useEffect(() => {
     inputList.map((item, index) => {
       if (
@@ -293,13 +297,13 @@ const ProfileAdd = () => {
     setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
 
-  const handleVideoChange = (e) => {
-    setVideoLinks((prevState) => [...prevState, e.target.value]);
-  };
+  // const handleVideoChange = (e) => {
+  //   setVideoLinks((prevState) => [...prevState, e.target.value]);
+  // };
 
-  const removeLastElement = () => {
-    return kolProfile.video_links.pop();
-  };
+  // const removeLastElement = () => {
+  //   return kolProfile.video_links.pop();
+  // };
 
   const languageHandleChange = (e) => {
     setLang([...e]);
@@ -424,11 +428,10 @@ const ProfileAdd = () => {
                 <input
                   type="email"
                   name="personal_email"
-                  className={`form-control ${
-                    error === "" || kolProfile.personal_email
+                  className={`form-control ${error === "" || kolProfile.personal_email
                       ? ""
                       : "border-danger"
-                  }`}
+                    }`}
                   defaultValue={kolProfile.personal_email}
                   onChange={handleChange}
                   placeholder="Enter Email"
@@ -453,9 +456,8 @@ const ProfileAdd = () => {
                 </label>
                 {console.log(error, kolProfile.kol_type)}
                 <select
-                  className={`form-select ${
-                    error === "" || kolProfile.kol_type ? "" : "border-danger"
-                  }`}
+                  className={`form-select ${error === "" || kolProfile.kol_type ? "" : "border-danger"
+                    }`}
                   name="kol_type"
                   onChange={handleChange}
                 >
@@ -482,9 +484,8 @@ const ProfileAdd = () => {
                   type="text"
                   name="city"
                   onChange={handleChange}
-                  className={`form-control ${
-                    error === "" || kolProfile.city ? "" : "border-danger"
-                  }`}
+                  className={`form-control ${error === "" || kolProfile.city ? "" : "border-danger"
+                    }`}
                   placeholder="Enter City"
                 />
                 <span className="err text-danger">
@@ -499,9 +500,8 @@ const ProfileAdd = () => {
                   </b>
                 </label>
                 <select
-                  className={`form-select ${
-                    error === "" || kolProfile.state ? "" : "border-danger"
-                  }`}
+                  className={`form-select ${error === "" || kolProfile.state ? "" : "border-danger"
+                    }`}
                   onChange={handleChange}
                   name="state"
                 >
@@ -525,9 +525,8 @@ const ProfileAdd = () => {
                 <input
                   type="text"
                   name="zip_code"
-                  className={`form-control ${
-                    error === "" || kolProfile.zip_code ? "" : "border-danger"
-                  }`}
+                  className={`form-control ${error === "" || kolProfile.zip_code ? "" : "border-danger"
+                    }`}
                   onChange={handleChange}
                   placeholder="Enter Zip code"
                 />
@@ -544,11 +543,10 @@ const ProfileAdd = () => {
                 </label>
 
                 <Select
-                  className={`text-capitalize ${
-                    error === "" || kolProfile?.languages?.length
+                  className={`text-capitalize ${error === "" || kolProfile?.languages?.length
                       ? ""
                       : "border-danger"
-                  }`}
+                    }`}
                   name="languages"
                   options={langList}
                   onChange={languageHandleChange}
@@ -567,11 +565,10 @@ const ProfileAdd = () => {
                   </b>
                 </label>
                 <select
-                  className={`form-select ${
-                    error === "" || kolProfile.social_active
+                  className={`form-select ${error === "" || kolProfile.social_active
                       ? ""
                       : "border-danger"
-                  }`}
+                    }`}
                   name="social_active"
                   onChange={handleChangeSocialActive}
                 >
@@ -596,9 +593,8 @@ const ProfileAdd = () => {
                   </b>
                 </label>
                 <textarea
-                  className={`form-control ${
-                    error === "" || kolProfile.bio ? "" : "border-danger"
-                  }`}
+                  className={`form-control ${error === "" || kolProfile.bio ? "" : "border-danger"
+                    }`}
                   name="bio"
                   onChange={handleChange}
                   rows="6"
@@ -616,11 +612,10 @@ const ProfileAdd = () => {
                   </b>
                 </label>
                 <input
-                  className={`form-control ${
-                    error === "" || kolProfile?.tags?.length
+                  className={`form-control ${error === "" || kolProfile?.tags?.length
                       ? ""
                       : "border-danger"
-                  }`}
+                    }`}
                   name="tags"
                   type="text"
                   value={input}
@@ -654,9 +649,8 @@ const ProfileAdd = () => {
                 </label>
                 <input
                   type="file"
-                  className={`form-control ${
-                    error === "" || kolProfile.userImage ? "" : "border-danger"
-                  }`}
+                  className={`form-control ${error === "" || kolProfile.userImage ? "" : "border-danger"
+                    }`}
                   name="userImage"
                   onChange={handleChange}
                 />
@@ -673,9 +667,8 @@ const ProfileAdd = () => {
                 </label>
                 <input
                   type="file"
-                  className={`form-control ${
-                    error === "" || kolProfile.userBanner ? "" : "border-danger"
-                  }`}
+                  className={`form-control ${error === "" || kolProfile.userBanner ? "" : "border-danger"
+                    }`}
                   name="userBanner"
                   onChange={handleChange}
                 />
@@ -690,9 +683,10 @@ const ProfileAdd = () => {
                     Social Media Info <span className="text-danger">*</span>
                   </b>
                 </label>
-                {console.log(social_active)}
+
                 {inputList.map((x, i, array) => {
                   //console.log(inputList);
+
                   return (
                     <div className="col d-flex mb-2">
                       <select
@@ -715,11 +709,13 @@ const ProfileAdd = () => {
                                 keyName == inputList[4]?.name
                               }
                             >
+
                               {keyName}
                             </option>
                           );
                         })}
                       </select>
+
                       <input
                         className="form-control me-3 w-50"
                         name="social_user_id"
@@ -730,6 +726,7 @@ const ProfileAdd = () => {
                       />
                       <input
                         className="form-control me-3 w-50"
+                        type="number"
                         name="followers"
                         placeholder="30"
                         value={x.followers}
@@ -745,14 +742,11 @@ const ProfileAdd = () => {
                             -
                           </button>
                         )}
-                        {inputList.length - 1 === i && (
+                        {inputList.length - 1 === i && inputList.length < 5 &&  (
                           <button
                             className="btn custom-btn"
-                            onClick={handleAddClick}
-                          >
-                            {" "}
-                            +
-                          </button>
+                            onClick={(e) => handleAddClick(e, i)}
+                          >  + </button>
                         )}
                       </div>
                     </div>
@@ -764,6 +758,7 @@ const ProfileAdd = () => {
                 {/* <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div> */}
               </div>
               {/* {console.log(kolProfile?.social_active.length, inputList)} */}
+
               <div className="col-lg-6 col-sm-12 mt-3">
                 <label className="form-label">
                   <b>
@@ -778,11 +773,10 @@ const ProfileAdd = () => {
                         <input
                           name="video_links"
                           placeholder="Enter Video Link"
-                          className={`form-control me-3 ${
-                            error === "" || kolProfile?.video_links?.length
+                          className={`form-control me-3 ${error === "" || kolProfile?.video_links?.length
                               ? ""
                               : "border-danger"
-                          }`}
+                            }`}
                           value={x}
                           onChange={(e) => handleInputVideoChange(e, i)}
                           onKeyDown={onKeyDownVideo}
@@ -814,56 +808,7 @@ const ProfileAdd = () => {
                 <span className="err text-danger">
                   {error && videoError ? <>{error}</> : ""}
                 </span>
-                {/* <div className="col d-flex mb-2">
-                  <input
-                    type="text"
-                    className={`form-control me-3 ${error === "" || kolProfile?.video_links?.length ? "" : "border-danger" }`}
-                    placeholder="Enter Video Link"
-                    onChange={(e) => {
-                      handleVideoChange(e, 0);
-                    }}
-                    name="video_links"
-
-                  />
-                  <div className="btn-box">
-                    <button type="button" name="video_links" className="btn custom-btn" onClick={() => setLinkCount(linkCount + 1)} > + </button>
-                  </div>
-                  <div className="btn-box">
-                    <button type="button" name="video_links" className="btn custom-btn" onClick={() => setLinkCount(linkCount + 1)} > + </button>
-                  </div>
-
-                  
-                </div>
-                <span className="err text-danger">
-                  {error && kolProfile.video_links == "" && ( <>{error}</>)}
-                </span>
-
-                {[...Array(linkCount)].map((_, i) => (
-                  <div key={i} className="col d-flex mb-2">
-                    <input
-                      type="text"
-                      className="form-control me-3"
-                      onBlur={(e) => {
-                        handleVideoChange(e, i + 1);
-                      }}
-                      placeholder="Enter Video Link"
-                    />
-                    <div className="btn-box">
-                      <button
-                        type="button"
-                        name="video_links"
-                        className="btn sub-btn"
-                        onClick={() => {
-                          setLinkCount(linkCount - 1);
-                          removeLastElement();
-                        }}
-                      >
-                        {" "}
-                        -{" "}
-                      </button>
-                    </div>
-                  </div>
-                ))} */}
+               
               </div>
             </div>
 

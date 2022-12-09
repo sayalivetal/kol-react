@@ -229,7 +229,7 @@ console.log(dataLoad);
                   <div className="col-lg-3 py-2">
                     <div className="kol-user-img">
                       <Link to={`/details/${item.profile_id}`}>
-                        <img src={`${imageUrl}${item.avatar}`} />
+                        { item?.avatar ? (<img src={`${imageUrl}${item?.avatar}`} alt="Avatar" />) : "Avatar"}
                       </Link>
                     </div>
                   </div>

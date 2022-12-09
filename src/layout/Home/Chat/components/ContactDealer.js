@@ -41,6 +41,7 @@ const ContactDealer = ({ id }) => {
 
   const [kolProfile, setKolProfile] = useState([]);
   const [editedDealId, setEditedDealId] = useState("");
+  const [btnDisabled, setBtnDisabled] = useState(true);
   const [dealForm, setDealForm] = useState({
     title: "",
     description: "",
@@ -183,6 +184,7 @@ const ContactDealer = ({ id }) => {
       kol_profile_id: id,
       deal_id: e.target.value,
     });
+    setBtnDisabled(e.target.value === '');
   };
 
   // select date for order
@@ -395,25 +397,32 @@ const ContactDealer = ({ id }) => {
                 );
               })}
           </div>
+          {kolDealForUser?.length > 0 ? (
+             <div className="deal-action-bar">
+              <div className="deal-form-row">
+                <DatePicker
+                  selected={startDate}
+                  dateFormat="yyyy-MM-dd hh:mm:ss aa"
+                  onChange={(date) => setStartDate(date)}
+                  className="form-control"
+                  minDate={moment().toDate()}
+                />
 
-          <div className="deal-action-bar">
-            <div className="deal-form-row">
-              <DatePicker
-                selected={startDate}
-                dateFormat="yyyy-MM-dd hh:mm:ss aa"
-                onChange={(date) => setStartDate(date)}
-                className="form-control"
-              />
-
-              <button
-                type="submit"
-                onClick={handleOrder}
-                className="btn theme-btn"
-              >
-                Place Order
-              </button>
+                <button
+                  type="submit"
+                  onClick={handleOrder}
+                  className="btn theme-btn"
+                  disabled={btnDisabled}
+                >
+                  Place Order
+                </button>
+              </div>
             </div>
-          </div>
+          )
+          
+          : ""}
+         
+
         </>
       )}
 
