@@ -174,7 +174,7 @@ const Announcement = () => {
   //     return { ...prevState, [e.target.name]: [e.target.value] };
   //   });
   // };
-console.log(error);
+
   return (
     <>
       <div className="card mb-5">

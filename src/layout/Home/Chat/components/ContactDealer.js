@@ -21,6 +21,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import { toast } from "react-toastify";
+import ConfirmModal from "../../../../common/components/ConfirmModal";
 
 const ContactDealer = ({ id }) => {
   const navigate = useNavigate();
@@ -60,6 +61,10 @@ const ContactDealer = ({ id }) => {
     start_date: "",
     token,
   });
+
+const [modalHeading, setModalHeading] = useState("");
+const [showModal, setshowModal] = useState(false);
+const[dealId,setDealId] = useState("")
 
   const kolList = async () => {
     const response = await fetch(`${API}/kol-profile/list`, {
@@ -147,6 +152,16 @@ const ContactDealer = ({ id }) => {
     });
   };
 
+  const handleDelModal = (id) => {
+    setDealId(id)
+    setModalHeading("Confirmation box");
+    setshowModal(!showModal);
+   }
+  
+   const showCustomModal = () => {
+    setshowModal(!showModal);
+  };
+
   // deal delete by id
   const handleDealDelete = (dealId) => {
     dispatch(deleteKolDeals({ dealId, token })).then((state) => {
@@ -228,27 +243,30 @@ const ContactDealer = ({ id }) => {
       {role == 2 ? (
         <>
           <div className="kol-user-card">
-            <div className="kol-user-icon">
-              <img
-                className="rounded-circle  img-fluid"
-                src={`${imageUrl}${dealdetail?.avatar}`}
-                alt="avatar"
-              />
+            <div className="d-flex mb-2">
+                <div className="kol-user-icon">
+                  <img
+                    className="rounded-circle  img-fluid"
+                    src={`${imageUrl}${dealdetail?.avatar}`}
+                    alt="avatar"
+                  />
+                </div>
+                <div className="kol-user-info">
+                      <div className="deal-user-name">{dealdetail?.get_user?.name}</div>
+                      <div class="kol-user-text">{dealdetail?.get_user?.email}</div>
+                </div>
             </div>
-            <div className="kol-user-info">
-              <div className="d-flex justify-content-between">
-                <span className="deal-user-name">{`${dealdetail?.get_user?.name} ${dealdetail?.get_user?.last_name}`}</span>
-                {/* <span className="">
-                  <i className="bi bi-instagram"></i> 456k
-                </span> */}
-              </div>
-              <div className="kol-user-loc">
-                <i className="loc bi-geo-alt"></i>
-                <p>
-                  {dealdetail?.city}, {dealdetail?.state}, india
-                </p>
-              </div>
+
+            <div className="kol-user-social">
+                {dealdetail?.get_social_media.map((items, index)=>{
+                  return(
+                    <div key={index} className="kol-social-card">
+                          <div className="kol-social-info">{items.social_user_id}<div className="kol-social-icon"><i className={items.social_icon} ></i> </div>{items.followers}</div>
+                    </div>
+                  )
+                })}
             </div>
+            
           </div>
 
           <h5 className="mt-3 mb-1 theme-color d-flex">
@@ -297,12 +315,12 @@ const ContactDealer = ({ id }) => {
                         {item.type}
                       </span>
                     </div>
-                    <p>{item.description}</p>
+                    <p className="mb-1">{item.description}</p>
                     <div className="kol-deal-row">
                       <span
                         className="deal-delete btn btn-sm me-2 btn-default"
                         onClick={() => {
-                          handleDealDelete(item.id);
+                          handleDelModal(item.id);
                         }}
                       >
                         <i className="bi bi-trash3"></i>
@@ -327,28 +345,32 @@ const ContactDealer = ({ id }) => {
             return (
               <>
                 <div className="kol-user-card" key={index}>
-                  <div className="kol-user-icon">
-                    <img
-                      className="rounded-circle  img-fluid"
-                      src={`${imageUrl}${item.avatar}`}
-                      alt="avatar"
-                    />
+                  <div className="d-flex mb-2">
+                      <div className="kol-user-icon">
+                        <img
+                          className="rounded-circle  img-fluid"
+                          src={`${imageUrl}${item?.avatar}`}
+                          alt="avatar"
+                        />
+                      </div>
+                      <div className="kol-user-info">
+                            <div className="deal-user-name">{item?.username}</div>
+                            <div class="kol-user-text">{item?.email}</div>
+                      </div>
                   </div>
-                  <div className="kol-user-info">
-                    <div className="d-flex justify-content-between">
-                      <span className="deal-user-name">{item.username} </span>
-                      {/* <span className="">
-                            <i className={`${item.social_active_icon}`}></i>
-                          </span> */}
-                    </div>
-                    <div className="kol-user-loc">
-                      <i className="loc bi-geo-alt"></i>
-                      <p>
-                        {item.city}, {item.state}, india
-                      </p>
-                    </div>
+
+                  <div className="kol-user-social">
+                      {item?.SocialMedia.map((items, index)=>{
+                        return(
+                          <div key={index} className="kol-social-card">
+                                <div className="kol-social-info">{items.social_media_username}<div className="kol-social-icon"><i className={items.social_icon} ></i> </div>{items.followers}</div>
+                          </div>
+                        )
+                      })}
                   </div>
+                  
                 </div>
+                
               </>
             );
           })}
@@ -392,7 +414,7 @@ const ContactDealer = ({ id }) => {
                       </span>
                     </div>
 
-                    <p>{item.description}</p>
+                    <p className="mb-1">{item.description}</p>
                   </div>
                 );
               })}
@@ -539,85 +561,29 @@ const ContactDealer = ({ id }) => {
         </div>
       )}
 
-      {/* {orderModal && (
-        <div className="modal-open overflow-hidden">
-          <div className="modal fade show" style={{ display: "block" }}>
-            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-              <div className="modal-content">
-                <div className="modal-header px-4">
-                  <h5 className="modal-title theme-color">Order Summary</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={showOrderModal}
-                  ></button>
-                </div>
 
-                  <div className="modal-body px-4">
-                    <div className="col-12 mb-1">
-                      <label className="form-label ">
-                        <span className="fw-medium">Order Id :</span> {orderSummary.order_id}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                        <span className="fw-medium">Deal Id :</span> {orderSummary.deal_id}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Start Date :</span> {orderSummary.start_date}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">End Date :</span> {orderSummary.end_date}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Deal Title :</span>{orderSummary?.order_summary?.deal_title}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Deal Type :</span> {orderSummary?.order_summary?.type}
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Deal Description :</span> {orderSummary?.order_summary?.description}
-                      </label>
-                    </div>
-                    
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Total days :</span> {orderSummary?.order_summary?.total_days} 
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Tax :</span> {orderSummary?.order_summary?.tax_percentage}%
-                      </label>
-                    </div>
-                    <div className="col-12 mb-1">
-                      <label className="form-label">
-                      <span className="fw-medium">Price :</span> {orderSummary?.order_summary?.price} {orderSummary?.order_summary?.currency}
-                      </label>
-                    </div>
-                  </div>
-                  <div className="modal-footer justify-content-start px-4 py-3">
-                    <button type="submit" className="btn theme-btn" onClick={()=> navigate("/payment-paypal")} orderId={orderSummary.order_id} amount={orderSummary?.order_summary?.price}>
-                      Buy Now
-                    </button>
-                  </div>
 
-              </div>
+      <ConfirmModal 
+        modalName={modalHeading}
+        showModalProp={showModal}
+        closeModal={showCustomModal}
+      >
+          <div className="row">
+            <div className="col-12 mb-3">
+              <label className="form-label ">Are you sure to want to Delete to this Deal</label>
+            </div>
+            <div className="col-12 mb-3">
+              <button type="submit" className="btn theme-btn" 
+                onClick={()=> {
+                handleDealDelete(dealId)
+                setshowModal(!showModal);
+                }}>Confirm</button>
+              <button type="submit" className="btn btn-default mx-3" onClick={showCustomModal}>Cancel</button>
             </div>
           </div>
-          <div className="modal-backdrop fade show"></div>
-        </div>
-      )} */}
+        
+      </ConfirmModal>
+
     </>
   );
 };

@@ -13,6 +13,12 @@ const PaginatedItems = ({ itemsPerPage }) => {
     const token = localStorage.getItem("token");
     const [announcements, setAnnouncements] = useState([]);
   //  console.log(announcements)
+    // We start with an empty list of items.
+    const [currentItems, setCurrentItems] = useState(null);
+    const [pageCount, setPageCount] = useState(0);
+    // Here we use item offsets; we could also use page offsets
+    // following the API or data you're working with.
+    const [itemOffset, setItemOffset] = useState(0);
 
     useEffect(() => {
         const callback = (data) => {
@@ -22,13 +28,7 @@ const PaginatedItems = ({ itemsPerPage }) => {
         getKolAllAnnouncements(callback, token);
     }, []);
 
-
-    // We start with an empty list of items.
-    const [currentItems, setCurrentItems] = useState(null);
-    const [pageCount, setPageCount] = useState(0);
-    // Here we use item offsets; we could also use page offsets
-    // following the API or data you're working with.
-    const [itemOffset, setItemOffset] = useState(0);
+    console.log(announcements?.length)
 
     useEffect(() => {
         // Fetch items from another resources.
@@ -46,6 +46,7 @@ const PaginatedItems = ({ itemsPerPage }) => {
     };
 
     const handleDelete = (id) => {
+   
         dispatch(announceDelete(id)).then((data) => {
             if (data.payload.statusCode === 200) {
                 const callback = (data) => {
@@ -56,14 +57,16 @@ const PaginatedItems = ({ itemsPerPage }) => {
         });
     };
 
+    console.log(currentItems?.length)
+
     return (
         <>
             <AnnouncementsItems currentItems={currentItems} handleDelete={handleDelete} />
             <ReactPaginate
                 nextLabel="Next >"
                 onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
-                marginPagesDisplayed={2}
+                pageRangeDisplayed={1}
+                marginPagesDisplayed={null}
                 pageCount={pageCount}
                 previousLabel="< Previous"
                 pageClassName="page-item"
@@ -72,7 +75,7 @@ const PaginatedItems = ({ itemsPerPage }) => {
                 previousLinkClassName="page-link"
                 nextClassName="page-item"
                 nextLinkClassName="page-link"
-                breakLabel="..."
+                breakLabel=""
                 breakClassName="page-item"
                 breakLinkClassName="page-link"
                 containerClassName="pagination"

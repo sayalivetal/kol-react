@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { imageUrl } from "../../../common/apis";
-import ConfirmModal from "./ConfirmModal";
+import ConfirmModal from "../../../common/components/ConfirmModal";
 
 const AnnouncementsItems=({ currentItems, handleDelete})=> {
  // console.log(currentItems);
 
-//  const [modalHeading, setModalHeading] = useState("");
-//  const [showModal, setshowModal] = useState(false);
+ const [modalHeading, setModalHeading] = useState("");
+ const [showModal, setshowModal] = useState(false);
+  const[itemId,setitemId] = useState("")
 
-//  const handleDeleteModal = () => {
-//   setModalHeading("Confirmation box");
-//   setshowModal(!showModal);
-//  }
+ const handleDeleteModal = (id) => {
+  setitemId(id)
+  setModalHeading("Confirmation box");
+  setshowModal(!showModal);
+ }
+
+ const showCustomModal = () => {
+  setshowModal(!showModal);
+};
 
 
   return (
@@ -45,7 +51,7 @@ const AnnouncementsItems=({ currentItems, handleDelete})=> {
               <td>
                 <Link className="btn btn-sm btn-success me-2" to={`/dashboard/announcement/view/${item.id}`} >View</Link>
                 <Link className="btn btn-sm btn-primary me-2" to={`/dashboard/announcement/${item.id}`} >Edit</Link>
-                <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.id)}> <i className="fa fa-trash"></i> Delete </button>
+                <button className="btn btn-sm btn-danger" onClick={() => handleDeleteModal(item.id)}> <i className="fa fa-trash"></i> Delete </button>
               </td>
             </tr>
           );
@@ -53,13 +59,26 @@ const AnnouncementsItems=({ currentItems, handleDelete})=> {
     </tbody>
   </table>
 
-    {/* <ConfirmModal 
+    <ConfirmModal 
       modalName={modalHeading}
       showModalProp={showModal}
+      closeModal={showCustomModal}
     >
+      <div className="row">
+        <div className="col-12 mb-3">
+          <label className="form-label ">Are you sure to want to Delete to this Record</label>
+        </div>
+        <div className="col-12 mb-3">
+          <button type="submit" className="btn theme-btn" 
+            onClick={()=> {
+            handleDelete(itemId)
+            setshowModal(!showModal);
+            }}>Confirm</button>
+          <button type="submit" className="btn btn-default mx-3" onClick={showCustomModal}>Cancel</button>
+        </div>
+      </div>
 
-
-    </ConfirmModal> */}
+    </ConfirmModal>
 
   </>
   );
