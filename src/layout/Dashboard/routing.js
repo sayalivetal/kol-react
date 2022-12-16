@@ -1,6 +1,5 @@
 import React, { lazy } from "react";
 
-const Dashboard = lazy(() => import("../Dashboard/Dashboard"));
 const ProfileAdd = lazy(() => import("./components/ProfileAdd"));
 const ProfileView = lazy(() => import("../Dashboard/components/ProfileView"));
 const ProfileUpdate = lazy(() => import("../Dashboard/components/ProfileUpdate"));
