@@ -15,7 +15,7 @@ const AnnouncementList = () => {
     getKolAllAnnouncements(callback, token);
   }, []);
 
-  //console.log(announcements)
+  console.log(announcements)
 
   return (
     <>
@@ -28,7 +28,7 @@ const AnnouncementList = () => {
         </div>
         <div className="card-body px-4">
           <div className="">
-            {announcements?.length > 0 ? ( <PaginatedItems itemsPerPage={5}/>) : (<><h4>No Records Found</h4> </>  )}
+            {announcements?.length > 0 ? ( <PaginatedItems itemsPerPage={4}/>) : (<><h4>No Records Found</h4> </>  )}
           </div>
         </div>
       </div>

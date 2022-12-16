@@ -56,12 +56,13 @@ const Chat = () => {
         </div>
 
         <div className="col-lg-3">
-          <div className="card">
+          <div className="card" style={{minHeight: "576px"}}>
             <div className="card-body">
               <ContactDealer id={`${id}`} />
             </div>
           </div>
         </div>
+        
       </div>
     </div>
   );

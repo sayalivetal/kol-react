@@ -310,7 +310,7 @@ const Register = () => {
 
                       </div>
                       <div className="d-flex justify-content-between align-items-center mb-3">
-                        <button type="submit" className="btn theme-btn btn-lg btn-block spiner-btn">
+                        <button type="submit" disabled={btnLoader?true:false} className="btn theme-btn btn-lg btn-block spiner-btn">
                           {btnLoader ? <Loader type="spinner-cub" title={"Register"} size={20} /> : 'Register'}
                         </button>
 

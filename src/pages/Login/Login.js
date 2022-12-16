@@ -272,6 +272,7 @@ const Login = () => {
                         <button
                           type="submit"
                           className="btn theme-btn btn-lg btn-block spiner-btn"
+                          disabled={btnLoader?true:false}
                         >
                           {btnLoader ? (
                             <Loader

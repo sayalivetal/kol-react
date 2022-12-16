@@ -15,40 +15,24 @@
 }
 
 
-.kol-user-card { display: flex; align-items: center; border:1px solid #ebebeb; padding:8px 10px; border-radius: 8px; margin: 16px 0; width: 100%;}
-.kol-user-info { padding-left: 15px; font-size: 16px;  font-weight: 600; width: 100%;}
-.deal-user-name { 
-  /* width: 64%; */
-  display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.kol-user-icon { width: 72px;}
-.kol-user-icon .rounded-circle  { background: #ddd;}
-.kol-user-loc {
-  display: flex;
-  align-items: center;
-  font-weight: 400;
-  color: #9C9FAB;
-  width: 100%;
-}
-.kol-user-loc i.loc{
-  font-size: 20px;
-  color: #f01f4b;
-  width: 24px;
-  font-weight: 700;
-}
-.kol-user-loc p {
-  margin: 0;
-  font-size: 14px;
-  padding-left:0px;
-}
+.kol-user-card { display: flex; align-items: flex-start; flex-wrap: wrap; border:1px solid #ebebeb; padding:8px 10px; border-radius: 8px; margin: 10px 0; width: 100%;}
+.kol-user-info { padding-left: 15px; font-size: 16px;  font-weight: 600; width: 100%; display: flex; flex-wrap: wrap;}
+.kol-user-icon { width: 48px; height: 48px; flex-shrink: 0; overflow: hidden; border: 1px solid #ddd; border-radius: 48px; text-align: center;}
+.kol-user-icon .img-fluid  { background: #ddd; height: 100%;   }
 
-.kol-user-deals { display: block; width: 100%; overflow-x: hidden;overflow-y: auto; height: 330px; border: 1px solid #ebebeb; padding: 10px; border-radius: 4px; }
+.deal-user-name { display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kol-user-text { font-size: 14px;  font-weight: 400; width: 100%; display: flex; flex-wrap: wrap;}
+.kol-social-card { width:auto; display: flex; overflow:hidden; justify-content: space-between; align-items: stretch; margin:0 4px 4px 0; padding: 4px 8px; flex-wrap: nowrap; border: 1px solid #d5d5d5; border-radius: 4px;}
+.kol-user-social { display: flex; align-items: center; font-weight: 400; width: 100%; flex-wrap: wrap;}
+.kol-social-info { font-size: 14px; line-height: 16px;  display: flex; flex-wrap: nowrap; align-items: center;} 
+.kol-social-icon{ font-size: 20px; color: #f01f4b; font-weight: 700; width: 28px;  text-align: center; }
+
+
+
+.kol-user-deals { display: block; width: 100%; overflow-x: hidden;overflow-y: auto; height: 270px; border: 1px solid #ebebeb; padding: 10px; border-radius: 4px; }
 .kol-list-deal { display: block;  border:1px solid #ebebeb; padding:12px 12px 8px 12px; border-radius: 8px; margin:0 0 8px 0; font-size: 13px; }
 
-.kol-deal-row { display: flex;  flex-wrap: wrap;    align-items: center; margin-bottom: 8px; width: 100%; }
+.kol-deal-row { display: flex;  flex-wrap: wrap; align-items: center; margin-bottom: 6px; width: 100%; }
 .kol-deal-heading { width: 60%;}
 .price-check { margin-top: 2px;}
 

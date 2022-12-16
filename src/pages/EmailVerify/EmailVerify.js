@@ -121,6 +121,7 @@ useEffect(()=>{
                         type="submit"
                         className="resend-button"
                         onClick={handleOtp}
+                        disabled={btnLoader?true:false}
                       >
                          {btnLoader ? <Loader type="spinner-cub"  title={"RESEND OTP"} size={20} />:'RESEND OTP'} 
                       </button>
